@@ -6,6 +6,56 @@ sidebar_position: 3
 
 Agent Teams is an experimental Claude Code feature that lets a lead agent spawn and coordinate multiple specialized teammate agents working in parallel. Teammates communicate through a shared task list and direct messaging, and can optionally be displayed side-by-side in split panes (via tmux or iTerm2).
 
+## Agents vs. subagents vs. Agent Teams
+
+Claude Code has three related but distinct concepts. People often use the terms loosely, so here is the official breakdown.
+
+### The main agent
+
+The main agent is the primary Claude Code session you are talking to. It receives your prompts, plans work, orchestrates everything, and interacts directly with you. It has the full conversation history, your project context (CLAUDE.md, MCP servers, etc.), and full tool access. Think of it as the lead or conductor.
+
+### Subagents
+
+Subagents are the most common form of delegation — specialized child assistants spawned by the main agent inside the same session.
+
+Each subagent gets:
+- Its own **isolated context window** (clean slate, no bloat in your main chat)
+- A **custom system prompt** (e.g. "You are a read-only code reviewer")
+- **Restricted or specific tools** and a model of its own choosing (often Haiku for cost)
+
+Subagents only report a summary result back to the main agent. They never talk to each other or directly to you. The main agent can delegate automatically, or you can direct it explicitly.
+
+Built-in subagents include **Explore** (fast read-only search), **Plan** (architecture research), and **General-purpose**. You can also define unlimited custom ones at the project or user level.
+
+**Key point:** subagents are hierarchical (main agent → subagent) and live entirely inside one session.
+
+### Agent Teams
+
+Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session** — not a child of the main agent, but a peer.
+
+| | Subagents | Agent Teams |
+|---|---|---|
+| **Architecture** | Single session, hierarchical | Multiple independent sessions |
+| **Communication** | Report results back to main agent only | Direct peer-to-peer messaging + shared task list |
+| **Parallelism** | Yes | Full parallel + self-coordination |
+| **Context** | Isolated per subagent | Fully independent per teammate |
+| **You can talk to them directly** | No (through main agent only) | Yes — click any pane or cycle with `Shift+↓` |
+| **Token cost** | Moderate (summaries only) | High (~one full session per teammate) |
+| **Best for** | Focused tasks, context saving, specialization | Complex collaboration, competing hypotheses, cross-layer work |
+| **Setup** | Built-in or simple custom files | Experimental flag + tmux/iTerm2 recommended |
+
+### Simple mental model
+
+- **Subagent** — hire a specialist who works alone in their office and emails you the finished report.
+- **Agent Team** — hire a whole team who sit in separate rooms, can message each other directly, self-assign tasks, and collaborate in real time while you oversee the lead.
+
+### When to use which
+
+- **Use subagents (most of the time)** — to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
+- **Use Agent Teams** — when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
+
+Most people start with subagents and only escalate to Agent Teams for large, complex projects where cross-agent discussion adds real value.
+
 ## Do you need tmux?
 
 **Short answer: no.** Agent Teams works perfectly fine without tmux or any extra tools. But most people who try both modes end up preferring split-pane mode for any serious work.
