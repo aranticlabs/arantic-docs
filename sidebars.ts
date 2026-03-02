@@ -44,6 +44,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'tools/overview',
         'tools/claude-code',
+        'tools/subagents',
         'tools/agent-teams',
         'tools/github-copilot',
         'tools/cursor',
