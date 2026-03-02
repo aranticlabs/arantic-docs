@@ -193,3 +193,21 @@ Let them discuss and reach consensus on the best approach. Output a final decisi
 - **Right model for the job** — use Haiku for simple/mechanical tasks, Sonnet or Opus for complex reasoning.
 - **Require plan approval** — always add "Require plan approval before any code changes" to prevent surprise edits.
 - **Two-session workflow** — for very large projects, run one tmux session for a research team and a separate one for the implementation team.
+
+## Token cost vs. context isolation
+
+Running a team is more expensive than a single agent. Each teammate is an independent Claude session with its own context window, so a 5-agent team can consume roughly 5× the tokens of one agent working alone over the same wall-clock time.
+
+The trade-off is real: **more agents = more tokens, but safer context per agent.**
+
+| Factor | Single agent | 5-agent team |
+|--------|-------------|--------------|
+| Token usage | Lower | ~5× higher |
+| Context per agent | Grows large over time | Stays small and focused |
+| Risk of context overload | Higher on long tasks | Lower — each agent sees only its slice |
+| Parallel throughput | Sequential | Parallel |
+
+**Practical guidance:**
+- Use Haiku for teammates doing mechanical work (searching, linting, testing). Reserve Sonnet/Opus for the agents that need to reason deeply.
+- Avoid spawning agents just to parallelize — only split work that is genuinely independent.
+- For a quick task that one agent can finish in a few turns, skip Agent Teams entirely.

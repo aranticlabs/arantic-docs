@@ -721,6 +721,8 @@ In parallel: (1) search for all API endpoints, (2) check test coverage, (3) list
 
 Each subagent runs concurrently; results are collected and summarized together.
 
+> **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window — reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
+
 ## Tips for effective subagents
 
 - **Write specific descriptions.** The description is how the main agent decides when to invoke your subagent. Vague descriptions lead to missed or incorrect invocations.
@@ -728,6 +730,7 @@ Each subagent runs concurrently; results are collected and summarized together.
 - **Use Haiku for mechanical tasks.** Searching, grepping, linting, and formatting don't need a powerful model. Haiku is significantly cheaper and fast enough for these.
 - **Keep system prompts focused.** A subagent that does one thing well is more reliable than one with a broad mandate. If you find yourself writing a long list of responsibilities, split it into two agents.
 - **Put project agents in version control.** Committing `.claude/agents/` means your whole team shares the same specialist helpers automatically.
+- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window — which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation.
 
 ---
 
