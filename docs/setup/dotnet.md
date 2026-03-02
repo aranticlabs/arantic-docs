@@ -16,7 +16,7 @@ If you live entirely inside Visual Studio and don't want a terminal, this is all
 
 GitHub Copilot is built into Visual Studio 2022 version 17.10 and later. If you're on an older version, install it from **Extensions → Manage Extensions → search "GitHub Copilot"**.
 
-Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise) - separate from your Anthropic/Claude subscription.
+Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise), separate from your Anthropic/Claude subscription.
 
 What you get inside Visual Studio:
 - **Inline completions** - suggestions appear as you type, accept with `Tab`

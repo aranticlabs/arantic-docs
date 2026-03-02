@@ -4,27 +4,27 @@ sidebar_position: 2
 
 # Web & Backend Developer Setup
 
-Covers React, TypeScript, JavaScript, Angular (frontend) and Go REST/gRPC services, CLI tools (backend). Both stacks use the same IDE and Claude Code setup - only the project context templates, subagents, and example prompts differ.
+Covers React, TypeScript, JavaScript, Angular (frontend) and Go REST/gRPC services, CLI tools (backend). Both stacks use the same IDE and Claude Code setup; only the project context templates, subagents, and example prompts differ.
 
 ## 1. Install an in-editor tool
 
 Pick one. You can run both, but one is usually enough.
 
-### Option A - Cursor (recommended for the deepest AI integration)
+### Option A: Cursor (recommended for the deepest AI integration)
 
-Download from [cursor.com](https://cursor.com). Cursor is a VS Code fork - your extensions, keybindings, and settings carry over. It replaces VS Code rather than extending it.
+Download from [cursor.com](https://cursor.com). Cursor is a VS Code fork; your extensions, keybindings, and settings carry over. It replaces VS Code rather than extending it.
 
 After installing, sign in and choose a model. Claude Sonnet is the best default for both frontend and backend work.
 
 See the full [Cursor guide](../tools/cursor) for configuration details.
 
-### Option B - GitHub Copilot in VS Code
+### Option B: GitHub Copilot in VS Code
 
 Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) from the VS Code marketplace and sign in with your GitHub account. Also install **GitHub Copilot Chat** for the chat panel (`Ctrl+Shift+I` / `Cmd+Shift+I`).
 
 See the full [GitHub Copilot guide](../tools/github-copilot) for tips.
 
-### Option C - GoLand (Go only)
+### Option C: GoLand (Go only)
 
 [GoLand](https://www.jetbrains.com/go/) has the best Go-specific refactoring and static analysis of any IDE. Install the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot) from the JetBrains Marketplace.
 
@@ -53,13 +53,13 @@ See the full [Claude Code guide](../tools/claude-code) for all capabilities.
 
 ## 3. Configure project context (CLAUDE.md)
 
-Claude Code reads a `CLAUDE.md` file at your project root on every session start. This is the single most effective thing you can do to improve output quality - it tells Claude your stack, conventions, commands, and what not to touch.
+Claude Code reads a `CLAUDE.md` file at your project root on every session start. This is the single most effective thing you can do to improve output quality: it tells Claude your stack, conventions, commands, and what not to touch.
 
 ```bash
 touch CLAUDE.md
 ```
 
-### Frontend - React / TypeScript
+### Frontend: React / TypeScript
 
 ```markdown
 # Project context
@@ -86,7 +86,7 @@ touch CLAUDE.md
 - src/generated/ - auto-generated from OpenAPI spec, never edit by hand
 ```
 
-### Frontend - Angular
+### Frontend: Angular
 
 ```markdown
 # Project context
@@ -108,7 +108,7 @@ touch CLAUDE.md
 - ng lint - ESLint
 ```
 
-### Backend - Go service
+### Backend: Go service
 
 ```markdown
 # Project context
@@ -139,7 +139,7 @@ touch CLAUDE.md
 - vendor/ - managed by go mod vendor
 ```
 
-### Backend - Go CLI (cobra)
+### Backend: Go CLI (cobra)
 
 ```markdown
 ## Stack
@@ -185,7 +185,7 @@ mkdir -p .claude/agents
 
 ### Inline completions (Cursor / Copilot / GoLand)
 
-Just type - completions appear automatically, accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
+Just type; completions appear automatically, accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
 
 **Frontend chat examples:**
 ```
@@ -238,12 +238,12 @@ Review my staged changes for bugs, security issues, and anything
 that violates the conventions in CLAUDE.md.
 ```
 
-**Frontend - run specialist subagents:**
+**Frontend: run specialist subagents:**
 ```
 Run the ux-reviewer and accessibility-auditor agents on src/components/CheckoutForm/.
 ```
 
-**Go backend - run specialist subagents:**
+**Go backend: run specialist subagents:**
 ```
 Run the security-auditor agent on internal/handler/ and internal/auth/.
 ```
