@@ -3,15 +3,14 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   docsSidebar: [
     'intro',
+    'quickstart',
     {
       type: 'category',
-      label: 'Quickstart',
+      label: 'Environment Setup',
       items: [
-        'quickstart/overview',
-        'quickstart/web',
-        'quickstart/go',
-        'quickstart/dotnet',
-        'quickstart/firmware',
+        'setup/web-and-backend',
+        'setup/dotnet',
+        'setup/firmware',
       ],
     },
     {
