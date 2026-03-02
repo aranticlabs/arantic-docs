@@ -26,12 +26,14 @@ The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2�
 
 ### Platform support for split-pane mode
 
+macOS and Linux are the primary supported platforms. Split-pane mode works best there and is where most Agent Teams users run it.
+
 | Platform | Split-pane option | Notes |
 |----------|-------------------|-------|
-| macOS | tmux **or** iTerm2 | Two options — pick whichever you already use |
-| Linux | tmux | Works via your package manager |
-| Windows (WSL) | tmux inside WSL | Full support |
-| Windows (native, no WSL) | Not yet supported | Only in-process mode is available for now; [native Windows Terminal support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
+| macOS | tmux **or** iTerm2 | Recommended — two solid options, pick whichever you already use |
+| Linux | tmux | Recommended — works via your package manager |
+| Windows (WSL) | tmux inside WSL | Works, but requires WSL |
+| Windows (native) | Not yet supported | Use in-process mode; [Windows Terminal split-pane support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
 
 ## What is tmux?
 
@@ -39,13 +41,11 @@ tmux is a free, open-source terminal multiplexer. It turns one terminal window i
 
 ## One-time setup (split-pane mode)
 
-> Windows users without WSL: in-process mode works out of the box — no setup needed. Skip to [Step B](#step-b-configure-claude-code) and set `"teammateMode": "in-process"`.
+The steps below apply to **macOS and Linux** (the recommended platforms). Windows users without WSL can skip this section — in-process mode works out of the box, just set `"teammateMode": "in-process"` in Step B.
 
 ### Step A: Install a split-pane tool
 
-Choose one option based on your platform:
-
-#### Option 1 — tmux (macOS, Linux, Windows via WSL)
+#### Option 1 — tmux (macOS, Linux, Windows via WSL) — recommended
 
 **macOS:**
 ```bash
