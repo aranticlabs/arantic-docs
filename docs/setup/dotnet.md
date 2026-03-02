@@ -19,10 +19,10 @@ GitHub Copilot is built into Visual Studio 2022 version 17.10 and later. If you'
 Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise), separate from your Anthropic/Claude subscription.
 
 What you get inside Visual Studio:
-- **Inline completions** - suggestions appear as you type, accept with `Tab`
-- **Copilot Chat panel** - open with `View → GitHub Copilot Chat` or `Ctrl+\, Ctrl+C`
-- **Smart actions** - right-click any selection for "Explain", "Fix", "Generate tests", "Generate docs"
-- **Commit message generation** - in the Git Changes window, click the Copilot sparkle icon
+- **Inline completions**: suggestions appear as you type, accept with `Tab`
+- **Copilot Chat panel**: open with `View → GitHub Copilot Chat` or `Ctrl+\, Ctrl+C`
+- **Smart actions**: right-click any selection for "Explain", "Fix", "Generate tests", "Generate docs"
+- **Commit message generation**: in the Git Changes window, click the Copilot sparkle icon
 
 ### 2. Use Copilot Chat effectively
 

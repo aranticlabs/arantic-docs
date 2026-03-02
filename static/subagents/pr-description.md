@@ -15,7 +15,7 @@ Steps:
 Output the following, formatted as Markdown that can be pasted directly into a GitHub/GitLab PR:
 
 ---
-**Title:** (one line, under 72 characters, imperative mood - e.g. "Add dark mode toggle to user settings")
+**Title:** (one line, under 72 characters, imperative mood; e.g. "Add dark mode toggle to user settings")
 
 **Summary**
 2–4 bullet points describing what changed and why. Focus on the "what" and "why", not the "how".

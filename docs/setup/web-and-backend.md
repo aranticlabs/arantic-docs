@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Web & Backend Developer Setup
 
-Covers React, TypeScript, JavaScript, Angular (frontend) and Go REST/gRPC services, CLI tools (backend). Both stacks use the same IDE and Claude Code setup; only the project context templates, subagents, and example prompts differ.
+Covers React, TypeScript, JavaScript, Angular (frontend) and Go REST/gRPC services, CLI tools (backend). Both stacks use the same IDE and Claude Code setup. Only the project context templates, subagents, and example prompts differ.
 
 ## 1. Install an in-editor tool
 
@@ -12,7 +12,7 @@ Pick one. You can run both, but one is usually enough.
 
 ### Option A: Cursor (recommended for the deepest AI integration)
 
-Download from [cursor.com](https://cursor.com). Cursor is a VS Code fork; your extensions, keybindings, and settings carry over. It replaces VS Code rather than extending it.
+Download from [cursor.com](https://cursor.com). Cursor is a VS Code fork, so your extensions, keybindings, and settings carry over. It replaces VS Code rather than extending it.
 
 After installing, sign in and choose a model. Claude Sonnet is the best default for both frontend and backend work.
 
@@ -185,7 +185,7 @@ mkdir -p .claude/agents
 
 ### Inline completions (Cursor / Copilot / GoLand)
 
-Just type; completions appear automatically, accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
+As you type, completions appear automatically. Accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
 
 **Frontend chat examples:**
 ```
@@ -253,7 +253,7 @@ Run the security-auditor agent on internal/handler/ and internal/auth/.
 ## Tips
 
 **Shared:**
-- **Reference files by name.** Claude Code has full access to your repo - "look at src/hooks/useCart.ts" or "internal/handler/health.go" is unambiguous.
+- **Reference files by name.** Claude Code has full access to your repo, so "look at src/hooks/useCart.ts" or "internal/handler/health.go" is unambiguous.
 - **Paste error messages directly.** "Fix this error: [paste]" works better than a vague description.
 - **Lock down generated directories.** Add `src/generated/`, `internal/gen/`, `dist/`, `vendor/` to `CLAUDE.md` under "Do not modify".
 
@@ -263,6 +263,6 @@ Run the security-auditor agent on internal/handler/ and internal/auth/.
 
 **Go specific:**
 - **Always run `go vet ./...` after AI-generated code.** Claude handles idiomatic Go well but occasionally generates code that compiles yet fails vet (shadowed errors, unused params).
-- **Specify the interface.** Paste an existing interface and say "implement this" - generated code will match the signature exactly.
+- **Specify the interface.** Paste an existing interface and say "implement this". Generated code will match the signature exactly.
 - **Goroutine safety:** Say explicitly "this struct will be called from multiple goroutines simultaneously" if that's the case. Claude won't assume it.
-- **proto files:** Claude Code can generate proto definitions and stub implementations, but always run `make proto` to regenerate - never hand-edit generated files.
+- **proto files:** Claude Code can generate proto definitions and stub implementations, but always run `make proto` to regenerate. Never hand-edit generated files.

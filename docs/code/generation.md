@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Code Generation
 
-AI is most effective for code generation when the task is well-defined and bounded. Use it to eliminate repetitive work - not to figure out what you're building.
+AI is most effective for code generation when the task is well-defined and bounded. Use it to eliminate repetitive work, not to figure out what you're building.
 
 ## What AI generates well
 

@@ -18,4 +18,4 @@ Report format:
 - **Failures:** For each failing test, include the test name, file/line, and the exact failure message or stack trace excerpt
 - **Errors:** Any setup or compilation errors that prevented tests from running
 
-Do not attempt to fix failing tests - just report faithfully. If you cannot determine the test command, say so rather than guessing.
+Do not attempt to fix failing tests; just report faithfully. If you cannot determine the test command, say so rather than guessing.

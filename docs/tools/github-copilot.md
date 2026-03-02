@@ -8,11 +8,11 @@ GitHub Copilot is an AI coding assistant integrated directly into your editor. I
 
 ## Where it works
 
-- **VS Code** - most feature-complete integration
+- **VS Code**: most feature-complete integration
 - **JetBrains IDEs** (IntelliJ, WebStorm, PyCharm, etc.)
-- **Neovim** - via plugin
-- **GitHub.com** - code review suggestions in pull requests
-- **Terminal** - Copilot CLI for shell commands
+- **Neovim**: via plugin
+- **GitHub.com**: code review suggestions in pull requests
+- **Terminal**: Copilot CLI for shell commands
 
 ## Key features
 
@@ -54,10 +54,10 @@ github-copilot-cli what-the-shell "find all .ts files modified in the last 7 day
 
 ## Tips for better completions
 
-- **Write a descriptive comment first** - Copilot uses comments as intent signals
-- **Name things clearly** - `getUserByEmail` tells Copilot more than `getData`
-- **Use type annotations** - TypeScript types guide completions significantly
-- **Open related files** - Copilot uses open tabs as context
+- **Write a descriptive comment first**: Copilot uses comments as intent signals
+- **Name things clearly**: `getUserByEmail` tells Copilot more than `getData`
+- **Use type annotations**: TypeScript types guide completions significantly
+- **Open related files**: Copilot uses open tabs as context
 
 ## Limitations
 

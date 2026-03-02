@@ -4,15 +4,15 @@ sidebar_position: 3
 
 # Subagents
 
-Subagents are the primary way Claude Code delegates work without ballooning your main conversation. The main agent spawns a subagent, gives it a focused job, and gets back a clean summary - keeping your context window tidy and your token bill reasonable.
+Subagents are the primary way Claude Code delegates work without ballooning your main conversation. The main agent spawns a subagent, gives it a focused job, and gets back a clean summary, keeping your context window tidy and your token bill reasonable.
 
 ## What is a subagent?
 
-A subagent is a child Claude instance launched by the main agent inside the same session. It is not a peer - it is a helper. Each one gets:
+A subagent is a child Claude instance launched by the main agent inside the same session. It is a helper, not a peer. Each one gets:
 
-- Its own **isolated context window** - a clean slate with no history from your main chat
+- Its own **isolated context window**: a clean slate with no history from your main chat
 - A **custom system prompt** that scopes its role and behavior
-- **Specific tools** (often a restricted subset - e.g. read-only, no shell access)
+- **Specific tools** (often a restricted subset, e.g. read-only, no shell access)
 - Its own **model choice** (often Haiku for cost efficiency on mechanical tasks)
 
 When the subagent finishes, it reports a summary back to the main agent. It never talks to you directly, and subagents never talk to each other.
@@ -23,7 +23,7 @@ Claude Code ships with several built-in subagents the main agent can invoke auto
 
 | Subagent | Purpose | Default model |
 |----------|---------|---------------|
-| **Explore** | Fast read-only codebase search - finds files, symbols, patterns | Haiku |
+| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Haiku |
 | **Plan** | Architecture and design research, implementation planning | Sonnet |
 | **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | Sonnet |
 
@@ -33,8 +33,8 @@ The main agent selects these automatically based on the task, or you can nudge i
 
 You can define your own subagents at two levels:
 
-- **Project-level** - lives in `.claude/agents/` inside your repo; available only in that project
-- **User-level** - lives in `~/.claude/agents/`; available in every project
+- **Project-level**: lives in `.claude/agents/` inside your repo; available only in that project
+- **User-level**: lives in `~/.claude/agents/`; available in every project
 
 Each subagent is a single Markdown file. The filename becomes the agent's name.
 
@@ -94,7 +94,7 @@ These work well in any codebase regardless of stack or target.
 
 #### code-reviewer
 
-[Download code-reviewer.md](/subagents/code-reviewer.md) - read-only, Haiku, OWASP-aware severity report
+[Download code-reviewer.md](/subagents/code-reviewer.md): read-only, Haiku, OWASP-aware severity report
 
 ```markdown
 ---
@@ -125,7 +125,7 @@ End with a one-paragraph overall summary.
 
 #### test-runner
 
-[Download test-runner.md](/subagents/test-runner.md) - auto-detects framework, structured pass/fail output
+[Download test-runner.md](/subagents/test-runner.md): auto-detects framework, structured pass/fail output
 
 ```markdown
 ---
@@ -153,7 +153,7 @@ Do not attempt to fix failing tests - just report faithfully. If you cannot dete
 
 #### pr-description
 
-[Download pr-description.md](/subagents/pr-description.md) - GitHub/GitLab-ready PR title and body from git diff
+[Download pr-description.md](/subagents/pr-description.md): GitHub/GitLab-ready PR title and body from git diff
 
 ```markdown
 ---
@@ -194,7 +194,7 @@ Do not add filler phrases like "This PR introduces..." or "I have implemented...
 
 #### changelog-writer
 
-[Download changelog-writer.md](/subagents/changelog-writer.md) - Keep a Changelog format, skips merge/CI commits automatically
+[Download changelog-writer.md](/subagents/changelog-writer.md): Keep a Changelog format, skips merge/CI commits automatically
 
 ```markdown
 ---
@@ -237,7 +237,7 @@ Focused on web application security, API design, dependency hygiene, and fronten
 
 #### security-auditor
 
-[Download security-auditor.md](/subagents/security-auditor.md) - Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
+[Download security-auditor.md](/subagents/security-auditor.md): Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
 
 ```markdown
 ---
@@ -286,7 +286,7 @@ Output a report grouped by severity (Critical / High / Medium / Low / Informatio
 
 #### dependency-auditor
 
-[Download dependency-auditor.md](/subagents/dependency-auditor.md) - covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
+[Download dependency-auditor.md](/subagents/dependency-auditor.md): covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
 
 ```markdown
 ---
@@ -327,7 +327,7 @@ If an audit command is not available, note it clearly rather than skipping silen
 
 #### accessibility-auditor
 
-[Download accessibility-auditor.md](/subagents/accessibility-auditor.md) - WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
+[Download accessibility-auditor.md](/subagents/accessibility-auditor.md): WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
 
 ```markdown
 ---
@@ -371,7 +371,7 @@ Output a report grouped by WCAG principle (Perceivable / Operable / Understandab
 
 #### api-contract-reviewer
 
-[Download api-contract-reviewer.md](/subagents/api-contract-reviewer.md) - REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
+[Download api-contract-reviewer.md](/subagents/api-contract-reviewer.md): REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
 
 ```markdown
 ---
@@ -418,7 +418,7 @@ Output a structured report grouped by category above. For each issue include: fi
 
 #### ux-reviewer
 
-[Download ux-reviewer.md](/subagents/ux-reviewer.md) - Sonnet, hierarchy, spacing, states, copy, and interaction review
+[Download ux-reviewer.md](/subagents/ux-reviewer.md): Sonnet, hierarchy, spacing, states, copy, and interaction review
 
 ```markdown
 ---
@@ -484,7 +484,7 @@ Focused on microcontroller firmware: memory safety, peripheral configuration, in
 
 #### memory-usage-auditor
 
-[Download memory-usage-auditor.md](/subagents/memory-usage-auditor.md) - Sonnet, stack/heap analysis, DMA alignment, linker map review
+[Download memory-usage-auditor.md](/subagents/memory-usage-auditor.md): Sonnet, stack/heap analysis, DMA alignment, linker map review
 
 ```markdown
 ---
@@ -529,7 +529,7 @@ Output a report grouped by category. For each issue include: file, function/symb
 
 #### peripheral-config-reviewer
 
-[Download peripheral-config-reviewer.md](/subagents/peripheral-config-reviewer.md) - GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
+[Download peripheral-config-reviewer.md](/subagents/peripheral-config-reviewer.md): GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
 
 ```markdown
 ---
@@ -590,7 +590,7 @@ Output a report grouped by peripheral type. For each issue: file, function/line,
 
 #### interrupt-safety-checker
 
-[Download interrupt-safety-checker.md](/subagents/interrupt-safety-checker.md) - Sonnet, ISR race conditions, shared variables, RTOS API misuse
+[Download interrupt-safety-checker.md](/subagents/interrupt-safety-checker.md): Sonnet, ISR race conditions, shared variables, RTOS API misuse
 
 ```markdown
 ---
@@ -634,7 +634,7 @@ Output a report grouped by category. For each issue: file, ISR name / function, 
 
 #### misra-c-checker
 
-[Download misra-c-checker.md](/subagents/misra-c-checker.md) - Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
+[Download misra-c-checker.md](/subagents/misra-c-checker.md): Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
 
 ```markdown
 ---
@@ -687,7 +687,7 @@ For each finding: file, line, rule number and short description, code excerpt, a
 
 ### Automatic delegation
 
-The main agent reads the `description` field of every available subagent and delegates automatically when the task matches. A well-written description is the most important part of a custom subagent - it determines when the agent gets invoked.
+The main agent reads the `description` field of every available subagent and delegates automatically when the task matches. A well-written description is the most important part of a custom subagent; it determines when the agent gets invoked.
 
 ### Explicit direction
 
@@ -703,7 +703,7 @@ Run the test-runner agent on the files I just edited, then continue.
 
 ### Background vs. foreground
 
-By default, subagents run in the foreground - the main agent waits for a result before continuing. For independent tasks you can run them in the background:
+By default, subagents run in the foreground; the main agent waits for a result before continuing. For independent tasks you can run them in the background:
 
 ```
 Run the test suite in the background while I keep working.
@@ -721,7 +721,7 @@ In parallel: (1) search for all API endpoints, (2) check test coverage, (3) list
 
 Each subagent runs concurrently; results are collected and summarized together.
 
-> **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window - reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
+> **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window, reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
 
 If your parallel tasks need to actively discuss findings or challenge each other's conclusions, consider [Agent Teams](./agent-teams) instead.
 
@@ -746,7 +746,7 @@ The main agent is the primary Claude Code session you are talking to. It receive
 
 ### Subagents
 
-Subagents are the most common form of delegation - specialized child assistants spawned by the main agent inside the same session.
+Subagents are the most common form of delegation: specialized child assistants spawned by the main agent inside the same session.
 
 Each subagent gets:
 - Its own **isolated context window** (clean slate, no bloat in your main chat)
@@ -761,7 +761,7 @@ Built-in subagents include **Explore** (fast read-only search), **Plan** (archit
 
 ### Agent Teams
 
-Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session** - not a child of the main agent, but a peer.
+Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session**, not a child of the main agent, but a peer.
 
 | | Subagents | [Agent Teams](./agent-teams) |
 |---|---|---|
@@ -769,19 +769,19 @@ Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a 
 | **Communication** | Report results back to main agent only | Direct peer-to-peer messaging + shared task list |
 | **Parallelism** | Yes | Full parallel + self-coordination |
 | **Context** | Isolated per subagent | Fully independent per teammate |
-| **You can talk to them directly** | No (through main agent only) | Yes - click any pane or cycle with `Shift+↓` |
+| **You can talk to them directly** | No (through main agent only) | Yes; click any pane or cycle with `Shift+↓` |
 | **Token cost** | Moderate (summaries only) | High (~one full session per teammate) |
 | **Best for** | Focused tasks, context saving, specialization | Complex collaboration, competing hypotheses, cross-layer work |
 | **Setup** | Built-in or simple custom files | Experimental flag + tmux/iTerm2 recommended |
 
 ### Simple mental model
 
-- **Subagent** - hire a specialist who works alone in their office and emails you the finished report.
-- **Agent Team** - hire a whole team who sit in separate rooms, can message each other directly, self-assign tasks, and collaborate in real time while you oversee the lead.
+- **Subagent**: hire a specialist who works alone in their office and emails you the finished report.
+- **Agent Team**: hire a whole team who sit in separate rooms, can message each other directly, self-assign tasks, and collaborate in real time while you oversee the lead.
 
 ### When to use which
 
-- **Use subagents (most of the time)** - to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
-- **Use [Agent Teams](./agent-teams)** - when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
+- **Use subagents (most of the time)**: to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
+- **Use [Agent Teams](./agent-teams)**: when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
 
 Most people start with subagents and only escalate to [Agent Teams](./agent-teams) for large, complex projects where cross-agent discussion adds real value.

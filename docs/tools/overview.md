@@ -12,31 +12,31 @@ There are several AI tools useful for programming. They differ in how they integ
 
 You interact via a conversation interface. Good for explaining code, generating snippets, debugging, and thinking through designs.
 
-- **Claude** (claude.ai) - strong at reasoning, large context window, good at following complex instructions
-- **ChatGPT** (chat.openai.com) - GPT-4o, broad general knowledge, large plugin ecosystem
-- **Gemini** (gemini.google.com) - integrates with Google Workspace
+- **Claude** (claude.ai): strong at reasoning, large context window, good at following complex instructions
+- **ChatGPT** (chat.openai.com): GPT-4o, broad general knowledge, large plugin ecosystem
+- **Gemini** (gemini.google.com): integrates with Google Workspace
 
 ### IDE-integrated tools
 
 These work directly inside your editor and see your open files and cursor position.
 
-- **GitHub Copilot** - available in VS Code, JetBrains, Neovim; inline completions and a chat panel
-- **Cursor** - an IDE built around AI; deeper context awareness than Copilot
-- **Supermaven** - fast, focused on autocomplete speed
+- **GitHub Copilot**: available in VS Code, JetBrains, Neovim; inline completions and a chat panel
+- **Cursor**: an IDE built around AI; deeper context awareness than Copilot
+- **Supermaven**: fast, focused on autocomplete speed
 
 ### CLI tools
 
 These run in your terminal alongside your code and can read files, run commands, and interact with your codebase.
 
-- **Claude Code** - Anthropic's CLI, full codebase access, agentic task execution
-- **GitHub Copilot CLI** - explains and suggests shell commands
+- **Claude Code**: Anthropic's CLI, full codebase access, agentic task execution
+- **GitHub Copilot CLI**: explains and suggests shell commands
 
 ### API-based
 
 For building your own integrations or automating tasks in CI.
 
-- **Anthropic API** - access to Claude programmatically
-- **OpenAI API** - access to GPT models programmatically
+- **Anthropic API**: access to Claude programmatically
+- **OpenAI API**: access to GPT models programmatically
 
 ## Choosing a tool
 

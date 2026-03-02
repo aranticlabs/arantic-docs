@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Improving Test Coverage with AI
 
-AI can help you move from low coverage to meaningful coverage quickly. The goal isn't to hit a percentage - it's to cover the scenarios that matter.
+AI can help you move from low coverage to meaningful coverage quickly. The goal isn't to hit a percentage; it's to cover the scenarios that matter.
 
 ## Find uncovered paths
 
@@ -62,7 +62,7 @@ then write one test per branch.
 
 When using AI for coverage, watch out for:
 
-- **Tests that only assert the call happened** - not that the result is correct
-- **Mocking everything** - tests that mock so much they don't test real behaviour
-- **Duplicate tests** - AI sometimes generates near-identical tests for the same path
-- **Tests with no assertions** - always verify there's at least one `expect()` per test
+- **Tests that only assert the call happened**, not that the result is correct
+- **Mocking everything**: tests that mock so much they don't test real behaviour
+- **Duplicate tests**: AI sometimes generates near-identical tests for the same path
+- **Tests with no assertions**: always verify there's at least one `expect()` per test

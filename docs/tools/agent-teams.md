@@ -17,13 +17,13 @@ Not sure whether you need Agent Teams or just subagents? See [Agents vs. subagen
 | Mode | How teammates appear | See all agents at once? | Best for |
 |------|----------------------|------------------------|----------|
 | **In-process** (default, no extra tools required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No | Quick experiments, small teams (2–3 agents) |
-| **Split-pane** (tmux or iTerm2) | Each teammate gets its own live visible pane | Yes - full command-center view | Regular use, 3+ teammates |
+| **Split-pane** (tmux or iTerm2) | Each teammate gets its own live visible pane | Yes; full command-center view | Regular use, 3+ teammates |
 
 The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."*
 
 ### Recommendation
 
-- **Just exploring Agent Teams?** Skip any extra setup - use the default in-process mode. It works great.
+- **Just exploring Agent Teams?** Skip any extra setup. The default in-process mode works great.
 - **Using Agent Teams regularly** (especially 4+ teammates on real projects)? Set up split-pane mode. Watching your AI team work in parallel panes is a significant productivity boost.
 
 ### Platform support for split-pane mode
@@ -32,22 +32,22 @@ macOS and Linux are the primary supported platforms. Split-pane mode works best 
 
 | Platform | Split-pane option | Notes |
 |----------|-------------------|-------|
-| macOS | tmux **or** iTerm2 | Recommended - two solid options, pick whichever you already use |
-| Linux | tmux | Recommended - works via your package manager |
+| macOS | tmux **or** iTerm2 | Recommended: two solid options, pick whichever you already use |
+| Linux | tmux | Recommended: install via your package manager |
 | Windows (WSL) | tmux inside WSL | Works, but requires WSL |
 | Windows (native) | Not yet supported | Use in-process mode; [Windows Terminal split-pane support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
 
 ## What is tmux?
 
-tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously - for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
+tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously: for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
 ## One-time setup (split-pane mode)
 
-The steps below apply to **macOS and Linux** (the recommended platforms). Windows users without WSL can skip this section - in-process mode works out of the box, just set `"teammateMode": "in-process"` in Step B.
+The steps below apply to **macOS and Linux** (the recommended platforms). Windows users without WSL can skip this section. In-process mode works out of the box; just set `"teammateMode": "in-process"` in Step B.
 
 ### Step A: Install a split-pane tool
 
-#### Option 1 - tmux (macOS, Linux, Windows via WSL) - recommended
+#### Option 1: tmux (macOS, Linux, Windows via WSL) (recommended)
 
 **macOS:**
 ```bash
@@ -61,7 +61,7 @@ sudo apt update && sudo apt install tmux
 
 **Other Linux or Windows (WSL):** see the [tmux installation wiki](https://github.com/tmux/tmux/wiki/Installing).
 
-#### Option 2 - iTerm2 (macOS only)
+#### Option 2: iTerm2 (macOS only)
 
 If you already use iTerm2 as your terminal, you can use it instead of tmux:
 
@@ -71,7 +71,7 @@ If you already use iTerm2 as your terminal, you can use it instead of tmux:
    ```
 2. Enable the Python API in iTerm2: **Settings → General → Magic → Enable Python API**
 
-That's it - Claude Code will detect iTerm2 automatically when `teammateMode` is set to `"tmux"` or `"auto"`.
+That's it. Claude Code will detect iTerm2 automatically when `teammateMode` is set to `"tmux"` or `"auto"`.
 
 ### Step B: Configure Claude Code
 
@@ -87,9 +87,9 @@ Create or edit `~/.claude/settings.json`:
 ```
 
 `teammateMode` options:
-- `"auto"` - recommended; uses split panes if already inside tmux, otherwise falls back to in-process
-- `"tmux"` - always use split-pane mode (auto-detects tmux or iTerm2)
-- `"in-process"` - always use in-process mode (no extra tools needed)
+- `"auto"`: recommended; uses split panes if already inside tmux, otherwise falls back to in-process
+- `"tmux"`: always use split-pane mode (auto-detects tmux or iTerm2)
+- `"in-process"`: always use in-process mode (no extra tools needed)
 
 To force a mode for a single session without editing `settings.json`:
 ```bash
@@ -191,10 +191,10 @@ Let them discuss and reach consensus on the best approach. Output a final decisi
 
 ## Tips
 
-- **Start small** - 3–5 teammates max; token cost scales with every agent.
-- **Right model for the job** - use Haiku for simple/mechanical tasks, Sonnet or Opus for complex reasoning.
-- **Require plan approval** - always add "Require plan approval before any code changes" to prevent surprise edits.
-- **Two-session workflow** - for very large projects, run one tmux session for a research team and a separate one for the implementation team.
+- **Start small**: 3–5 teammates max; token cost scales with every agent.
+- **Right model for the job**: use Haiku for simple/mechanical tasks, Sonnet or Opus for complex reasoning.
+- **Require plan approval**: always add "Require plan approval before any code changes" to prevent surprise edits.
+- **Two-session workflow**: for very large projects, run one tmux session for a research team and a separate one for the implementation team.
 
 ## Token cost vs. context isolation
 
@@ -206,10 +206,10 @@ The trade-off is real: **more agents = more tokens, but safer context per agent.
 |--------|-------------|--------------|
 | Token usage | Lower | ~5× higher |
 | Context per agent | Grows large over time | Stays small and focused |
-| Risk of context overload | Higher on long tasks | Lower - each agent sees only its slice |
+| Risk of context overload | Higher on long tasks | Lower (each agent sees only its slice) |
 | Parallel throughput | Sequential | Parallel |
 
 **Practical guidance:**
 - Use Haiku for teammates doing mechanical work (searching, linting, testing). Reserve Sonnet/Opus for the agents that need to reason deeply.
-- Avoid spawning agents just to parallelize - only split work that is genuinely independent.
-- For a quick task that one agent can finish in a few turns, skip Agent Teams entirely - [parallel subagents](./subagents#parallel-subagents) are the lighter option if you still need some concurrency.
+- Avoid spawning agents just to parallelize; only split work that is genuinely independent.
+- For a quick task that one agent can finish in a few turns, skip Agent Teams entirely. [Parallel subagents](./subagents#parallel-subagents) are the lighter option if you still need some concurrency.

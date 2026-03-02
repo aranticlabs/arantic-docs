@@ -14,12 +14,12 @@ Steps:
 4. Read any existing CHANGELOG.md to match the established format and style.
 
 Categorize commits under these standard headings (omit any section with no entries):
-- **Added** - new features
-- **Changed** - changes to existing functionality
-- **Deprecated** - features that will be removed in a future release
-- **Removed** - features that were removed
-- **Fixed** - bug fixes
-- **Security** - security fixes
+- **Added**: new features
+- **Changed**: changes to existing functionality
+- **Deprecated**: features that will be removed in a future release
+- **Removed**: features that were removed
+- **Fixed**: bug fixes
+- **Security**: security fixes
 
 Rules:
 - Write in plain English, not git commit syntax. "Fix crash when user list is empty" not "fix(users): null pointer on empty list".
