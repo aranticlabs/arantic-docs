@@ -8,6 +8,38 @@ Skills are reusable prompt templates that let you encode recurring tasks, team c
 
 Claude Code has the most mature built-in support for skills. Other tools offer partial equivalents, which are covered in the [Using skills with other tools](#using-skills-with-other-tools) section below.
 
+## Do you need skills?
+
+You don't strictly need skills to use Claude Code. You can chat, run subagents, and edit code without them. But once you use them, it's hard to go back, because they solve the most common frustrations people hit after the first few days.
+
+| Without skills | With skills |
+|---|---|
+| Repeating the same instructions every session ("always use Tailwind dark mode", "follow our security checklist") | Claude applies your rules automatically when relevant |
+| Results vary from session to session | Consistent, repeatable output every time |
+| Long `CLAUDE.md` files that eat into your context window | Instructions load only when needed, on demand |
+| Subagents starting from scratch every time | Skills can preload into any subagent, giving it your rules from the start |
+
+The short version: skills are reusable expert recipes that Claude keeps in its back pocket and pulls out when the task matches. Subagents are the specialist workers you assign tasks to. Most people end up using both together.
+
+## Context mechanisms in Claude Code
+
+Claude Code has four overlapping ways to give it persistent context and instructions. Understanding how they differ helps you put the right information in the right place.
+
+| | CLAUDE.md | Subagents | Commands | Skills |
+|---|---|---|---|---|
+| Auto-loaded every session | Yes | No | No | No (invoked on demand) |
+| Token cost | Always in context | Per-session, isolated | Loaded at invocation | Loaded at invocation |
+| Can execute tools / run code | No | Yes | Yes | Yes |
+| Shareable via git | Yes | Yes (`.claude/agents/`) | Yes (`.claude/commands/`) | Yes (`.claude/commands/`) |
+| Best for | Project-wide rules that always apply | Delegating isolated specialist tasks | Reusable prompt workflows | Reusable prompt workflows |
+
+In Claude Code, **Commands and Skills are the same thing**: both live in `.claude/commands/` as `.md` files. The distinction above reflects a conceptual difference in how you think about them. Some tools and emerging cross-tool conventions treat skills as a richer format (with explicit metadata, tool restrictions, and richer composition), but in Claude Code today the mechanism is the same.
+
+A practical rule of thumb:
+- **CLAUDE.md**: conventions, constraints, and background context that should always be active
+- **Skills (commands)**: workflows and prompt recipes that you invoke for a specific task
+- **Subagents**: isolated specialist workers for noisy or expensive subtasks
+
 ## How skills work in Claude Code
 
 Claude Code treats any `.md` file inside `.claude/commands/` as a skill. The filename becomes the command name.
