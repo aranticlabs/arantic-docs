@@ -16,13 +16,13 @@ If you live entirely inside Visual Studio and don't want a terminal, this is all
 
 GitHub Copilot is built into Visual Studio 2022 version 17.10 and later. If you're on an older version, install it from **Extensions → Manage Extensions → search "GitHub Copilot"**.
 
-Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise) — separate from your Anthropic/Claude subscription.
+Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise) - separate from your Anthropic/Claude subscription.
 
 What you get inside Visual Studio:
-- **Inline completions** — suggestions appear as you type, accept with `Tab`
-- **Copilot Chat panel** — open with `View → GitHub Copilot Chat` or `Ctrl+\, Ctrl+C`
-- **Smart actions** — right-click any selection for "Explain", "Fix", "Generate tests", "Generate docs"
-- **Commit message generation** — in the Git Changes window, click the Copilot sparkle icon
+- **Inline completions** - suggestions appear as you type, accept with `Tab`
+- **Copilot Chat panel** - open with `View → GitHub Copilot Chat` or `Ctrl+\, Ctrl+C`
+- **Smart actions** - right-click any selection for "Explain", "Fix", "Generate tests", "Generate docs"
+- **Commit message generation** - in the Git Changes window, click the Copilot sparkle icon
 
 ### 2. Use Copilot Chat effectively
 
@@ -34,7 +34,7 @@ Explain what this method does and whether there are any edge cases I should hand
 
 ```
 Refactor this class to follow the repository pattern. The data access is currently
-mixed into the controller — separate it into a service and a repository.
+mixed into the controller - separate it into a service and a repository.
 ```
 
 ```
@@ -48,11 +48,11 @@ I'm getting this exception: [paste stack trace]. What is causing it and how do I
 
 ### 3. Designer-specific tips (WinForms / WPF / MAUI)
 
-The Visual Studio designer works visually — Copilot helps with the code behind it:
+The Visual Studio designer works visually - Copilot helps with the code behind it:
 
 - **WinForms:** Select any event handler stub the designer generated, right-click → Copilot → "Explain". Ask Copilot Chat to "fill in this Click handler to validate the form and call SaveCustomer()".
 - **WPF:** Paste a ViewModel stub and ask "Add INotifyPropertyChanged to every property in this class and implement RelayCommand for the Save and Cancel buttons."
-- **MAUI:** Ask "Convert this WPF ViewModel to work with MAUI — replace `ICommand` with `RelayCommand` from CommunityToolkit.Mvvm."
+- **MAUI:** Ask "Convert this WPF ViewModel to work with MAUI - replace `ICommand` with `RelayCommand` from CommunityToolkit.Mvvm."
 - **XAML:** Copilot understands XAML. Select a block in the XAML editor and ask "Add a loading spinner that shows while IsLoading is true."
 
 ---
@@ -100,19 +100,19 @@ Create a `CLAUDE.md` file at the solution root. Claude Code reads it on every se
 
 ## Conventions
 - Follow MediatR request/handler pattern for all business logic
-- Never put business logic in controllers — controllers only dispatch commands/queries
+- Never put business logic in controllers - controllers only dispatch commands/queries
 - Use record types for DTOs and command/query objects
 - All public APIs must have XML doc comments
-- Async all the way down — no .Result or .Wait()
+- Async all the way down - no .Result or .Wait()
 
 ## Commands
-- `dotnet build` — build solution
-- `dotnet test` — run all tests
-- `dotnet run --project src/Api` — start API
-- `dotnet ef migrations add MigrationName` — add EF migration
+- `dotnet build` - build solution
+- `dotnet test` - run all tests
+- `dotnet run --project src/Api` - start API
+- `dotnet ef migrations add MigrationName` - add EF migration
 
 ## Do not modify
-- `src/Infrastructure/Migrations/` — managed by EF Core tooling
+- `src/Infrastructure/Migrations/` - managed by EF Core tooling
 ```
 
 ### 4. Claude Code tasks for .NET
@@ -139,7 +139,7 @@ publisher. Cover: happy path, validation failure, and repository exception.
 ## Tips
 
 - **Copilot works well with C# idioms.** It understands LINQ, async/await, nullable reference types, and pattern matching. Be explicit about which version of C# you're targeting if you need a specific feature.
-- **For Copilot Chat: use `#file` references.** In VS 2022 17.8+, type `#` in the chat panel to reference a specific file — this gives Copilot exact context without copy-pasting.
+- **For Copilot Chat: use `#file` references.** In VS 2022 17.8+, type `#` in the chat panel to reference a specific file - this gives Copilot exact context without copy-pasting.
 - **WinForms/WPF: don't ask AI to design the UI.** The visual designer is faster for layout. Use AI for the logic behind it.
 - **EF Core migrations: never auto-generate blindly.** Always review generated migrations before applying. Ask Copilot to "explain what this migration does" if you're unsure.
 - **NuGet packages: verify before adding.** AI sometimes suggests outdated or renamed packages. Check [nuget.org](https://nuget.org) to confirm the current package name and version.

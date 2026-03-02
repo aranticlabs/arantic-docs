@@ -4,15 +4,15 @@ sidebar_position: 3
 
 # Subagents
 
-Subagents are the primary way Claude Code delegates work without ballooning your main conversation. The main agent spawns a subagent, gives it a focused job, and gets back a clean summary — keeping your context window tidy and your token bill reasonable.
+Subagents are the primary way Claude Code delegates work without ballooning your main conversation. The main agent spawns a subagent, gives it a focused job, and gets back a clean summary - keeping your context window tidy and your token bill reasonable.
 
 ## What is a subagent?
 
-A subagent is a child Claude instance launched by the main agent inside the same session. It is not a peer — it is a helper. Each one gets:
+A subagent is a child Claude instance launched by the main agent inside the same session. It is not a peer - it is a helper. Each one gets:
 
-- Its own **isolated context window** — a clean slate with no history from your main chat
+- Its own **isolated context window** - a clean slate with no history from your main chat
 - A **custom system prompt** that scopes its role and behavior
-- **Specific tools** (often a restricted subset — e.g. read-only, no shell access)
+- **Specific tools** (often a restricted subset - e.g. read-only, no shell access)
 - Its own **model choice** (often Haiku for cost efficiency on mechanical tasks)
 
 When the subagent finishes, it reports a summary back to the main agent. It never talks to you directly, and subagents never talk to each other.
@@ -23,7 +23,7 @@ Claude Code ships with several built-in subagents the main agent can invoke auto
 
 | Subagent | Purpose | Default model |
 |----------|---------|---------------|
-| **Explore** | Fast read-only codebase search — finds files, symbols, patterns | Haiku |
+| **Explore** | Fast read-only codebase search - finds files, symbols, patterns | Haiku |
 | **Plan** | Architecture and design research, implementation planning | Sonnet |
 | **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | Sonnet |
 
@@ -33,8 +33,8 @@ The main agent selects these automatically based on the task, or you can nudge i
 
 You can define your own subagents at two levels:
 
-- **Project-level** — lives in `.claude/agents/` inside your repo; available only in that project
-- **User-level** — lives in `~/.claude/agents/`; available in every project
+- **Project-level** - lives in `.claude/agents/` inside your repo; available only in that project
+- **User-level** - lives in `~/.claude/agents/`; available in every project
 
 Each subagent is a single Markdown file. The filename becomes the agent's name.
 
@@ -48,7 +48,7 @@ model: claude-haiku-4-5-20251001
 tools: Read, Glob, Grep
 ---
 
-You are a careful, security-focused code reviewer. You only read files — never edit them.
+You are a careful, security-focused code reviewer. You only read files - never edit them.
 When reviewing, check for: logic bugs, security vulnerabilities (OWASP top 10), missing error handling, and style inconsistencies.
 Output a structured report with severity ratings (critical / high / medium / low) and specific line references.
 ```
@@ -94,7 +94,7 @@ These work well in any codebase regardless of stack or target.
 
 #### code-reviewer
 
-[Download code-reviewer.md](/subagents/code-reviewer.md) — read-only, Haiku, OWASP-aware severity report
+[Download code-reviewer.md](/subagents/code-reviewer.md) - read-only, Haiku, OWASP-aware severity report
 
 ```markdown
 ---
@@ -104,7 +104,7 @@ model: claude-haiku-4-5-20251001
 tools: Read, Glob, Grep
 ---
 
-You are a careful, security-focused code reviewer. You only read files — never edit them.
+You are a careful, security-focused code reviewer. You only read files - never edit them.
 
 When reviewing, check for:
 - Logic bugs and off-by-one errors
@@ -114,10 +114,10 @@ When reviewing, check for:
 - Style inconsistencies with the surrounding code
 
 Output a structured report grouped by severity:
-- **Critical** — exploitable security issue or data-loss bug; must fix before merging
-- **High** — likely bug or serious issue; strongly recommended to fix
-- **Medium** — code smell, poor error handling, or maintainability concern
-- **Low** — style/consistency nit; fix if convenient
+- **Critical** - exploitable security issue or data-loss bug; must fix before merging
+- **High** - likely bug or serious issue; strongly recommended to fix
+- **Medium** - code smell, poor error handling, or maintainability concern
+- **Low** - style/consistency nit; fix if convenient
 
 For each finding include: file path, line number(s), a one-sentence description, and a suggested fix.
 End with a one-paragraph overall summary.
@@ -125,7 +125,7 @@ End with a one-paragraph overall summary.
 
 #### test-runner
 
-[Download test-runner.md](/subagents/test-runner.md) — auto-detects framework, structured pass/fail output
+[Download test-runner.md](/subagents/test-runner.md) - auto-detects framework, structured pass/fail output
 
 ```markdown
 ---
@@ -148,12 +148,12 @@ Report format:
 - **Failures:** For each failing test, include the test name, file/line, and the exact failure message or stack trace excerpt
 - **Errors:** Any setup or compilation errors that prevented tests from running
 
-Do not attempt to fix failing tests — just report faithfully. If you cannot determine the test command, say so rather than guessing.
+Do not attempt to fix failing tests - just report faithfully. If you cannot determine the test command, say so rather than guessing.
 ```
 
 #### pr-description
 
-[Download pr-description.md](/subagents/pr-description.md) — GitHub/GitLab-ready PR title and body from git diff
+[Download pr-description.md](/subagents/pr-description.md) - GitHub/GitLab-ready PR title and body from git diff
 
 ```markdown
 ---
@@ -173,7 +173,7 @@ Steps:
 Output the following, formatted as Markdown that can be pasted directly into a GitHub/GitLab PR:
 
 ---
-**Title:** (one line, under 72 characters, imperative mood — e.g. "Add dark mode toggle to user settings")
+**Title:** (one line, under 72 characters, imperative mood - e.g. "Add dark mode toggle to user settings")
 
 **Summary**
 2–4 bullet points describing what changed and why. Focus on the "what" and "why", not the "how".
@@ -194,7 +194,7 @@ Do not add filler phrases like "This PR introduces..." or "I have implemented...
 
 #### changelog-writer
 
-[Download changelog-writer.md](/subagents/changelog-writer.md) — Keep a Changelog format, skips merge/CI commits automatically
+[Download changelog-writer.md](/subagents/changelog-writer.md) - Keep a Changelog format, skips merge/CI commits automatically
 
 ```markdown
 ---
@@ -213,12 +213,12 @@ Steps:
 4. Read any existing CHANGELOG.md to match the established format and style.
 
 Categorize commits under these standard headings (omit any section with no entries):
-- **Added** — new features
-- **Changed** — changes to existing functionality
-- **Deprecated** — features that will be removed in a future release
-- **Removed** — features that were removed
-- **Fixed** — bug fixes
-- **Security** — security fixes
+- **Added** - new features
+- **Changed** - changes to existing functionality
+- **Deprecated** - features that will be removed in a future release
+- **Removed** - features that were removed
+- **Fixed** - bug fixes
+- **Security** - security fixes
 
 Rules:
 - Write in plain English, not git commit syntax. "Fix crash when user list is empty" not "fix(users): null pointer on empty list".
@@ -237,7 +237,7 @@ Focused on web application security, API design, dependency hygiene, and fronten
 
 #### security-auditor
 
-[Download security-auditor.md](/subagents/security-auditor.md) — Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
+[Download security-auditor.md](/subagents/security-auditor.md) - Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
 
 ```markdown
 ---
@@ -247,9 +247,9 @@ model: claude-sonnet-4-6
 tools: Read, Glob, Grep
 ---
 
-You are an expert application security auditor. You only read files — never modify them.
+You are an expert application security auditor. You only read files - never modify them.
 
-Audit scope — check for all of the following that are relevant to the codebase:
+Audit scope - check for all of the following that are relevant to the codebase:
 
 **Injection**
 - SQL injection (raw queries, string concatenation into queries)
@@ -286,7 +286,7 @@ Output a report grouped by severity (Critical / High / Medium / Low / Informatio
 
 #### dependency-auditor
 
-[Download dependency-auditor.md](/subagents/dependency-auditor.md) — covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
+[Download dependency-auditor.md](/subagents/dependency-auditor.md) - covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
 
 ```markdown
 ---
@@ -296,7 +296,7 @@ model: claude-haiku-4-5-20251001
 tools: Bash, Read, Glob
 ---
 
-You are a dependency auditor. You only read and run audit commands — never modify package files.
+You are a dependency auditor. You only read and run audit commands - never modify package files.
 
 Steps:
 1. Detect the package manager(s) in use (check for package.json, requirements.txt, Pipfile, go.mod, Cargo.toml, Gemfile, pom.xml, etc.).
@@ -327,7 +327,7 @@ If an audit command is not available, note it clearly rather than skipping silen
 
 #### accessibility-auditor
 
-[Download accessibility-auditor.md](/subagents/accessibility-auditor.md) — WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
+[Download accessibility-auditor.md](/subagents/accessibility-auditor.md) - WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
 
 ```markdown
 ---
@@ -337,7 +337,7 @@ model: claude-haiku-4-5-20251001
 tools: Read, Glob, Grep
 ---
 
-You are a WCAG 2.1 accessibility auditor. You only read files — never modify them.
+You are a WCAG 2.1 accessibility auditor. You only read files - never modify them.
 
 Scan all HTML, JSX, and TSX files in scope. Check for:
 
@@ -366,12 +366,12 @@ Scan all HTML, JSX, and TSX files in scope. Check for:
 - Interactive components missing keyboard event handlers alongside mouse handlers
 - Dynamic content updates not announced via aria-live regions
 
-Output a report grouped by WCAG principle (Perceivable / Operable / Understandable / Robust). For each issue include: file, line, element, violation description, and recommended fix. End with a summary count by severity (Critical / Serious / Moderate / Minor — use the standard ICT Testing Baseline scale).
+Output a report grouped by WCAG principle (Perceivable / Operable / Understandable / Robust). For each issue include: file, line, element, violation description, and recommended fix. End with a summary count by severity (Critical / Serious / Moderate / Minor - use the standard ICT Testing Baseline scale).
 ```
 
 #### api-contract-reviewer
 
-[Download api-contract-reviewer.md](/subagents/api-contract-reviewer.md) — REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
+[Download api-contract-reviewer.md](/subagents/api-contract-reviewer.md) - REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
 
 ```markdown
 ---
@@ -381,7 +381,7 @@ model: claude-haiku-4-5-20251001
 tools: Read, Glob, Grep
 ---
 
-You are a REST/GraphQL API design reviewer. You only read files — never modify them.
+You are a REST/GraphQL API design reviewer. You only read files - never modify them.
 
 Scan all route handlers, controllers, and schema definitions. Check for:
 
@@ -418,7 +418,7 @@ Output a structured report grouped by category above. For each issue include: fi
 
 #### ux-reviewer
 
-[Download ux-reviewer.md](/subagents/ux-reviewer.md) — Sonnet, hierarchy, spacing, states, copy, and interaction review
+[Download ux-reviewer.md](/subagents/ux-reviewer.md) - Sonnet, hierarchy, spacing, states, copy, and interaction review
 
 ```markdown
 ---
@@ -428,7 +428,7 @@ model: claude-sonnet-4-6
 tools: Read, Glob, Grep
 ---
 
-You are a senior UX designer and front-end design reviewer. You only read files — never modify them.
+You are a senior UX designer and front-end design reviewer. You only read files - never modify them.
 
 Scan all JSX, TSX, HTML, and CSS/SCSS/Tailwind files in scope. Evaluate them as a user-facing product, not just as code.
 
@@ -457,7 +457,7 @@ Scan all JSX, TSX, HTML, and CSS/SCSS/Tailwind files in scope. Evaluate them as 
 
 **User flows & interaction**
 - Are primary actions clearly distinguished from secondary and destructive actions?
-- Is the next step always obvious — does the user know what to do after completing an action?
+- Is the next step always obvious - does the user know what to do after completing an action?
 - Are destructive actions (delete, remove, reset) guarded by confirmation or easy to undo?
 - Are multi-step flows broken into logical steps with clear progress indication?
 
@@ -465,10 +465,10 @@ Scan all JSX, TSX, HTML, and CSS/SCSS/Tailwind files in scope. Evaluate them as 
 - Do all interactive elements have hover, focus, active, and disabled states?
 - Are loading states handled (skeleton screens, spinners, or disabled buttons during async operations)?
 - Are empty states designed (no data, no results, first-time use) rather than showing nothing?
-- Are error states clear, specific, and actionable — not just "Something went wrong"?
+- Are error states clear, specific, and actionable - not just "Something went wrong"?
 
 **Copy & content**
-- Is the language clear and direct — no jargon, no filler words?
+- Is the language clear and direct - no jargon, no filler words?
 - Are button labels verbs that describe the action ("Save changes", not "OK")?
 - Are error messages written in plain language and do they tell the user what to do next?
 - Is microcopy (helper text, placeholders, tooltips) present where the UI would otherwise be ambiguous?
@@ -484,7 +484,7 @@ Focused on microcontroller firmware: memory safety, peripheral configuration, in
 
 #### memory-usage-auditor
 
-[Download memory-usage-auditor.md](/subagents/memory-usage-auditor.md) — Sonnet, stack/heap analysis, DMA alignment, linker map review
+[Download memory-usage-auditor.md](/subagents/memory-usage-auditor.md) - Sonnet, stack/heap analysis, DMA alignment, linker map review
 
 ```markdown
 ---
@@ -494,14 +494,14 @@ model: claude-sonnet-4-6
 tools: Read, Glob, Grep
 ---
 
-You are an embedded systems memory safety auditor. You only read files — never modify them.
+You are an embedded systems memory safety auditor. You only read files - never modify them.
 
 Scan all C and C++ source files, header files, and any linker scripts or map files present.
 
 **Stack issues**
 - Large local arrays or structs on the stack (flag anything over 256 bytes in a single frame)
 - Recursive functions (dangerous on microcontrollers with no MMU)
-- Functions with deeply nested call chains — estimate worst-case stack depth if possible
+- Functions with deeply nested call chains - estimate worst-case stack depth if possible
 - ISR stack usage: interrupts share the main stack on many MCUs; flag large locals in ISRs
 
 **Heap issues**
@@ -512,7 +512,7 @@ Scan all C and C++ source files, header files, and any linker scripts or map fil
 
 **Buffer safety**
 - Fixed-size buffers filled from external sources (UART, SPI, I2C, USB) without bounds checking
-- Use of strcpy, sprintf, gets — flag all occurrences, suggest sized alternatives
+- Use of strcpy, sprintf, gets - flag all occurrences, suggest sized alternatives
 - Off-by-one indexing on arrays
 
 **Linker / map file** (if present)
@@ -529,7 +529,7 @@ Output a report grouped by category. For each issue include: file, function/symb
 
 #### peripheral-config-reviewer
 
-[Download peripheral-config-reviewer.md](/subagents/peripheral-config-reviewer.md) — GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
+[Download peripheral-config-reviewer.md](/subagents/peripheral-config-reviewer.md) - GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
 
 ```markdown
 ---
@@ -539,7 +539,7 @@ model: claude-haiku-4-5-20251001
 tools: Read, Glob, Grep
 ---
 
-You are an embedded peripheral configuration reviewer. You only read files — never modify them.
+You are an embedded peripheral configuration reviewer. You only read files - never modify them.
 
 Scan all initialization files, HAL configuration, and peripheral driver code.
 
@@ -590,7 +590,7 @@ Output a report grouped by peripheral type. For each issue: file, function/line,
 
 #### interrupt-safety-checker
 
-[Download interrupt-safety-checker.md](/subagents/interrupt-safety-checker.md) — Sonnet, ISR race conditions, shared variables, RTOS API misuse
+[Download interrupt-safety-checker.md](/subagents/interrupt-safety-checker.md) - Sonnet, ISR race conditions, shared variables, RTOS API misuse
 
 ```markdown
 ---
@@ -600,7 +600,7 @@ model: claude-sonnet-4-6
 tools: Read, Glob, Grep
 ---
 
-You are an embedded interrupt safety auditor. You only read files — never modify them.
+You are an embedded interrupt safety auditor. You only read files - never modify them.
 
 Scan all C and C++ source files. Identify all interrupt service routines (functions named ISR, prefixed with IRQ, registered via NVIC or equivalent, or decorated with __interrupt / __irq / IRAM_ATTR / similar compiler attributes).
 
@@ -612,7 +612,7 @@ Scan all C and C++ source files. Identify all interrupt service routines (functi
 
 **Shared variable safety**
 - Variables accessed in both ISR and non-ISR context that are not declared `volatile`
-- Multi-byte or multi-word variables (structs, 64-bit integers on 32-bit MCUs) accessed in both contexts without disabling interrupts or using atomic operations — a partial read/write is possible
+- Multi-byte or multi-word variables (structs, 64-bit integers on 32-bit MCUs) accessed in both contexts without disabling interrupts or using atomic operations - a partial read/write is possible
 - Flags set in an ISR and polled in main loop without a memory barrier
 
 **Critical section discipline**
@@ -634,7 +634,7 @@ Output a report grouped by category. For each issue: file, ISR name / function, 
 
 #### misra-c-checker
 
-[Download misra-c-checker.md](/subagents/misra-c-checker.md) — Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
+[Download misra-c-checker.md](/subagents/misra-c-checker.md) - Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
 
 ```markdown
 ---
@@ -644,41 +644,41 @@ model: claude-sonnet-4-6
 tools: Read, Glob, Grep
 ---
 
-You are a MISRA-C:2012 compliance reviewer. You only read files — never modify them.
+You are a MISRA-C:2012 compliance reviewer. You only read files - never modify them.
 
-Scan all C source and header files. Focus on the mandatory and most commonly violated required rules. You are not a formal static analysis tool — flag probable violations and patterns that merit formal tool review.
+Scan all C source and header files. Focus on the mandatory and most commonly violated required rules. You are not a formal static analysis tool - flag probable violations and patterns that merit formal tool review.
 
 **Mandatory rules (any violation is a blocker)**
-- Rule 1.3 — No undefined or critical unspecified behavior (flag obvious cases: signed overflow, null pointer deref, array out of bounds)
-- Rule 2.1 — No unreachable code
-- Rule 14.3 — Controlling expressions shall not be invariant (dead if/while conditions)
-- Rule 17.3 — No implicit function declarations
-- Rule 21.13 — No use of functions from <ctype.h> with values outside unsigned char range or EOF
+- Rule 1.3 - No undefined or critical unspecified behavior (flag obvious cases: signed overflow, null pointer deref, array out of bounds)
+- Rule 2.1 - No unreachable code
+- Rule 14.3 - Controlling expressions shall not be invariant (dead if/while conditions)
+- Rule 17.3 - No implicit function declarations
+- Rule 21.13 - No use of functions from <ctype.h> with values outside unsigned char range or EOF
 
 **Type safety (Required)**
-- Rule 10.1 — Operands of an arithmetic operator shall have appropriate essential type
-- Rule 10.3 — The value of an expression shall not be assigned to an object of a narrower essential type
-- Rule 10.4 — Both operands of a binary operator shall have the same essential type category
-- Rule 10.8 — Do not cast composite expressions to a wider essential type
+- Rule 10.1 - Operands of an arithmetic operator shall have appropriate essential type
+- Rule 10.3 - The value of an expression shall not be assigned to an object of a narrower essential type
+- Rule 10.4 - Both operands of a binary operator shall have the same essential type category
+- Rule 10.8 - Do not cast composite expressions to a wider essential type
 
 **Control flow (Required)**
-- Rule 15.5 — A function shall have a single point of exit at the end (multiple returns)
-- Rule 16.4 — Every switch statement shall have a default clause
-- Rule 16.5 — Default clause shall be either first or last
+- Rule 15.5 - A function shall have a single point of exit at the end (multiple returns)
+- Rule 16.4 - Every switch statement shall have a default clause
+- Rule 16.5 - Default clause shall be either first or last
 
 **Pointers (Required)**
-- Rule 11.3 — No casting between pointer to object and pointer to different object type
-- Rule 11.5 — No conversion from pointer to void to pointer to object
-- Rule 18.1 — Pointer arithmetic shall only be applied to a pointer pointing to an array
+- Rule 11.3 - No casting between pointer to object and pointer to different object type
+- Rule 11.5 - No conversion from pointer to void to pointer to object
+- Rule 18.1 - Pointer arithmetic shall only be applied to a pointer pointing to an array
 
 **Preprocessor (Required)**
-- Rule 20.4 — Do not redefine keywords or standard library macros
-- Rule 20.9 — Identifiers used in #if shall be previously #defined
+- Rule 20.4 - Do not redefine keywords or standard library macros
+- Rule 20.9 - Identifiers used in #if shall be previously #defined
 
 **Other commonly violated advisory rules to flag**
-- Rule 8.7 — Functions / objects not needed in multiple translation units should be static
-- Rule 12.1 — Precedence of operators should be made explicit with parentheses
-- Rule 15.1 — No use of goto
+- Rule 8.7 - Functions / objects not needed in multiple translation units should be static
+- Rule 12.1 - Precedence of operators should be made explicit with parentheses
+- Rule 15.1 - No use of goto
 
 For each finding: file, line, rule number and short description, code excerpt, and recommended fix or suppression approach. Group by Mandatory / Required / Advisory. End with a compliance summary paragraph noting which areas need formal static analysis tool review (e.g. PC-lint, Parasoft, Polyspace).
 ```
@@ -687,7 +687,7 @@ For each finding: file, line, rule number and short description, code excerpt, a
 
 ### Automatic delegation
 
-The main agent reads the `description` field of every available subagent and delegates automatically when the task matches. A well-written description is the most important part of a custom subagent — it determines when the agent gets invoked.
+The main agent reads the `description` field of every available subagent and delegates automatically when the task matches. A well-written description is the most important part of a custom subagent - it determines when the agent gets invoked.
 
 ### Explicit direction
 
@@ -703,7 +703,7 @@ Run the test-runner agent on the files I just edited, then continue.
 
 ### Background vs. foreground
 
-By default, subagents run in the foreground — the main agent waits for a result before continuing. For independent tasks you can run them in the background:
+By default, subagents run in the foreground - the main agent waits for a result before continuing. For independent tasks you can run them in the background:
 
 ```
 Run the test suite in the background while I keep working.
@@ -721,7 +721,7 @@ In parallel: (1) search for all API endpoints, (2) check test coverage, (3) list
 
 Each subagent runs concurrently; results are collected and summarized together.
 
-> **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window — reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
+> **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window - reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
 
 If your parallel tasks need to actively discuss findings or challenge each other's conclusions, consider [Agent Teams](./agent-teams) instead.
 
@@ -732,7 +732,7 @@ If your parallel tasks need to actively discuss findings or challenge each other
 - **Use Haiku for mechanical tasks.** Searching, grepping, linting, and formatting don't need a powerful model. Haiku is significantly cheaper and fast enough for these.
 - **Keep system prompts focused.** A subagent that does one thing well is more reliable than one with a broad mandate. If you find yourself writing a long list of responsibilities, split it into two agents.
 - **Put project agents in version control.** Committing `.claude/agents/` means your whole team shares the same specialist helpers automatically.
-- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window — which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation. For a direct comparison with Agent Teams costs, see [Token cost vs. context isolation](./agent-teams#token-cost-vs-context-isolation).
+- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window - which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation. For a direct comparison with Agent Teams costs, see [Token cost vs. context isolation](./agent-teams#token-cost-vs-context-isolation).
 
 ---
 
@@ -746,7 +746,7 @@ The main agent is the primary Claude Code session you are talking to. It receive
 
 ### Subagents
 
-Subagents are the most common form of delegation — specialized child assistants spawned by the main agent inside the same session.
+Subagents are the most common form of delegation - specialized child assistants spawned by the main agent inside the same session.
 
 Each subagent gets:
 - Its own **isolated context window** (clean slate, no bloat in your main chat)
@@ -761,7 +761,7 @@ Built-in subagents include **Explore** (fast read-only search), **Plan** (archit
 
 ### Agent Teams
 
-Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session** — not a child of the main agent, but a peer.
+Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session** - not a child of the main agent, but a peer.
 
 | | Subagents | [Agent Teams](./agent-teams) |
 |---|---|---|
@@ -769,19 +769,19 @@ Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a 
 | **Communication** | Report results back to main agent only | Direct peer-to-peer messaging + shared task list |
 | **Parallelism** | Yes | Full parallel + self-coordination |
 | **Context** | Isolated per subagent | Fully independent per teammate |
-| **You can talk to them directly** | No (through main agent only) | Yes — click any pane or cycle with `Shift+↓` |
+| **You can talk to them directly** | No (through main agent only) | Yes - click any pane or cycle with `Shift+↓` |
 | **Token cost** | Moderate (summaries only) | High (~one full session per teammate) |
 | **Best for** | Focused tasks, context saving, specialization | Complex collaboration, competing hypotheses, cross-layer work |
 | **Setup** | Built-in or simple custom files | Experimental flag + tmux/iTerm2 recommended |
 
 ### Simple mental model
 
-- **Subagent** — hire a specialist who works alone in their office and emails you the finished report.
-- **Agent Team** — hire a whole team who sit in separate rooms, can message each other directly, self-assign tasks, and collaborate in real time while you oversee the lead.
+- **Subagent** - hire a specialist who works alone in their office and emails you the finished report.
+- **Agent Team** - hire a whole team who sit in separate rooms, can message each other directly, self-assign tasks, and collaborate in real time while you oversee the lead.
 
 ### When to use which
 
-- **Use subagents (most of the time)** — to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
-- **Use [Agent Teams](./agent-teams)** — when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
+- **Use subagents (most of the time)** - to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
+- **Use [Agent Teams](./agent-teams)** - when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
 
 Most people start with subagents and only escalate to [Agent Teams](./agent-teams) for large, complex projects where cross-agent discussion adds real value.

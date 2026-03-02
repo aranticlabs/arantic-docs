@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Refactoring with AI
 
-AI can identify code smells, suggest structural improvements, and do the mechanical work of refactoring — but you need to direct it clearly. Vague requests like "make this better" produce vague results.
+AI can identify code smells, suggest structural improvements, and do the mechanical work of refactoring - but you need to direct it clearly. Vague requests like "make this better" produce vague results.
 
 ## Be explicit about the goal
 
@@ -12,7 +12,7 @@ AI can identify code smells, suggest structural improvements, and do the mechani
 Refactor this function to:
 - Remove the nested if-else chain (use early returns instead)
 - Extract the validation logic into a separate function
-- Keep the public interface identical — same parameters, same return type
+- Keep the public interface identical - same parameters, same return type
 ```
 
 ## Common refactoring tasks
@@ -59,10 +59,10 @@ type. If a type doesn't exist yet, define it.
 
 Refactoring should preserve behaviour. After applying AI-suggested changes:
 
-1. Run your existing tests — they should all still pass
+1. Run your existing tests - they should all still pass
 2. Check that the public API (exported functions, props, return types) is unchanged
 3. Look for subtle differences in error handling or edge cases
-4. Review imports — AI sometimes introduces unused ones or misses new ones
+4. Review imports - AI sometimes introduces unused ones or misses new ones
 
 ## Large-scale refactoring
 

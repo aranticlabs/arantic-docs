@@ -6,37 +6,37 @@ sidebar_position: 5
 
 Covers bare-metal C/C++, RTOS-based firmware (FreeRTOS, Zephyr, ThreadX), and microcontroller development (STM32, Nordic, ESP32, RP2040, and similar).
 
-> **Important — AI and hardware-specific code.** AI models know common MCU families, HAL patterns, and RTOS APIs well, but they cannot read your datasheet or know your board's schematic. Always verify register addresses, clock frequencies, pin assignments, and peripheral configuration against your actual hardware documentation. Treat generated peripheral init code as a starting point, not a finished product.
+> **Important - AI and hardware-specific code.** AI models know common MCU families, HAL patterns, and RTOS APIs well, but they cannot read your datasheet or know your board's schematic. Always verify register addresses, clock frequencies, pin assignments, and peripheral configuration against your actual hardware documentation. Treat generated peripheral init code as a starting point, not a finished product.
 
 ---
 
 ## 1. Install an in-editor tool
 
-### Option A — VS Code (recommended)
+### Option A - VS Code (recommended)
 
 VS Code with the right extensions is the most common setup for cross-platform embedded development.
 
 **Required extensions:**
-- [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) — IntelliSense, debugging, CMake integration
-- [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) — inline completions and chat
+- [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) - IntelliSense, debugging, CMake integration
+- [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) - inline completions and chat
 
 **Useful optional extensions:**
-- [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) — GDB/OpenOCD integration for ARM Cortex-M
-- [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) — CMake configure/build from the status bar
+- [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) - GDB/OpenOCD integration for ARM Cortex-M
+- [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) - CMake configure/build from the status bar
 
-### Option B — CLion with GitHub Copilot
+### Option B - CLion with GitHub Copilot
 
 [CLion](https://www.jetbrains.com/clion/) has excellent CMake support and embedded debugging integration. Install the GitHub Copilot plugin from the JetBrains Marketplace. CLion's code analysis catches more issues than VS Code's IntelliSense for complex C/C++ codebases.
 
-### Option C — STM32CubeIDE / IAR / Keil with Copilot
+### Option C - STM32CubeIDE / IAR / Keil with Copilot
 
-If you're locked into a vendor IDE, GitHub Copilot has limited direct integration. Use Claude Code in a terminal alongside the vendor IDE — it can read and edit your source files while you build and flash from the vendor tool.
+If you're locked into a vendor IDE, GitHub Copilot has limited direct integration. Use Claude Code in a terminal alongside the vendor IDE - it can read and edit your source files while you build and flash from the vendor tool.
 
 ---
 
 ## 2. Install Claude Code
 
-Claude Code is especially valuable for embedded work because it can run the review subagents (memory safety, MISRA-C, interrupt safety) across your entire codebase at once — something impractical to do manually.
+Claude Code is especially valuable for embedded work because it can run the review subagents (memory safety, MISRA-C, interrupt safety) across your entire codebase at once - something impractical to do manually.
 
 **Requires Node.js 18+.** On Windows, download from [nodejs.org](https://nodejs.org). On Linux/macOS:
 
@@ -69,7 +69,7 @@ See the full [Claude Code guide](../tools/claude-code) for capabilities.
 
 This is critical for embedded work. Without it, Claude will make assumptions about your MCU family, RTOS, and HAL that may be completely wrong for your hardware.
 
-**Template — STM32 with FreeRTOS (HAL-based):**
+**Template - STM32 with FreeRTOS (HAL-based):**
 
 ```markdown
 # Project context
@@ -89,38 +89,38 @@ This is critical for embedded work. Without it, Claude will make assumptions abo
 - ISR names follow STM32 HAL convention: HAL_UART_RxCpltCallback, etc.
 - All shared variables accessed from both ISR and task context must be declared volatile and protected with taskENTER_CRITICAL() / taskEXIT_CRITICAL()
 - No dynamic memory allocation after init (no malloc/free in normal operation)
-- Stack sizes defined in FreeRTOSConfig.h — never hardcode them inline
+- Stack sizes defined in FreeRTOSConfig.h - never hardcode them inline
 
 ## Commands
-- `make` — build (Makefile at root)
-- `make flash` — flash via ST-Link using OpenOCD
-- `make clean` — clean build artifacts
-- `openocd -f interface/stlink.cfg -f target/stm32h7x.cfg` — start debug server
+- `make` - build (Makefile at root)
+- `make flash` - flash via ST-Link using OpenOCD
+- `make clean` - clean build artifacts
+- `openocd -f interface/stlink.cfg -f target/stm32h7x.cfg` - start debug server
 
 ## Do not modify
-- Core/Src/stm32h7xx_it.c — ISR table managed by CubeMX
-- Core/Inc/FreeRTOSConfig.h — RTOS config, change only after review
-- Drivers/ — STM32 HAL driver files, never edit vendor code
+- Core/Src/stm32h7xx_it.c - ISR table managed by CubeMX
+- Core/Inc/FreeRTOSConfig.h - RTOS config, change only after review
+- Drivers/ - STM32 HAL driver files, never edit vendor code
 ```
 
-**Template — Zephyr RTOS:**
+**Template - Zephyr RTOS:**
 
 ```markdown
 ## Software stack
 - Zephyr 3.6, devicetree-based configuration
-- nRF52840 (Nordic SDK not used — pure Zephyr)
+- nRF52840 (Nordic SDK not used - pure Zephyr)
 - BLE via Zephyr BT stack, USB via Zephyr USB subsystem
 
 ## Conventions
 - All peripherals configured via devicetree overlays in boards/
-- Use Zephyr logging (LOG_INF, LOG_ERR) — never printf
+- Use Zephyr logging (LOG_INF, LOG_ERR) - never printf
 - Work queues for deferred processing from ISR context
-- K_FOREVER timeouts only in tests — use bounded timeouts in application code
+- K_FOREVER timeouts only in tests - use bounded timeouts in application code
 
 ## Commands
-- `west build -b nrf52840dk/nrf52840` — build
-- `west flash` — flash
-- `west build -t menuconfig` — Kconfig menu
+- `west build -b nrf52840dk/nrf52840` - build
+- `west flash` - flash
+- `west build -t menuconfig` - Kconfig menu
 ```
 
 ---
@@ -173,7 +173,7 @@ Follow the task structure in Core/Src/led_task.c.
 **Porting code between MCU families:**
 ```
 Port this STM32F4 SPI init code to STM32H7 using HAL. The peripheral registers
-moved — update the handle and any HAL version differences. Flag anything
+moved - update the handle and any HAL version differences. Flag anything
 that needs hardware verification.
 ```
 
@@ -181,7 +181,7 @@ that needs hardware verification.
 ```
 Write Ceedling/Unity unit tests for the ring buffer implementation in
 Core/Src/ring_buffer.c. Test: init, single write/read, overflow behavior,
-and wrap-around. No hardware dependencies — the ring buffer is pure C.
+and wrap-around. No hardware dependencies - the ring buffer is pure C.
 ```
 
 **Pre-release audit:**
@@ -203,7 +203,7 @@ Review Core/Src/dma.c and Core/Src/data_task.c for the race condition.
 
 - **Always specify the exact MCU part number and HAL version in your prompt.** "STM32H743" gives Claude much better register and API accuracy than "STM32".
 - **Never trust generated peripheral init code blindly.** Clock enable calls, pin alternate function numbers, and DMA stream/channel assignments are MCU-specific. Cross-check every generated init function with your reference manual.
-- **Use AI for logic, not register maps.** AI is excellent at FreeRTOS patterns, C data structures, state machines, and protocol implementations. It is less reliable for exact register bit positions — verify those yourself.
+- **Use AI for logic, not register maps.** AI is excellent at FreeRTOS patterns, C data structures, state machines, and protocol implementations. It is less reliable for exact register bit positions - verify those yourself.
 - **Generated MISRA suppressions need justification.** If Claude suggests adding a `/* MISRA C:2012 Rule X.X deviation */` comment, make sure you understand and agree with the deviation reason before accepting it.
 - **Linker scripts: explain the memory map first.** Paste your linker script and explain your memory layout before asking about placement directives or section definitions.
 - **For Zephyr: paste the relevant devicetree node.** Claude understands Zephyr DTS syntax well, but it needs to see your actual board overlay to give correct advice on devicetree bindings and Kconfig options.
