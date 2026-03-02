@@ -526,6 +526,16 @@ Output only the new CHANGELOG section, formatted as Markdown, ready to paste at 
 
 ---
 
+## Finding more skills
+
+The skills on this page are a starting point. For a much larger collection, the community-maintained [Skills Marketplace (SkillsMP)](https://skillsmp.com/) aggregates over 270,000 agent skills from public GitHub repositories. It covers Claude Code, OpenAI Codex CLI, and ChatGPT, and provides search, category filtering, and quality indicators to help you find what you need.
+
+A few things to keep in mind when using community skills:
+
+- **Review before installing.** Community skills are open-source code from GitHub. Treat them the same way you would treat any third-party dependency: read the source before adding it to your project or home directory.
+- **SkillsMP is not affiliated with Anthropic.** It is an independent community project. For official skills, see the [Anthropic skills repository](https://github.com/anthropics/skills).
+- **Quality varies.** SkillsMP filters out repositories with fewer than 2 stars, but that is a low bar. Check that a skill does what you expect before relying on it.
+
 ## Using skills with other tools
 
 The concept of a persistent, invocable prompt template does not map identically to every tool. Here is how to get similar functionality in the most common alternatives.
