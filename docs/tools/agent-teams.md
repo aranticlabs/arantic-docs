@@ -4,7 +4,29 @@ sidebar_position: 3
 
 # Agent Teams
 
-Agent Teams is an experimental Claude Code feature that lets a lead agent spawn and coordinate multiple specialized teammate agents working in parallel. Each teammate runs in its own pane (via tmux) and communicates through a shared task list and direct messaging.
+Agent Teams is an experimental Claude Code feature that lets a lead agent spawn and coordinate multiple specialized teammate agents working in parallel. Teammates communicate through a shared task list and direct messaging, and can optionally be displayed side-by-side in tmux split panes.
+
+## Do you need tmux?
+
+**Short answer: no.** Agent Teams works perfectly fine without tmux. But most people who try both modes end up preferring tmux for any serious work.
+
+### The two modes compared
+
+| Mode | How teammates appear | See all agents at once? | Best for |
+|------|----------------------|------------------------|----------|
+| **In-process** (default, no tmux required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No | Quick experiments, small teams (2–3 agents) |
+| **tmux split-pane** | Each teammate gets its own live visible pane | Yes — full command-center view | Regular use, 3+ teammates |
+
+The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."*
+
+### Recommendation
+
+- **Just exploring Agent Teams?** Skip tmux — use the default in-process mode. It works great.
+- **Using Agent Teams regularly** (especially 4+ teammates on real projects)? Install tmux. Watching your AI team work in parallel panes is a significant productivity boost.
+
+## What is tmux?
+
+tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously — for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
 ## One-time setup (2 minutes)
 
@@ -36,12 +58,13 @@ Create or edit `~/.claude/settings.json`:
 ```
 
 `teammateMode` options:
-- `"auto"` — recommended; Claude picks the best strategy
+- `"auto"` — recommended; uses split panes if already inside tmux, otherwise falls back to in-process
 - `"tmux"` — always use tmux split panes
+- `"in-process"` — always use in-process mode (no tmux needed)
 
-### Step C: Start a tmux session
+### Step C: Start a tmux session (split-pane mode only)
 
-Do this every time before launching Claude:
+Skip this step if you want to use in-process mode. For split-pane mode, run this before launching Claude:
 
 ```bash
 tmux new-session -s claude-team
@@ -53,7 +76,7 @@ Then inside tmux, run:
 claude
 ```
 
-Your main session becomes the lead agent. Teammates automatically appear in split panes.
+Your main session becomes the lead agent. Teammates automatically appear in split panes. With `"auto"` mode, Claude detects that it's running inside tmux and switches to split-pane mode automatically.
 
 **Pro tip:** Add this alias to `~/.zshrc` or `~/.bashrc` to do both steps at once:
 
@@ -124,7 +147,8 @@ Let them discuss and reach consensus on the best approach. Output a final decisi
 
 | Action | How |
 |--------|-----|
-| Talk to a specific teammate | Click that pane in tmux |
+| Talk to a specific teammate (tmux) | Click that pane |
+| Talk to a specific teammate (in-process) | Cycle with `Shift+↑` / `Shift+↓` |
 | Toggle the shared task list | `Ctrl+T` |
 | Pause before proceeding | Tell the lead: "Wait for your teammates to complete their tasks before proceeding" |
 | Shut everything down | Tell the lead: "Clean up the team" |
