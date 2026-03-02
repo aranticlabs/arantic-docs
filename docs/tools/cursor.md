@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Cursor
 
-Cursor is a code editor built around AI. It's a fork of VS Code, so it supports all VS Code extensions, but with deeper AI integration than Copilot — it can reference your entire codebase and reason across multiple files.
+Cursor is a code editor built around AI. It's a fork of VS Code, so it supports all VS Code extensions, but with deeper AI integration than Copilot: it can reference your entire codebase and reason across multiple files.
 
 ## Installation
 
@@ -36,7 +36,7 @@ Extract this into a separate function
 
 ### Composer (multi-file editing)
 
-Cursor's Composer lets you instruct AI to make changes across multiple files at once — useful for larger tasks like adding a new feature end-to-end.
+Cursor's Composer lets you instruct AI to make changes across multiple files at once. It's useful for larger tasks like adding a new feature end-to-end.
 
 ### `.cursorrules`
 

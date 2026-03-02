@@ -4,17 +4,17 @@ sidebar_position: 2
 
 # Debugging with AI
 
-AI is a strong debugging partner — it can spot patterns in errors quickly and suggest hypotheses you might not consider. The key is giving it enough context.
+AI makes a strong debugging partner: it can spot patterns in errors quickly and suggest hypotheses you might not consider. The key is giving it enough context.
 
 ## Give the full picture
 
 A bug report without context produces a generic answer. Include:
 
-1. **The error message** — exact text, including the stack trace
-2. **The code** — the function or component where the error originates
-3. **What you expected** — the intended behaviour
-4. **What actually happened** — the actual behaviour
-5. **What you've already tried** — so it doesn't repeat dead ends
+1. **The error message**: exact text, including the stack trace
+2. **The code**: the function or component where the error originates
+3. **What you expected**: the intended behaviour
+4. **What actually happened**: the actual behaviour
+5. **What you've already tried**: so it doesn't repeat dead ends
 
 ```
 I'm getting this error in production:
@@ -29,12 +29,12 @@ Here's the relevant code:
 
 The function is called when rendering a list of users fetched from /api/users.
 I expected it to render each user's name. Instead, the page crashes.
-I've already checked that the API returns data — the network tab shows a 200 with a valid array.
+I've already checked that the API returns data - the network tab shows a 200 with a valid array.
 ```
 
 ## Rubber duck debugging with AI
 
-Explain the bug out loud to the model, even if you don't have a specific question. Often the act of articulating the problem reveals the answer — and if it doesn't, the model can ask clarifying questions.
+Explain the bug out loud to the model, even if you don't have a specific question. Often the act of articulating the problem reveals the answer, and if it doesn't, the model can ask clarifying questions.
 
 ## Hypothesis-driven debugging
 

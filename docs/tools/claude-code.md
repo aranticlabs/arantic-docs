@@ -56,7 +56,7 @@ Claude Code supports the Model Context Protocol (MCP), allowing you to connect i
 
 ## CLAUDE.md
 
-Create a `CLAUDE.md` file at the root of your project to give Claude Code persistent context — coding conventions, project structure, commands to run, things to avoid.
+Create a `CLAUDE.md` file at the root of your project to give Claude Code persistent context: coding conventions, project structure, commands to run, things to avoid.
 
 ```markdown
 # Project conventions
@@ -68,7 +68,7 @@ Create a `CLAUDE.md` file at the root of your project to give Claude Code persis
 
 ## Tips
 
-- **Be specific** — tell it exactly what you want and what constraints to respect
-- **Review changes** — use `/diff` or check git diff before accepting edits
-- **Scope tasks** — break large tasks into smaller steps for better results
-- **Use CLAUDE.md** — persistent context saves you from repeating yourself every session
+- **Be specific**: tell it exactly what you want and what constraints to respect
+- **Review changes**: use `/diff` or check git diff before accepting edits
+- **Scope tasks**: break large tasks into smaller steps for better results
+- **Use CLAUDE.md**: persistent context saves you from repeating yourself every session

@@ -60,8 +60,8 @@ parseISODate → ?
 
 ## Iterate, don't restart
 
-If the first response isn't right, refine it in the same conversation. The model has context from your previous messages — use it:
+If the first response isn't right, refine it in the same conversation. The model retains context from your previous messages, so use it:
 
 - "That's correct, but use `const` instead of `let`"
-- "Avoid the `any` type — use the `User` interface I showed above"
+- "Avoid the `any` type; use the `User` interface I showed above"
 - "Rewrite the error handling using a Result type instead of try/catch"

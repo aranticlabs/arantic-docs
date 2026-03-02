@@ -3,6 +3,16 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   docsSidebar: [
     'intro',
+    'quickstart',
+    {
+      type: 'category',
+      label: 'Environment Setup',
+      items: [
+        'setup/web-and-backend',
+        'setup/dotnet',
+        'setup/firmware',
+      ],
+    },
     {
       type: 'category',
       label: 'Prompting Techniques',
@@ -34,6 +44,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'tools/overview',
         'tools/claude-code',
+        'tools/agent-teams',
         'tools/github-copilot',
         'tools/cursor',
       ],

@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Code Generation
 
-AI is most effective for code generation when the task is well-defined and bounded. Use it to eliminate repetitive work — not to figure out what you're building.
+AI is most effective for code generation when the task is well-defined and bounded. Use it to eliminate repetitive work, not to figure out what you're building.
 
 ## What AI generates well
 
@@ -61,7 +61,7 @@ Generated code rarely fits perfectly on the first pass. Use follow-up messages t
 1. **Fix types:** "The return type should be `Promise<User | null>`, not `Promise<User>`"
 2. **Adjust style:** "Use named exports, not default exports"
 3. **Add error handling:** "Handle the case where the database returns null"
-4. **Optimise:** "This runs N+1 queries — rewrite it using a JOIN"
+4. **Optimise:** "This runs N+1 queries - rewrite it using a JOIN"
 
 ## Reviewing generated code
 
