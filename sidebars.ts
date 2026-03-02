@@ -5,6 +5,17 @@ const sidebars: SidebarsConfig = {
     'intro',
     {
       type: 'category',
+      label: 'Quickstart',
+      items: [
+        'quickstart/overview',
+        'quickstart/web',
+        'quickstart/go',
+        'quickstart/dotnet',
+        'quickstart/firmware',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Prompting Techniques',
       items: [
         'prompting/basics',
