@@ -158,6 +158,10 @@ Brief explanation of the topic.
 - Use ` ```text ` for plain text / AI prompt examples
 - Contrast examples are labeled **Weak:** and **Strong:** or **Before:** and **After:**
 
+### Writing Style
+
+- **Do not use em dashes** (`—`) in text. Use alternative punctuation instead, such as commas, parentheses, colons, or separate sentences.
+
 ### Sidebar Navigation
 
 The `sidebars.ts` file defines navigation manually. When adding a new document:
