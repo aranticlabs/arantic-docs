@@ -94,7 +94,7 @@ These work well in any codebase regardless of stack or target.
 
 #### code-reviewer
 
-[Download code-reviewer.md](/subagents/code-reviewer.md): read-only, Haiku, OWASP-aware severity report
+[Download code-reviewer.md](pathname:///subagents/code-reviewer.md): read-only, Haiku, OWASP-aware severity report
 
 ```markdown
 ---
@@ -125,7 +125,7 @@ End with a one-paragraph overall summary.
 
 #### test-runner
 
-[Download test-runner.md](/subagents/test-runner.md): auto-detects framework, structured pass/fail output
+[Download test-runner.md](pathname:///subagents/test-runner.md): auto-detects framework, structured pass/fail output
 
 ```markdown
 ---
@@ -153,7 +153,7 @@ Do not attempt to fix failing tests - just report faithfully. If you cannot dete
 
 #### pr-description
 
-[Download pr-description.md](/subagents/pr-description.md): GitHub/GitLab-ready PR title and body from git diff
+[Download pr-description.md](pathname:///subagents/pr-description.md): GitHub/GitLab-ready PR title and body from git diff
 
 ```markdown
 ---
@@ -194,7 +194,7 @@ Do not add filler phrases like "This PR introduces..." or "I have implemented...
 
 #### changelog-writer
 
-[Download changelog-writer.md](/subagents/changelog-writer.md): Keep a Changelog format, skips merge/CI commits automatically
+[Download changelog-writer.md](pathname:///subagents/changelog-writer.md): Keep a Changelog format, skips merge/CI commits automatically
 
 ```markdown
 ---
@@ -237,7 +237,7 @@ Focused on web application security, API design, dependency hygiene, and fronten
 
 #### security-auditor
 
-[Download security-auditor.md](/subagents/security-auditor.md): Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
+[Download security-auditor.md](pathname:///subagents/security-auditor.md): Sonnet, deep audit covering injection, auth, crypto, SSRF, and more
 
 ```markdown
 ---
@@ -286,7 +286,7 @@ Output a report grouped by severity (Critical / High / Medium / Low / Informatio
 
 #### dependency-auditor
 
-[Download dependency-auditor.md](/subagents/dependency-auditor.md): covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
+[Download dependency-auditor.md](pathname:///subagents/dependency-auditor.md): covers npm, Python, Go, Rust, Ruby, and Java; flags CVEs and license issues
 
 ```markdown
 ---
@@ -327,7 +327,7 @@ If an audit command is not available, note it clearly rather than skipping silen
 
 #### accessibility-auditor
 
-[Download accessibility-auditor.md](/subagents/accessibility-auditor.md): WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
+[Download accessibility-auditor.md](pathname:///subagents/accessibility-auditor.md): WCAG 2.1 audit of HTML/JSX/TSX, grouped by principle
 
 ```markdown
 ---
@@ -371,7 +371,7 @@ Output a report grouped by WCAG principle (Perceivable / Operable / Understandab
 
 #### api-contract-reviewer
 
-[Download api-contract-reviewer.md](/subagents/api-contract-reviewer.md): REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
+[Download api-contract-reviewer.md](pathname:///subagents/api-contract-reviewer.md): REST/GraphQL route review for validation, HTTP semantics, auth, and consistency
 
 ```markdown
 ---
@@ -418,7 +418,7 @@ Output a structured report grouped by category above. For each issue include: fi
 
 #### ux-reviewer
 
-[Download ux-reviewer.md](/subagents/ux-reviewer.md): Sonnet, hierarchy, spacing, states, copy, and interaction review
+[Download ux-reviewer.md](pathname:///subagents/ux-reviewer.md): Sonnet, hierarchy, spacing, states, copy, and interaction review
 
 ```markdown
 ---
@@ -484,7 +484,7 @@ Focused on microcontroller firmware: memory safety, peripheral configuration, in
 
 #### memory-usage-auditor
 
-[Download memory-usage-auditor.md](/subagents/memory-usage-auditor.md): Sonnet, stack/heap analysis, DMA alignment, linker map review
+[Download memory-usage-auditor.md](pathname:///subagents/memory-usage-auditor.md): Sonnet, stack/heap analysis, DMA alignment, linker map review
 
 ```markdown
 ---
@@ -529,7 +529,7 @@ Output a report grouped by category. For each issue include: file, function/symb
 
 #### peripheral-config-reviewer
 
-[Download peripheral-config-reviewer.md](/subagents/peripheral-config-reviewer.md): GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
+[Download peripheral-config-reviewer.md](pathname:///subagents/peripheral-config-reviewer.md): GPIO, UART, SPI, I2C, timers, ADC, DMA initialization review
 
 ```markdown
 ---
@@ -590,7 +590,7 @@ Output a report grouped by peripheral type. For each issue: file, function/line,
 
 #### interrupt-safety-checker
 
-[Download interrupt-safety-checker.md](/subagents/interrupt-safety-checker.md): Sonnet, ISR race conditions, shared variables, RTOS API misuse
+[Download interrupt-safety-checker.md](pathname:///subagents/interrupt-safety-checker.md): Sonnet, ISR race conditions, shared variables, RTOS API misuse
 
 ```markdown
 ---
@@ -634,7 +634,7 @@ Output a report grouped by category. For each issue: file, ISR name / function, 
 
 #### misra-c-checker
 
-[Download misra-c-checker.md](/subagents/misra-c-checker.md): Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
+[Download misra-c-checker.md](pathname:///subagents/misra-c-checker.md): Sonnet, MISRA-C:2012 mandatory and required rules, safety-critical projects
 
 ```markdown
 ---
