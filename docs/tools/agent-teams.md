@@ -151,6 +151,8 @@ Spawn 4 teammates:
 Have them discuss findings with each other via messages. Use the shared task list. When finished, create a consolidated review document with severity ratings and suggested fixes. Only make changes after I approve the final plan.
 ```
 
+> **Lighter alternative:** If peer discussion isn't needed, the individual [security-auditor, ux-reviewer, accessibility-auditor, and api-contract-reviewer](./subagents#web--backend) subagents cover the same ground with much lower token overhead.
+
 ### Parallel debugging team (5 agents)
 
 ```
@@ -210,4 +212,4 @@ The trade-off is real: **more agents = more tokens, but safer context per agent.
 **Practical guidance:**
 - Use Haiku for teammates doing mechanical work (searching, linting, testing). Reserve Sonnet/Opus for the agents that need to reason deeply.
 - Avoid spawning agents just to parallelize — only split work that is genuinely independent.
-- For a quick task that one agent can finish in a few turns, skip Agent Teams entirely.
+- For a quick task that one agent can finish in a few turns, skip Agent Teams entirely — [parallel subagents](./subagents#parallel-subagents) are the lighter option if you still need some concurrency.

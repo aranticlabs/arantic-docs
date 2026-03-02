@@ -723,6 +723,8 @@ Each subagent runs concurrently; results are collected and summarized together.
 
 > **Token cost note.** Parallel subagents each run a separate Claude session, so launching three at once uses roughly 3× the tokens compared to running them sequentially. The benefit is that each subagent gets a clean, small context window — reducing context-overload errors and keeping the main agent's context uncluttered. Use Haiku for mechanical parallel tasks to keep costs reasonable.
 
+If your parallel tasks need to actively discuss findings or challenge each other's conclusions, consider [Agent Teams](./agent-teams) instead.
+
 ## Tips for effective subagents
 
 - **Write specific descriptions.** The description is how the main agent decides when to invoke your subagent. Vague descriptions lead to missed or incorrect invocations.
@@ -730,7 +732,7 @@ Each subagent runs concurrently; results are collected and summarized together.
 - **Use Haiku for mechanical tasks.** Searching, grepping, linting, and formatting don't need a powerful model. Haiku is significantly cheaper and fast enough for these.
 - **Keep system prompts focused.** A subagent that does one thing well is more reliable than one with a broad mandate. If you find yourself writing a long list of responsibilities, split it into two agents.
 - **Put project agents in version control.** Committing `.claude/agents/` means your whole team shares the same specialist helpers automatically.
-- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window — which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation.
+- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window — which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation. For a direct comparison with Agent Teams costs, see [Token cost vs. context isolation](./agent-teams#token-cost-vs-context-isolation).
 
 ---
 
@@ -761,7 +763,7 @@ Built-in subagents include **Explore** (fast read-only search), **Plan** (archit
 
 Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session** — not a child of the main agent, but a peer.
 
-| | Subagents | Agent Teams |
+| | Subagents | [Agent Teams](./agent-teams) |
 |---|---|---|
 | **Architecture** | Single session, hierarchical | Multiple independent sessions |
 | **Communication** | Report results back to main agent only | Direct peer-to-peer messaging + shared task list |
@@ -780,6 +782,6 @@ Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a 
 ### When to use which
 
 - **Use subagents (most of the time)** — to keep your main context clean, run noisy tasks (tests, exploration, linting), or delegate to specialists without multiplying token costs.
-- **Use Agent Teams** — when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
+- **Use [Agent Teams](./agent-teams)** — when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
 
-Most people start with subagents and only escalate to Agent Teams for large, complex projects where cross-agent discussion adds real value.
+Most people start with subagents and only escalate to [Agent Teams](./agent-teams) for large, complex projects where cross-agent discussion adds real value.
