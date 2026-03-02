@@ -1,0 +1,58 @@
+/**
+ * Arantic Documentation - Custom Styles
+ * Primary: #963484 (plum)
+ * Secondary: #00648c (lapis)
+ * Accent: #009a9a (cyan)
+ */
+
+:root {
+  /* Primary palette — plum */
+  --ifm-color-primary: #963484;
+  --ifm-color-primary-dark: #7e2b6f;
+  --ifm-color-primary-darker: #6e2561;
+  --ifm-color-primary-darkest: #4b2364;
+  --ifm-color-primary-light: #a83d95;
+  --ifm-color-primary-lighter: #b84da5;
+  --ifm-color-primary-lightest: #cc6dba;
+
+  /* Extended palette */
+  --arantic-color-plum: #963484;
+  --arantic-color-lapis: #00648c;
+  --arantic-color-cyan: #009a9a;
+  --arantic-color-violet: #4b2364;
+  --arantic-color-oxford: #00002d;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(150, 52, 132, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #cc6dba;
+  --ifm-color-primary-dark: #b84da5;
+  --ifm-color-primary-darker: #a83d95;
+  --ifm-color-primary-darkest: #963484;
+  --ifm-color-primary-light: #d980c6;
+  --ifm-color-primary-lighter: #e495d3;
+  --ifm-color-primary-lightest: #efb5e4;
+  --docusaurus-highlighted-code-line-bg: rgba(150, 52, 132, 0.3);
+}
+
+/* Footer styling */
+.footer--dark {
+  --ifm-footer-background-color: var(--arantic-color-oxford);
+  --ifm-footer-title-color: #ffffff;
+  --ifm-footer-link-color: var(--arantic-color-cyan);
+  --ifm-footer-link-hover-color: #33b8b8;
+}
+
+.footer--dark .footer__copyright {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer--dark .footer__copyright a {
+  color: var(--arantic-color-cyan);
+}
+
+.footer--dark .footer__copyright a:hover {
+  color: #33b8b8;
+}
