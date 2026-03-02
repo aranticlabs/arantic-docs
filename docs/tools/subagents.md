@@ -732,7 +732,7 @@ If your parallel tasks need to actively discuss findings or challenge each other
 - **Use Haiku for mechanical tasks.** Searching, grepping, linting, and formatting don't need a powerful model. Haiku is significantly cheaper and fast enough for these.
 - **Keep system prompts focused.** A subagent that does one thing well is more reliable than one with a broad mandate. If you find yourself writing a long list of responsibilities, split it into two agents.
 - **Put project agents in version control.** Committing `.claude/agents/` means your whole team shares the same specialist helpers automatically.
-- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window - which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation. For a direct comparison with Agent Teams costs, see [Token cost vs. context isolation](./agent-teams#token-cost-vs-context-isolation).
+- **Mind the token cost.** Every subagent runs its own Claude session, so spawning several at once multiplies your token usage accordingly. The payoff is that each subagent gets an isolated, focused context window, which means fewer mistakes from context overload and a tidier main conversation. Only parallelize work that is genuinely independent, and prefer Haiku for high-volume delegation. For a direct comparison with Agent Teams costs, see [Token cost vs. context isolation](./agent-teams#token-cost-vs-context-isolation).
 
 ---
 
@@ -785,3 +785,35 @@ Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a 
 - **Use [Agent Teams](./agent-teams)**: when you need true peer collaboration: frontend + backend + QA arguing with each other, adversarial debugging with multiple competing hypotheses, or any work that genuinely benefits from teammates challenging each other's findings.
 
 Most people start with subagents and only escalate to [Agent Teams](./agent-teams) for large, complex projects where cross-agent discussion adds real value.
+
+---
+
+## Subagent support in other tools
+
+Isolated child agents with their own context windows are no longer exclusive to Claude Code. As of early 2026, most major AI coding CLIs have added native or experimental subagent support. Claude Code still has the most complete and polished implementation, but the gap is narrowing.
+
+| Tool | Native subagents? | Peer agents / parallel teams? | Notes |
+|------|-------------------|-------------------------------|-------|
+| **Claude Code** | Yes | Yes (Agent Teams) | Gold standard. Isolated 200k-token contexts, custom `.md` agents, background and parallel execution, built-in Explore / Plan / General-purpose agents. |
+| **Gemini CLI** | Yes (experimental flag) | Partial (remote subagents via A2A protocol + community orchestrators) | Very close to Claude Code. Each subagent gets its own context window and custom persona. Remote delegation supported. Enable in `settings.json`. |
+| **Codex CLI** | Yes (experimental) | Yes (parallel spawning + agent threads) | Launched with multi-agent support in late 2025. Can spawn specialised subagents in parallel and collect results. Enable with `[features] multi_agent = true`. Lightweight but capable. |
+| **Cursor Agent CLI** | Yes | Yes (parallel subagents, auto-judges best result) | Works in both terminal and IDE. Good choice if Cursor is already your primary editor. |
+| **Grok CLI** | No | Limited (tmux-based multi-session or prompt workarounds) | No built-in isolated subagents. Parallel work requires multiple terminal sessions or MCP extensions. Grok models support multi-agent collaboration in chat but not yet in the CLI. |
+| **Aider** | No | No | Single-agent only. Git-native and strong for focused edits, but has no subagent primitives. Parallel work requires manual session management. |
+
+### Notes per tool
+
+**Gemini CLI** is the closest alternative to Claude Code for subagent workflows. The experience is similar: define agent personas in config files, let the main agent delegate automatically, and get isolated context per subagent. The free tier is generous.
+
+**Codex CLI** is a solid choice if you prefer OpenAI models. Multi-agent support was added in late 2025 and the feature is actively developed. Expect rough edges compared to Claude Code or Gemini CLI, but the fundamentals work.
+
+**Cursor Agent CLI** inherits Cursor's codebase indexing. Its subagents work in the terminal as well as in the IDE, and it automatically runs competing subagents and picks the best result for some task types.
+
+**Grok CLI** and **Aider** do not have native subagent primitives. You can simulate parallel work with tmux and multiple sessions, but it requires manual coordination and has none of the context isolation benefits that native subagents provide.
+
+### Choosing a tool
+
+- **Need native subagents with zero setup?** Claude Code is the default choice. Gemini CLI is a close second and worth trying if you want a free-tier option or prefer Google's models.
+- **Prefer OpenAI models?** Codex CLI now has experimental multi-agent support and is the best OpenAI-native option.
+- **Already using Cursor as your IDE?** Cursor Agent CLI gives you subagent support without switching tools.
+- **Using Grok or Aider?** Plan for single-agent workflows or simulate parallelism with tmux sessions. Native subagent support is not available yet.
