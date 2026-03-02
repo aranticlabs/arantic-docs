@@ -4,35 +4,50 @@ sidebar_position: 3
 
 # Agent Teams
 
-Agent Teams is an experimental Claude Code feature that lets a lead agent spawn and coordinate multiple specialized teammate agents working in parallel. Teammates communicate through a shared task list and direct messaging, and can optionally be displayed side-by-side in tmux split panes.
+Agent Teams is an experimental Claude Code feature that lets a lead agent spawn and coordinate multiple specialized teammate agents working in parallel. Teammates communicate through a shared task list and direct messaging, and can optionally be displayed side-by-side in split panes (via tmux or iTerm2).
 
 ## Do you need tmux?
 
-**Short answer: no.** Agent Teams works perfectly fine without tmux. But most people who try both modes end up preferring tmux for any serious work.
+**Short answer: no.** Agent Teams works perfectly fine without tmux or any extra tools. But most people who try both modes end up preferring split-pane mode for any serious work.
 
 ### The two modes compared
 
 | Mode | How teammates appear | See all agents at once? | Best for |
 |------|----------------------|------------------------|----------|
-| **In-process** (default, no tmux required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No | Quick experiments, small teams (2–3 agents) |
-| **tmux split-pane** | Each teammate gets its own live visible pane | Yes — full command-center view | Regular use, 3+ teammates |
+| **In-process** (default, no extra tools required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No | Quick experiments, small teams (2–3 agents) |
+| **Split-pane** (tmux or iTerm2) | Each teammate gets its own live visible pane | Yes — full command-center view | Regular use, 3+ teammates |
 
 The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."*
 
 ### Recommendation
 
-- **Just exploring Agent Teams?** Skip tmux — use the default in-process mode. It works great.
-- **Using Agent Teams regularly** (especially 4+ teammates on real projects)? Install tmux. Watching your AI team work in parallel panes is a significant productivity boost.
+- **Just exploring Agent Teams?** Skip any extra setup — use the default in-process mode. It works great.
+- **Using Agent Teams regularly** (especially 4+ teammates on real projects)? Set up split-pane mode. Watching your AI team work in parallel panes is a significant productivity boost.
+
+### Platform support for split-pane mode
+
+| Platform | Split-pane option | Notes |
+|----------|-------------------|-------|
+| macOS | tmux **or** iTerm2 | Two options — pick whichever you already use |
+| Linux | tmux | Works via your package manager |
+| Windows (WSL) | tmux inside WSL | Full support |
+| Windows (native, no WSL) | Not yet supported | Only in-process mode is available for now; [native Windows Terminal support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
 
 ## What is tmux?
 
 tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously — for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
-## One-time setup (2 minutes)
+## One-time setup (split-pane mode)
 
-### Step A: Install tmux
+> Windows users without WSL: in-process mode works out of the box — no setup needed. Skip to [Step B](#step-b-configure-claude-code) and set `"teammateMode": "in-process"`.
 
-**macOS (recommended):**
+### Step A: Install a split-pane tool
+
+Choose one option based on your platform:
+
+#### Option 1 — tmux (macOS, Linux, Windows via WSL)
+
+**macOS:**
 ```bash
 brew install tmux
 ```
@@ -43,6 +58,18 @@ sudo apt update && sudo apt install tmux
 ```
 
 **Other Linux or Windows (WSL):** see the [tmux installation wiki](https://github.com/tmux/tmux/wiki/Installing).
+
+#### Option 2 — iTerm2 (macOS only)
+
+If you already use iTerm2 as your terminal, you can use it instead of tmux:
+
+1. Install the [`it2` CLI](https://github.com/mkusaka/it2):
+   ```bash
+   brew install it2
+   ```
+2. Enable the Python API in iTerm2: **Settings → General → Magic → Enable Python API**
+
+That's it — Claude Code will detect iTerm2 automatically when `teammateMode` is set to `"tmux"` or `"auto"`.
 
 ### Step B: Configure Claude Code
 
@@ -59,8 +86,13 @@ Create or edit `~/.claude/settings.json`:
 
 `teammateMode` options:
 - `"auto"` — recommended; uses split panes if already inside tmux, otherwise falls back to in-process
-- `"tmux"` — always use tmux split panes
-- `"in-process"` — always use in-process mode (no tmux needed)
+- `"tmux"` — always use split-pane mode (auto-detects tmux or iTerm2)
+- `"in-process"` — always use in-process mode (no extra tools needed)
+
+To force a mode for a single session without editing `settings.json`:
+```bash
+claude --teammate-mode in-process
+```
 
 ### Step C: Start a tmux session (split-pane mode only)
 
