@@ -89,6 +89,7 @@ const sidebars: SidebarsConfig = {
         'claude-code/tips',
         'claude-code/workflows',
         'claude-code/skills',
+        'claude-code/hooks',
         'claude-code/plugins',
         'claude-code/mcp',
         'claude-code/subagents',
