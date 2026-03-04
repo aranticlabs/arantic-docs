@@ -81,6 +81,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'claude-code/overview',
+        'claude-code/commands',
         'claude-code/claude-md',
         'claude-code/context',
         'claude-code/permissions',
