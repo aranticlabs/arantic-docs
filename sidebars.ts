@@ -48,6 +48,7 @@ const sidebars: SidebarsConfig = {
         'tools/mcp',
         'tools/agent-teams',
         'tools/subagents',
+        'tools/memory',
         'tools/github-copilot',
         'tools/cursor',
       ],
