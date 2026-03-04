@@ -35,6 +35,31 @@ Claude Code has four overlapping ways to give it persistent context and instruct
 
 In Claude Code, **Commands and Skills are the same thing**: both live in `.claude/commands/` as `.md` files. The distinction above reflects a conceptual difference in how you think about them. Some tools and emerging cross-tool conventions treat skills as a richer format (with explicit metadata, tool restrictions, and richer composition), but in Claude Code today the mechanism is the same.
 
+### Preloaded skills vs. on-demand skills
+
+Skills can be used in two fundamentally different ways:
+
+**On-demand skills** (the default) are invoked explicitly by the user or by a command using `/skill-name`. They load into context only when called.
+
+**Preloaded (agent) skills** are specified in a subagent's frontmatter via the `skills` field. Their full content is injected into the agent's context at startup, giving the agent background knowledge without needing to invoke anything:
+
+```yaml
+# .claude/agents/api-builder.md
+---
+name: api-builder
+skills: ["rest-conventions", "error-handling-patterns"]
+---
+Build API endpoints following our conventions.
+```
+
+The api-builder agent starts every session already knowing your REST conventions and error handling patterns. It does not need to call `/rest-conventions`; the knowledge is already in its context.
+
+**When to use which:**
+- **On-demand**: workflows you invoke for a specific task (review, scaffold, generate tests)
+- **Preloaded**: domain knowledge and conventions that an agent needs for every task it handles
+
+For more on how commands, agents, and skills compose together, see [Workflows & Orchestration](./workflows).
+
 A practical rule of thumb:
 - **CLAUDE.md**: conventions, constraints, and background context that should always be active
 - **Skills (commands)**: workflows and prompt recipes that you invoke for a specific task

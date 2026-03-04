@@ -112,6 +112,22 @@ const config: Config = {
       },
       items: [
         {
+          type: 'docSidebar',
+          sidebarId: 'docsSidebar',
+          label: 'Guides',
+          position: 'left',
+        },
+        {
+          to: '/tools',
+          label: 'Tools',
+          position: 'left',
+        },
+        {
+          to: '/claude-code',
+          label: 'Claude Code',
+          position: 'left',
+        },
+        {
           type: 'localeDropdown',
           position: 'right',
         },
@@ -126,24 +142,41 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Documentation',
+          title: 'Guides',
           items: [
             {
               label: 'Introduction',
               to: '/',
             },
             {
-              label: 'Prompting Techniques',
-              to: '/prompting/basics',
+              label: 'Quickstart',
+              to: '/quickstart',
             },
             {
-              label: 'Tools Overview',
-              to: '/tools/overview',
+              label: 'Prompting Basics',
+              to: '/prompting/basics',
             },
           ],
         },
         {
-          title: 'Resources',
+          title: 'Reference',
+          items: [
+            {
+              label: 'Tools Overview',
+              to: '/tools/overview',
+            },
+            {
+              label: 'Claude Code',
+              to: '/tools/claude-code',
+            },
+            {
+              label: 'GitHub Repos',
+              to: '/resources/github-repos',
+            },
+          ],
+        },
+        {
+          title: 'Community',
           items: [
             {
               label: 'GitHub',

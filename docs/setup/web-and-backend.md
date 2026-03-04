@@ -8,7 +8,7 @@ Covers React, TypeScript, JavaScript, Angular (frontend) and Go REST/gRPC servic
 
 ## 1. Install an in-editor tool
 
-Pick one. You can run both, but one is usually enough.
+These are the most common options, but not the only ones. JetBrains IDEs, Windsurf, and other editors also support AI integrations. Pick one to start with; you can always switch later.
 
 ### Option A: Cursor (recommended for the deepest AI integration)
 
@@ -18,15 +18,15 @@ After installing, sign in and choose a model. Claude Sonnet is the best default 
 
 See the full [Cursor guide](../tools/cursor) for configuration details.
 
-### Option B: GitHub Copilot in VS Code
+### Option B: VS Code with the Claude extension
+
+If you want AI assistance in your editor without Cursor or GitHub Copilot, install the [Claude extension](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) from the VS Code marketplace and sign in with your Anthropic account. This gives you an integrated chat panel and inline suggestions powered by Claude, using your own API key or a Max subscription.
+
+### Option C: GitHub Copilot in VS Code
 
 Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) from the VS Code marketplace and sign in with your GitHub account. Also install **GitHub Copilot Chat** for the chat panel (`Ctrl+Shift+I` / `Cmd+Shift+I`).
 
 See the full [GitHub Copilot guide](../tools/github-copilot) for tips.
-
-### Option C: GoLand (Go only)
-
-[GoLand](https://www.jetbrains.com/go/) has the best Go-specific refactoring and static analysis of any IDE. Install the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot) from the JetBrains Marketplace.
 
 ---
 
@@ -183,7 +183,7 @@ mkdir -p .claude/agents
 
 ## 5. Daily workflow
 
-### Inline completions (Cursor / Copilot / GoLand)
+### Inline completions (Cursor / Copilot / Claude extension)
 
 As you type, completions appear automatically. Accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
 

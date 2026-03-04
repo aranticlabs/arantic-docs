@@ -84,7 +84,68 @@ After adding a server, confirm it loaded and see what tools it exposes:
 
 Claude Code lists all active servers and their available tools.
 
-## Ready-to-use MCP servers
+## Recommended daily-use servers
+
+If you are new to MCP, start with these five servers. They cover the most common needs and work well together in a **Research, Debug, Document** workflow:
+
+| Server | What it does | Workflow phase |
+|--------|-------------|----------------|
+| **Context7** | Fetches current library documentation to prevent hallucinated APIs | Research |
+| **Playwright** | Browser automation for UI testing and interaction | Debug |
+| **Claude in Chrome** | Connects to your actual Chrome browser for console, network, and DOM access | Debug |
+| **DeepWiki** | Structured wiki-style documentation for any GitHub repository | Research |
+| **Excalidraw** | Generates architecture diagrams and flowcharts from natural language | Document |
+
+### Context7
+
+Fetches up-to-date library documentation so Claude does not hallucinate outdated or non-existent APIs. Especially useful when working with fast-moving libraries.
+
+```json
+{
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@context7/mcp-server"]
+  }
+}
+```
+
+### Excalidraw
+
+Generates architecture diagrams, flowcharts, and system diagrams from natural language descriptions. Useful for documenting designs during planning phases.
+
+```json
+{
+  "excalidraw": {
+    "command": "npx",
+    "args": ["-y", "@excalidraw/mcp-server"]
+  }
+}
+```
+
+### DeepWiki
+
+Provides structured, wiki-style documentation for any public GitHub repository. Useful when you need to understand how an external dependency works without reading raw source code.
+
+```json
+{
+  "deepwiki": {
+    "command": "npx",
+    "args": ["-y", "@deepwiki/mcp-server"]
+  }
+}
+```
+
+### Suggested workflow
+
+Use these servers together in phases:
+
+1. **Research**: use Context7 and DeepWiki to understand the libraries and patterns you will use
+2. **Debug**: use Playwright or Claude in Chrome to test UI behavior, inspect console errors, and verify network requests
+3. **Document**: use Excalidraw to generate diagrams of the system you built
+
+This pattern keeps each phase focused and avoids overwhelming Claude with too many tools at once.
+
+## All available MCP servers
 
 Copy any configuration block below into your `settings.json` under the `mcpServers` key. Each entry is also available as a downloadable JSON file.
 
