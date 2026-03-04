@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000"><g><g transform="matrix(1,0,0,1,0,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000"><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1000 1000">
+  <!-- Generator: Adobe Illustrator 29.0.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 192)  -->
+  <defs>
+    <style>
+      .st0 {
+        isolation: isolate;
+        opacity: .6;
+      }
+
+      .st1 {
+        fill: #00648c;
+      }
+
+      .st2 {
+        fill: #963484;
+      }
+
+      .st3 {
+        fill: #009a9a;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2">
+    <g>
+      <polygon class="st3" points="928.5 598 819.5 707.2 773.1 753.4 554.7 753.4 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st1" points="928.5 598 819.5 707.2 710.1 598 468.1 355.8 576.9 247.1 577.2 246.6 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st0" points="698.2 367.9 589.2 477 576.9 464.5 685.4 355.8 576.9 247.1 576.9 247.1 577.2 246.6 698.2 367.9"></polygon>
+      <polygon class="st0" points="806.8 719.4 697.6 610.3 710.1 598 819.2 707 806.8 719.4"></polygon>
+      <rect class="st1" x="499.8" y="279.1" width="153.7" height="153.7" transform="translate(-82.8 512) rotate(-45)"></rect>
+      <polygon class="st1" points="928.5 598 819.5 707.2 589.2 477 698.2 367.9 807.4 477 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st2" points="686 355.2 576.9 464.5 289.9 751.5 71.5 751.5 576.4 246.6 576.9 247.1 576.9 247.1 686 355.2"></polygon>
+    </g>
+  </g>
+</svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1048)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(0.8,0,0,0.8,100,100)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000"><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1000 1000">
+  <!-- Generator: Adobe Illustrator 29.0.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 192)  -->
+  <defs>
+    <style>
+      .st0 {
+        isolation: isolate;
+        opacity: .6;
+      }
+
+      .st1 {
+        fill: #00648c;
+      }
+
+      .st2 {
+        fill: #963484;
+      }
+
+      .st3 {
+        fill: #009a9a;
+      }
+    </style>
+  <clipPath id="SvgjsClipPath1048"><rect width="1000" height="1000" x="0" y="0" rx="400" ry="400"></rect></clipPath></defs>
+  <g id="Layer_1-2">
+    <g>
+      <polygon class="st3" points="928.5 598 819.5 707.2 773.1 753.4 554.7 753.4 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st1" points="928.5 598 819.5 707.2 710.1 598 468.1 355.8 576.9 247.1 577.2 246.6 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st0" points="698.2 367.9 589.2 477 576.9 464.5 685.4 355.8 576.9 247.1 576.9 247.1 577.2 246.6 698.2 367.9"></polygon>
+      <polygon class="st0" points="806.8 719.4 697.6 610.3 710.1 598 819.2 707 806.8 719.4"></polygon>
+      <rect class="st1" x="499.8" y="279.1" width="153.7" height="153.7" transform="translate(-82.8 512) rotate(-45)"></rect>
+      <polygon class="st1" points="928.5 598 819.5 707.2 589.2 477 698.2 367.9 807.4 477 819.3 488.9 928.5 598"></polygon>
+      <polygon class="st2" points="686 355.2 576.9 464.5 289.9 751.5 71.5 751.5 576.4 246.6 576.9 247.1 576.9 247.1 686 355.2"></polygon>
+    </g>
+  </g>
+</svg></svg></g></g></svg></g></svg>
