@@ -194,6 +194,40 @@ Type `/memory` in Claude Code to:
 
 To save something to CLAUDE.md mid-session, you can also just ask Claude directly: "Add this to CLAUDE.md: always run tests before committing."
 
+## Which file should I use?
+
+With several memory files available, it helps to know which one fits your situation. The key questions are: **who writes it** (you or Claude) and **who should it apply to** (the team or just you)?
+
+### You write it: CLAUDE.md and rules
+
+These files contain instructions and constraints you define. Claude reads them but never modifies them.
+
+| What you want | Use this file |
+|---------------|---------------|
+| Team coding standards, build commands, architecture rules | **Project CLAUDE.md** (`./CLAUDE.md`) |
+| Rules that only apply to specific file paths | **Project rules** (`.claude/rules/*.md` with `paths:` frontmatter) |
+| Your personal style preferences across all projects | **User CLAUDE.md** (`~/.claude/CLAUDE.md`) |
+| Your personal rules scoped to specific file types | **User rules** (`~/.claude/rules/*.md`) |
+| Your local environment details for one project (URLs, credentials, local paths) | **CLAUDE.local.md** (`./CLAUDE.local.md`) |
+
+### Claude writes it: auto memory
+
+Auto memory (`~/.claude/projects/<project>/memory/MEMORY.md`) is the opposite: Claude writes it, you can read and edit it. This is where Claude stores things it learns during sessions, like which test commands work, how to debug specific issues, or patterns it discovered in your codebase.
+
+You do not need to manage auto memory actively. It builds up naturally as you work. If Claude keeps forgetting something between sessions, check whether auto memory is enabled (`/memory`).
+
+### Quick decision guide
+
+**"My whole team should follow this rule"** -> Project CLAUDE.md or project rules
+
+**"I personally prefer this style"** -> User CLAUDE.md (`~/.claude/CLAUDE.md`)
+
+**"This only matters on my local machine"** -> CLAUDE.local.md
+
+**"Claude figured this out and should remember it"** -> Auto memory (happens automatically)
+
+**"This rule only applies to API files"** -> Project rules with `paths:` frontmatter
+
 ## What to put in memory files
 
 A good memory file is concise, specific, and actionable. Focus on information the AI cannot infer from the code itself.
