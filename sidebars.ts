@@ -60,16 +60,15 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Tools',
+      label: 'More Tools',
       link: {
         type: 'generated-index',
-        title: 'Tools',
+        title: 'More Tools',
         description: 'Overview and comparison of AI development tools.',
         slug: '/tools',
       },
       items: [
         'tools/overview',
-        'tools/claude-code',
         'tools/cursor',
         'tools/github-copilot',
         'tools/codex',
@@ -88,6 +87,13 @@ const sidebars: SidebarsConfig = {
         slug: '/claude-code',
       },
       items: [
+        'tools/claude-code',
+        'tools/claude-md',
+        'tools/context',
+        'tools/permissions',
+        'tools/flags',
+        'tools/debugging',
+        'tools/tips',
         'tools/skills',
         'tools/plugins',
         'tools/mcp',
