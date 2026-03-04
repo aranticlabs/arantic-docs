@@ -137,7 +137,7 @@ For personal preferences that should not be shared with the team, create a `CLAU
 - Always show me the diff before committing
 ```
 
-This file loads alongside CLAUDE.md but stays out of version control.
+Claude Code loads `CLAUDE.local.md` automatically at session start, the same way it loads `CLAUDE.md`. You do not need to reference it from `CLAUDE.md`. Just place the file in the same directory (typically the project root) and it will be picked up. The only setup required is adding `CLAUDE.local.md` to your `.gitignore` so it stays out of version control.
 
 ## Managing context
 
