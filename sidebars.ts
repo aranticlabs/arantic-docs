@@ -72,6 +72,10 @@ const sidebars: SidebarsConfig = {
         'tools/claude-code',
         'tools/cursor',
         'tools/github-copilot',
+        'tools/codex',
+        'tools/gemini-cli',
+        'tools/aider',
+        'tools/mistral',
       ],
     },
     {

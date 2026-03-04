@@ -22,6 +22,7 @@ These work directly inside your editor and see your open files and cursor positi
 
 - **GitHub Copilot**: available in VS Code, JetBrains, Neovim; inline completions and a chat panel
 - **Cursor**: an IDE built around AI; deeper context awareness than Copilot
+- **Mistral Code**: Codestral-powered completions for VS Code and JetBrains
 - **Supermaven**: fast, focused on autocomplete speed
 
 ### CLI tools
@@ -29,6 +30,10 @@ These work directly inside your editor and see your open files and cursor positi
 These run in your terminal alongside your code and can read files, run commands, and interact with your codebase.
 
 - **Claude Code**: Anthropic's CLI, full codebase access, agentic task execution
+- **Codex CLI**: OpenAI's terminal agent, local execution with sandboxing
+- **Gemini CLI**: Google's open-source CLI, 1M token context window, generous free tier
+- **Aider**: open-source, model-agnostic pair programming with git-native workflow
+- **Mistral Vibe**: Mistral's CLI agent with subagent support and self-hosted options
 - **GitHub Copilot CLI**: explains and suggests shell commands
 
 ### API-based
@@ -43,15 +48,19 @@ For building your own integrations or automating tasks in CI.
 | Need | Recommended |
 |---|---|
 | Quick question or code snippet | Claude / ChatGPT |
-| Inline autocomplete while coding | Copilot or Cursor |
-| Multi-file tasks, refactoring, agentic workflows | Claude Code |
+| Inline autocomplete while coding | Copilot, Cursor, or Codestral |
+| Multi-file tasks, refactoring, agentic workflows | Claude Code, Codex CLI, or Gemini CLI |
+| Model-agnostic CLI with git integration | Aider |
 | Automating code review in CI | Anthropic API / OpenAI API |
 | Working entirely inside VS Code | Copilot or Cursor |
+| Data privacy and self-hosted deployment | Mistral |
+| Free CLI tool with large context window | Gemini CLI |
 
 ## Using multiple tools
 
 Most developers use more than one tool. A common setup:
 
-- **Cursor or Copilot** for moment-to-moment completions while typing
+- **Cursor, Copilot, or Codestral** for moment-to-moment completions while typing
 - **Claude or ChatGPT** for longer reasoning tasks and design discussions
-- **Claude Code** for larger agentic tasks (refactoring a module, writing a feature end-to-end)
+- **Claude Code, Codex CLI, or Aider** for larger agentic tasks (refactoring a module, writing a feature end-to-end)
+- **Gemini CLI** for exploratory work on a free tier with a large context window
