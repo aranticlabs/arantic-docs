@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # OpenAI Codex CLI
 
-Codex CLI is OpenAI's terminal-based coding agent. It can read your codebase, suggest changes, and execute commands locally, powered by OpenAI's models (including GPT-4.1 and o3).
+Codex CLI is OpenAI's terminal-based coding agent. It can read your codebase, suggest changes, and execute commands locally, powered by OpenAI's models.
 
 ## Installation
 
@@ -15,14 +15,28 @@ npm install -g @openai/codex
 Or via Homebrew:
 
 ```bash
-brew install openai-codex
+brew install --cask codex
+```
+
+## Starting Codex
+
+Run it from inside your project directory:
+
+```bash
+codex
+```
+
+This starts an interactive terminal UI session. Codex can read your repository, make edits, and run commands as you iterate together. You can also pass a prompt directly:
+
+```bash
+codex "refactor the auth module to use dependency injection"
 ```
 
 ## Authentication
 
 Codex requires either:
 
-- A **ChatGPT Plus, Pro, or Team subscription** (uses your account login)
+- A **ChatGPT Plus, Pro, Business, or Enterprise subscription** (uses your account login via browser OAuth)
 - An **OpenAI API key** set via `OPENAI_API_KEY` environment variable
 
 ## Key features
@@ -48,10 +62,10 @@ Beyond the CLI, Codex is available as:
 
 ### Multi-model support
 
-Codex defaults to `o4-mini` but supports other OpenAI models. You can switch models with the `--model` flag:
+Codex defaults to `gpt-5.3-codex` but supports other OpenAI models. You can switch models with the `--model` flag or use the `/model` slash command during a session:
 
 ```bash
-codex --model gpt-4.1 "refactor the auth module"
+codex --model gpt-5.1-codex "refactor the auth module"
 ```
 
 ## Tips

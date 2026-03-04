@@ -40,17 +40,19 @@ Useful slash commands in Copilot Chat:
 
 ### Copilot CLI
 
-Install separately:
+GitHub Copilot CLI is a standalone agentic terminal assistant (the older `gh copilot` extension was deprecated in October 2025). Install it via npm or Homebrew:
 
 ```bash
-npm install -g @githubnext/github-copilot-cli
+npm install -g @github/copilot@latest
 ```
 
-Explains shell commands and suggests commands from plain English:
+Start it from your project directory:
 
 ```bash
-github-copilot-cli what-the-shell "find all .ts files modified in the last 7 days"
+copilot
 ```
+
+The new CLI goes beyond shell command suggestions. It can read your codebase, apply multi-file changes, run commands, and supports plan mode for collaborative implementation planning. It uses Claude Sonnet 4.5 as the default model and supports switching models with the `/model` command.
 
 ## Tips for better completions
 
