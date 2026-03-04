@@ -85,6 +85,7 @@ Claude Code supports the Model Context Protocol (MCP), allowing you to connect i
 
 ## Learn more
 
+- **[Get Started](./getting-started/)**: tiered setup guides for Starter, Intermediate, and Pro users
 - **[Memory](./memory)**: give Claude Code persistent project context with CLAUDE.md and other memory files
 - **[Managing Context](./context)**: compaction, checkpointing, and context usage tips
 - **[Permissions](./permissions)**: control which tools can run and which files can be accessed

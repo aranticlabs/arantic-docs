@@ -61,6 +61,16 @@ const sidebars: SidebarsConfig = {
         slug: '/claude-code',
       },
       items: [
+        {
+          type: 'category',
+          label: 'Get Started',
+          link: { type: 'doc', id: 'claude-code/getting-started/index' },
+          items: [
+            'claude-code/getting-started/starter',
+            'claude-code/getting-started/intermediate',
+            'claude-code/getting-started/pro',
+          ],
+        },
         'claude-code/overview',
         'claude-code/memory',
         'claude-code/commands',
