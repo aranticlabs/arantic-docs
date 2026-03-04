@@ -4,10 +4,10 @@ sidebar_position: 2
 
 # Prompt Templates
 
-Copy-paste prompt templates for common AI-assisted development tasks. Each template is designed to give AI tools enough context to produce useful output on the first try. Adapt them to your language, framework, and codebase.
+Copy-paste prompt templates for common AI-assisted development tasks. These templates assume your AI tool already has access to your codebase (via file context, `@file` references, `/add-dir`, or open editor tabs). You should never need to paste code into a prompt.
 
 :::tip How to use these
-Copy a template, replace the placeholders in `[brackets]`, and paste it into Claude Code, Copilot Chat, Cursor, or any AI coding tool. For best results, see [Prompting Basics](/prompting/basics) and [Advanced Prompting](/prompting/advanced).
+Copy a template, replace the placeholders in `[brackets]`, and use it with Claude Code, Copilot Chat, Cursor, or any AI coding tool. Reference files and directories by path rather than pasting their contents. For best results, see [Prompting Basics](/prompting/basics) and [Advanced Prompting](/prompting/advanced).
 :::
 
 ## Code generation
@@ -15,53 +15,52 @@ Copy a template, replace the placeholders in `[brackets]`, and paste it into Cla
 ### Generate a function from a specification
 
 ```text
-Write a [language] function called [name] that:
+Write a function called [name] in [file path] that:
 - Takes: [describe inputs with types]
 - Returns: [describe output with type]
 - Handles these edge cases: [list edge cases]
-- Follows this pattern from the codebase: [reference existing similar function]
+- Follows the same pattern as [reference function name] in [reference file path]
 
-Do not use any external libraries. Include JSDoc/docstring comments.
+Do not use any external libraries.
 ```
 
 ### Generate a REST API endpoint
 
 ```text
-Create a [framework] API endpoint:
+Create a new API endpoint in [file or directory path]:
 - Method: [GET/POST/PUT/DELETE]
 - Path: [/api/resource]
-- Request body: [describe schema or paste example JSON]
+- Request body: [describe schema or reference a type/interface file]
 - Response: [describe expected response shape]
 - Validation: [list validation rules]
 - Error handling: return appropriate HTTP status codes with error messages
 
-Follow the existing patterns in [reference file or directory].
+Follow the existing endpoint patterns in [reference directory].
 ```
 
 ### Generate a React component
 
 ```text
-Create a React component called [ComponentName] that:
+Create a new React component called [ComponentName] in [directory path]:
 - Props: [list props with types]
 - Renders: [describe UI]
 - State: [describe any local state]
 - Behavior: [describe interactions/events]
 
-Use [TypeScript/JavaScript]. Use [CSS modules/Tailwind/styled-components] for styling.
-Match the patterns in [reference component file].
+Use the same styling approach as [reference component file].
 ```
 
 ### Generate a database migration
 
 ```text
-Write a [ORM/migration tool] migration that:
+Write a migration in [migrations directory]:
 - Creates/modifies table: [table name]
 - Columns: [list columns with types and constraints]
 - Indexes: [list indexes]
 - Foreign keys: [list relationships]
 - Include the rollback/down migration
 
-Follow the naming convention in the existing migrations directory.
+Follow the naming convention used by the other migrations in that directory.
 ```
 
 ## Debugging
@@ -69,18 +68,14 @@ Follow the naming convention in the existing migrations directory.
 ### Diagnose an error
 
 ```text
-I'm getting this error:
+I'm getting this error when running [command or action]:
 
-[paste the full error message and stack trace]
+[paste the error message and stack trace]
 
-Relevant code:
-
-[paste the code around the error]
-
-What I've already tried:
+The error originates in [file path]. What I've already tried:
 - [list what you've tried]
 
-What's causing this error and how do I fix it?
+What's causing this and how do I fix it?
 ```
 
 ### Debug unexpected behavior
@@ -93,18 +88,14 @@ Steps to reproduce:
 1. [step 1]
 2. [step 2]
 
-Relevant code:
-[paste the relevant code]
-
-What are the most likely causes? Walk through the logic step by step.
+The relevant logic is in [file path], specifically the [function/method name].
+Walk through the logic step by step and identify the most likely causes.
 ```
 
 ### Diagnose a performance issue
 
 ```text
-This [function/query/component] is slow:
-
-[paste the code]
+The [function/query/component] in [file path] is slow.
 
 Context:
 - Input size: [describe typical data volume]
@@ -119,9 +110,7 @@ Identify the bottlenecks and suggest specific optimizations. Explain the tradeof
 ### Generate unit tests
 
 ```text
-Write unit tests for this [language] function:
-
-[paste the function]
+Write unit tests for [function/class name] in [file path].
 
 Cover:
 - Happy path with typical inputs
@@ -135,9 +124,7 @@ Each test should have a descriptive name that explains what it verifies.
 ### Generate integration tests
 
 ```text
-Write integration tests for this API endpoint:
-
-[paste the endpoint handler or describe it]
+Write integration tests for the [endpoint/service name] defined in [file path].
 
 Test scenarios:
 - Valid request returns expected response
@@ -151,13 +138,7 @@ Use [test framework]. Mock [list what should be mocked] but use real [list what 
 ### Find missing test coverage
 
 ```text
-Here's my implementation:
-
-[paste the code]
-
-Here are the existing tests:
-
-[paste existing tests]
+Compare the implementation in [source file path] against the existing tests in [test file path].
 
 What important test cases are missing? Focus on:
 - Edge cases that could cause bugs in production
@@ -171,9 +152,7 @@ What important test cases are missing? Focus on:
 ### Extract and simplify
 
 ```text
-Refactor this code to be more readable and maintainable:
-
-[paste the code]
+Refactor [file path] to be more readable and maintainable.
 
 Specific goals:
 - [e.g., extract the validation logic into a separate function]
@@ -181,15 +160,12 @@ Specific goals:
 - [e.g., reduce duplication between these two methods]
 
 Keep the public API the same. Do not change behavior.
-Show the before and after for each change.
 ```
 
 ### Modernize code patterns
 
 ```text
-Update this code to use modern [language] patterns:
-
-[paste the code]
+Update [file path] to use modern [language] patterns.
 
 Specifically:
 - [e.g., replace callbacks with async/await]
@@ -204,9 +180,7 @@ Preserve all existing behavior. Highlight any places where the modernization cha
 ### Review for bugs and issues
 
 ```text
-Review this code for potential bugs, security issues, and problems:
-
-[paste the code]
+Review [file path or directory] for potential bugs, security issues, and problems.
 
 Focus on:
 - Logic errors and off-by-one mistakes
@@ -221,9 +195,7 @@ For each issue found, explain why it's a problem and show the fix.
 ### Review for production readiness
 
 ```text
-Review this code for production readiness:
-
-[paste the code]
+Review [file path or directory] for production readiness.
 
 Check for:
 - Error handling (are failures handled gracefully?)
@@ -240,12 +212,10 @@ Rate each area as good/needs work/missing and explain why.
 ### Generate API documentation
 
 ```text
-Write API documentation for this endpoint:
+Write API documentation for the endpoints defined in [file path].
 
-[paste the endpoint code]
-
-Include:
-- Description of what the endpoint does
+Include for each endpoint:
+- Description of what it does
 - Request method and URL
 - Request parameters/body with types
 - Response format with example JSON
@@ -258,9 +228,7 @@ Format as Markdown.
 ### Explain complex code
 
 ```text
-Explain this code to a developer who is new to the codebase:
-
-[paste the code]
+Explain [file path] to a developer who is new to the codebase.
 
 Cover:
 - What it does at a high level (2-3 sentences)
@@ -312,10 +280,10 @@ Keep it concise. Focus on facts, not aspirations.
 
 ## Tips for better results
 
+- **Reference files, don't paste code**: Your AI tool can read the codebase. Point it to `src/services/auth.ts` instead of copying its contents into the prompt.
 - **Be specific about format**: "Return a JSON object" beats "give me the data"
 - **Show examples**: one good input/output example is worth a paragraph of explanation
 - **State constraints**: "Do not use external libraries" or "Must work with Node 18+"
-- **Reference existing code**: "Follow the pattern in `src/services/auth.ts`" gives the AI a concrete model
 - **Ask for explanations**: "Explain each change" forces the AI to reason through its output
 - **Iterate**: if the first result isn't right, tell the AI specifically what to fix rather than re-prompting from scratch
 
