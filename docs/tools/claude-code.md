@@ -240,6 +240,10 @@ For additional isolation, use `/sandbox` to restrict file system access and netw
 | `--tools <tools>` | Restrict the available tool set entirely (`""` to disable all, `"default"` for all) |
 | `--dangerously-skip-permissions` | Bypass all permission checks (sandboxed environments only) |
 
+:::warning
+**`--dangerously-skip-permissions` disables all safety prompts.** Claude Code will read, write, and execute anything without asking. Only use this inside a fully sandboxed environment with no internet access and no access to sensitive data (e.g. a disposable Docker container or CI job). Never use it on your main development machine. Prefer scoped `--allowedTools` rules to grant exactly the access you need instead.
+:::
+
 ### Headless and scripting
 
 | Flag | Purpose |
