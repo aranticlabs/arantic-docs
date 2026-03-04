@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 2
 ---
 
 # Memory
@@ -32,6 +32,16 @@ Claude Code uses several memory files at different scopes. Here is the complete 
 
 The main memory file for your project. Lives at the repository root as `CLAUDE.md` (or inside `.claude/CLAUDE.md`). Committed to git and shared with the whole team. This is where coding standards, build commands, architecture decisions, and guardrails go.
 
+A well-structured CLAUDE.md is the single most impactful way to improve Claude Code's output, but bigger is not better. **Keep your CLAUDE.md under 60 lines.** Files over 150 lines degrade performance because they consume too much of the context window before the real work begins.
+
+Focus on what matters most:
+- Build and test commands
+- Non-obvious coding conventions
+- Files and directories that should not be modified
+- Architecture decisions that affect every task
+
+Leave out anything Claude can figure out by reading the code itself (language, framework, obvious patterns).
+
 ```markdown
 # CLAUDE.md
 
@@ -46,7 +56,25 @@ The main memory file for your project. Lives at the repository root as `CLAUDE.m
 - Database migrations are in src/db/migrations/, never modify existing ones
 ```
 
-Claude also discovers `CLAUDE.md` files in subdirectories and loads them on demand when working in those paths. This is useful for monorepos where different parts of the codebase have different conventions.
+#### Monorepo strategy
+
+In monorepos, use multiple CLAUDE.md files instead of one large root file:
+
+```text
+repo/
+├── CLAUDE.md              # Shared conventions (formatting, git workflow, CI)
+├── packages/
+│   ├── frontend/
+│   │   └── CLAUDE.md      # React/TypeScript rules, component patterns
+│   └── backend/
+│       └── CLAUDE.md      # Go conventions, API patterns, database rules
+```
+
+Claude Code loads these hierarchically:
+- **Ancestor loading**: walks upward from the working directory at startup, always loading parent CLAUDE.md files
+- **Descendant loading**: lazy-loads subdirectory CLAUDE.md files when files in those directories are accessed
+
+This means the root file's rules apply everywhere, while component-specific rules only load when relevant, saving context.
 
 ### User CLAUDE.md
 

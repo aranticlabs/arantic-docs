@@ -82,7 +82,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'claude-code/overview',
         'claude-code/commands',
-        'claude-code/claude-md',
+        'claude-code/memory',
         'claude-code/context',
         'claude-code/permissions',
         'claude-code/flags',
@@ -95,7 +95,6 @@ const sidebars: SidebarsConfig = {
         'claude-code/mcp',
         'claude-code/subagents',
         'claude-code/agent-teams',
-        'claude-code/memory',
       ],
     },
     {
