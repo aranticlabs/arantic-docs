@@ -7,7 +7,12 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Arantic Documentation',
   tagline: 'How to use AI effectively in your programming workflow',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/brand/favicon.ico',
+
+  headTags: [
+    { tagName: 'link', attributes: { rel: 'icon', type: 'image/svg+xml', href: '/img/brand/favicon.svg' } },
+    { tagName: 'link', attributes: { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/img/brand/favicon-96x96.png' } },
+  ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -90,7 +95,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/og-image.png',
+    image: 'img/brand/og-image.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -107,8 +112,8 @@ const config: Config = {
     navbar: {
       logo: {
         alt: 'Arantic Digital Logo',
-        src: 'img/arantic-logo-light.svg',
-        srcDark: 'img/arantic-logo-dark.svg',
+        src: 'img/brand/arantic-logo-light.svg',
+        srcDark: 'img/brand/arantic-logo-dark.svg',
       },
       items: [
         {

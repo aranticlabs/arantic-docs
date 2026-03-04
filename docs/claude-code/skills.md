@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+sidebar_label: Skills
 ---
 
 # Skills (Custom Slash Commands)
@@ -32,6 +33,10 @@ Claude Code has four overlapping ways to give it persistent context and instruct
 | Can execute tools / run code | No | Yes | Yes | Yes |
 | Shareable via git | Yes | Yes (`.claude/agents/`) | Yes (`.claude/commands/`) | Yes (`.claude/commands/`) |
 | Best for | Project-wide rules that always apply | Delegating isolated specialist tasks | Reusable prompt workflows | Reusable prompt workflows |
+
+<div style={{textAlign: 'center'}}>
+  ![CLAUDE.md vs Agents vs Commands vs Skills quick comparison](/img/docs/agents-commands-skills.png)
+</div>
 
 In Claude Code, **Commands and Skills are the same thing**: both live in `.claude/commands/` as `.md` files. The distinction above reflects a conceptual difference in how you think about them. Some tools and emerging cross-tool conventions treat skills as a richer format (with explicit metadata, tool restrictions, and richer composition), but in Claude Code today the mechanism is the same.
 
