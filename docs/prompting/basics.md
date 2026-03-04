@@ -66,3 +66,5 @@ If the first response isn't right, refine it in the same conversation. The model
 - "That's correct, but use `const` instead of `let`"
 - "Avoid the `any` type; use the `User` interface I showed above"
 - "Rewrite the error handling using a Result type instead of try/catch"
+
+Once you're comfortable with these fundamentals, see [Advanced Prompting](/prompting/advanced) for techniques like chain-of-thought, few-shot prompting, and role prompting.

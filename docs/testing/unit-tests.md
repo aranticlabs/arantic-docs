@@ -82,3 +82,5 @@ Before committing AI-generated tests, verify:
 - Mocks reflect real behaviour (not just return `undefined` everywhere)
 - Test descriptions are accurate and readable
 - There are no tests that always pass regardless of implementation
+
+To fill remaining gaps in your test suite, see [Improving Test Coverage with AI](/testing/coverage). For generating the code that needs testing, see [Code Generation](/code/generation).

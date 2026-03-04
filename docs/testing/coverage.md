@@ -67,3 +67,5 @@ When using AI for coverage, watch out for:
 - **Mocking everything**: tests that mock so much they don't test real behaviour
 - **Duplicate tests**: AI sometimes generates near-identical tests for the same path
 - **Tests with no assertions**: always verify there's at least one `expect()` per test
+
+If you need to write tests from scratch rather than fill coverage gaps, start with [Writing Unit Tests with AI](/testing/unit-tests). For techniques on writing better prompts for test generation, see [Advanced Prompting](/prompting/advanced).

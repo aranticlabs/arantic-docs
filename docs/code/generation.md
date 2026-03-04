@@ -73,3 +73,5 @@ Before using any generated code, check:
 - Are there any hardcoded values that should be configurable?
 - Does it import everything it uses?
 - Does it introduce any security risks?
+
+If the generated code has issues, see [Debugging with AI](/code/debugging). For cleaning up structure and style, see [Refactoring with AI](/code/refactoring). Once the code works, add tests with [Writing Unit Tests with AI](/testing/unit-tests).

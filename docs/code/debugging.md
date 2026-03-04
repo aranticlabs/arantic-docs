@@ -80,3 +80,5 @@ I suspect the bug is somewhere in this data transformation pipeline.
 What console.log statements would you add to isolate exactly where the
 value changes from what I expect?
 ```
+
+Once you've identified and fixed the bug, consider [Refactoring with AI](/code/refactoring) to clean up the code and [Writing Unit Tests with AI](/testing/unit-tests) to prevent regressions. For better prompts when describing bugs, review [Prompting Basics](/prompting/basics).

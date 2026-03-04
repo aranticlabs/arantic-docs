@@ -5,7 +5,7 @@ sidebar_label: Advanced Prompting
 
 # Advanced Prompting
 
-Once you're comfortable with the basics, these techniques help you get more reliable and structured output for complex programming tasks.
+Once you're comfortable with the [basics](/prompting/basics), these techniques help you get more reliable and structured output for complex programming tasks.
 
 ## Chain-of-thought prompting
 
@@ -77,7 +77,7 @@ and verify your function passes all of them.
 
 ## System prompts and persistent context
 
-In tools that support system prompts (Claude, OpenAI API, etc.), use them to establish permanent context you don't want to repeat every time:
+In tools that support system prompts (Claude, OpenAI API, etc.), use them to establish permanent context you don't want to repeat every time. See the [Tools Overview](/tools/overview) for which tools support this.
 
 ```
 You are a TypeScript developer working on a Node.js API.

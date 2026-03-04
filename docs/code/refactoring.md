@@ -60,7 +60,7 @@ type. If a type doesn't exist yet, define it.
 
 Refactoring should preserve behaviour. After applying AI-suggested changes:
 
-1. Run your existing tests. They should all still pass.
+1. Run your existing tests (see [Writing Unit Tests with AI](/testing/unit-tests) if you need to add them first). They should all still pass.
 2. Check that the public API (exported functions, props, return types) is unchanged
 3. Look for subtle differences in error handling or edge cases
 4. Review imports: AI sometimes introduces unused ones or misses new ones
@@ -68,3 +68,5 @@ Refactoring should preserve behaviour. After applying AI-suggested changes:
 ## Large-scale refactoring
 
 For refactoring across many files, work incrementally. Give the model one file or one module at a time, and verify each step before moving to the next. Asking it to refactor an entire codebase at once leads to inconsistent results.
+
+For related workflows, see [Code Generation](/code/generation) and [Debugging with AI](/code/debugging). To ensure refactored code maintains coverage, see [Improving Test Coverage with AI](/testing/coverage).
