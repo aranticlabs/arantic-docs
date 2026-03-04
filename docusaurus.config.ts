@@ -117,20 +117,22 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
+          to: '/guides',
           label: 'Guides',
           position: 'left',
-        },
-        {
-          to: '/tools',
-          label: 'Tools',
-          position: 'left',
+          activeBasePath: '/guides',
         },
         {
           to: '/claude-code',
           label: 'Claude Code',
           position: 'left',
+          activeBasePath: '/claude-code',
+        },
+        {
+          to: '/tools',
+          label: 'Tools',
+          position: 'left',
+          activeBasePath: '/tools',
         },
         {
           type: 'localeDropdown',

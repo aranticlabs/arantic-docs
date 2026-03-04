@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: Claude Code
+sidebar_label: Overview
 ---
 
 # Claude Code
