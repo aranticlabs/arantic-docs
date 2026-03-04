@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 2
 ---
 
 # Memory
@@ -8,59 +8,234 @@ When you use an AI coding tool, every new session starts with a blank slate. The
 
 ## What is memory?
 
-Memory in agentic coding refers to structured files or configuration that provide an AI assistant with project-specific, user-specific, or organization-wide context. Instead of repeating the same instructions every time you start a new conversation, you write them down once in a memory file, and the tool loads them automatically.
+Memory in agentic coding refers to structured files that provide an AI assistant with persistent context. Instead of repeating the same instructions every time you start a new conversation, you write them down once in a memory file, and the tool loads them automatically.
 
 Think of it as onboarding documentation, but written for your AI assistant instead of a new team member.
 
-## Why memory matters
+## All memory files in Claude Code
 
-Without memory, every session requires you to re-explain:
+Claude Code uses several memory files at different scopes. Here is the complete picture:
 
-- What language, framework, and conventions your project uses
-- Which files should never be modified
-- How to run tests and what linters to use
-- Architectural patterns and naming conventions
-- What the AI should avoid doing
+| File | Location | Scope | Committed to git? | Written by |
+|------|----------|-------|-------------------|------------|
+| **Managed policy** | `/etc/claude-code/CLAUDE.md` (Linux) | Organization-wide | N/A (deployed by IT) | Admins |
+| **User CLAUDE.md** | `~/.claude/CLAUDE.md` | You, across all projects | N/A | You |
+| **User rules** | `~/.claude/rules/*.md` | You, across all projects | N/A | You |
+| **Project CLAUDE.md** | `./CLAUDE.md` or `./.claude/CLAUDE.md` | Team (everyone on the project) | Yes | You |
+| **Project rules** | `./.claude/rules/*.md` | Team (everyone on the project) | Yes | You |
+| **Local CLAUDE.md** | `./CLAUDE.local.md` | You, this project only | No (auto-gitignored) | You |
+| **Auto memory** | `~/.claude/projects/<project>/memory/MEMORY.md` | You, this project (machine-local) | No | Claude |
+| **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md` | You, this project (machine-local) | No | Claude |
+| **Subagent memory** | `~/.claude/projects/<project>/subagents/<agent>/MEMORY.md` | Per subagent | No | Claude |
 
-This repetition wastes time and leads to inconsistent results. A well-maintained memory file makes the AI behave like a team member who already knows how your project works.
+### Project CLAUDE.md
 
-## Types of memory
+The main memory file for your project. Lives at the repository root as `CLAUDE.md` (or inside `.claude/CLAUDE.md`). Committed to git and shared with the whole team. This is where coding standards, build commands, architecture decisions, and guardrails go.
 
-### Project memory
+A well-structured CLAUDE.md is the single most impactful way to improve Claude Code's output, but bigger is not better. **Keep your CLAUDE.md under 60 lines.** Files over 150 lines degrade performance because they consume too much of the context window before the real work begins.
 
-Project memory lives in your repository and applies to everyone (human or AI) working on the project. It typically covers coding standards, project structure, build commands, and guardrails.
+Focus on what matters most:
+- Build and test commands
+- Non-obvious coding conventions
+- Files and directories that should not be modified
+- Architecture decisions that affect every task
 
-**Examples across tools:**
+Leave out anything Claude can figure out by reading the code itself (language, framework, obvious patterns).
 
-| Tool | File | Scope |
-|------|------|-------|
-| Claude Code | `CLAUDE.md` | Root of repository |
-| Cursor | `.cursorrules` | Root of repository |
-| GitHub Copilot | `.github/copilot-instructions.md` | Root of repository |
-| Windsurf | `.windsurfrules` | Root of repository |
+```markdown
+# CLAUDE.md
 
-Because project memory is checked into version control, it stays in sync with the codebase and gets reviewed like any other code change.
+## Commands
+- Tests: npm test
+- Lint: npm run lint
+- Type check: npm run typecheck
 
-### User memory
+## Conventions
+- Use TypeScript strict mode, never use `any`
+- All API endpoints must validate input with Zod
+- Database migrations are in src/db/migrations/, never modify existing ones
+```
 
-User memory applies to a specific developer across all their projects. It captures personal preferences like preferred language style, editor keybindings, or default frameworks.
+#### Monorepo strategy
 
-In Claude Code, user-level memory is stored in `~/.claude/CLAUDE.md`. This file is loaded alongside any project-level `CLAUDE.md` but applies globally to all sessions for that user.
+In monorepos, use multiple CLAUDE.md files instead of one large root file:
 
-### Session memory
+```text
+repo/
+├── CLAUDE.md              # Shared conventions (formatting, git workflow, CI)
+├── packages/
+│   ├── frontend/
+│   │   └── CLAUDE.md      # React/TypeScript rules, component patterns
+│   └── backend/
+│       └── CLAUDE.md      # Go conventions, API patterns, database rules
+```
 
-Session memory is the context that accumulates within a single conversation. Every message you send, every file the AI reads, and every command it runs becomes part of the working context. Session memory is ephemeral: it disappears when the conversation ends.
+Claude Code loads these hierarchically:
+- **Ancestor loading**: walks upward from the working directory at startup, always loading parent CLAUDE.md files
+- **Descendant loading**: lazy-loads subdirectory CLAUDE.md files when files in those directories are accessed
 
-Some tools extend session memory by allowing the AI to write notes or summaries that persist. In Claude Code, the `/memory` command lets you save key decisions or context to your `CLAUDE.md` file mid-session so it carries forward.
+This means the root file's rules apply everywhere, while component-specific rules only load when relevant, saving context.
 
-## What to put in a memory file
+### User CLAUDE.md
+
+Your personal preferences that apply to every project. Lives at `~/.claude/CLAUDE.md`. Not tied to any repository.
+
+Use this for things like:
+
+```markdown
+# ~/.claude/CLAUDE.md
+
+- I prefer functional programming patterns over class-based OOP
+- Always explain your reasoning before making changes
+- Use British English in comments and documentation
+- When writing tests, prefer table-driven test patterns
+```
+
+### CLAUDE.local.md
+
+Personal, project-specific memory that is NOT committed to git. Lives at `./CLAUDE.local.md` in the project root. Claude Code auto-adds it to `.gitignore`.
+
+This is for things that are specific to your local setup:
+
+```markdown
+# CLAUDE.local.md
+
+- My local API runs at http://localhost:3000
+- Use test database "dev_sarah" for integration tests
+- Skip the deploy step, I do not have production credentials
+```
+
+### Rules directories
+
+For more granular control, you can create topic-specific rule files:
+
+- **Project rules**: `.claude/rules/*.md` (committed, shared with team)
+- **User rules**: `~/.claude/rules/*.md` (personal, all projects)
+
+Rules can optionally be scoped to specific file paths using frontmatter:
+
+```markdown
+# .claude/rules/api-design.md
+---
+paths:
+  - "src/api/**/*.ts"
+  - "api/**/*.{ts,tsx}"
+---
+
+# API rules
+- All endpoints must include input validation
+- Use standard error response format
+- Return 201 for creation, 204 for deletion
+```
+
+Path-scoped rules only load when Claude works with files matching those patterns. This saves context for unrelated work.
+
+### Auto memory
+
+Claude Code can automatically save notes between sessions. This is stored locally (not in your repo) at:
+
+```text
+~/.claude/projects/<project>/memory/MEMORY.md
+```
+
+**How it works:**
+- Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings)
+- Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
+- At session start, only the **first 200 lines** of `MEMORY.md` are loaded. Content beyond line 200 is still accessible if Claude reads the file on demand.
+- When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
+
+You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
+
+### Managed policy
+
+For enterprise deployments, admins can place a `CLAUDE.md` at an OS-specific path:
+
+| OS | Path |
+|----|------|
+| Linux / WSL | `/etc/claude-code/CLAUDE.md` |
+| macOS | `/Library/Application Support/ClaudeCode/CLAUDE.md` |
+| Windows | `C:\Program Files\ClaudeCode\CLAUDE.md` |
+
+This file cannot be excluded by users. It always loads first and is intended for organization-wide standards and security policies.
+
+## Loading order and precedence
+
+Claude Code loads memory files at session start in this order (later entries take precedence when rules conflict):
+
+1. **Managed policy CLAUDE.md** (cannot be excluded)
+2. **User rules** (`~/.claude/rules/*.md`)
+3. **User CLAUDE.md** (`~/.claude/CLAUDE.md`)
+4. **Ancestor CLAUDE.md files** (walking up the directory tree from your working directory)
+5. **Project CLAUDE.md** (`./CLAUDE.md` or `./.claude/CLAUDE.md`)
+6. **Local CLAUDE.md** (`./CLAUDE.local.md`)
+7. **Project rules** (`.claude/rules/*.md`, unconditional ones)
+8. **Auto memory** (`~/.claude/projects/<project>/memory/MEMORY.md`, first 200 lines)
+
+Path-scoped rules and subdirectory CLAUDE.md files load on demand when Claude works with matching files.
+
+**Practical example:**
+
+```text
+~/.claude/CLAUDE.md              # "Use 4-space indents"
+./CLAUDE.md                      # "Use 2-space indents" (overrides user preference)
+./CLAUDE.local.md                # "Local API at http://localhost:3000"
+```
+
+The project instruction wins for indentation because it is more specific.
+
+## The /memory command
+
+Type `/memory` in Claude Code to:
+
+- See all CLAUDE.md and rules files currently loaded in your session
+- Toggle auto memory on or off
+- Open the auto memory folder
+- Select any memory file to open it in your editor for manual editing
+
+To save something to CLAUDE.md mid-session, you can also just ask Claude directly: "Add this to CLAUDE.md: always run tests before committing."
+
+## Which file should I use?
+
+With several memory files available, it helps to know which one fits your situation. The key questions are: **who writes it** (you or Claude) and **who should it apply to** (the team or just you)?
+
+### You write it: CLAUDE.md and rules
+
+These files contain instructions and constraints you define. Claude reads them but never modifies them.
+
+| What you want | Use this file |
+|---------------|---------------|
+| Team coding standards, build commands, architecture rules | **Project CLAUDE.md** (`./CLAUDE.md`) |
+| Rules that only apply to specific file paths | **Project rules** (`.claude/rules/*.md` with `paths:` frontmatter) |
+| Your personal style preferences across all projects | **User CLAUDE.md** (`~/.claude/CLAUDE.md`) |
+| Your personal rules scoped to specific file types | **User rules** (`~/.claude/rules/*.md`) |
+| Your local environment details for one project (URLs, credentials, local paths) | **CLAUDE.local.md** (`./CLAUDE.local.md`) |
+
+### Claude writes it: auto memory
+
+Auto memory (`~/.claude/projects/<project>/memory/MEMORY.md`) is the opposite: Claude writes it, you can read and edit it. This is where Claude stores things it learns during sessions, like which test commands work, how to debug specific issues, or patterns it discovered in your codebase.
+
+You do not need to manage auto memory actively. It builds up naturally as you work. If Claude keeps forgetting something between sessions, check whether auto memory is enabled (`/memory`).
+
+### Quick decision guide
+
+**"My whole team should follow this rule"** -> Project CLAUDE.md or project rules
+
+**"I personally prefer this style"** -> User CLAUDE.md (`~/.claude/CLAUDE.md`)
+
+**"This only matters on my local machine"** -> CLAUDE.local.md
+
+**"Claude figured this out and should remember it"** -> Auto memory (happens automatically)
+
+**"This rule only applies to API files"** -> Project rules with `paths:` frontmatter
+
+## What to put in memory files
 
 A good memory file is concise, specific, and actionable. Focus on information the AI cannot infer from the code itself.
 
 **Effective content:**
 
 ```markdown
-# Project conventions
+# Conventions
 - Use TypeScript strict mode, never use `any`
 - All API endpoints must validate input with Zod schemas
 - Database migrations are in src/db/migrations/, never modify existing ones
@@ -84,38 +259,9 @@ A good memory file is concise, specific, and actionable. Focus on information th
 - Overly long documents that dilute the important rules
 - Vague guidance like "write clean code" that the AI cannot act on concretely
 
-## Memory hierarchy
+## Use constraints, not aspirations
 
-When multiple memory files exist, tools typically merge them with a defined precedence. In Claude Code, the loading order is:
-
-1. **Enterprise policy** (organization-wide, managed by admins)
-2. **User memory** (`~/.claude/CLAUDE.md`)
-3. **Project root memory** (`CLAUDE.md` at the repository root)
-4. **Nested memory** (`CLAUDE.md` files in subdirectories, applying when working in those paths)
-
-More specific memory takes precedence when rules conflict. A project-level instruction to "use tabs" overrides a user-level preference for spaces when working in that project.
-
-## Keeping memory files effective
-
-### Start small and iterate
-
-Begin with only the rules that matter most. After a few sessions, notice where the AI makes mistakes or asks redundant questions, then add instructions that address those gaps.
-
-### Be explicit about commands
-
-AI tools can run shell commands but have no way to guess your project's specific workflow. Always include the exact commands for testing, building, linting, and deploying.
-
-```markdown
-# Commands
-- Run all tests: pytest tests/ -v
-- Run single test: pytest tests/test_auth.py -v -k "test_login"
-- Format code: black src/ tests/
-- Check types: mypy src/
-```
-
-### Use constraints, not aspirations
-
-Write instructions the AI can follow mechanically. Compare:
+Write instructions the AI can follow mechanically:
 
 **Weak:**
 ```text
@@ -128,10 +274,6 @@ Keep functions under 30 lines. Extract helper functions for repeated logic.
 Never use string concatenation for SQL queries.
 ```
 
-### Review memory like code
-
-Memory files shape every AI interaction in your project. Treat changes to them with the same care as changes to your linter configuration or CI pipeline. Include them in pull request reviews, especially when they add new constraints or change established patterns.
-
 ## Memory across tools
 
 If your team uses multiple AI coding tools, keep the core conventions in one canonical location (such as a `CONVENTIONS.md` file) and reference it from each tool's memory file. This avoids drift between different memory files that cover the same ground.
@@ -141,4 +283,26 @@ If your team uses multiple AI coding tools, keep the core conventions in one can
 Read and follow the conventions in CONVENTIONS.md at the repository root.
 ```
 
-This approach keeps your standards centralized while letting each tool's memory file add tool-specific instructions (like which slash commands to use or which MCP servers to connect).
+**Memory file equivalents across tools:**
+
+| Tool | Project memory | User memory |
+|------|---------------|-------------|
+| Claude Code | `CLAUDE.md` | `~/.claude/CLAUDE.md` |
+| Cursor | `.cursorrules` | User settings |
+| GitHub Copilot | `.github/copilot-instructions.md` | User settings |
+| Windsurf | `.windsurfrules` | User settings |
+
+## Excluding memory files
+
+In large monorepos, you may want to exclude CLAUDE.md files from other teams. Use the `claudeMdExcludes` setting in `.claude/settings.local.json`:
+
+```json
+{
+  "claudeMdExcludes": [
+    "**/other-team/CLAUDE.md",
+    "/home/user/monorepo/legacy/.claude/rules/**"
+  ]
+}
+```
+
+This accepts glob patterns matched against absolute file paths. Managed policy CLAUDE.md cannot be excluded.
