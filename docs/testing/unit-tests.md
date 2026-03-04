@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+sidebar_label: Writing Unit Tests with AI
 ---
 
 # Writing Unit Tests with AI

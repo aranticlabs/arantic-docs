@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+sidebar_label: Improving Test Coverage with AI
 ---
 
 # Improving Test Coverage with AI

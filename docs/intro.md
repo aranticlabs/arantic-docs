@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 slug: /
+sidebar_label: AI-Assisted Programming
 ---
 
 # AI-Assisted Programming

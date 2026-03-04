@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+sidebar_label: Debugging with AI
 ---
 
 # Debugging with AI

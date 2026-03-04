@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+sidebar_label: Web & Backend Developer Setup
 ---
 
 # Web & Backend Developer Setup

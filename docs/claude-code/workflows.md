@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+sidebar_label: Workflows & Orchestration
 ---
 
 # Workflows & Orchestration
