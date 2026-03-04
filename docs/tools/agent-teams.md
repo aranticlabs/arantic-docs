@@ -189,12 +189,57 @@ Let them discuss and reach consensus on the best approach. Output a final decisi
 | Pause before proceeding | Tell the lead: "Wait for your teammates to complete their tasks before proceeding" |
 | Shut everything down | Tell the lead: "Clean up the team" |
 
+## Git worktrees for parallel agents
+
+When multiple agents edit the same codebase, they can conflict with each other. Git worktrees solve this by giving each agent an isolated copy of the repository on its own branch.
+
+### How it works
+
+A git worktree creates a separate working directory linked to the same repository. Each agent works in its own directory on its own branch, so file edits never collide:
+
+```bash
+# Create worktrees for each agent's branch
+git worktree add ../feature-api feature/api-endpoints
+git worktree add ../feature-ui feature/ui-components
+git worktree add ../feature-tests feature/test-coverage
+```
+
+Each agent runs in its own worktree directory. When all agents finish, merge the branches back.
+
+### Agent Teams + worktrees
+
+When using Agent Teams with split-pane mode, you can assign each teammate a worktree:
+
+```text
+Create a team of 3 agents. Each agent should work in its own git worktree:
+- Backend agent: ../feature-api branch
+- Frontend agent: ../feature-ui branch
+- Test agent: ../feature-tests branch
+
+Coordinate through the shared task list. When all agents complete their tasks,
+I will merge the branches manually.
+```
+
+This combination gives you parallel execution with full file isolation, eliminating the risk of agents overwriting each other's changes.
+
+## When NOT to use Agent Teams
+
+Agent Teams adds real overhead. Skip it when:
+
+- **The task is straightforward.** A single Claude Code session handles most bug fixes, refactors, and single-feature implementations better than a team. Vanilla Claude Code outperforms orchestrated workflows for smaller tasks.
+- **The work is sequential.** If step 2 depends entirely on step 1's output, parallelizing adds cost without saving time.
+- **You are exploring or debugging.** Interactive back-and-forth with one agent is more efficient than coordinating a team when you do not yet know what needs to be done.
+- **Context is cheap.** If your task fits comfortably in a single context window, the overhead of multiple agents is wasted.
+
+Use Agent Teams when you have genuinely independent workstreams (frontend + backend + tests), need multiple perspectives simultaneously (parallel code review), or when a single agent's context window would overflow from the scope of work.
+
 ## Tips
 
-- **Start small**: 3–5 teammates max; token cost scales with every agent.
+- **Start small**: 3-5 teammates max; token cost scales with every agent.
 - **Right model for the job**: use Haiku for simple/mechanical tasks, Sonnet or Opus for complex reasoning.
 - **Require plan approval**: always add "Require plan approval before any code changes" to prevent surprise edits.
 - **Two-session workflow**: for very large projects, run one tmux session for a research team and a separate one for the implementation team.
+- **Use git worktrees** for file isolation when agents edit overlapping parts of the codebase.
 
 ## Token cost vs. context isolation
 
