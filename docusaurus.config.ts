@@ -167,7 +167,7 @@ const config: Config = {
             },
             {
               label: 'Claude Code',
-              to: '/tools/claude-code',
+              to: '/claude-code/overview',
             },
             {
               label: 'GitHub Repos',

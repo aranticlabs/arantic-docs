@@ -58,7 +58,7 @@ The api-builder agent starts every session already knowing your REST conventions
 - **On-demand**: workflows you invoke for a specific task (review, scaffold, generate tests)
 - **Preloaded**: domain knowledge and conventions that an agent needs for every task it handles
 
-For more on how commands, agents, and skills compose together, see [Workflows & Orchestration](./workflows).
+For more on how commands, agents, and skills compose together, see [Workflows & Orchestration](../tools/workflows).
 
 A practical rule of thumb:
 - **CLAUDE.md**: conventions, constraints, and background context that should always be active

@@ -47,7 +47,7 @@ cd your-project
 claude
 ```
 
-See the full [Claude Code guide](../tools/claude-code) for all capabilities.
+See the full [Claude Code guide](../claude-code/overview) for all capabilities.
 
 ---
 
@@ -156,7 +156,7 @@ touch CLAUDE.md
 
 ## 4. Add useful custom subagents
 
-Subagents are specialists Claude Code can delegate to automatically. Drop the `.md` files from the [subagents catalog](../tools/subagents) into `.claude/agents/` in your project root.
+Subagents are specialists Claude Code can delegate to automatically. Drop the `.md` files from the [subagents catalog](../claude-code/subagents) into `.claude/agents/` in your project root.
 
 ```bash
 mkdir -p .claude/agents
@@ -166,18 +166,18 @@ mkdir -p .claude/agents
 
 | Subagent | What it does |
 |----------|-------------|
-| [ux-reviewer](../tools/subagents#ux-reviewer) | Audits JSX/TSX for visual hierarchy, spacing, states, and copy quality |
-| [accessibility-auditor](../tools/subagents#accessibility-auditor) | Checks HTML/JSX/TSX against WCAG 2.1 |
-| [security-auditor](../tools/subagents#security-auditor) | Scans for XSS, CSRF, auth issues, and other web vulnerabilities |
-| [api-contract-reviewer](../tools/subagents#api-contract-reviewer) | Reviews REST/GraphQL endpoints for consistency and missing validation |
+| [ux-reviewer](../claude-code/subagents#ux-reviewer) | Audits JSX/TSX for visual hierarchy, spacing, states, and copy quality |
+| [accessibility-auditor](../claude-code/subagents#accessibility-auditor) | Checks HTML/JSX/TSX against WCAG 2.1 |
+| [security-auditor](../claude-code/subagents#security-auditor) | Scans for XSS, CSRF, auth issues, and other web vulnerabilities |
+| [api-contract-reviewer](../claude-code/subagents#api-contract-reviewer) | Reviews REST/GraphQL endpoints for consistency and missing validation |
 
 ### Go backend subagents
 
 | Subagent | What it does |
 |----------|-------------|
-| [security-auditor](../tools/subagents#security-auditor) | Scans for injection, auth issues, insecure crypto, and SSRF patterns |
-| [api-contract-reviewer](../tools/subagents#api-contract-reviewer) | Reviews REST/gRPC handlers for consistency, validation, and error handling |
-| [dependency-auditor](../tools/subagents#dependency-auditor) | Checks `go.mod` / `go.sum` for outdated packages and known CVEs |
+| [security-auditor](../claude-code/subagents#security-auditor) | Scans for injection, auth issues, insecure crypto, and SSRF patterns |
+| [api-contract-reviewer](../claude-code/subagents#api-contract-reviewer) | Reviews REST/gRPC handlers for consistency, validation, and error handling |
+| [dependency-auditor](../claude-code/subagents#dependency-auditor) | Checks `go.mod` / `go.sum` for outdated packages and known CVEs |
 
 ---
 

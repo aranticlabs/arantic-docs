@@ -61,7 +61,7 @@ cd firmware
 claude
 ```
 
-See the full [Claude Code guide](../tools/claude-code) for capabilities.
+See the full [Claude Code guide](../claude-code/overview) for capabilities.
 
 ---
 
@@ -127,14 +127,14 @@ This is critical for embedded work. Without it, Claude will make assumptions abo
 
 ## 4. Add firmware-specific subagents
 
-These subagents from the [firmware & embedded catalog](../tools/subagents#firmware--embedded) are the highest-value additions for any firmware project. Drop them in `.claude/agents/`:
+These subagents from the [firmware & embedded catalog](../claude-code/subagents#firmware--embedded) are the highest-value additions for any firmware project. Drop them in `.claude/agents/`:
 
 | Subagent | What it does |
 |----------|-------------|
-| [memory-usage-auditor](../tools/subagents#memory-usage-auditor) | Audits for stack overflows, heap fragmentation, buffer overflows, and linker map issues |
-| [peripheral-config-reviewer](../tools/subagents#peripheral-config-reviewer) | Reviews GPIO, UART, SPI, I2C, timers, ADC, and DMA initialization for misconfigurations |
-| [interrupt-safety-checker](../tools/subagents#interrupt-safety-checker) | Finds race conditions, missing critical sections, and unsafe ISR patterns |
-| [misra-c-checker](../tools/subagents#misra-c-checker) | Flags MISRA-C:2012 violations; useful for safety-critical and automotive projects |
+| [memory-usage-auditor](../claude-code/subagents#memory-usage-auditor) | Audits for stack overflows, heap fragmentation, buffer overflows, and linker map issues |
+| [peripheral-config-reviewer](../claude-code/subagents#peripheral-config-reviewer) | Reviews GPIO, UART, SPI, I2C, timers, ADC, and DMA initialization for misconfigurations |
+| [interrupt-safety-checker](../claude-code/subagents#interrupt-safety-checker) | Finds race conditions, missing critical sections, and unsafe ISR patterns |
+| [misra-c-checker](../claude-code/subagents#misra-c-checker) | Flags MISRA-C:2012 violations; useful for safety-critical and automotive projects |
 
 ```bash
 mkdir -p .claude/agents
