@@ -9,10 +9,10 @@ This documentation covers how to use AI tools effectively in your daily programm
 
 ## What you'll learn
 
-- **Prompting techniques**: how to communicate with AI models to get precise, useful results
-- **Code generation & debugging**: using AI to write boilerplate, fix bugs, and refactor existing code
-- **Testing**: generating test cases and improving coverage with AI assistance
-- **Tools & integrations**: an overview of the most useful AI tools for developers
+- **[Guides](/guides)**: step-by-step tutorials on prompting, code generation, debugging, testing, and workflows
+- **[Tools](/tools)**: overview and comparison of AI development tools (Claude Code, GitHub Copilot, Cursor)
+- **[Claude Code](/claude-code)**: deep-dive into skills, plugins, MCP servers, subagents, and more
+- **[Resources](/resources)**: curated references and useful links
 
 ## Who this is for
 
