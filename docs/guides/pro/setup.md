@@ -1,11 +1,11 @@
 ---
-sidebar_position: 3
-sidebar_label: Pro
+sidebar_position: 1
+sidebar_label: Setup
 ---
 
 # Pro Setup
 
-This guide assumes you have completed the [Intermediate setup](./intermediate) with permissions, skills, MCP servers, and subagents configured.
+This guide assumes you have completed the [Intermediate setup](../intermediate/setup) with permissions, skills, MCP servers, and subagents configured.
 
 Here you'll set up hooks for deterministic automation, agent teams for parallel work, CI/headless integration, and advanced workflow patterns.
 
@@ -44,7 +44,7 @@ Add to `.claude/settings.json`:
 }
 ```
 
-For all hook events and configuration options, see [Hooks](../hooks).
+For all hook events and configuration options, see [Hooks](/claude-code/hooks).
 
 ## 2. Workflow patterns
 
@@ -65,7 +65,7 @@ Feature: $ARGUMENTS
 
 This creates a repeatable workflow you invoke with `/feature add user avatar uploads`.
 
-For more workflow patterns and orchestration strategies, see [Workflows](../workflows).
+For more workflow patterns and orchestration strategies, see [Workflows](/claude-code/workflows).
 
 ## 3. Agent teams
 
@@ -88,7 +88,7 @@ tmux attach -t team
 
 Each instance gets its own context and can work on independent parts of the codebase simultaneously.
 
-For team patterns, coordination strategies, and worktree isolation, see [Agent Teams](../agent-teams).
+For team patterns, coordination strategies, and worktree isolation, see [Agent Teams](/claude-code/agent-teams).
 
 ## 4. Git worktrees
 
@@ -106,7 +106,7 @@ cd .claude/worktrees/api && claude -p "Add integration tests for API" &
 
 Each worktree is a full copy of your repo on its own branch. Merge results back when done.
 
-For more on worktree patterns, see [Agent Teams](../agent-teams).
+For more on worktree patterns, see [Agent Teams](/claude-code/agent-teams).
 
 ## 5. Headless and CI integration
 
@@ -135,7 +135,7 @@ claude -p "Review src/ for security issues" \
     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-For all CLI flags and output formats, see [Flags](../flags).
+For all CLI flags and output formats, see [Flags](/claude-code/flags).
 
 ## 6. Advanced MCP configuration
 
@@ -165,7 +165,7 @@ Connect multiple MCP servers for a rich tool ecosystem:
 
 Remote SSE servers are useful for shared team tools hosted on internal infrastructure.
 
-For server types, authentication, and troubleshooting, see [MCP Servers](../mcp).
+For server types, authentication, and troubleshooting, see [MCP Servers](/claude-code/mcp).
 
 ## 7. Create custom plugins
 
@@ -180,7 +180,7 @@ my-plugin/
     └── conventions.md   # Rules bundled with the plugin
 ```
 
-For the plugin specification and publishing process, see [Plugins](../plugins).
+For the plugin specification and publishing process, see [Plugins](/claude-code/plugins).
 
 ## 8. Performance optimization
 
@@ -194,7 +194,7 @@ For the plugin specification and publishing process, see [Plugins](../plugins).
 
 **Targeted file access:** Guide Claude Code to the right files by being specific in your prompts. "Fix the bug in `src/auth/token.ts`" is faster than "Fix the auth bug."
 
-For more context management strategies, see [Managing Context](../context).
+For more context management strategies, see [Managing Context](/claude-code/context).
 
 ## 9. Complete settings.json
 

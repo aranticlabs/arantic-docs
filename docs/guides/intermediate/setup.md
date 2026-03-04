@@ -1,11 +1,11 @@
 ---
-sidebar_position: 2
-sidebar_label: Intermediate
+sidebar_position: 1
+sidebar_label: Setup
 ---
 
 # Intermediate Setup
 
-This guide assumes you have Claude Code installed with a basic CLAUDE.md. If not, complete the [Starter setup](./starter) first.
+This guide assumes you have Claude Code installed with a basic CLAUDE.md. If not, complete the [Starter setup](../starter/setup) first.
 
 Here you'll configure the full memory system, permissions, custom skills, subagents, MCP servers, and CLI flags to build a customized workflow.
 
@@ -36,7 +36,7 @@ Claude Code reads memory files at multiple levels. Set them up to give Claude Co
 
 Rules files are loaded automatically. Use them for domain-specific context that would clutter your main CLAUDE.md.
 
-For the complete memory hierarchy and precedence rules, see [Memory](../memory).
+For the complete memory hierarchy and precedence rules, see [Memory](/claude-code/memory).
 
 ## 2. Configure permissions
 
@@ -63,7 +63,7 @@ Control what Claude Code can do without asking by editing `.claude/settings.json
 
 The `allow` list lets tools run without prompting. The `deny` list blocks them entirely. Everything else prompts for approval.
 
-For full permission configuration and scoping, see [Permissions](../permissions).
+For full permission configuration and scoping, see [Permissions](/claude-code/permissions).
 
 ## 3. Create custom skills
 
@@ -82,7 +82,7 @@ For each finding, state the file, line, issue, and suggested fix.
 
 Use it in a session by typing `/review`. You can pass arguments with `$ARGUMENTS` in the template.
 
-For more on creating and organizing skills, see [Skills](../skills).
+For more on creating and organizing skills, see [Skills](/claude-code/skills).
 
 ## 4. Use and create subagents
 
@@ -101,7 +101,7 @@ Then summarize the patterns you find and suggest whether this API surface
 can be simplified.
 ```
 
-For details on how subagents work and how to use them effectively, see [Subagents](../subagents).
+For details on how subagents work and how to use them effectively, see [Subagents](/claude-code/subagents).
 
 ## 5. CLI flags for scripting
 
@@ -116,7 +116,7 @@ These flags are useful when integrating Claude Code into scripts or custom workf
 | `--allowedTools` | Restrict available tools | `claude -p "Read src/" --allowedTools Read,Glob` |
 | `--max-turns` | Limit agentic rounds | `claude -p "Fix tests" --max-turns 10` |
 
-For the complete flag reference, see [Flags](../flags).
+For the complete flag reference, see [Flags](/claude-code/flags).
 
 ## 6. Add MCP servers
 
@@ -135,7 +135,7 @@ MCP (Model Context Protocol) servers connect Claude Code to external tools and d
 
 This gives Claude Code access to up-to-date library documentation through the Context7 server.
 
-For more MCP server options and configuration, see [MCP Servers](../mcp).
+For more MCP server options and configuration, see [MCP Servers](/claude-code/mcp).
 
 ## 7. Install plugins
 
@@ -147,7 +147,7 @@ Plugins extend Claude Code with community-built capabilities. Browse and install
 
 Follow the interactive prompts to search, preview, and install plugins.
 
-For plugin management details, see [Plugins](../plugins).
+For plugin management details, see [Plugins](/claude-code/plugins).
 
 ## 8. Your project structure
 
@@ -168,4 +168,4 @@ your-project/
 
 ## Next steps
 
-Ready for full automation? Continue to the [Pro guide](./pro) to set up hooks, agent teams, CI integration, and advanced workflows.
+Ready for full automation? Continue to the [Pro guide](../pro/setup) to set up hooks, agent teams, CI integration, and advanced workflows.

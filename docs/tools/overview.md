@@ -32,7 +32,7 @@ These run in your terminal alongside your code and can read files, run commands,
 
 | Tool | Start command | Description |
 |------|---------------|-------------|
-| **[Claude Code](/claude-code/overview)** | `claude` | Anthropic's CLI, full codebase access, agentic task execution |
+| **[Claude Code](/guides/starter/setup)** | `claude` | Anthropic's CLI, full codebase access, agentic task execution |
 | **[Codex CLI](/tools/codex)** | `codex` | OpenAI's terminal agent, defaults to gpt-5.3-codex |
 | **[Gemini CLI](/tools/gemini-cli)** | `gemini` | Google's open-source CLI, 1M token context window, generous free tier |
 | **[Aider](/tools/aider)** | `aider` | Open-source, model-agnostic pair programming with git-native workflow |
@@ -52,7 +52,7 @@ For building your own integrations or automating tasks in CI.
 |---|---|
 | Quick question or code snippet | Claude / ChatGPT |
 | Inline autocomplete while coding | [Copilot](/tools/github-copilot), [Cursor](/tools/cursor), or Codestral |
-| Multi-file tasks, refactoring, agentic workflows | [Claude Code](/claude-code/overview), [Codex CLI](/tools/codex), or [Gemini CLI](/tools/gemini-cli) |
+| Multi-file tasks, refactoring, agentic workflows | [Claude Code](/guides/starter/setup), [Codex CLI](/tools/codex), or [Gemini CLI](/tools/gemini-cli) |
 | Model-agnostic CLI with git integration | [Aider](/tools/aider) |
 | Automating code review in CI | Anthropic API / OpenAI API |
 | Working entirely inside VS Code | [Copilot](/tools/github-copilot) or [Cursor](/tools/cursor) |
@@ -65,5 +65,5 @@ Most developers use more than one tool. A common setup:
 
 - **[Cursor](/tools/cursor), [Copilot](/tools/github-copilot), or Codestral** for moment-to-moment completions while typing
 - **Claude or ChatGPT** for longer reasoning tasks and design discussions
-- **[Claude Code](/claude-code/overview), [Codex CLI](/tools/codex), or [Aider](/tools/aider)** for larger agentic tasks (refactoring a module, writing a feature end-to-end)
+- **[Claude Code](/guides/starter/setup), [Codex CLI](/tools/codex), or [Aider](/tools/aider)** for larger agentic tasks (refactoring a module, writing a feature end-to-end)
 - **[Gemini CLI](/tools/gemini-cli)** for exploratory work on a free tier with a large context window

@@ -26,6 +26,30 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'category',
+          label: 'Starter',
+          items: [
+            'guides/starter/setup',
+            'guides/starter/workflow',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Intermediate',
+          items: [
+            'guides/intermediate/setup',
+            'guides/intermediate/workflow',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Pro',
+          items: [
+            'guides/pro/setup',
+            'guides/pro/workflow',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Prompting',
           items: [
             'prompting/basics',
@@ -61,17 +85,6 @@ const sidebars: SidebarsConfig = {
         slug: '/claude-code',
       },
       items: [
-        {
-          type: 'category',
-          label: 'Get Started',
-          link: { type: 'doc', id: 'claude-code/getting-started/index' },
-          items: [
-            'claude-code/getting-started/starter',
-            'claude-code/getting-started/intermediate',
-            'claude-code/getting-started/pro',
-          ],
-        },
-        'claude-code/overview',
         'claude-code/memory',
         'claude-code/commands',
         'claude-code/context',

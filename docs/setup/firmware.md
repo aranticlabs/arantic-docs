@@ -62,7 +62,7 @@ cd firmware
 claude
 ```
 
-See the full [Claude Code guide](../claude-code/overview) for capabilities.
+See the full [Claude Code guide](../guides/starter/setup) for capabilities.
 
 ---
 

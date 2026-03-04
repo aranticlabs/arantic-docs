@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: Starter
+sidebar_label: Setup
 ---
 
 # Starter Setup
@@ -26,8 +26,6 @@ Verify the installation:
 ```bash
 claude --version
 ```
-
-For full installation details, see the [Overview](../overview).
 
 ## 3. Authenticate
 
@@ -77,7 +75,7 @@ These commands work inside any Claude Code session:
 | `/model` | Switch between available models |
 | `Esc` | Cancel the current response |
 
-For the complete command reference, see [Commands](../commands).
+For the complete command reference, see [Commands](/claude-code/commands).
 
 ## 6. Create your CLAUDE.md
 
@@ -95,7 +93,7 @@ A `CLAUDE.md` file gives Claude Code persistent context about your project. Crea
 
 Keep it short and factual. Claude Code reads this file at the start of every session.
 
-For the full memory system (user-level, project-level, rules), see [Memory](../memory).
+For the full memory system (user-level, project-level, rules), see [Memory](/claude-code/memory).
 
 ## 7. Use plan mode
 
@@ -107,7 +105,7 @@ For complex tasks, ask Claude Code to plan before it acts:
 
 Claude Code will outline its approach and wait for your approval before making changes. This is especially useful for multi-file changes where you want to review the strategy first.
 
-For more on plan mode and other effective techniques, see [Tips](../tips).
+For more on plan mode and other effective techniques, see [Tips](/claude-code/tips).
 
 ## 8. Debug with /doctor
 
@@ -119,7 +117,7 @@ If something isn't working, run the built-in diagnostic:
 
 This checks your Node.js version, API key, git status, and other common issues.
 
-For more troubleshooting tips, see [Debugging](../debugging).
+For more troubleshooting tips, see [Debugging](/claude-code/debugging).
 
 ## 9. Best practices
 
@@ -131,4 +129,4 @@ For more troubleshooting tips, see [Debugging](../debugging).
 
 ## Next steps
 
-Ready to customize your setup? Continue to the [Intermediate guide](./intermediate) to configure permissions, create custom skills, add MCP servers, and more.
+Ready to customize your setup? Continue to the [Intermediate guide](../intermediate/setup) to configure permissions, create custom skills, add MCP servers, and more.

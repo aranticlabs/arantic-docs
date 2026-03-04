@@ -40,6 +40,6 @@ Add that line to your `~/.zshrc` or `~/.bashrc` to persist it across sessions.
 - [Cursor](./tools/cursor): a full IDE built around AI; deeper codebase context
 
 **Agentic**: multi-file tasks, full codebase access, autonomous execution
-- [Claude Code](./claude-code/overview): reads files, runs commands, iterates until a task is done
+- [Claude Code](./guides/starter/setup): reads files, runs commands, iterates until a task is done
 
 Most developers use both: an in-editor tool for moment-to-moment completions, and Claude Code for larger tasks like refactoring, writing a feature end-to-end, or running a review pass. See the [full tools overview](./tools/overview) for a side-by-side comparison.
