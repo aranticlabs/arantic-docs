@@ -108,6 +108,8 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'resources/github-repos',
+        'resources/prompt-templates',
+        'resources/troubleshooting',
       ],
     },
   ],
