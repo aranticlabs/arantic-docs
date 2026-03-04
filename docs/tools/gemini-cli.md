@@ -18,6 +18,20 @@ Or run directly without installing:
 npx @google/gemini-cli
 ```
 
+## Starting Gemini CLI
+
+Run it from inside your project directory:
+
+```bash
+gemini
+```
+
+This launches an interactive session where you can have ongoing conversations with the AI. You can also pass a prompt directly for one-off queries:
+
+```bash
+gemini -p "explain the authentication flow in this project"
+```
+
 ## Authentication
 
 Three options:

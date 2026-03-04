@@ -24,6 +24,26 @@ Or via pipx:
 pipx install aider-chat
 ```
 
+## Starting Aider
+
+Change into your project directory and run:
+
+```bash
+aider
+```
+
+This starts an interactive pair programming session. You can also specify a model and files to work with upfront:
+
+```bash
+aider --model sonnet src/app.py src/models/user.py
+```
+
+For a single non-interactive message, use the `-m` flag:
+
+```bash
+aider -m "add input validation to the signup handler"
+```
+
 ## Authentication
 
 Aider does not bundle its own AI model. You provide API keys for the model you want to use:

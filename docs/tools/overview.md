@@ -29,12 +29,14 @@ These work directly inside your editor and see your open files and cursor positi
 
 These run in your terminal alongside your code and can read files, run commands, and interact with your codebase.
 
-- **Claude Code**: Anthropic's CLI, full codebase access, agentic task execution
-- **Codex CLI**: OpenAI's terminal agent, local execution with sandboxing
-- **Gemini CLI**: Google's open-source CLI, 1M token context window, generous free tier
-- **Aider**: open-source, model-agnostic pair programming with git-native workflow
-- **Mistral Vibe**: Mistral's CLI agent with subagent support and self-hosted options
-- **GitHub Copilot CLI**: explains and suggests shell commands
+| Tool | Start command | Description |
+|------|---------------|-------------|
+| **Claude Code** | `claude` | Anthropic's CLI, full codebase access, agentic task execution |
+| **Codex CLI** | `codex` | OpenAI's terminal agent, defaults to gpt-5.3-codex |
+| **Gemini CLI** | `gemini` | Google's open-source CLI, 1M token context window, generous free tier |
+| **Aider** | `aider` | Open-source, model-agnostic pair programming with git-native workflow |
+| **Mistral Vibe** | `vibe` | Mistral's CLI agent with subagent support and self-hosted options |
+| **GitHub Copilot CLI** | `copilot` | GitHub's agentic terminal assistant with multi-model support |
 
 ### API-based
 

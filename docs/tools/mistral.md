@@ -30,9 +30,23 @@ Or via pip (requires Python 3.12+):
 pip install mistral-vibe
 ```
 
+### Starting Mistral Vibe
+
+Run it from inside your project directory:
+
+```bash
+vibe
+```
+
+This starts an interactive chat session with the agent. You can also pass a prompt directly:
+
+```bash
+vibe "refactor the main function in cli/main.py to be more modular"
+```
+
 ### Authentication
 
-Set your Mistral API key:
+Set your Mistral API key (or run `vibe --setup` for first-time configuration):
 
 ```bash
 export MISTRAL_API_KEY=your-key-here
