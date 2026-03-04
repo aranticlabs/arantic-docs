@@ -49,13 +49,6 @@ const sidebars: SidebarsConfig = {
             'testing/coverage',
           ],
         },
-        {
-          type: 'category',
-          label: 'Workflows',
-          items: [
-            'tools/workflows',
-          ],
-        },
       ],
     },
     {
@@ -94,6 +87,7 @@ const sidebars: SidebarsConfig = {
         'claude-code/flags',
         'claude-code/debugging',
         'claude-code/tips',
+        'claude-code/workflows',
         'claude-code/skills',
         'claude-code/plugins',
         'claude-code/mcp',
