@@ -54,6 +54,13 @@ const sidebars: SidebarsConfig = {
         'tools/cursor',
       ],
     },
+    {
+      type: 'category',
+      label: 'Resources',
+      items: [
+        'resources/github-repos',
+      ],
+    },
   ],
 };
 
