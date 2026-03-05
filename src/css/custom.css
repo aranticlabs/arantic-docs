@@ -7,8 +7,8 @@
 
 :root {
   /* Primary palette — plum */
-  --ifm-color-primary: #963484;
-  --ifm-color-primary-dark: #7e2b6f;
+  --ifm-color-primary: var(--arantic-color-plum);
+  --ifm-color-primary-dark: var(--arantic-color-plum);
   --ifm-color-primary-darker: #6e2561;
   --ifm-color-primary-darkest: #4b2364;
   --ifm-color-primary-light: #a83d95;
@@ -39,7 +39,7 @@
 
 /* Footer styling */
 .footer--dark {
-  --ifm-footer-background-color: var(--arantic-color-oxford);
+  --ifm-footer-background-color: #242526;
   --ifm-footer-title-color: #ffffff;
   --ifm-footer-link-color: var(--arantic-color-lapis);
   --ifm-footer-link-hover-color: #1a8aab;
@@ -50,7 +50,7 @@
 }
 
 .footer--dark .footer__copyright a {
-  color: var(--arantic-color-lapis);
+  color: var( --arantic-color-plum);
 }
 
 .footer--dark .footer__copyright a:hover {

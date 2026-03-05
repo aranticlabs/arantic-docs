@@ -29,7 +29,7 @@ These guides are written for developers who already know how to code and want to
 
 - **New to AI coding?** Start with [Prompting Basics](/prompting/basics), then try the [Quickstart](/quickstart)
 - **Already using Copilot or Cursor?** Check the [Tools Comparison](/tools/overview) and see what Claude Code adds
-- **Want to go deep on Claude Code?** Start with the [Overview](/claude-code/overview), then explore [Skills](/claude-code/skills), [Hooks](/claude-code/hooks), and [Subagents](/claude-code/subagents)
+- **Want to go deep on Claude Code?** Start with the [Starter Setup](/guides/starter/setup), then explore [Skills](/claude-code/skills), [Hooks](/claude-code/hooks), and [Subagents](/claude-code/subagents)
 - **Looking for copy-paste prompts?** Browse the [Prompt Templates](/resources/prompt-templates)
 
 ## A note on AI limitations

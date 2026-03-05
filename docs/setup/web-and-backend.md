@@ -48,7 +48,7 @@ cd your-project
 claude
 ```
 
-See the full [Claude Code guide](../claude-code/overview) for all capabilities.
+See the full [Claude Code guide](../guides/starter/setup) for all capabilities.
 
 ---
 
