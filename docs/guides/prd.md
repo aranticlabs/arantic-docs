@@ -1,9 +1,9 @@
 ---
 sidebar_position: 4
-sidebar_label: PRD-Driven Development
+sidebar_label: PRD
 ---
 
-# PRD-Driven Development
+# Product Requirements Document (PRD)
 
 A Product Requirements Document (PRD) is a structured specification that describes what you're building before you write any code. When working with AI coding assistants, PRDs dramatically improve output quality by giving the AI complete context upfront.
 
@@ -66,7 +66,7 @@ The template system splits a feature specification into an index file plus 7 foc
 
 ## How to use the templates
 
-### 1. Download the template folder
+### Step 1: Download the template folder
 
 Download the templates from the docs site into your project:
 
@@ -79,7 +79,7 @@ done
 
 Or download them individually from the [Download the templates](#download-the-templates) section below.
 
-### 2. Rename the prefix (optional)
+### Step 2: Rename the prefix (optional)
 
 If you prefer feature-specific names, replace the `PRD-` prefix with your feature abbreviation:
 
@@ -90,70 +90,34 @@ PRD-02-BUSINESS-LOGIC.md     -> FEAT-02-BUSINESS-LOGIC.md
 ...
 ```
 
-After renaming, update all cross-document links inside the files (e.g., `PRD-01-OVERVIEW.md` becomes `FEAT-01-OVERVIEW.md`).
-
-### 3. Fill in the documents in order
-
-Work through the documents sequentially. Each builds on the previous:
-
-1. **INDEX** - Write the feature overview and capabilities list
-2. **OVERVIEW** - Define vision, scope, and success criteria with high-level wireframes
-3. **BUSINESS-LOGIC** - Write user stories, acceptance criteria, and domain rules
-4. **DATABASE-SCHEMA** - Design tables, indexes, and TypeScript interfaces
-5. **API-ENDPOINTS** - Specify each endpoint with request/response examples
-6. **FRONTEND-UI** - Detail page wireframes, component specs, interaction flows, and responsive behavior
-7. **IMPLEMENTATION** - Map out directory structure and architecture decisions
-8. **IMPLEMENTATION-STEPS** - Break the work into phased, ordered tasks
-
-You don't need to fill every section perfectly on the first pass. Start with what you know and refine as you go.
-
-### 4. Use AI to help fill the templates
-
-You can use Claude Code itself to help draft PRD sections:
+Or let your AI assistant handle the renaming and link updates in one step:
 
 ```text
-I'm building a task management feature. Here's what I need:
-- Users can create, edit, and delete tasks
-- Tasks have a title, description, status (todo/in-progress/done), and assignee
-- Tasks belong to projects
-- Only project members can view/edit tasks
-
-Help me fill out PRD-01-OVERVIEW.md with this information.
-Follow the template structure in docs/prd/task-management/PRD-01-OVERVIEW.md.
+Rename all files in docs/prd/ by replacing the PRD- prefix with <FEAT->.
+Then update every cross-document link inside those files so they reference the new filenames.
 ```
 
-## Scaling by feature size
+Replace `<FEAT>` with your own abbreviation and `docs/prd/` with your actual folder path.
 
-Not every feature needs all 7 documents. Match the documentation depth to the feature's complexity.
 
-| Feature size | Example | Documents to use |
-|-------------|---------|-----------------|
-| **Small** | Bug fix, minor UI tweak | No PRD needed |
-| **Medium** | New CRUD feature | INDEX + OVERVIEW + DATABASE + IMPLEMENTATION-STEPS |
-| **Medium with UI** | New CRUD feature with custom UI | INDEX + OVERVIEW + FRONTEND-UI + DATABASE + IMPLEMENTATION-STEPS |
-| **Large** | New module or app | All 7 documents |
-| **Complex** | Multi-app feature with calculations | All 7 documents + additional domain-specific docs |
+### Step 3: Start with the idea
 
-For anything that touches the database or introduces new API endpoints, the full set pays for itself in reduced back-and-forth.
+<a href="/prd-templates/requirements.md" download="requirements.md"><strong>Download requirements.md</strong></a>, place it at the root of your project, and fill in what you know. You do not need to answer every question. Leave sections blank if they do not apply. The more detail you provide, the less the AI will need to assume when generating the PRDs.
 
-## Working with AI coding assistants
+Or download it directly into your project root from the terminal:
 
-The recommended workflow when using PRDs with an AI coding assistant:
+```bash
+curl -s "https://docs.arantic.com/prd-templates/requirements.md" -o requirements.md
+```
 
-### Step 1: Start with the idea
+### Step 4: Generate all PRDs with one prompt
 
-Download the `requirements.md` template, place it at the root of your project, and fill in what you know. You do not need to answer every question — leave sections blank if they do not apply. The more detail you provide, the less the AI will need to assume when generating the PRDs.
-
-<a href="/prd-templates/requirements.md" download="requirements.md"><strong>-> Download requirements.md template</strong></a>
-
-### Step 2: Generate all PRDs with one prompt
-
-Point your AI assistant at `requirements.md` and the PRD templates. Choose the prompt that matches the scale of what you are building.
+Point your AI assistant at `requirements.md` and the PRD template folder you created in step 1 (`docs/prd/`).
 
 **Small feature** (UI change, single endpoint, no schema changes):
 
 ```text
-Read requirements.md and the templates in static/prd-templates/.
+Read requirements.md and all templates in docs/prd/.
 This is a small feature. Only generate the documents that are relevant:
 PRD-01-OVERVIEW.md, PRD-02-BUSINESS-LOGIC.md, and PRD-07-IMPLEMENTATION-STEPS.md.
 Skip documents that do not apply. Follow the template structure.
@@ -162,7 +126,7 @@ Skip documents that do not apply. Follow the template structure.
 **Medium feature** (new module, database changes, multiple endpoints):
 
 ```text
-Read requirements.md and all templates in static/prd-templates/.
+Read requirements.md and all templates in docs/prd/.
 Generate the full PRD set based on the requirements:
 - PRD-01-OVERVIEW.md (vision, goals, scope)
 - PRD-02-BUSINESS-LOGIC.md (user stories, acceptance criteria)
@@ -177,7 +141,7 @@ Follow the template structure for each file. Flag anything unclear.
 **Large feature** (cross-cutting, multiple systems, significant complexity):
 
 ```text
-Read requirements.md and all templates in static/prd-templates/.
+Read requirements.md and all templates in docs/prd/.
 This is a large, complex feature. Generate the full PRD set with extra depth:
 expand edge cases in PRD-02, detail all data relationships in PRD-03,
 specify every endpoint variant in PRD-04, and break PRD-07 into fine-grained
@@ -185,17 +149,17 @@ phases with clear dependencies between them.
 Flag any architectural decisions that need a human decision before proceeding.
 ```
 
-### Step 3: Review and refine until complete
+### Step 5: Review and refine until complete
 
 Read through all generated PRD files and check for gaps, incorrect assumptions, or missing details. Then prompt the AI to refine:
 
 ```text
-Read all PRD files in docs/prd/<feature-name>/.
+Read all PRD files in docs/prd/.
 Review them for consistency, gaps, and missing details.
 List everything that is unclear, contradictory, or incomplete.
 ```
 
-Address the issues — either by updating `requirements.md` with more detail and re-running Step 2, or by giving the AI direct corrections:
+Address the issues — either by updating `requirements.md` with more detail and re-running Step 4, or by giving the AI direct corrections:
 
 ```text
 Update PRD-02-BUSINESS-LOGIC.md: the approval flow requires two approvers, not one.

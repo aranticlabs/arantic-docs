@@ -42,6 +42,9 @@ macOS and Linux are the primary supported platforms. Split-pane mode works best 
 
 tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously: for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
+<img src="/img/docs/tmux-multi-agents.png" alt="Agent Teams tmux" />
+
+
 ## One-time setup (split-pane mode)
 
 The steps below apply to **macOS and Linux** (the recommended platforms). Windows users without WSL can skip this section. In-process mode works out of the box; just set `"teammateMode": "in-process"` in Step B.
