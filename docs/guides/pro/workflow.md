@@ -22,6 +22,8 @@ RPI is a structured approach to complex features. It splits the work into four p
 
 **Why phases matter:** Each checkpoint prevents wasted work. A misunderstanding caught in the Research phase costs minutes to fix. The same misunderstanding caught during Implementation costs hours.
 
+The "Describe" phase is where a PRD shines. Instead of writing requirements inline, you can point Claude Code at a structured PRD document that covers vision, business logic, schema, and API specs. See the [PRD-Driven Development guide](../prd) for a 7-document template system that pairs well with RPI.
+
 **Using RPI in practice:**
 
 ```text

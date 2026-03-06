@@ -199,13 +199,13 @@ Key tools: `create_entities`, `create_relations`, `search_nodes`, `open_nodes`, 
 
 [Download fetch.json](pathname:///mcps/fetch.json): HTTP requests and web page retrieval
 
-Lets Claude fetch any URL and read the response: API documentation, a JSON endpoint, an HTML page, a raw file from GitHub. Useful when you want it to look something up without leaving the terminal.
+Lets Claude fetch any URL and read the response: API documentation, a JSON endpoint, an HTML page, a raw file from GitHub. Useful when you want it to look something up without leaving the terminal. Requires [uv](https://docs.astral.sh/uv/): `pip install uv` or `brew install uv`.
 
 ```json
 {
   "fetch": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    "command": "uvx",
+    "args": ["mcp-server-fetch"]
   }
 }
 ```
@@ -453,13 +453,13 @@ For teams managing containers, CI pipelines, and cloud resources alongside their
 
 Lets Claude list running containers, inspect logs, start and stop services, and manage images. Useful for debugging container issues, generating Compose files, or automating local environment setup.
 
-Requires Docker Desktop or Docker Engine running locally.
+Requires Docker Desktop or Docker Engine running locally, with the `docker-mcp` CLI plugin installed (`~/.docker/cli-plugins/docker-mcp`).
 
 ```json
 {
   "docker": {
-    "command": "npx",
-    "args": ["-y", "@docker/mcp-server"]
+    "command": "docker",
+    "args": ["mcp", "gateway", "run"]
   }
 }
 ```

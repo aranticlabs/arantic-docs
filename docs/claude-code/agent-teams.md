@@ -113,11 +113,25 @@ claude
 
 Your main session becomes the lead agent. Teammates automatically appear in split panes. With `"auto"` mode, Claude detects that it's running inside tmux and switches to split-pane mode automatically.
 
-**Pro tip:** Add this alias to `~/.zshrc` or `~/.bashrc` to do both steps at once:
+
+:::note Pro tip
+
+Add this alias to your shell config to start the tmux session and launch Claude in one command:
+
+- macOS (default): `~/.zshrc`
+- Linux / older macOS: `~/.bashrc`
 
 ```bash
 alias claude-team='tmux new-session -s claude-team -c "$PWD" \; send-keys "claude" C-m'
 ```
+
+After saving the file, reload it (`source ~/.zshrc` or `source ~/.bashrc`), then start Agent Teams from any project directory with:
+
+```bash
+claude-team
+```
+
+:::
 
 ## Prompts for common workflows
 
@@ -126,17 +140,25 @@ Paste these into the lead agent to spin up a pre-configured team.
 ### Full-stack feature team (5 agents)
 
 ```
-Create an agent team for building a complete new feature: "User profile dashboard with dark mode toggle and real-time activity feed".
+Create an agent team for building: "User profile dashboard with dark mode toggle and real-time activity feed".
 
 Spawn 5 teammates:
-- Lead Architect (Opus) – overall design + coordination
-- Backend Specialist (Sonnet) – API routes, database models, auth
-- Frontend Specialist (Sonnet) – React components, Tailwind, state management
-- Testing & QA (Haiku) – unit + integration tests, edge cases
-- Devil's Advocate / Security (Sonnet) – finds flaws, security issues, performance problems
+- Architect – overall design + coordination
+- Backend – API routes, database models, auth
+- Frontend – React components, Tailwind, state management
+- QA – unit + integration tests, edge cases
+- Security – finds flaws, security issues, performance problems
 
-Use the shared task list. Teammates must message each other when they need info (e.g. "Backend: what is the exact API contract?"). Require plan approval from me before any code changes. When everyone is done, summarize the complete implementation plan and files changed.
+Rules:
+- Teammates message each other directly when they need info
+- Architect coordinates and has final say on design decisions
+- NO plan approval required — proceed autonomously
+- Write plans to .claude/plans/ before implementing
+- Security and QA review AFTER implementation, not before
+- Summarize all changes when complete
 ```
+
+> **Why no plan approval?** Adding "require plan approval" causes every agent to pause in plan mode and wait for a human response before continuing. Since you can switch between agents in the tmux session but each one is blocked, the whole team stalls. Writing plans to `.claude/plans/` captures the planning artifact without blocking execution.
 
 ### Code review / refactor team (4 agents)
 
@@ -149,7 +171,11 @@ Spawn 4 teammates:
 - UX & Accessibility Reviewer
 - Test Coverage & Reliability Reviewer
 
-Have them discuss findings with each other via messages. Use the shared task list. When finished, create a consolidated review document with severity ratings and suggested fixes. Only make changes after I approve the final plan.
+Rules:
+- Do NOT make any code changes — read and analyze only
+- Discuss findings with each other via messages
+- Use the shared task list
+- When finished, write a consolidated review to .claude/review.md with severity ratings and suggested fixes
 ```
 
 > **Lighter alternative:** If peer discussion isn't needed, the individual [security-auditor, ux-reviewer, accessibility-auditor, and api-contract-reviewer](./subagents#web--backend) subagents cover the same ground with much lower token overhead.
@@ -238,7 +264,7 @@ Use Agent Teams when you have genuinely independent workstreams (frontend + back
 
 - **Start small**: 3-5 teammates max; token cost scales with every agent.
 - **Right model for the job**: use Haiku for simple/mechanical tasks, Sonnet or Opus for complex reasoning.
-- **Require plan approval**: always add "Require plan approval before any code changes" to prevent surprise edits.
+- **Plans without blocking**: instead of "require plan approval", tell agents to write plans to `.claude/plans/` first. You get the artifact without every agent stalling in plan mode waiting for input.
 - **Two-session workflow**: for very large projects, run one tmux session for a research team and a separate one for the implementation team.
 - **Use git worktrees** for file isolation when agents edit overlapping parts of the codebase.
 

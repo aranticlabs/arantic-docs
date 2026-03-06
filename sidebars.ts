@@ -48,6 +48,7 @@ const sidebars: SidebarsConfig = {
             'guides/pro/workflow',
           ],
         },
+        'guides/prd',
         {
           type: 'category',
           label: 'Prompting',
