@@ -31,14 +31,14 @@ Claude Code has four overlapping ways to give it persistent context and instruct
 | Auto-loaded every session | Yes | No | No | No (invoked on demand) |
 | Token cost | Always in context | Per-session, isolated | Loaded at invocation | Loaded at invocation |
 | Can execute tools / run code | No | Yes | Yes | Yes |
-| Shareable via git | Yes | Yes (`.claude/agents/`) | Yes (`.claude/commands/`) | Yes (`.claude/commands/`) |
+| Shareable via git | Yes | Yes (`.claude/agents/`) | Yes (`.claude/commands/`) | Yes (`.claude/skills/`) |
 | Best for | Project-wide rules that always apply | Delegating isolated specialist tasks | Reusable prompt workflows | Reusable prompt workflows |
 
 <div style={{textAlign: 'center'}}>
   ![CLAUDE.md vs Agents vs Commands vs Skills quick comparison](/img/docs/agents-commands-skills.png)
 </div>
 
-In Claude Code, **Commands and Skills are the same thing**: both live in `.claude/commands/` as `.md` files. The distinction above reflects a conceptual difference in how you think about them. Some tools and emerging cross-tool conventions treat skills as a richer format (with explicit metadata, tool restrictions, and richer composition), but in Claude Code today the mechanism is the same.
+In Claude Code, **Commands and Skills have merged**: skills live in `.claude/skills/<skill-name>/SKILL.md`, while the older `.claude/commands/<name>.md` format still works for backward compatibility. Both create the same `/slash-command`. Skills are recommended because they support additional features: a directory for supporting files, frontmatter to control invocation, and automatic loading by Claude when relevant.
 
 ### Preloaded skills vs. on-demand skills
 
@@ -72,18 +72,22 @@ A practical rule of thumb:
 
 ## How skills work in Claude Code
 
-Claude Code treats any `.md` file inside `.claude/commands/` as a skill. The filename becomes the command name.
+Claude Code loads skills from `.claude/skills/`. Each skill is a directory containing a `SKILL.md` file. The directory name becomes the command name.
 
 ### Creating a skill
 
 ```bash
-mkdir -p .claude/commands
+mkdir -p .claude/skills/review
 ```
 
-Create a Markdown file with your prompt:
+Create a `SKILL.md` file with optional YAML frontmatter and your prompt:
 
 ```markdown
-# .claude/commands/review.md
+# .claude/skills/review/SKILL.md
+---
+name: review
+description: Review staged git changes for bugs, regressions, and missing tests
+---
 
 Review the staged git changes and provide a concise summary of:
 - What was changed and why
@@ -98,21 +102,23 @@ Invoke it in Claude Code:
 /review
 ```
 
+The older `.claude/commands/review.md` flat-file format still works, but the directory format is recommended because it supports supporting files and richer frontmatter options.
+
 ### Project-level vs. user-level skills
 
 | Location | Scope | Use case |
 |---|---|---|
-| `.claude/commands/` | Project-specific, shared via git | Team workflows, project conventions |
-| `~/.claude/commands/` | Personal, all projects | Your own recurring prompts |
+| `.claude/skills/<name>/SKILL.md` | Project-specific, shared via git | Team workflows, project conventions |
+| `~/.claude/skills/<name>/SKILL.md` | Personal, all projects | Your own recurring prompts |
 
-Commit `.claude/commands/` to source control so the whole team benefits from shared skills.
+Commit `.claude/skills/` to source control so the whole team benefits from shared skills.
 
 ### Parameterizing skills with `$ARGUMENTS`
 
 Use the `$ARGUMENTS` placeholder to pass dynamic input at invocation time:
 
 ```markdown
-# .claude/commands/explain.md
+# .claude/skills/explain/SKILL.md
 
 Explain the following code in plain language, suitable for a junior developer.
 Focus on what it does, not how it works internally.
@@ -133,7 +139,7 @@ Claude Code replaces `$ARGUMENTS` with everything you type after the command nam
 **Generate a pull request description:**
 
 ```markdown
-# .claude/commands/pr-desc.md
+# .claude/skills/pr-desc/SKILL.md
 
 Look at the diff between the current branch and main. Write a pull request description that includes:
 - A one-sentence summary of the change
@@ -147,7 +153,7 @@ Keep it concise and use plain English.
 **Enforce a code review checklist:**
 
 ```markdown
-# .claude/commands/checklist.md
+# .claude/skills/checklist/SKILL.md
 
 Review $ARGUMENTS against our team checklist:
 - No `any` types in TypeScript
@@ -162,7 +168,7 @@ Report each item as passed, failed, or not applicable.
 **Scaffold a new API endpoint:**
 
 ```markdown
-# .claude/commands/new-endpoint.md
+# .claude/skills/new-endpoint/SKILL.md
 
 Scaffold a new REST endpoint named $ARGUMENTS following our conventions:
 - Route file in src/routes/
@@ -175,7 +181,7 @@ Scaffold a new REST endpoint named $ARGUMENTS following our conventions:
 **Summarize recent changes for a standup:**
 
 ```markdown
-# .claude/commands/standup.md
+# .claude/skills/standup/SKILL.md
 
 Look at all commits from the last 24 hours on the current branch.
 Summarize what was done in 3-5 bullet points, written in first person,
@@ -187,12 +193,12 @@ suitable for a morning standup update. Be brief.
 - **Be specific about output format.** If you want bullet points, say so. If you want a table, say so.
 - **Include constraints.** Skills that say "keep it concise" or "no more than 5 items" produce more consistent results.
 - **Use `$ARGUMENTS` for the variable part, not the whole prompt.** The skill should carry your stable instructions; arguments supply the target.
-- **Version your skills in git.** Treat `.claude/commands/` like source code. Improve skills over time as you learn what produces better results.
+- **Version your skills in git.** Treat `.claude/skills/` like source code. Improve skills over time as you learn what produces better results.
 - **Name skills for their action.** `review`, `explain`, `scaffold`, `standup` are easy to remember. Avoid generic names like `help` or `prompt`.
 
 ## Ready-to-use skills
 
-Copy any of these into `.claude/commands/` (project) or `~/.claude/commands/` (user-wide) and save with the filename shown. Each file is also available to download directly.
+Copy any of these into `.claude/skills/<name>/SKILL.md` (project) or `~/.claude/skills/<name>/SKILL.md` (user-wide). Each file is also available to download directly.
 
 ---
 
@@ -674,7 +680,7 @@ Grok supports system prompts through the API, which is useful if you are buildin
 
 | Tool | Built-in skills / slash commands | Project-level sharing | Closest alternative |
 |---|---|---|---|
-| Claude Code | Yes (`.claude/commands/*.md`) | Yes (committed to git) | Native feature |
+| Claude Code | Yes (`.claude/skills/<name>/SKILL.md`) | Yes (committed to git) | Native feature |
 | Codex CLI | No | No | Shell wrappers + shared prompts dir |
 | Cursor | No (built-ins only) | No | Notepads, `.cursorrules` |
 | Gemini CLI | No | Via `GEMINI.md` (context only) | Shell wrappers + prompts dir |

@@ -50,7 +50,7 @@ The template system splits a feature specification into an index file plus 6 foc
 | **03-DATABASE-SCHEMA** | SQL definitions, indexes, TypeScript interfaces | Developers |
 | **04-API-ENDPOINTS** | REST API specification with request/response types | Developers |
 | **05-IMPLEMENTATION** | Code architecture, directory structure, integration points | Developers |
-| **06-IMPLEMENTATION-STEPS** | Phased checklist with dependencies | Developers, AI assistants |
+| **06-IMPLEMENTATION-STEPS** | Phased task list with dependencies | Developers, AI assistants |
 
 **Why separate documents?** Splitting the PRD into focused files keeps each document manageable and lets you feed specific sections to an AI assistant without overloading its context window. When Claude Code needs to implement API endpoints, you point it at the API document. When it needs database schema, you point it at the schema document.
 
