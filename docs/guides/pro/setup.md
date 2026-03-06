@@ -51,7 +51,7 @@ For all hook events and configuration options, see [Hooks](/claude-code/hooks).
 The Skill-Agent pattern combines custom skills with subagents for complex multi-step tasks:
 
 ```markdown
-<!-- .claude/commands/feature.md -->
+# .claude/skills/feature/SKILL.md
 Implement the feature described below. Follow these steps:
 
 1. Use a Plan subagent to design the approach

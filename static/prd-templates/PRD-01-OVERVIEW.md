@@ -71,10 +71,14 @@ Who uses this feature, and what is the end-to-end flow?
 ## 1.5 UI/UX Design
 
 <!--
-ASCII wireframes for each major screen/view.
-Include navigation structure, page layouts, table columns, form fields, and action buttons.
+High-level wireframes for the main screens/views.
+For detailed component specs, interaction patterns, responsive behavior, and error states,
+see PRD-05-FRONTEND-UI.md.
+
 ASCII art is preferred over descriptions because it gives AI coding assistants a clear visual specification.
 -->
+
+> For detailed frontend specifications (component props, interaction flows, responsive behavior, accessibility, error states), see [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md).
 
 ### 1.5.1 Navigation
 
@@ -85,15 +89,15 @@ ASCII art is preferred over descriptions because it gives AI coding assistants a
 |  [App Name]                              [User] [Settings]   |
 +--------------------------------------------------------------+
 |                                                              |
-|  [App 1]  [App 2]  [This Feature]                           |
-|                     ^^^^^^^^^^^^^^                           |
+|  [App 1]  [App 2]  [This Feature]                            |
+|                    ^^^^^^^^^^^^^^                            |
 |                                                              |
 |  Sidebar:                                                    |
-|  +------------------+                                        |
-|  | Section 1        |                                        |
-|  | Section 2        |                                        |
-|  | Settings         |                                        |
-|  +------------------+                                        |
+|  +---------------+                                           |
+|  | Section 1     |                                           |
+|  | Section 2     |                                           |
+|  | Settings      |                                           |
+|  +---------------+                                           |
 |                                                              |
 +--------------------------------------------------------------+
 ```
@@ -119,16 +123,16 @@ ASCII art is preferred over descriptions because it gives AI coding assistants a
 |                                                                                            |
 |  [Search...              ]                                   [+ Create New]                |
 |                                                                                            |
-|  Filter: [Filter 1 v] [Filter 2 v]                                                        |
+|  Filter: [Filter 1 v] [Filter 2 v]                                                         |
 |                                                                                            |
 |  +------------------------------------------------------------------------------+          |
-|  | Column 1    | Column 2    | Column 3    | Column 4  | Status  | Actions     |          |
+|  | Column 1    | Column 2    | Column 3    | Column 4  | Status  | Actions      |          |
 |  +------------------------------------------------------------------------------+          |
-|  | Value       | Value       | Value       | Value     | Active  | [Edit] [Del]|          |
-|  | Value       | Value       | Value       | Value     | Draft   | [Edit] [Del]|          |
+|  | Value       | Value       | Value       | Value     | Active  | [Edit] [Del] |          |
+|  | Value       | Value       | Value       | Value     | Draft   | [Edit] [Del] |          |
 |  +------------------------------------------------------------------------------+          |
 |                                                                                            |
-|  Showing 1-25 of N                                   [< 1 2 >]                            |
+|  Showing 1-25 of N                                   [< 1 2 >]                             |
 |                                                                                            |
 +--------------------------------------------------------------------------------------------+
 ```
@@ -176,25 +180,25 @@ ASCII art is preferred over descriptions because it gives AI coding assistants a
 
 ```
 +---------------------------------------------------------------------+
-|  [App] > Settings                                                    |
+|  [App] > Settings                                                   |
 +---------------------------------------------------------------------+
 |  [Tab 1] [Tab 2] [Tab 3]                                            |
-|   ^^^^^^^                                                            |
-|  [Subtab A] [Subtab B]                                               |
-|   ^^^^^^^^^                                                          |
+|   ^^^^^^^                                                           |
+|  [Subtab A] [Subtab B]                                              |
+|   ^^^^^^^^^                                                         |
 +---------------------------------------------------------------------+
-|                                                                      |
-|  [Settings content for selected tab/subtab]                          |
-|                                                                      |
+|                                                                     |
+|  [Settings content for selected tab/subtab]                         |
+|                                                                     |
 |  +----------------------------------------------------------------+ |
-|  | Setting              | Value                                    | |
+|  | Setting              | Value                                   | |
 |  +----------------------------------------------------------------+ |
-|  | [Setting 1]          | [Current value / input field]            | |
-|  | [Setting 2]          | [Current value / input field]            | |
+|  | [Setting 1]          | [Current value / input field]           | |
+|  | [Setting 2]          | [Current value / input field]           | |
 |  +----------------------------------------------------------------+ |
-|                                                                      |
-|  [Save Changes]                                                      |
-|                                                                      |
+|                                                                     |
+|  [Save Changes]                                                     |
+|                                                                     |
 +---------------------------------------------------------------------+
 ```
 
@@ -205,15 +209,15 @@ Key technical decisions and constraints.
 This is a reference section - list the technology choices, patterns, and rules that developers must follow.
 -->
 
-- **Architecture:** [e.g., Clean Architecture, Hexagonal, MVC, CQRS]
-- **Database:** [e.g., PostgreSQL, MySQL, MongoDB - version and schema strategy]
-- **Backend:** [e.g., Node.js/Express, Django, Spring Boot - language and framework]
-- **Frontend:** [e.g., React, Vue, Angular - framework and build tool]
-- **State Management:** [e.g., Redux, Zustand, React Query, Pinia]
-- **Styling:** [e.g., Tailwind CSS, CSS Modules, Styled Components, component library]
-- **Auth Pattern:** [e.g., JWT, OAuth 2.0, session-based - describe mandatory auth rules]
-- **API Pattern:** [e.g., REST, GraphQL - describe controller/resolver conventions]
-- **Field Name Mapping:** [e.g., describe naming convention rules between frontend and backend]
+- **Architecture:** [Describe the architectural pattern used]
+- **Database:** [Describe the database technology and schema strategy]
+- **Backend:** [Describe the backend language and framework]
+- **Frontend:** [Describe the frontend framework and build tool]
+- **State Management:** [Describe the client-side state management approach]
+- **Styling:** [Describe the styling approach and any component library]
+- **Auth Pattern:** [Describe the authentication mechanism and mandatory auth rules]
+- **API Pattern:** [Describe the API style and controller/handler conventions]
+- **Field Name Mapping:** [Describe naming convention rules between frontend and backend]
 
 ## Next Document
 

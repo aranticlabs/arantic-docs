@@ -9,7 +9,7 @@ Describe which database schema this feature uses and how it relates to other sch
 In a multi-app system, clarify schema ownership.
 -->
 
-This module is part of the **[Platform Name]** platform. Each app owns its own PostgreSQL schema:
+This module is part of the **[Platform Name]** platform. Each app owns its own database schema:
 
 | App | Schema | Example Tables |
 | --- | --- | --- |
@@ -45,7 +45,7 @@ Show how tables relate to each other. Use ASCII art for a clear visual represent
 +------------------+       +------------------+       +------------------+
 | id (PK)          |<------| table_1_id (FK)  |       | id (PK)          |
 | name             |       | id (PK)          |------>| table_2_id (FK)  |
-| status           |       | value            |       | quantity          |
+| status           |       | value            |       | quantity         |
 | created_at       |       | created_at       |       | created_at       |
 +------------------+       +------------------+       +------------------+
 ```
@@ -55,9 +55,10 @@ Show how tables relate to each other. Use ASCII art for a clear visual represent
 ## 3.3 Table Definitions
 
 <!--
-Define each table with full SQL CREATE statements.
+Define each table using your project's schema definition format.
 Include all columns, data types, constraints, defaults, and foreign keys.
 Follow the existing project conventions for audit fields and naming.
+The examples below use generic SQL — adapt to your database technology.
 -->
 
 ### 3.3.1 [schema].[table_1]
@@ -66,26 +67,23 @@ Follow the existing project conventions for audit fields and naming.
 
 ```sql
 CREATE TABLE [schema].[table_1] (
-    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name            VARCHAR(255) NOT NULL,
-    code            VARCHAR(50) NOT NULL UNIQUE,
-    description     TEXT,
-    status          VARCHAR(20) NOT NULL DEFAULT 'draft'
+    id              [UUID type] PRIMARY KEY DEFAULT [uuid function],
+    name            [string type](255) NOT NULL,
+    code            [string type](50) NOT NULL UNIQUE,
+    description     [text type],
+    status          [string type](20) NOT NULL DEFAULT 'draft'
                     CHECK (status IN ('draft', 'active', 'archived')),
-    is_active       BOOLEAN NOT NULL DEFAULT true,
+    is_active       [boolean type] NOT NULL DEFAULT true,
 
     -- Audit fields
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    created_by      VARCHAR(255) NOT NULL,
-    modified_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    modified_by     VARCHAR(255) NOT NULL
+    created_at      [timestamp type] NOT NULL DEFAULT [now function],
+    created_by      [string type](255) NOT NULL,
+    modified_at     [timestamp type] NOT NULL DEFAULT [now function],
+    modified_by     [string type](255) NOT NULL
 );
 
--- Modified at trigger
-CREATE TRIGGER update_[table_1]_modified_at
-    BEFORE UPDATE ON [schema].[table_1]
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_at();
+-- Add modified_at auto-update mechanism per your database conventions
+-- (trigger, ORM hook, application-level update, etc.)
 
 COMMENT ON TABLE [schema].[table_1] IS '[Description of the table purpose]';
 ```
@@ -96,25 +94,18 @@ COMMENT ON TABLE [schema].[table_1] IS '[Description of the table purpose]';
 
 ```sql
 CREATE TABLE [schema].[table_2] (
-    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    table_1_id      UUID NOT NULL REFERENCES [schema].[table_1](id),
-    value           NUMERIC(12,2) NOT NULL,
-    currency        VARCHAR(3) NOT NULL DEFAULT 'EUR'
-                    CHECK (currency IN ('EUR', 'USD', 'PLN', 'CNY')),
-    -- OR for multi-currency JSONB:
-    -- prices       JSONB NOT NULL DEFAULT '{"EUR": 0, "USD": 0, "PLN": 0, "CNY": 0}',
+    id              [UUID type] PRIMARY KEY DEFAULT [uuid function],
+    table_1_id      [UUID type] NOT NULL REFERENCES [schema].[table_1](id),
+    value           [decimal type](12,2) NOT NULL,
+    [field]         [type] NOT NULL DEFAULT '[default]'
+                    CHECK ([field] IN ('[option_1]', '[option_2]', '[option_3]')),
 
     -- Audit fields
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    created_by      VARCHAR(255) NOT NULL,
-    modified_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    modified_by     VARCHAR(255) NOT NULL
+    created_at      [timestamp type] NOT NULL DEFAULT [now function],
+    created_by      [string type](255) NOT NULL,
+    modified_at     [timestamp type] NOT NULL DEFAULT [now function],
+    modified_by     [string type](255) NOT NULL
 );
-
-CREATE TRIGGER update_[table_2]_modified_at
-    BEFORE UPDATE ON [schema].[table_2]
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_at();
 ```
 
 ### 3.3.3 [schema].[junction_table] (if needed)
@@ -123,8 +114,8 @@ CREATE TRIGGER update_[table_2]_modified_at
 
 ```sql
 CREATE TABLE [schema].[junction_table] (
-    table_1_id      UUID NOT NULL REFERENCES [schema].[table_1](id) ON DELETE CASCADE,
-    table_3_id      UUID NOT NULL REFERENCES [schema].[table_3](id) ON DELETE CASCADE,
+    table_1_id      [UUID type] NOT NULL REFERENCES [schema].[table_1](id) ON DELETE CASCADE,
+    table_3_id      [UUID type] NOT NULL REFERENCES [schema].[table_3](id) ON DELETE CASCADE,
     PRIMARY KEY (table_1_id, table_3_id)
 );
 ```
@@ -147,11 +138,11 @@ CREATE INDEX idx_[table_1]_status ON [schema].[table_1](status) WHERE is_active 
 CREATE INDEX idx_[table_1]_name ON [schema].[table_1](name);
 CREATE INDEX idx_[table_1]_created_at ON [schema].[table_1](created_at DESC);
 
--- Full-text search (if needed)
--- CREATE INDEX idx_[table_1]_search ON [schema].[table_1] USING GIN(search_vector);
+-- Full-text search (if needed — use your database's full-text index type)
+-- CREATE INDEX idx_[table_1]_search ON [schema].[table_1] ...;
 
 -- Composite indexes for common queries
-CREATE INDEX idx_[table_2]_table_1_currency ON [schema].[table_2](table_1_id, currency);
+CREATE INDEX idx_[table_2]_[field_a]_[field_b] ON [schema].[table_2](table_1_id, [field]);
 ```
 
 ---
@@ -166,90 +157,76 @@ This includes reference data, default configurations, templates, etc.
 ```sql
 -- [Category 1]: Reference data
 INSERT INTO [schema].[table_1] (id, name, code, status, created_by, modified_by) VALUES
-    (gen_random_uuid(), '[Name 1]', '[code-1]', 'active', 'system', 'system'),
-    (gen_random_uuid(), '[Name 2]', '[code-2]', 'active', 'system', 'system');
+    ([uuid], '[Name 1]', '[code-1]', 'active', 'system', 'system'),
+    ([uuid], '[Name 2]', '[code-2]', 'active', 'system', 'system');
 
 -- [Category 2]: Default configuration
-INSERT INTO [schema].[table_2] (id, table_1_id, value, currency, created_by, modified_by) VALUES
+INSERT INTO [schema].[table_2] (id, table_1_id, value, [field], created_by, modified_by) VALUES
     -- [Description of what these seed values represent]
-    (gen_random_uuid(), '[table_1_id_reference]', 100.00, 'EUR', 'system', 'system');
+    ([uuid], '[table_1_id_reference]', [default_value], '[option]', 'system', 'system');
 ```
 
 ---
 
-## 3.6 TypeScript Interfaces
+## 3.6 Data Model Interfaces
 
 <!--
-Define the TypeScript interfaces that map to the database tables.
-These should be placed in the shared types directory.
-Use your project's naming convention for TypeScript properties (e.g., camelCase) and handle
-any mapping to the database naming convention (e.g., snake_case) in your data access layer.
+Define the data model interfaces/types that map to the database tables.
+Use your project's language and naming conventions.
+The pseudocode below illustrates the structure — adapt to your stack.
 -->
 
-```typescript
-// shared/types/[feature]/[Feature].ts
+```
+// [Entity1] — maps to [schema].[table_1]
 
-export interface [Entity1] {
-  id: string;
-  name: string;
-  code: string;
-  description?: string;
-  status: '[Entity1]Status';
-  isActive: boolean;
-  createdAt: string;
-  createdBy: string;
-  modifiedAt: string;
-  modifiedBy: string;
-}
+[Entity1]:
+  id:          UUID / string
+  name:        string
+  code:        string
+  description: string (optional)
+  status:      [Entity1]Status
+  isActive:    boolean
+  createdAt:   datetime
+  createdBy:   string
+  modifiedAt:  datetime
+  modifiedBy:  string
 
-export type [Entity1]Status = 'draft' | 'active' | 'archived';
+[Entity1]Status: draft | active | archived
 
-export interface [Entity2] {
-  id: string;
-  [entity1]Id: string;
-  value: number;
-  currency: Currency;
-  createdAt: string;
-  createdBy: string;
-  modifiedAt: string;
-  modifiedBy: string;
-}
+// [Entity2] — maps to [schema].[table_2]
 
-// If using multi-currency JSONB pattern:
-export interface MultiCurrencyPrices {
-  EUR: number;
-  USD: number;
-  PLN: number;
-  CNY: number;
-}
-
-export type Currency = 'EUR' | 'USD' | 'PLN' | 'CNY';
+[Entity2]:
+  id:          UUID / string
+  [entity1]Id: UUID / string
+  value:       decimal
+  [field]:     [FieldType]
+  createdAt:   datetime
+  createdBy:   string
+  modifiedAt:  datetime
+  modifiedBy:  string
 ```
 
-### Request/Response DTOs
+### Request/Response Models
 
-```typescript
-// Create DTO (what the API receives)
-export interface Create[Entity1]Request {
-  name: string;
-  code: string;
-  description?: string;
-}
+```
+// Create request (what the API receives)
+Create[Entity1]Request:
+  name:        string  (required)
+  code:        string  (required)
+  description: string  (optional)
 
-// Update DTO
-export interface Update[Entity1]Request {
-  name?: string;
-  description?: string;
-  status?: [Entity1]Status;
-}
+// Update request
+Update[Entity1]Request:
+  name:        string  (optional)
+  description: string  (optional)
+  status:      [Entity1]Status  (optional)
 
 // List response with pagination
-export interface [Entity1]ListResponse {
-  data: [Entity1][];
-  total: number;
-  page: number;
-  pageSize: number;
-}
+[Entity1]ListResponse:
+  data:     [Entity1][]
+  total:    number
+  page:     number
+  pageSize: number
 ```
 
 ---

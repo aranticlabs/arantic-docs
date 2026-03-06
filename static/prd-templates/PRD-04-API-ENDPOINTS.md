@@ -1,6 +1,6 @@
 # PRD-04: API Endpoints
 
-[Back to Index](./PRD-00-INDEX.md) | [Previous: Database Schema](./PRD-03-DATABASE-SCHEMA.md) | [Next: Implementation](./PRD-05-IMPLEMENTATION.md)
+[Back to Index](./PRD-00-INDEX.md) | [Previous: Database Schema](./PRD-03-DATABASE-SCHEMA.md) | [Next: Frontend UI](./PRD-05-FRONTEND-UI.md)
 
 <!--
 All endpoints require authentication unless otherwise noted.
@@ -33,7 +33,7 @@ List all [resources] with optional filtering and pagination.
 
 **Response:** `200 OK`
 
-```typescript
+```
 {
   data: [Resource][],
   total: number,
@@ -58,7 +58,7 @@ Get a single [resource] by ID.
 
 **Response:** `200 OK`
 
-```typescript
+```
 [Resource]
 ```
 
@@ -78,17 +78,17 @@ Create a new [resource].
 
 **Request Body:**
 
-```typescript
+```
 {
-  name: string;          // Required - [description]
-  description?: string;  // Optional - [description]
-  [field]: [type];       // Required/Optional - [description]
+  name:        string   // required — [description]
+  description: string   // optional — [description]
+  [field]:     [type]   // required/optional — [description]
 }
 ```
 
 **Response:** `201 Created`
 
-```typescript
+```
 [Resource]
 ```
 
@@ -115,17 +115,17 @@ Update an existing [resource].
 
 **Request Body:**
 
-```typescript
+```
 {
-  name?: string;         // [description]
-  description?: string;  // [description]
-  [field]?: [type];      // [description]
+  name:        string  // optional — [description]
+  description: string  // optional — [description]
+  [field]:     [type]  // optional — [description]
 }
 ```
 
 **Response:** `200 OK`
 
-```typescript
+```
 [Resource]
 ```
 
@@ -183,7 +183,7 @@ Follow the same pattern: method, path, parameters, request/response, errors, per
 
 **Response:** `200 OK`
 
-```typescript
+```
 // Response type
 ```
 
@@ -197,13 +197,13 @@ Follow the same pattern: method, path, parameters, request/response, errors, per
 
 **Request Body:**
 
-```typescript
+```
 // Request type
 ```
 
 **Response:** `201 Created`
 
-```typescript
+```
 // Response type
 ```
 
@@ -223,7 +223,7 @@ Get configuration settings for [group].
 
 **Response:** `200 OK`
 
-```typescript
+```
 {
   [setting_key]: [type]
 }
@@ -239,7 +239,7 @@ Update configuration settings for [group].
 
 **Request Body:**
 
-```typescript
+```
 {
   [setting_key]: [type]
 }
@@ -269,7 +269,7 @@ Access a shared [resource] without authentication.
 
 **Response:** `200 OK`
 
-```typescript
+```
 // Public-safe response type (sensitive data excluded)
 ```
 
@@ -303,4 +303,4 @@ Provide a quick-reference table of all endpoints.
 
 ## Next Document
 
-Continue to [PRD-05-IMPLEMENTATION.md](./PRD-05-IMPLEMENTATION.md) for backend/frontend directory structure and architecture decisions.
+Continue to [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md) for detailed frontend wireframes, component specifications, and interaction patterns.

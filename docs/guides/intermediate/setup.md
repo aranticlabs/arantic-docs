@@ -67,10 +67,10 @@ For full permission configuration and scoping, see [Permissions](/claude-code/pe
 
 ## 3. Create custom skills
 
-Skills are reusable prompt templates stored as Markdown files in `.claude/commands/`. Create one:
+Skills are reusable prompt templates stored as `SKILL.md` files under `.claude/skills/<name>/`. Create one:
 
 ```markdown
-<!-- .claude/commands/review.md -->
+# .claude/skills/review/SKILL.md
 Review the current git diff for:
 1. Logic errors or bugs
 2. Missing error handling
@@ -95,7 +95,7 @@ Claude Code has three built-in subagent types that handle subtasks without clutt
 You can reference subagents in your skills:
 
 ```markdown
-<!-- .claude/commands/investigate.md -->
+# .claude/skills/investigate/SKILL.md
 Use a subagent to explore the codebase and find all usages of $ARGUMENTS.
 Then summarize the patterns you find and suggest whether this API surface
 can be simplified.
@@ -158,8 +158,9 @@ your-project/
 ├── CLAUDE.md                          # Project-level memory
 ├── .claude/
 │   ├── settings.json                  # Permissions + MCP servers
-│   ├── commands/
-│   │   └── review.md                  # Custom skill
+│   ├── skills/
+│   │   └── review/
+│   │       └── SKILL.md               # Custom skill
 │   └── rules/
 │       └── api-conventions.md         # Project rules
 └── ~/.claude/

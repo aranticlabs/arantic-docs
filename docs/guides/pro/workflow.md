@@ -56,7 +56,7 @@ Instead of typing RPI prompts manually each time, turn each phase into a reusabl
 
 Create these files in your project:
 
-**`.claude/commands/rpi-research.md`**
+**`.claude/skills/rpi-research/SKILL.md`**
 
 ```markdown
 Research the codebase for implementing: $ARGUMENTS
@@ -71,7 +71,7 @@ Output a structured research report with file paths and key findings.
 Do not make any code changes.
 ```
 
-**`.claude/commands/rpi-plan.md`**
+**`.claude/skills/rpi-plan/SKILL.md`**
 
 ```markdown
 Based on the research in this conversation, create an implementation plan for: $ARGUMENTS
@@ -86,7 +86,7 @@ Number the steps and estimate complexity (small/medium/large) for each.
 Do not implement anything yet.
 ```
 
-**`.claude/commands/rpi-implement.md`**
+**`.claude/skills/rpi-implement/SKILL.md`**
 
 ```markdown
 Implement step $ARGUMENTS from the plan in this conversation.
@@ -118,7 +118,7 @@ Review the plan, then implement step by step:
 /rpi-implement 1
 ```
 
-For more on creating custom commands, see [Skills](/claude-code/skills).
+For more on creating skills, see [Skills](/claude-code/skills).
 
 ## Subagent orchestration
 
@@ -128,7 +128,7 @@ Subagents let you delegate focused tasks to separate Claude instances that run w
 
 Create skills that invoke focused subagents for specific roles:
 
-**`.claude/commands/build-api.md`**
+**`.claude/skills/build-api/SKILL.md`**
 
 ```markdown
 You are an API builder. Implement the following API endpoint: $ARGUMENTS
@@ -140,7 +140,7 @@ Follow project conventions from CLAUDE.md. Include:
 - OpenAPI documentation comments
 ```
 
-**`.claude/commands/write-tests.md`**
+**`.claude/skills/write-tests/SKILL.md`**
 
 ```markdown
 You are a test writer. Write comprehensive tests for: $ARGUMENTS
