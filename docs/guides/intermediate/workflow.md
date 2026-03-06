@@ -28,6 +28,8 @@ Claude Code will respond with a structured breakdown:
 
 This gives you a roadmap. Implement one step at a time, reviewing between each.
 
+For complex features, consider writing a PRD before you start coding. A structured specification gives Claude Code the full context upfront and produces better results on the first pass. See the [PRD-Driven Development guide](../prd) for templates and workflow.
+
 ## Using CLAUDE.md to skip repetition
 
 Without a CLAUDE.md, you repeat context every session:
