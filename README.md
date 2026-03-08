@@ -1,7 +1,7 @@
 <div align="center">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="static/img/brand/arantic-logo-dark.svg" />
-        <img src="static/img/brand/arantic-logo-light.svg" width="300" alt="Arantic Docs" />
+        <img src="static/img/brand/arantic-logo-light.svg" width="400" alt="Arantic Docs" />
     </picture><br /><br />
     <p>Practical documentation for developers who want to use AI tools effectively in their daily workflow.<br />
     Guides, prompt templates, subagent blueprints, skills, and more — from first steps to advanced agent workflows.</p>
@@ -97,4 +97,4 @@ See [CLAUDE.md](./CLAUDE.md) for the full contributor and AI assistant guide.
 
 ---
 
-Built and maintained by [Arantic Digital](https://arantic.com).
+Built and maintained by <a href="https://arantic.com" target="_blank">Arantic Digital</a>.
