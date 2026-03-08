@@ -1,6 +1,8 @@
 ---
 sidebar_position: 5
 sidebar_label: Firmware Developer Setup
+description: Set up AI-assisted development for bare-metal C/C++, RTOS-based firmware, and microcontroller projects including STM32, Nordic, ESP32, and RP2040.
+keywords: [firmware development, embedded AI, microcontroller, STM32, ESP32, FreeRTOS, Zephyr, bare-metal C, RTOS, AI coding embedded]
 ---
 
 # Firmware Developer Setup

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 3
 sidebar_label: Refactoring with AI
+description: Direct AI to perform targeted refactoring tasks by being explicit about goals, such as removing nested conditionals or extracting reusable functions.
+keywords: [refactoring with AI, code refactoring, code smells, AI refactoring, clean code, early returns, extract function, structural improvements]
 ---
 
 # Refactoring with AI

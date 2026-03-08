@@ -1,6 +1,8 @@
 ---
 sidebar_position: 12
 sidebar_label: Workflows & Orchestration
+description: Compose Claude Code skills, subagents, and hooks into structured orchestration patterns for complex, multi-step automated development tasks.
+keywords: [Claude Code workflows, orchestration, automation patterns, skills, subagents, hooks, multi-step tasks, workflow composition]
 ---
 
 # Workflows & Orchestration

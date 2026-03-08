@@ -97,4 +97,4 @@ See [CLAUDE.md](./CLAUDE.md) for the full contributor and AI assistant guide.
 
 ---
 
-Built and maintained by <a href="https://arantic.com" target="_blank">Arantic Digital</a>.
+Built and maintained by [Arantic Digital](https://arantic.com).

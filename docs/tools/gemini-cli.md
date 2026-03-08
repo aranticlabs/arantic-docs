@@ -1,6 +1,8 @@
 ---
 sidebar_position: 6
 sidebar_label: Gemini CLI
+description: Gemini CLI is Google's open-source terminal coding agent powered by Gemini models, with a generous free tier for individual developers and small teams.
+keywords: [Gemini CLI, Google AI, terminal coding agent, Gemini models, free tier, open source, AI coding, command line]
 ---
 
 # Gemini CLI

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Memory
+description: Learn how Claude Code's memory files provide persistent context across sessions, eliminating the need to repeat project conventions every time.
+keywords: [Claude Code memory, CLAUDE.md, persistent context, memory files, AI context, project conventions, session memory, agentic coding]
 ---
 
 # Memory

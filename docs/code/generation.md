@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: Code Generation
+description: Learn how to use AI effectively for code generation, including what tasks it handles well, how to prompt for quality output, and what to verify.
+keywords: [code generation, AI code generation, boilerplate, Claude Code, GitHub Copilot, code templates, API routes, type definitions]
 ---
 
 # Code Generation

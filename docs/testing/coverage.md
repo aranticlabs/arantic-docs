@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Improving Test Coverage with AI
+description: Use AI to quickly improve test coverage by identifying uncovered code paths and generating tests for the scenarios that matter most.
+keywords: [test coverage, AI test coverage, coverage report, uncovered paths, edge cases, integration tests, AI testing, code coverage]
 ---
 
 # Improving Test Coverage with AI

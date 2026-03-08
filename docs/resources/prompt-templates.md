@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Prompt Templates
+description: Copy-paste prompt templates for common AI-assisted development tasks including code generation, debugging, testing, refactoring, and documentation.
+keywords: [prompt templates, AI prompts, code generation prompts, debugging prompts, refactoring prompts, testing prompts, Claude Code prompts]
 ---
 
 # Prompt Templates

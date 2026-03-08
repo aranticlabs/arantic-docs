@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: GitHub Repos
+description: A curated list of GitHub repositories with practical resources, configurations, and guides for AI-assisted development with Claude Code.
+keywords: [GitHub repos, Claude Code resources, Anthropic skills, open source AI, community resources, AI development repos, curated list]
 ---
 
 # GitHub Repos

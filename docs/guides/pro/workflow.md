@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Workflow
+description: Build repeatable automated workflows for complex features using the Research-Plan-Implement methodology with custom skills, subagents, and agent teams.
+keywords: [Claude Code pro workflow, RPI methodology, automated workflow, agent teams, skills, subagents, complex features, orchestration]
 ---
 
 # Automated Feature Workflows

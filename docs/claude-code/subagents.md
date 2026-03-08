@@ -1,6 +1,8 @@
 ---
 sidebar_position: 8
 sidebar_label: Subagents
+description: Subagents let Claude Code delegate focused tasks to child instances with isolated context windows, keeping your main session tidy and token-efficient.
+keywords: [Claude Code subagents, child agents, context window, delegation, AI orchestration, task delegation, token efficiency, parallel tasks]
 ---
 
 # Subagents

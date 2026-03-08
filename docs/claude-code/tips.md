@@ -1,6 +1,8 @@
 ---
 sidebar_position: 15
 sidebar_label: Tips
+description: Practical tips for getting the most out of Claude Code, including specificity, reviewing changes, scoping tasks, and using plan mode effectively.
+keywords: [Claude Code tips, best practices, productivity, plan mode, CLAUDE.md, git commits, task scoping, AI coding tips]
 ---
 
 # Tips
