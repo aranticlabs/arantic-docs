@@ -12,6 +12,21 @@ const config: Config = {
   headTags: [
     { tagName: 'link', attributes: { rel: 'icon', type: 'image/svg+xml', href: '/img/brand/favicon.svg' } },
     { tagName: 'link', attributes: { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/img/brand/favicon-96x96.png' } },
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML: `
+        (function () {
+          if (localStorage.getItem('docusaurus.locale')) return;
+          var path = window.location.pathname;
+          if (path.startsWith('/de')) return;
+          var lang = (navigator.language || '').toLowerCase();
+          var target = lang.startsWith('de') ? 'de' : null;
+          if (!target) return;
+          window.location.replace('/' + target + path + window.location.search + window.location.hash);
+        })();
+      `,
+    },
   ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future

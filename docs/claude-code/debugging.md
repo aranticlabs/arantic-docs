@@ -1,6 +1,8 @@
 ---
 sidebar_position: 14
 sidebar_label: Debugging
+description: Troubleshoot Claude Code issues using /doctor diagnostics, background terminal tasks, screenshots, and MCP server connection checks.
+keywords: Claude Code debugging, /doctor, diagnostics, troubleshooting, MCP connections, environment tips, Claude Code issues, debug mode
 ---
 
 # Debugging

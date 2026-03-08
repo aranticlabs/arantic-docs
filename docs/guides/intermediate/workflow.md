@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Workflow
+description: Build larger multi-file features with Claude Code by breaking work into steps, managing context windows, and recovering from mistakes effectively.
+keywords: Claude Code intermediate workflow, multi-step features, context management, multi-file development, Claude Code recovery, AI development
 ---
 
 # Multi-Step Feature Development

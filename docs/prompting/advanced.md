@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Advanced Prompting
+description: Advanced prompting techniques including chain-of-thought reasoning, role prompting, and structured output formats for reliable AI coding results.
+keywords: advanced prompting, chain-of-thought, prompt engineering, structured output, role prompting, AI coding, few-shot examples, reasoning
 ---
 
 # Advanced Prompting

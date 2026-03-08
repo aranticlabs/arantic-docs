@@ -1,6 +1,8 @@
 ---
 sidebar_position: 3
 sidebar_label: GitHub Copilot
+description: GitHub Copilot provides inline code completions and a chat panel directly in your editor, supporting VS Code, JetBrains IDEs, Neovim, and GitHub.com.
+keywords: GitHub Copilot, AI code completion, VS Code AI, JetBrains AI, inline completions, Copilot Chat, AI editor integration
 ---
 
 # GitHub Copilot

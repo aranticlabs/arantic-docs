@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: Setup
+description: Step-by-step guide to installing and configuring Claude Code from scratch, including API key setup and a basic CLAUDE.md in about 15 minutes.
+keywords: Claude Code setup, install Claude Code, CLAUDE.md, API key, getting started, AI coding, beginner setup, Node.js
 ---
 
 # Starter Setup

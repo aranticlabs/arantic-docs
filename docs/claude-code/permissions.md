@@ -1,6 +1,8 @@
 ---
 sidebar_position: 5
 sidebar_label: Permissions
+description: Configure Claude Code's layered permission system to control which tools can run and which files can be accessed at project and user levels.
+keywords: Claude Code permissions, settings.json, allow list, deny list, tool permissions, file access control, security, permission levels
 ---
 
 # Permissions

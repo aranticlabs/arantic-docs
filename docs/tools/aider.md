@@ -1,6 +1,8 @@
 ---
 sidebar_position: 7
 sidebar_label: Aider
+description: Aider is an open-source terminal-based AI pair programming tool that integrates with git and supports multiple LLMs for collaborative coding.
+keywords: Aider, AI pair programming, terminal AI, open source, git integration, LLM coding, aider-chat, command line AI
 ---
 
 # Aider

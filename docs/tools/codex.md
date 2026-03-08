@@ -1,6 +1,8 @@
 ---
 sidebar_position: 5
 sidebar_label: OpenAI Codex CLI
+description: OpenAI Codex CLI is a terminal-based coding agent that reads your codebase, suggests changes, and executes commands locally using OpenAI models.
+keywords: Codex CLI, OpenAI Codex, terminal coding agent, AI CLI, OpenAI, code generation, local AI agent, command line coding
 ---
 
 # OpenAI Codex CLI

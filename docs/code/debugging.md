@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Debugging with AI
+description: Use AI as a debugging partner by providing full context including error messages, stack traces, and relevant code to get accurate hypotheses and fixes.
+keywords: debugging with AI, AI debugging, error messages, stack traces, Claude Code debugging, code fixes, bug analysis, troubleshooting
 ---
 
 # Debugging with AI

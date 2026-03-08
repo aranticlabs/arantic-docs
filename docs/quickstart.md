@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Quickstart
+description: Get AI-assisted coding working in your environment in under 30 minutes by picking the setup guide that matches your tech stack.
+keywords: quickstart, AI coding setup, Claude Code, web developer, .NET developer, firmware developer, IDE setup, getting started
 ---
 
 # Quickstart

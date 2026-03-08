@@ -2,6 +2,8 @@
 sidebar_position: 1
 slug: /
 sidebar_label: AI-Assisted Programming
+description: Practical guides on using AI tools in your daily programming workflow, covering prompting, code generation, debugging, testing, and AI tool integrations.
+keywords: AI-assisted programming, Claude Code, GitHub Copilot, Cursor, code generation, AI coding tools, prompting, software development
 ---
 
 # AI-Assisted Programming
