@@ -8,11 +8,15 @@ This file provides context, conventions, and workflows for AI assistants (Claude
 
 **arantic-docs** is the official documentation site for [Arantic Digital](https://docs.arantic.com), covering how to use AI effectively in software development workflows. It is built with **Docusaurus 3.9** (React 19, TypeScript) and deployed as a static site.
 
-The site covers four main topic areas:
+The site covers:
+- Experience-level guides (starter, intermediate, pro) including PRD-driven development
 - Prompting techniques (basics and advanced)
 - Code generation, debugging, and refactoring with AI
 - Testing with AI assistance
-- AI tools and integrations (Claude Code, GitHub Copilot, Cursor)
+- AI tools and integrations (Claude Code, GitHub Copilot, Cursor, Codex, Gemini CLI, Aider, Mistral)
+- Claude Code deep-dives: memory, skills, subagents, agent teams, hooks, MCP, workflows, plugins
+- Stack-specific setup guides (web/backend, .NET, firmware/embedded)
+- Resources: prompt templates, subagent blueprints, skill templates, GitHub repos, troubleshooting
 
 ---
 
@@ -35,26 +39,32 @@ The site covers four main topic areas:
 arantic-docs/
 ├── docs/                        # All documentation content (Markdown/MDX)
 │   ├── intro.md                 # Landing page (slug: /)
-│   ├── code/                    # Code generation, debugging, refactoring guides
-│   │   ├── generation.md
-│   │   ├── debugging.md
-│   │   └── refactoring.md
-│   ├── prompting/               # Prompting technique guides
-│   │   ├── basics.md
-│   │   └── advanced.md
-│   ├── testing/                 # Testing-with-AI guides
-│   │   ├── unit-tests.md
-│   │   └── coverage.md
-│   └── tools/                   # AI tools & integrations
-│       ├── overview.md
-│       ├── claude-code.md
-│       ├── github-copilot.md
-│       └── cursor.md
+│   ├── quickstart.md
+│   ├── guides/                  # Experience-level guides (starter, intermediate, pro)
+│   │   ├── prd.md
+│   │   ├── starter/             # setup.md, workflow.md
+│   │   ├── intermediate/        # setup.md, workflow.md
+│   │   └── pro/                 # setup.md, workflow.md
+│   ├── claude-code/             # Deep-dives: memory, skills, subagents, hooks, mcp, etc.
+│   ├── prompting/               # basics.md, advanced.md
+│   ├── code/                    # generation.md, debugging.md, refactoring.md
+│   ├── testing/                 # unit-tests.md, coverage.md
+│   ├── tools/                   # overview.md + one file per tool
+│   ├── setup/                   # Stack-specific setup (web-and-backend, dotnet, firmware)
+│   └── resources/               # prompt-templates.md, github-repos.md, troubleshooting.md
 ├── src/
+│   ├── components/
+│   │   ├── StructuredData.tsx   # JSON-LD schemas (Organization, WebSite, BreadcrumbList)
+│   │   └── HowToSchema.tsx      # Reusable HowTo schema for tutorial pages
+│   ├── theme/
+│   │   ├── Root.tsx             # Global wrapper — injects StructuredData on every page
+│   │   └── DocCard/             # Custom DocCard component
 │   └── css/
 │       └── custom.css           # Site branding and theme overrides
 ├── static/
-│   ├── img/                     # Logos, favicon, OG image (gitkeep only now)
+│   ├── img/
+│   │   ├── brand/               # Logos, favicons, OG image
+│   │   └── docs/                # Screenshots and images used in docs
 │   └── robots.txt               # Crawler permissions incl. AI bots
 ├── docusaurus.config.ts         # Main site configuration
 ├── sidebars.ts                  # Sidebar/navigation structure
@@ -106,10 +116,16 @@ Every `.md` / `.mdx` file must include YAML frontmatter:
 ---
 sidebar_position: 1       # Controls order within its category (required)
 slug: /optional-override  # Only needed to override the default URL path
+description: One sentence describing the page, under 160 characters (required for SEO/GEO)
+keywords: [keyword one, keyword two, keyword three]   # 6-10 terms, inline bracket format (required for SEO/GEO)
 ---
 ```
 
 `intro.md` uses `slug: /` to serve as the site root.
+
+**SEO/GEO rules for `description` and `keywords`:**
+- `description`: one sentence, max 160 characters, accurate to the page content
+- `keywords`: inline YAML array (`[term1, term2]`), 6-10 terms relevant to the page topic — do NOT use a comma-separated string or block list format, as Docusaurus requires an array and will throw a build error otherwise
 
 ### File Naming
 
@@ -126,31 +142,6 @@ Documentation pages follow a consistent structure:
 3. **H2 sections** — topic breakdown using "What works well" / "What to avoid" framing
 4. **Code examples** — always language-tagged, often contrasting weak vs. strong examples
 5. **Caveats / Warnings** — inline notes about AI limitations specific to the topic
-
-Example pattern (from `prompting/basics.md`):
-```markdown
----
-sidebar_position: 1
----
-
-# Prompting Basics
-
-Brief explanation of the topic.
-
-## Be Specific
-
-...explanation...
-
-**Weak prompt:**
-```
-...
-```
-
-**Strong prompt:**
-```
-...
-```
-```
 
 ### Code Blocks
 
@@ -169,10 +160,14 @@ The `sidebars.ts` file defines navigation manually. When adding a new document:
 1. Create the `.md` file in the correct `docs/` subdirectory with proper frontmatter `sidebar_position`
 2. If creating a new category, add a `category` entry to `sidebars.ts`
 3. Sidebar categories currently defined:
+   - Guides → `docs/guides/`
+   - Claude Code → `docs/claude-code/`
    - Prompting Techniques → `docs/prompting/`
    - Code Generation & Debugging → `docs/code/`
    - Testing with AI → `docs/testing/`
    - Tools & Integrations → `docs/tools/`
+   - Setup → `docs/setup/`
+   - Resources → `docs/resources/`
 
 ---
 
@@ -205,17 +200,22 @@ Both light and dark variants are defined. Code block highlighting uses the plum 
 
 Explicitly permits major AI web crawlers including `Claude-Web`, `anthropic-ai`, `GPTBot`, `PerplexityBot`, and others. Do not remove these entries.
 
+### SEO/GEO Components (`src/`)
+
+- `src/components/StructuredData.tsx` — injects JSON-LD schemas (Organization, WebSite, BreadcrumbList) on every page via `Root.tsx`
+- `src/components/HowToSchema.tsx` — reusable component for HowTo structured data on tutorial/setup pages; import and use it in MDX files
+- `src/theme/Root.tsx` — Docusaurus root wrapper that renders `StructuredData` globally
+
 ---
 
 ## Static Assets
 
-Expected image assets (add before deploying new branding):
-- `static/img/arantic-logo-light.svg`
-- `static/img/arantic-logo-dark.svg`
-- `static/img/favicon.ico`
-- `static/img/og-image.png`
+All brand assets are in `static/img/brand/`:
+- `arantic-logo-light.svg` / `arantic-logo-dark.svg` — navbar and README logo
+- `favicon.svg`, `favicon.ico`, `favicon-96x96.png` — favicons
+- `og-image.png` — social sharing image (1200×630px)
 
-The `static/img/` directory currently only has a `.gitkeep` — these files must be added before the site fully renders logos.
+Screenshots and images used inside docs go in `static/img/docs/`.
 
 ---
 
@@ -239,10 +239,10 @@ The site supports **English (en)** and **German (de)**. English is the default/p
 
 ## Git Workflow
 
-- Feature branches follow the pattern: `claude/<description>-<session-id>`
-- The default base branch is `main` (remote) / `master` (local)
-- Commits should be clear and descriptive (imperative mood: "Add X", "Fix Y")
-- No CI/CD pipelines are configured; deployment is manual via `npm run deploy`
+- Two branches: `main` (protected, production) and `dev` (active development)
+- All work happens on `dev` — never commit or push directly to `main`
+- **Do not commit code.** Claude Code should make file changes only; the user handles all commits and merges
+- `main` is protected by a GitHub branch rule; direct pushes will be rejected
 
 ---
 
@@ -253,9 +253,10 @@ The site supports **English (en)** and **German (de)**. English is the default/p
 | Build fails with broken link error | Check all internal links; Docusaurus throws on broken links |
 | Sidebar not updating | Verify `sidebar_position` frontmatter and `sidebars.ts` category entries |
 | Stale content in dev server | Run `npm run clear` then `npm start` |
-| Logo/favicon not appearing | Add missing image files to `static/img/` |
 | Type errors in config files | Run `npm run typecheck` for details; config files use `satisfies` for strict typing |
 | i18n content missing | Run `npm run write-translations` to generate scaffolding |
+| Build fails with `"keywords" must be an array` | `keywords` frontmatter must use inline bracket format: `[term1, term2]` — not a string |
+| Logo/favicon not appearing | Assets are in `static/img/brand/`, not `static/img/` |
 
 ---
 
@@ -267,4 +268,3 @@ The site supports **English (en)** and **German (de)**. English is the default/p
 4. Use language-tagged code blocks and consistent terminology
 5. If it's a new category, add an entry to `sidebars.ts`
 6. Run `npm run build` to verify no broken links or MDX errors
-7. Commit and push to your feature branch
