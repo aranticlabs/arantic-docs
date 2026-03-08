@@ -2,7 +2,7 @@
 sidebar_position: 2
 sidebar_label: Workflow
 description: Learn the basic five-step loop for building features with Claude Code, from writing your first prompt to committing a completed task.
-keywords: Claude Code workflow, feature development, AI coding loop, beginner workflow, prompt, implement, review, commit, Claude Code tutorial
+keywords: [Claude Code workflow, feature development, AI coding loop, beginner workflow, prompt, implement, review, commit, Claude Code tutorial]
 ---
 
 # Your First Feature with Claude Code

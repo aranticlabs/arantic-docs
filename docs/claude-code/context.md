@@ -2,7 +2,7 @@
 sidebar_position: 4
 sidebar_label: Managing Context
 description: Learn how to manage Claude Code's context window effectively by using /compact proactively and structuring sessions to maintain output quality.
-keywords: Claude Code context, context window, /compact, context management, token usage, session management, context limit, compaction
+keywords: [Claude Code context, context window, /compact, context management, token usage, session management, context limit, compaction]
 ---
 
 # Managing Context

@@ -2,7 +2,7 @@
 sidebar_position: 1
 sidebar_label: Prompting Basics
 description: Learn the foundational prompting techniques that produce better AI output, including how to be specific, provide context, and constrain scope.
-keywords: prompting basics, AI prompts, prompt engineering, code generation prompts, AI coding, specificity, context, prompt quality
+keywords: [prompting basics, AI prompts, prompt engineering, code generation prompts, AI coding, specificity, context, prompt quality]
 ---
 
 # Prompting Basics

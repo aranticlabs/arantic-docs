@@ -2,7 +2,7 @@
 sidebar_position: 4
 sidebar_label: .NET Developer Setup
 description: Set up AI-assisted coding for C#, ASP.NET Core, WinForms, WPF, and MAUI development in Visual Studio and VS Code with Claude Code and GitHub Copilot.
-keywords: .NET setup, C# AI coding, ASP.NET Core, Visual Studio AI, WinForms, WPF, MAUI, Claude Code .NET, GitHub Copilot
+keywords: [.NET setup, C# AI coding, ASP.NET Core, Visual Studio AI, WinForms, WPF, MAUI, Claude Code .NET, GitHub Copilot]
 ---
 
 # .NET Developer Setup

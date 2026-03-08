@@ -2,7 +2,7 @@
 sidebar_position: 13
 sidebar_label: Agent Teams
 description: Agent Teams is a Claude Code feature that lets a lead agent spawn and coordinate multiple specialized agents working in parallel via a shared task list.
-keywords: Claude Code agent teams, parallel agents, multi-agent, tmux, agent coordination, task list, experimental feature, split pane
+keywords: [Claude Code agent teams, parallel agents, multi-agent, tmux, agent coordination, task list, experimental feature, split pane]
 ---
 
 # Agent Teams

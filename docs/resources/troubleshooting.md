@@ -2,7 +2,7 @@
 sidebar_position: 3
 sidebar_label: Troubleshooting & Limitations
 description: Common problems with AI coding tools, including hallucinated APIs, outdated knowledge, and context loss, along with practical fixes for each issue.
-keywords: AI troubleshooting, AI limitations, hallucinations, outdated knowledge, context window, AI errors, debugging AI, common problems
+keywords: [AI troubleshooting, AI limitations, hallucinations, outdated knowledge, context window, AI errors, debugging AI, common problems]
 ---
 
 # Troubleshooting & Limitations

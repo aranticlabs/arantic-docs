@@ -2,7 +2,7 @@
 sidebar_position: 1
 sidebar_label: Tools Overview
 description: A comparison of AI tools for programming, covering chat-based tools, IDE integrations, and terminal agents with their key differences and use cases.
-keywords: AI tools overview, Claude Code, GitHub Copilot, Cursor, Aider, Gemini CLI, Codex CLI, AI coding tools, IDE integration
+keywords: [AI tools overview, Claude Code, GitHub Copilot, Cursor, Aider, Gemini CLI, Codex CLI, AI coding tools, IDE integration]
 ---
 
 # Tools Overview

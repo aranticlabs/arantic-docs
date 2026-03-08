@@ -2,7 +2,7 @@
 sidebar_position: 7
 sidebar_label: Skills
 description: Skills are reusable prompt templates in Claude Code that encode recurring tasks and team conventions into short slash commands for consistent execution.
-keywords: Claude Code skills, custom slash commands, prompt templates, reusable prompts, workflow automation, team conventions, skills directory
+keywords: [Claude Code skills, custom slash commands, prompt templates, reusable prompts, workflow automation, team conventions, skills directory]
 ---
 
 # Skills (Custom Slash Commands)

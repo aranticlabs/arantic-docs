@@ -2,7 +2,7 @@
 sidebar_position: 10
 sidebar_label: MCP Servers
 description: MCP (Model Context Protocol) lets Claude Code connect to external services like databases, APIs, and browsers through a standardized client-server interface.
-keywords: MCP, Model Context Protocol, MCP servers, Claude Code integrations, external tools, database access, browser tools, API integration
+keywords: [MCP, Model Context Protocol, MCP servers, Claude Code integrations, external tools, database access, browser tools, API integration]
 ---
 
 # MCP Servers

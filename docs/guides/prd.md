@@ -2,7 +2,7 @@
 sidebar_position: 4
 sidebar_label: PRD
 description: Learn how to write Product Requirements Documents that give AI coding assistants complete context upfront, dramatically improving output quality.
-keywords: PRD, product requirements document, AI-assisted development, specification, Claude Code, software planning, AI context, requirements template
+keywords: [PRD, product requirements document, AI-assisted development, specification, Claude Code, software planning, AI context, requirements template]
 ---
 
 # Product Requirements Document (PRD)

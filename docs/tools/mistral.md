@@ -2,7 +2,7 @@
 sidebar_position: 8
 sidebar_label: Mistral
 description: Mistral offers AI coding tools including a terminal CLI agent, code completion models, and IDE integrations with a focus on data privacy and self-hosting.
-keywords: Mistral, Mistral AI, Vibe CLI, AI coding, self-hosted AI, data privacy, European AI, code completion, terminal agent
+keywords: [Mistral, Mistral AI, Vibe CLI, AI coding, self-hosted AI, data privacy, European AI, code completion, terminal agent]
 ---
 
 # Mistral

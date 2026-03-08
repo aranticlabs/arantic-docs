@@ -2,7 +2,7 @@
 sidebar_position: 9
 sidebar_label: Hooks
 description: Hooks are shell commands and HTTP requests that run deterministically at specific Claude Code lifecycle events, providing reliable automation independent of AI judgment.
-keywords: Claude Code hooks, lifecycle hooks, shell commands, deterministic automation, formatting, file protection, pre-tool hooks, post-tool hooks
+keywords: [Claude Code hooks, lifecycle hooks, shell commands, deterministic automation, formatting, file protection, pre-tool hooks, post-tool hooks]
 ---
 
 # Hooks

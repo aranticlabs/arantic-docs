@@ -2,7 +2,7 @@
 sidebar_position: 4
 sidebar_label: Cursor
 description: Cursor is a VS Code fork with deep AI integration that can reference your entire codebase and reason across multiple files for complex edits.
-keywords: Cursor, AI code editor, VS Code fork, codebase AI, multi-file editing, Cursor AI, code completion, AI pair programming
+keywords: [Cursor, AI code editor, VS Code fork, codebase AI, multi-file editing, Cursor AI, code completion, AI pair programming]
 ---
 
 # Cursor

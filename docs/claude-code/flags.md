@@ -2,7 +2,7 @@
 sidebar_position: 6
 sidebar_label: CLI Flags
 description: Complete reference for Claude Code CLI flags covering session management, model selection, output formatting, and headless/CI mode options.
-keywords: Claude Code CLI flags, command line options, --continue, --resume, --model, headless mode, CI integration, CLI reference
+keywords: [Claude Code CLI flags, command line options, --continue, --resume, --model, headless mode, CI integration, CLI reference]
 ---
 
 # CLI Flags

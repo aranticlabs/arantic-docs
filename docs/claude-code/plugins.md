@@ -2,7 +2,7 @@
 sidebar_position: 11
 sidebar_label: Plugins
 description: Plugins are installable packages that bundle multiple skills, agents, hooks, and tool integrations into versioned shareable units for Claude Code.
-keywords: Claude Code plugins, plugin marketplace, installable extensions, skills bundle, agent integrations, versioned packages, community plugins
+keywords: [Claude Code plugins, plugin marketplace, installable extensions, skills bundle, agent integrations, versioned packages, community plugins]
 ---
 
 # Plugins

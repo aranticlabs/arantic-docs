@@ -2,7 +2,7 @@
 sidebar_position: 1
 sidebar_label: Writing Unit Tests with AI
 description: Generate comprehensive unit tests with AI by providing implementations and letting it enumerate edge cases, then verify the tests catch real bugs.
-keywords: unit tests with AI, test generation, AI testing, edge cases, Vitest, Jest, test coverage, TDD, automated testing
+keywords: [unit tests with AI, test generation, AI testing, edge cases, Vitest, Jest, test coverage, TDD, automated testing]
 ---
 
 # Writing Unit Tests with AI

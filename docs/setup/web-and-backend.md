@@ -2,7 +2,7 @@
 sidebar_position: 2
 sidebar_label: Web & Backend Developer Setup
 description: Set up AI-assisted coding for React, TypeScript, Angular frontend and Go backend projects using Cursor or VS Code with Claude Code integration.
-keywords: web developer setup, backend setup, React AI, TypeScript AI, Go AI, Angular, Cursor setup, Claude Code, VS Code, frontend backend
+keywords: [web developer setup, backend setup, React AI, TypeScript AI, Go AI, Angular, Cursor setup, Claude Code, VS Code, frontend backend]
 ---
 
 # Web & Backend Developer Setup

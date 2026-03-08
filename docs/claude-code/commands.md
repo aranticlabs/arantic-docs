@@ -2,7 +2,7 @@
 sidebar_position: 3
 sidebar_label: Slash Commands & Shortcuts
 description: Reference for all Claude Code built-in slash commands for session control, model switching, context management, and navigating your workflow.
-keywords: Claude Code commands, slash commands, shortcuts, /compact, /diff, /model, built-in commands, session control, Claude Code reference
+keywords: [Claude Code commands, slash commands, shortcuts, /compact, /diff, /model, built-in commands, session control, Claude Code reference]
 ---
 
 # Slash Commands & Shortcuts

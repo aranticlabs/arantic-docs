@@ -2,7 +2,7 @@
 sidebar_position: 1
 sidebar_label: Setup
 description: Configure Claude Code's full memory system, permissions, custom skills, subagents, MCP servers, and CLI flags for a customized intermediate workflow.
-keywords: Claude Code intermediate, memory system, permissions, skills, subagents, MCP servers, CLI flags, CLAUDE.md, configuration
+keywords: [Claude Code intermediate, memory system, permissions, skills, subagents, MCP servers, CLI flags, CLAUDE.md, configuration]
 ---
 
 # Intermediate Setup
