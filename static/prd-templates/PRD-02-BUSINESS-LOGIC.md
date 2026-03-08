@@ -34,9 +34,9 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1 - specific, testable]
-- [ ] [Criterion 2 - specific, testable]
-- [ ] [Criterion 3 - specific, testable]
+-[Criterion 1 - specific, testable]
+-[Criterion 2 - specific, testable]
+-[Criterion 3 - specific, testable]
 
 **US-02: [View/List Resources]**
 
@@ -44,8 +44,8 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+-[Criterion 1]
+-[Criterion 2]
 
 **US-03: [Update Resource]**
 
@@ -53,8 +53,8 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+-[Criterion 1]
+-[Criterion 2]
 
 **US-04: [Delete Resource]**
 
@@ -62,8 +62,8 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+-[Criterion 1]
+-[Criterion 2]
 
 ### 2.2.2 [Story Group 2: e.g., Search & Filter]
 
@@ -73,8 +73,8 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+-[Criterion 1]
+-[Criterion 2]
 
 ### 2.2.3 [Story Group 3: e.g., Settings & Configuration]
 
@@ -84,8 +84,8 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+-[Criterion 1]
+-[Criterion 2]
 
 ---
 
@@ -278,4 +278,4 @@ AI coding assistants can use these to write automated tests.
 
 ## Next Document
 
-Continue to [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md) for table definitions, indexes, and TypeScript interfaces.
+Continue to [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md) for table definitions, indexes, and data model interfaces.

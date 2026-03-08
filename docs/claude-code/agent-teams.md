@@ -42,6 +42,9 @@ macOS and Linux are the primary supported platforms. Split-pane mode works best 
 
 tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously: for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
+<img src="/img/docs/tmux-multi-agents.png" alt="Agent Teams tmux" />
+
+
 ## One-time setup (split-pane mode)
 
 The steps below apply to **macOS and Linux** (the recommended platforms). Windows users without WSL can skip this section. In-process mode works out of the box; just set `"teammateMode": "in-process"` in Step B.
@@ -205,6 +208,115 @@ We need to decide how to implement [feature]. Create a research team with:
 
 Let them discuss and reach consensus on the best approach. Output a final decision document with pros/cons and recommended stack.
 ```
+
+
+### PRD implementation: New project (5–6 agents)
+
+> Use when starting from an empty (or near-empty) directory. No existing codebase, no CLAUDE.md. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
+
+```
+Implement the new app defined in docs/prd/[app-name]/.
+
+Read PRD-00-INDEX.md first, then PRD-01 (technical notes) and PRD-06
+to understand the app, tech stack, and directory structure.
+
+Spawn 5 teammates (optionally 6):
+
+- Init + Database Agent (sonnet) — reads PRD-01, PRD-03, PRD-06, PRD-07.
+  Initializes the project, creates directory structure, generates CLAUDE.md,
+  then implements schema and seed data. Signals "scaffold-ready".
+
+- Domain Agent (opus) — reads PRD-02, PRD-06.
+  Waits for "scaffold-ready". Signals "domain-ready".
+
+- API Agent (sonnet) — reads PRD-04, PRD-06.
+  Waits for "domain-ready". Signals "api-ready".
+
+- Frontend Agent (sonnet) — reads PRD-05, PRD-04, PRD-06.
+  Waits for "api-ready". Signals "frontend-ready".
+
+- QA Agent (sonnet) — reads PRD-02 (acceptance criteria and test cases), PRD-07.
+  Reviews each phase as it completes (does not wait until the end).
+  Reports gaps to lead after each signal.
+  Writes tests after "api-ready" and "frontend-ready".
+
+Optional for complex UI:
+- UI Agent (sonnet) — reads PRD-05 (wireframes, components, interactions).
+  Waits for "scaffold-ready", works in parallel with backend agents.
+  Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
+
+Rules:
+- All agents read CLAUDE.md (after Init creates it) + their PRD docs before coding
+- Before signaling: re-read your phase's checklist in PRD-07, verify every item,
+  include a completion summary with your signal
+- Handoffs use signals, no polling
+- Flag PRD gaps to lead, no plan approval needed
+
+Lead (opus): coordinate using PRD-07 as the phase checklist.
+After each signal: compare agent summary + QA review against PRD-07 checklist.
+Send agent back if items are missing. Next phase proceeds only when complete.
+After all done: verify all acceptance criteria in PRD-02 and the end-to-end
+verification checklist in PRD-07. Summarize completed work and deviations.
+```
+
+> **How the pipeline flows:** Init + Database Agent runs first and generates CLAUDE.md. Domain, API, and Frontend agents chain in sequence. QA reviews each phase incrementally as signals arrive rather than waiting until the end — the lead gates each transition by cross-checking the agent summary and QA review against PRD-07. For complex UI, add the optional UI Agent running in parallel with backend agents.
+
+### PRD implementation: Existing app (5–6 agents)
+
+> Use when adding a feature to an app that already exists — CLAUDE.md, directory structure, and patterns are established. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
+
+```
+Implement the feature defined in docs/prd/[feature-name]/.
+
+Read CLAUDE.md, PRD-00-INDEX.md, and PRD-06 (shared components section).
+Review the existing app code before spawning — use subagents and tools
+(search, grep, file listing) to explore the codebase efficiently rather
+than reading files sequentially in the main context.
+
+Spawn 5 teammates (optionally 6):
+
+- Database Agent (sonnet) — reads PRD-03, PRD-06.
+  Additive only. Signals "schema-ready".
+
+- Domain Agent (opus) — reads PRD-02, PRD-06.
+  Waits for "schema-ready". Signals "domain-ready".
+
+- API Agent (sonnet) — reads PRD-04, PRD-06.
+  Waits for "domain-ready". Extends existing router. Signals "api-ready".
+
+- Frontend Agent (sonnet) — reads PRD-05, PRD-04, PRD-06.
+  Waits for "api-ready". Extends existing navigation. Signals "frontend-ready".
+
+- QA Agent (sonnet) — reads PRD-02 (acceptance criteria and test cases), PRD-07.
+  Reviews each phase as it completes (does not wait until the end).
+  Reports gaps to lead after each signal.
+  Writes tests after "api-ready" and "frontend-ready".
+  Runs existing tests to confirm no regressions.
+
+Optional for complex UI:
+- UI Agent (sonnet) — reads PRD-05 (wireframes, components, interactions).
+  Waits for "schema-ready", works in parallel with backend agents.
+  Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
+
+Rules:
+- All agents read CLAUDE.md + their PRD docs before coding
+- When reviewing existing code: use subagents and tools to explore the codebase
+  efficiently — do not read files one-by-one in main context
+- Before signaling: re-read your phase's checklist in PRD-07, verify every item,
+  include a completion summary with your signal
+- No modifications outside feature scope without lead approval
+- Handoffs use signals, no polling
+- Flag PRD gaps to lead, no plan approval needed
+
+Lead (opus): coordinate using PRD-07 as the phase checklist.
+After each signal: compare agent summary + QA review against PRD-07 checklist.
+Send agent back if items are missing. Next phase proceeds only when complete.
+After all done: verify all acceptance criteria in PRD-02 and the end-to-end
+verification checklist in PRD-07. Summarize completed work, deviations,
+and modified files.
+```
+
+> **How the pipeline flows:** Database Agent runs first with additive-only schema changes. Domain, API, and Frontend agents chain in sequence. QA reviews each phase incrementally as signals arrive — the lead gates each transition by cross-checking the agent summary and QA review against PRD-07. Agents use subagents and tools for codebase exploration rather than reading files sequentially. For complex UI, add the optional UI Agent running in parallel with backend agents.
 
 ## Useful commands while the team is running
 

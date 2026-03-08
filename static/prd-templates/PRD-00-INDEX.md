@@ -17,10 +17,11 @@ The [Feature Name] provides [brief 1-2 sentence description of the feature], ena
 | --- | --- |
 | [PRD-01-OVERVIEW.md](./PRD-01-OVERVIEW.md) | Vision, scope, success criteria, permissions, and UI/UX design |
 | [PRD-02-BUSINESS-LOGIC.md](./PRD-02-BUSINESS-LOGIC.md) | User stories, acceptance criteria, domain rules, lifecycle, and test cases |
-| [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md) | SQL table definitions, indexes, triggers, seed data, and TypeScript interfaces |
+| [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md) | Table definitions, indexes, seed data, and data model interfaces |
 | [PRD-04-API-ENDPOINTS.md](./PRD-04-API-ENDPOINTS.md) | REST API endpoints with request/response specifications |
-| [PRD-05-IMPLEMENTATION.md](./PRD-05-IMPLEMENTATION.md) | Backend/frontend directory structure, architecture decisions, integration points |
-| [PRD-06-IMPLEMENTATION-STEPS.md](./PRD-06-IMPLEMENTATION-STEPS.md) | Phased implementation plan with task checklists and dependencies |
+| [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md) | Detailed wireframes, component specs, interaction patterns, responsive behavior |
+| [PRD-06-IMPLEMENTATION.md](./PRD-06-IMPLEMENTATION.md) | Backend/frontend directory structure, architecture decisions, integration points |
+| [PRD-07-IMPLEMENTATION-STEPS.md](./PRD-07-IMPLEMENTATION-STEPS.md) | Phased implementation plan with task checklists and dependencies |
 
 > **Note:** Not every feature needs all documents. Small features may combine Overview + Business Logic into one file, or skip Permissions. Adapt the structure to fit the feature's complexity.
 
@@ -51,7 +52,7 @@ The [Feature Name] provides [brief 1-2 sentence description of the feature], ena
 - [3.3 Table Definitions](./PRD-03-DATABASE-SCHEMA.md#33-table-definitions)
 - [3.4 Indexes](./PRD-03-DATABASE-SCHEMA.md#34-indexes)
 - [3.5 Seed Data](./PRD-03-DATABASE-SCHEMA.md#35-seed-data)
-- [3.6 TypeScript Interfaces](./PRD-03-DATABASE-SCHEMA.md#36-typescript-interfaces)
+- [3.6 Data Model Interfaces](./PRD-03-DATABASE-SCHEMA.md#36-data-model-interfaces)
 
 ### PRD-04: API Endpoints
 
@@ -59,32 +60,42 @@ The [Feature Name] provides [brief 1-2 sentence description of the feature], ena
 - [4.2 [Resource 2] Operations](./PRD-04-API-ENDPOINTS.md#42-resource-2-operations)
 - [4.3 [Additional Endpoints]](./PRD-04-API-ENDPOINTS.md#43-additional-endpoints)
 
-### PRD-05: Implementation
+### PRD-05: Frontend UI Specification
 
-- [5.1 Backend Directory Structure](./PRD-05-IMPLEMENTATION.md#51-backend-directory-structure)
-- [5.2 Frontend Directory Structure](./PRD-05-IMPLEMENTATION.md#52-frontend-directory-structure)
-- [5.3 Architecture Decisions](./PRD-05-IMPLEMENTATION.md#53-architecture-decisions)
-- [5.4 Integration Points](./PRD-05-IMPLEMENTATION.md#54-integration-points)
+- [5.1 Design System Reference](./PRD-05-FRONTEND-UI.md#51-design-system-reference)
+- [5.2 Page Wireframes](./PRD-05-FRONTEND-UI.md#52-page-wireframes)
+- [5.3 Component Specifications](./PRD-05-FRONTEND-UI.md#53-component-specifications)
+- [5.4 Interaction Patterns](./PRD-05-FRONTEND-UI.md#54-interaction-patterns)
+- [5.5 Responsive Behavior](./PRD-05-FRONTEND-UI.md#55-responsive-behavior)
+- [5.6 Accessibility Requirements](./PRD-05-FRONTEND-UI.md#56-accessibility-requirements)
+- [5.7 Error States & Edge Cases](./PRD-05-FRONTEND-UI.md#57-error-states--edge-cases)
 
-### PRD-06: Implementation Steps
+### PRD-06: Implementation
 
-- [6.1 Overview](./PRD-06-IMPLEMENTATION-STEPS.md#61-overview)
-- [6.2 Phase 1: Database & Scaffold](./PRD-06-IMPLEMENTATION-STEPS.md#62-phase-1-database--scaffold)
-- [6.3 Phase 2: Backend Domain Layer](./PRD-06-IMPLEMENTATION-STEPS.md#63-phase-2-backend-domain-layer)
-- [6.4 Phase 3: Backend Application Layer](./PRD-06-IMPLEMENTATION-STEPS.md#64-phase-3-backend-application-layer)
-- [6.5 Phase 4: Backend Infrastructure & API](./PRD-06-IMPLEMENTATION-STEPS.md#65-phase-4-backend-infrastructure--api)
-- [6.6 Phase 5: Frontend](./PRD-06-IMPLEMENTATION-STEPS.md#66-phase-5-frontend)
-- [6.7 Phase 6: Testing & Documentation](./PRD-06-IMPLEMENTATION-STEPS.md#67-phase-6-testing--documentation)
+- [6.1 Backend Directory Structure](./PRD-06-IMPLEMENTATION.md#61-backend-directory-structure)
+- [6.2 Frontend Directory Structure](./PRD-06-IMPLEMENTATION.md#62-frontend-directory-structure)
+- [6.3 Architecture Decisions](./PRD-06-IMPLEMENTATION.md#63-architecture-decisions)
+- [6.4 Integration Points](./PRD-06-IMPLEMENTATION.md#64-integration-points)
+
+### PRD-07: Implementation Steps
+
+- [7.1 Overview](./PRD-07-IMPLEMENTATION-STEPS.md#71-overview)
+- [7.2 Phase 1: Database & Scaffold](./PRD-07-IMPLEMENTATION-STEPS.md#72-phase-1-database--scaffold)
+- [7.3 Phase 2: Backend Domain Layer](./PRD-07-IMPLEMENTATION-STEPS.md#73-phase-2-backend-domain-layer)
+- [7.4 Phase 3: Backend Application Layer](./PRD-07-IMPLEMENTATION-STEPS.md#74-phase-3-backend-application-layer)
+- [7.5 Phase 4: Backend Infrastructure & API](./PRD-07-IMPLEMENTATION-STEPS.md#75-phase-4-backend-infrastructure--api)
+- [7.6 Phase 5: Frontend](./PRD-07-IMPLEMENTATION-STEPS.md#76-phase-5-frontend)
+- [7.7 Phase 6: Testing & Documentation](./PRD-07-IMPLEMENTATION-STEPS.md#77-phase-6-testing--documentation)
 
 ## Quick Links
 
 ### For Developers
 
-- **Starting implementation?** Begin with [PRD-06-IMPLEMENTATION-STEPS.md](./PRD-06-IMPLEMENTATION-STEPS.md) for step-by-step guide
+- **Starting implementation?** Begin with [PRD-07-IMPLEMENTATION-STEPS.md](./PRD-07-IMPLEMENTATION-STEPS.md) for step-by-step guide
 - **Architecture overview?** See [PRD-01-OVERVIEW.md](./PRD-01-OVERVIEW.md)
 - **Database work?** See [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md)
-- **Backend development?** See [PRD-05-IMPLEMENTATION.md](./PRD-05-IMPLEMENTATION.md)
-- **Frontend development?** See [PRD-05-IMPLEMENTATION.md](./PRD-05-IMPLEMENTATION.md)
+- **Backend development?** See [PRD-06-IMPLEMENTATION.md](./PRD-06-IMPLEMENTATION.md)
+- **Frontend UI & wireframes?** See [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md)
 - **API integration?** See [PRD-04-API-ENDPOINTS.md](./PRD-04-API-ENDPOINTS.md)
 - **Business logic?** See [PRD-02-BUSINESS-LOGIC.md](./PRD-02-BUSINESS-LOGIC.md)
 
