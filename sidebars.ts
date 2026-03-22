@@ -98,6 +98,7 @@ const sidebars: SidebarsConfig = {
         'claude-code/plugins',
         'claude-code/workflows',
         'claude-code/agent-teams',
+        'claude-code/tmux',
         'claude-code/debugging',
         'claude-code/tips',
       ],

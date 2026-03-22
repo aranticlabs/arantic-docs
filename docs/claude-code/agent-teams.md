@@ -44,6 +44,8 @@ macOS and Linux are the primary supported platforms. Split-pane mode works best 
 
 tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes running different things simultaneously: for example, a server in one pane, tests in another, logs in a third. You can also detach a session (close the window while everything keeps running) and re-attach later.
 
+See the [tmux Reference](./tmux) page for key bindings, session management commands, and pane navigation shortcuts.
+
 <img src="/img/docs/tmux-multi-agents.png" alt="Agent Teams tmux" />
 
 
@@ -248,17 +250,21 @@ Optional for complex UI:
   Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
 
 Rules:
+- Each agent gets its own tmux window/pane for isolated terminal sessions
 - All agents read CLAUDE.md (after Init creates it) + their PRD docs before coding
 - Before signaling: re-read your phase's checklist in PRD-07, verify every item,
   include a completion summary with your signal
 - Handoffs use signals, no polling
 - Flag PRD gaps to lead, no plan approval needed
+- Never commit or push - lead handles all git operations
 
 Lead (opus): coordinate using PRD-07 as the phase checklist.
-After each signal: compare agent summary + QA review against PRD-07 checklist.
-Send agent back if items are missing. Next phase proceeds only when complete.
-After all done: verify all acceptance criteria in PRD-02 and the end-to-end
-verification checklist in PRD-07. Summarize completed work and deviations.
+After each signal:
+- Compare agent summary + QA report against PRD-07 checklist
+- Send agent back if items are missing
+- Next phase proceeds only when all checklist items are verified complete
+Final verification: confirm all acceptance criteria are met, all implementation 
+phases complete, summarize completed work and deviations. Verify full flow works end-to-end.
 ```
 
 > **How the pipeline flows:** Init + Database Agent runs first and generates CLAUDE.md. Domain, API, and Frontend agents chain in sequence. QA reviews each phase incrementally as signals arrive rather than waiting until the end — the lead gates each transition by cross-checking the agent summary and QA review against PRD-07. For complex UI, add the optional UI Agent running in parallel with backend agents.
@@ -301,6 +307,7 @@ Optional for complex UI:
   Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
 
 Rules:
+- Each agent gets its own tmux window/pane for isolated terminal sessions
 - All agents read CLAUDE.md + their PRD docs before coding
 - When reviewing existing code: use subagents and tools to explore the codebase
   efficiently — do not read files one-by-one in main context
