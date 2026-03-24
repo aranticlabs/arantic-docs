@@ -1,3 +1,8 @@
+---
+name: doc-this
+description: Generate missing inline documentation (JSDoc, docstrings, doc comments) matching the file's existing style. Use when code lacks documentation.
+---
+
 Write inline documentation for $ARGUMENTS.
 
 Steps:

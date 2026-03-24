@@ -1,3 +1,8 @@
+---
+name: pr-desc
+description: Generate a pull request title and description from the current branch diff. Use when creating a PR or writing a PR summary.
+---
+
 Look at the diff between the current branch and the base branch.
 
 Run: `git log main..HEAD --oneline --no-merges` (if that fails, try `git log origin/main..HEAD --oneline --no-merges`)

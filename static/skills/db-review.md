@@ -1,3 +1,8 @@
+---
+name: db-review
+description: Review database queries and schema for SQL injection, N+1 problems, missing indexes, and migration safety. Use when auditing database code.
+---
+
 Review the database query and schema code in $ARGUMENTS.
 
 If no path is given, find all files containing database queries, ORM calls, migrations, or schema definitions.

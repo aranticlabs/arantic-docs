@@ -1,3 +1,8 @@
+---
+name: gen-tests
+description: Generate a complete test file matching the project's existing test framework and style. Use when you need to write tests for a file or function.
+---
+
 Write comprehensive tests for $ARGUMENTS.
 
 Steps:

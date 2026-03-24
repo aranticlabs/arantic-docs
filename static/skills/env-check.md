@@ -1,3 +1,8 @@
+---
+name: env-check
+description: Audit environment variables for missing .env.example entries, committed secrets, and unvalidated config. Use when checking configuration hygiene.
+---
+
 Audit the project's environment variable and configuration setup.
 
 Check:
