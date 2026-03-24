@@ -1,11 +1,11 @@
 ---
 sidebar_position: 14
-sidebar_label: tmux Reference
+sidebar_label: tmux
 description: tmux key bindings, session management, and pane navigation for Claude Code Agent Teams and terminal multiplexing.
 keywords: [tmux, terminal multiplexer, key bindings, pane navigation, session management, split panes, Claude Code, Agent Teams]
 ---
 
-# tmux Reference
+# tmux
 
 tmux is a free, open-source terminal multiplexer. It turns one terminal window into many by splitting it into panes and windows, each running independently. Claude Code uses tmux to display Agent Teams teammates side-by-side in split panes.
 

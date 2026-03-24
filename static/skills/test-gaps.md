@@ -1,3 +1,8 @@
+---
+name: test-gaps
+description: Analyze test coverage to find untested files, missing edge cases, and test quality issues. Use when you want to know what tests are missing.
+---
+
 Analyze the test coverage and quality for $ARGUMENTS.
 
 If no path is given, analyze the whole project.

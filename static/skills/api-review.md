@@ -1,3 +1,8 @@
+---
+name: api-review
+description: Review API endpoints for input validation, HTTP semantics, error handling, auth, and design consistency. Use when auditing or reviewing REST API code.
+---
+
 Review the API route handlers, controllers, or endpoint definitions in $ARGUMENTS.
 
 If no path is given, find and review all route handler files in the project.

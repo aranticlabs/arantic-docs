@@ -1,3 +1,8 @@
+---
+name: review
+description: Review staged git changes for bugs, security issues, performance regressions, and style problems. Use when you want a pre-commit code review.
+---
+
 Look at the staged git changes: run `git diff --staged`. If nothing is staged, check the last commit instead: `git diff HEAD~1 HEAD`.
 
 Review the changes for:
