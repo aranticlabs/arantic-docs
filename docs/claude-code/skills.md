@@ -5,11 +5,445 @@ description: Skills are reusable prompt templates in Claude Code that encode rec
 keywords: [Claude Code skills, custom slash commands, prompt templates, reusable prompts, workflow automation, team conventions, skills directory]
 ---
 
-# Skills (Custom Slash Commands)
+# Skills
 
 Skills are reusable prompt templates that let you encode recurring tasks, team conventions, and workflows into short, invocable commands. Instead of re-typing the same instructions every session, you define them once and invoke them with a `/` prefix.
 
 Claude Code has the most mature built-in support for skills. Other tools offer partial equivalents, which are covered in the [Using skills with other tools](#using-skills-with-other-tools) section below.
+
+## What are skills?
+
+In Claude Code, a skill is a directory whose main file is `SKILL.md`. Claude Code loads skills from `.claude/skills/` (and from your user-level skills directory; see [Skill priority](#skill-priority)). The **directory name** becomes the slash command: `.claude/skills/review/SKILL.md` is invoked as `/review`.
+
+YAML frontmatter on `SKILL.md` carries the skill name and a short description so Claude can discover when it applies; the markdown body and any sibling files in the folder supply the instructions and supporting resources Claude loads on demand.
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/bjdBVZa66oU?si=JCaM8bjMd7s74PiS&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 3 minutes
+  </figcaption>
+</figure>
+
+## Creating your first skill
+
+In this walkthrough you build a skill from the ground up (the steps use a `review` skill; the same layout works for a PR description flow or any other command). It shows how to shape `SKILL.md`, invoke the skill with `/review`, and how Claude picks a skill from what you ask. [Skill priority](#skill-priority) explains which definition wins when two skills share a name.
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/Wx6_vjFFyHM?si=L-Y_QaFcbet3IBaM&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 4 minutes
+  </figcaption>
+</figure>
+
+### Create the files
+
+From the repository root, add a folder under `.claude/skills/` whose name will be your command (here, `review`):
+
+```bash
+mkdir -p .claude/skills/review
+```
+
+Create `SKILL.md` inside it with YAML frontmatter and the body Claude should follow when the skill runs:
+
+```markdown
+# .claude/skills/review/SKILL.md
+---
+name: review
+description: Review staged git changes for bugs, regressions, and missing tests
+---
+
+Review the staged git changes and provide a concise summary of:
+- What was changed and why
+- Any potential bugs or regressions introduced
+- Missing tests or edge cases
+- Whether the commit message accurately describes the changes
+```
+
+Invoke it in Claude Code:
+
+```text
+/review
+```
+
+The older flat-file format `.claude/commands/review.md` still works for backward compatibility. The **directory** format is recommended because it supports supporting files, scripts, and richer frontmatter (see [Configuration and multi-file skills](#configuration-and-multi-file-skills)).
+
+### Skill priority
+
+If two skills share the same name (for example, one in the repo and one under your home directory), Claude Code applies a single precedence chain. Items nearer the top override items below; for a given name, only the highest-listed source is used:
+
+1. **Enterprise** (organization-managed settings)
+2. **Personal** (`~/.claude/skills` on your machine)
+3. **Project** (`.claude/skills` in the checked-out repository)
+4. **Plugins** (skills that ship with installed plugins)
+
+That order lets companies ship non-negotiable standards while individuals and teams can still add skills for everything else. If your org defines an enterprise `code-review` skill and you add a personal `code-review` skill, Claude uses the enterprise definition.
+
+### Project-level vs user-level paths
+
+| Location | Scope | Use case |
+|---|---|---|
+| `.claude/skills/<name>/SKILL.md` | Project-specific, shared via git | Team workflows, project conventions |
+| `~/.claude/skills/<name>/SKILL.md` | Personal, all repositories | Your own recurring prompts |
+
+Commit `.claude/skills/` to source control when you want the whole team to share the same definitions. Personal skills in `~/.claude/skills` stay on your machine and apply everywhere unless an enterprise or project skill with the same name wins the [precedence chain](#skill-priority) above.
+
+## Configuration and multi-file skills
+
+This walkthrough goes past the basics: the full metadata surface on `SKILL.md`, wording descriptions so invocation stays predictable, tightening which tools a skill may use for sensitive flows, and splitting large skills into supporting files so details load only when needed (progressive disclosure). The emphasis is stronger skills that still avoid loading instructions you are not using yet.
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/98KaK_rn5rQ?si=hwRWw0haxJVrrcj1&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 4 minutes
+  </figcaption>
+</figure>
+
+### Skill Metadata Fields
+
+The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. Two keys are required; the rest are optional:
+
+- **`name`** (required): Stable identifier for the skill. Use only lowercase letters, numbers, and hyphens, at most 64 characters, and align it with the skill directory name.
+- **`description`** (required): Plain-language guidance for when Claude should load the skill, up to 1,024 characters. Claude leans on this field heavily for matching, so treat it as the primary tuning knob.
+- **`allowed-tools`** (optional): Caps which tools Claude may call while the skill is active.
+- **`model`** (optional): Selects which Claude model runs when this skill is in use.
+
+### Using Scripts Efficiently
+
+Helper scripts next to `SKILL.md` can run without dumping their full source into the model context. When Claude invokes them through the shell, you mostly pay tokens for what the process prints (and any errors you surface), not for the script body. In the skill instructions, say clearly to **run** the file, not to open it and summarize or rewrite it.
+
+Strong fits include:
+
+- Validating environments, credentials, or dependencies before work starts
+- Fixed-format parsing, normalization, or small ETL steps you want identical every time
+- Behavior you keep in versioned, tested code instead of re-deriving in the chat transcript
+
+
+## Skills vs. other Claude Code features
+
+Claude Code gives you several ways to steer behavior. If you mix the wrong ones, you duplicate rules or burn context for no gain. The subsections below contrast **skills** with `CLAUDE.md`, **subagents**, and **hooks**. For connecting to external tools and data, see [MCP](./mcp).
+
+### CLAUDE.md vs Skills
+
+`CLAUDE.md` is always on: it loads for every turn in that project. Example: if TypeScript strict mode should never be negotiable here, put it in `CLAUDE.md`.
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/IgNN4v0BJdU?si=3XLWVGfk60OUIP-O&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 3 minutes
+  </figcaption>
+</figure>
+
+**Skills** load only when they match the task. After a match, their instructions merge into the active conversation. A PR review rubric does not need to sit in context while you are implementing a feature; it can stay dormant until you ask for a review.
+
+<div style={{textAlign: 'center'}}>
+  ![CLAUDE.md versus Skills: project-wide standards in CLAUDE.md, task-specific expertise in Skills](./images/Skills_vs_CLAUDE.md.png)
+</div>
+
+**Prefer `CLAUDE.md` when you need:**
+
+- Project-wide standards that should always apply
+- Hard constraints (for example, "never change the database schema without a migration")
+- Framework choices, libraries, and house coding style
+
+**Prefer skills when you need:**
+
+- Task-specific playbooks or domain detail
+- Knowledge that matters only for some requests
+- Long procedures that would clutter every session if they lived in `CLAUDE.md`
+
+### Skills vs Subagents
+
+A **skill** augments the **current** session: when it activates, its text joins the same conversation you are already in.
+
+A **subagent** runs in a **separate** session. You give it a brief, it works with its own context and tool policy, then it hands results back. That isolation is the point.
+
+**Reach for subagents when:**
+
+- The work should run in its own execution context, not inline with the main thread
+- You want different tool access or a tighter scope than the main conversation
+- You need a firewall between exploratory or risky work and your primary chat
+
+**Reach for skills when:**
+
+- You want extra instructions available inside the main conversation
+- The guidance should apply across many turns in the same thread, not as a one-off delegation
+
+### Skills vs Hooks
+
+**Hooks** are **event-driven**: they run when something happens (for example, after a save, or before a tool call). Typical uses include linting, guards, or small automations tied to Claude's actions.
+
+**Skills** are **request-driven**: they turn on from what you are trying to do and how the skill is described, not from a lifecycle hook firing.
+
+**Prefer hooks when:**
+
+- Something must run on every occurrence of an event (every save, every edit, and so on)
+- You need validation or policy checks at specific tool boundaries
+- You want side effects that do not belong in free-form instructions
+
+**Prefer skills when:**
+
+- You are shaping judgment: how to plan, review, or implement
+- The content is guidance and examples, not a script tied to a single event
+
+## Sharing skills
+
+Skills compound when a team or organization runs the same definitions. This walkthrough compares three ways to ship them (commit `.claude/skills/` with the repo, package them in plugins, or push them through enterprise-managed settings), then shows how to attach skills to custom subagents. One sharp edge to internalize: subagents do not inherit skills from the main session unless you preload them explicitly.
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/OCBi3eScNLk?si=QPS0z1IxFUOaJ5H6&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 4 minutes
+  </figcaption>
+</figure>
+
+### Skills and Subagents
+
+Subagents do **not** pick up skills just because the main chat already loaded them. Delegation starts a separate context, so anything the subagent should rely on has to be declared on that agent (or repeated in the task you send).
+
+
+Keep three distinctions straight:
+
+- **Built-in agent types** (for example Explore and Plan) are fixed presets. They do not preload your custom skill definitions from the repo the way a **custom** agent can with a `skills` list in frontmatter.
+- **Custom agents** under `.claude/agents/` can preload skills, but only when you name them explicitly in YAML.
+- **Preloaded skills** inject their full bodies at **agent startup**. That is different from the main conversation, where skills can be matched and loaded as the dialog moves.
+
+Author the file under `.claude/agents/`, or run `/agents` in Claude Code and describe the role when prompted:
+
+<div style={{textAlign: 'center'}}>
+  ![Claude Code /agents: Create new agent dialog with description of role and when to use it](./images/Skills_and_Subagents.png)
+</div>
+
+The scaffold includes a `skills` array listing which skill packages to load. Example frontmatter:
+
+```yaml
+---
+name: frontend-security-accessibility-reviewer
+description: "Use this agent when you need to review frontend code for accessibility..."
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, Skill...
+model: sonnet
+color: blue
+skills: accessibility-audit, performance-check
+---
+```
+
+After you delegate to that agent, both skill bodies stay in its context for the whole run. Create the skill folders first under `.claude/skills/` (or your user-level skills directory), then either generate a new agent with `/agents` or add `skills:` to an existing agent markdown file.
+
+**Good fit when:**
+
+- You want isolation **and** a stable bundle of expertise for that worker
+- Different agents need different skill sets (frontend reviewer versus API reviewer, for example)
+- You want checklists and conventions enforced in delegated work without pasting them into every prompt
+
+See [Subagents](./subagents) for the full picture (built-in types, when to delegate, and tips). For agent files and `/agents`, jump to [Creating custom subagents](./subagents#creating-custom-subagents).
+
+
+## Troubleshooting skills
+
+<figure style={{ margin: '1.5rem 0' }}>
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      paddingBottom: '56.25%',
+      height: 0,
+      overflow: 'hidden',
+    }}>
+    <iframe
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      src="https://www.youtube.com/embed/YBa1cwaG7is?si=byrYi2skIgJ2n8Xq&controls=0"
+      title="YouTube video player"
+      frameBorder={0}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+  <figcaption
+    style={{
+      marginTop: '0.5rem',
+      fontSize: '0.875rem',
+      color: 'var(--ifm-color-emphasis-600)',
+    }}>
+    Video length: about 4 minutes
+  </figcaption>
+</figure>
+
+When a skill misbehaves, it usually fits one of a few patterns: it never activates, it does not show up in the roster, Claude picks a different skill, or something breaks while the skill runs. Most fixes are small once you know which pattern you are seeing.
+
+### Use the skills validator
+
+Start with the agent skills verifier. Install steps depend on your OS; **`uv`** is often the quickest way to get a working install.
+
+Run it against your skill directory (or from the project root, if the tool allows). It flags structural issues up front so you do not burn time debugging the wrong layer.
+
+### Skill does not trigger
+
+The skill validates, but Claude does not apply it when you think it should. The usual cause is the **`description`** field in `SKILL.md` frontmatter.
+
+Matching is semantic: your chat wording has to overlap what the description claims the skill is for. Weak overlap means no match.
+
+- Align the description with how you (and teammates) actually phrase requests.
+- Add concrete trigger phrases people would say out loud.
+- Try variants such as "help me profile this," "why is this slow?," and "make this faster."
+- If a variant never pulls the skill in, add those terms to the description.
+
+### Skill does not load
+
+If Claude omits the skill when you ask what is available, check layout and naming first:
+
+- **`SKILL.md` must sit inside a named folder** under the skills root, not alone at the root beside other skills.
+- The filename must be exactly **`SKILL.md`**: `SKILL` in all caps, extension `.md` in lowercase.
+
+For loader errors, run:
+
+```bash
+claude --debug
+```
+
+Watch the log for lines that mention your skill name; they often point straight at the fault.
+
+### Wrong skill gets used
+
+Claude reaches for a different skill or wavers between two. Descriptions are probably too close in meaning. Narrow and differentiate them so scope and triggers are obvious. Specific descriptions improve routing and cut down collisions with similar skills.
+
+### Plugin skills do not appear
+
+You installed a plugin but its skills never show up.
+
+- Clear the Claude Code cache, restart Claude Code, then reinstall the plugin.
+- If skills are still missing, the plugin bundle layout may not match what Claude Code expects. This is a good time to run the skills validator, or compare the plugin against a known-good package.
+
+### Runtime errors
+
+The skill loads but fails while it runs. Typical causes:
+
+- **Missing dependencies:** If the skill relies on external packages, they must be installed in the environment where Claude runs the skill. Document requirements in the skill body or description so Claude and humans know what to install.
+- **Permissions:** Scripts need execute permission. Example:
+
+```bash
+chmod +x path/to/your-script.sh
+```
+
+- **Path separators:** Prefer forward slashes in paths even on Windows so references behave the same everywhere.
+
+### Quick troubleshooting checklist
+
+- **Never triggers:** Improve `description` and add trigger phrases you actually use in chat.
+- **Does not load:** Check folder layout, exact `SKILL.md` filename, and YAML frontmatter syntax.
+- **Wrong skill:** Make overlapping descriptions more distinct.
+- **Shadowed:** Two definitions can share a name; only the winner in the precedence chain applies. See [Skill priority](#skill-priority) and rename or consolidate if needed.
+- **Plugin skills missing:** Clear cache, restart, reinstall; then validate plugin structure.
+- **Runtime failure:** Dependencies, executable bits on scripts, and path style.
 
 ## Do you need skills?
 
@@ -71,132 +505,6 @@ A practical rule of thumb:
 - **CLAUDE.md**: conventions, constraints, and background context that should always be active
 - **Skills (commands)**: workflows and prompt recipes that you invoke for a specific task
 - **Subagents**: isolated specialist workers for noisy or expensive subtasks
-
-## How skills work in Claude Code
-
-Claude Code loads skills from `.claude/skills/`. Each skill is a directory containing a `SKILL.md` file. The directory name becomes the command name.
-
-### Creating a skill
-
-```bash
-mkdir -p .claude/skills/review
-```
-
-Create a `SKILL.md` file with optional YAML frontmatter and your prompt:
-
-```markdown
-# .claude/skills/review/SKILL.md
----
-name: review
-description: Review staged git changes for bugs, regressions, and missing tests
----
-
-Review the staged git changes and provide a concise summary of:
-- What was changed and why
-- Any potential bugs or regressions introduced
-- Missing tests or edge cases
-- Whether the commit message accurately describes the changes
-```
-
-Invoke it in Claude Code:
-
-```text
-/review
-```
-
-The older `.claude/commands/review.md` flat-file format still works, but the directory format is recommended because it supports supporting files and richer frontmatter options.
-
-### Project-level vs. user-level skills
-
-| Location | Scope | Use case |
-|---|---|---|
-| `.claude/skills/<name>/SKILL.md` | Project-specific, shared via git | Team workflows, project conventions |
-| `~/.claude/skills/<name>/SKILL.md` | Personal, all projects | Your own recurring prompts |
-
-Commit `.claude/skills/` to source control so the whole team benefits from shared skills.
-
-### Parameterizing skills with `$ARGUMENTS`
-
-Use the `$ARGUMENTS` placeholder to pass dynamic input at invocation time:
-
-```markdown
-# .claude/skills/explain/SKILL.md
-
-Explain the following code in plain language, suitable for a junior developer.
-Focus on what it does, not how it works internally.
-
-$ARGUMENTS
-```
-
-Invoke with:
-
-```text
-/explain src/auth/token.ts
-```
-
-Claude Code replaces `$ARGUMENTS` with everything you type after the command name.
-
-### Practical examples
-
-**Generate a pull request description:**
-
-```markdown
-# .claude/skills/pr-desc/SKILL.md
-
-Look at the diff between the current branch and main. Write a pull request description that includes:
-- A one-sentence summary of the change
-- A bullet list of what was changed and why
-- Any migration steps or breaking changes
-- Testing instructions
-
-Keep it concise and use plain English.
-```
-
-**Enforce a code review checklist:**
-
-```markdown
-# .claude/skills/checklist/SKILL.md
-
-Review $ARGUMENTS against our team checklist:
-- No `any` types in TypeScript
-- All public functions have JSDoc comments
-- Error paths are handled explicitly
-- No hardcoded secrets or environment-specific values
-- Unit tests cover the happy path and at least one failure path
-
-Report each item as passed, failed, or not applicable.
-```
-
-**Scaffold a new API endpoint:**
-
-```markdown
-# .claude/skills/new-endpoint/SKILL.md
-
-Scaffold a new REST endpoint named $ARGUMENTS following our conventions:
-- Route file in src/routes/
-- Zod schema for request validation
-- Service function in src/services/
-- Unit test file with at least one passing and one failing test case
-- Add the route to src/routes/index.ts
-```
-
-**Summarize recent changes for a standup:**
-
-```markdown
-# .claude/skills/standup/SKILL.md
-
-Look at all commits from the last 24 hours on the current branch.
-Summarize what was done in 3-5 bullet points, written in first person,
-suitable for a morning standup update. Be brief.
-```
-
-## Tips for writing effective skills
-
-- **Be specific about output format.** If you want bullet points, say so. If you want a table, say so.
-- **Include constraints.** Skills that say "keep it concise" or "no more than 5 items" produce more consistent results.
-- **Use `$ARGUMENTS` for the variable part, not the whole prompt.** The skill should carry your stable instructions; arguments supply the target.
-- **Version your skills in git.** Treat `.claude/skills/` like source code. Improve skills over time as you learn what produces better results.
-- **Name skills for their action.** `review`, `explain`, `scaffold`, `standup` are easy to remember. Avoid generic names like `help` or `prompt`.
 
 ## Ready-to-use skills
 
