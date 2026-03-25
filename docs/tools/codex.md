@@ -77,6 +77,34 @@ codex --model gpt-5.1-codex "refactor the auth module"
 - Use specific, scoped prompts for best results (e.g., "add input validation to the signup handler" rather than "improve the code")
 - Codex works best with well-structured projects that have clear file organization
 
+## Skills and reusable prompts
+
+Codex CLI does not have a built-in slash command or skills system. You can approximate skills in two ways.
+
+**Option 1: Shell aliases or wrapper scripts.** Create a shell function that prepends your standard instructions before sending to the CLI:
+
+```bash
+# ~/.bashrc or ~/.zshrc
+codex-review() {
+  codex "Review the staged git changes and summarize potential bugs, missing tests, and whether the commit message is accurate. $*"
+}
+```
+
+**Option 2: A prompts directory with a loader script.** Store your templates as plain text files and source them at invocation:
+
+```bash
+#!/usr/bin/env bash
+# ~/bin/codex-skill
+SKILL_DIR="$HOME/.codex/skills"
+SKILL="$1"; shift
+PROMPT=$(cat "$SKILL_DIR/$SKILL.txt")
+codex "${PROMPT} $*"
+```
+
+There is no native equivalent to project-level shared skills. Keep prompt files in your repository and use the loader script approach above as a team convention.
+
+For background on skills as a concept and how Claude Code handles them natively, see [Skills](../claude-code/skills).
+
 ## Limitations
 
 - Only supports OpenAI models (no Claude, Gemini, or open-source models)
