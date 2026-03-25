@@ -76,6 +76,31 @@ Gemini reads `GEMINI.md` files (similar to `CLAUDE.md`) for project-specific ins
 - For large refactoring tasks, the 1M context window helps Gemini keep track of dependencies across files
 - Combine with the free tier for low-cost experimentation before committing to a paid plan
 
+## Skills and reusable prompts
+
+Gemini CLI does not have a built-in slash command or skills system. To replicate skills:
+
+- Use shell functions or wrapper scripts. Place your prompt templates in a `prompts/` directory in your repository and reference them explicitly:
+
+```bash
+gemini "$(cat prompts/review.md)"
+```
+
+Or define a shell helper:
+
+```bash
+gemini-skill() {
+  local skill="$1"; shift
+  gemini "$(cat ~/gemini-skills/$skill.md) $*"
+}
+
+gemini-skill review
+```
+
+You can use `GEMINI.md` to document the available skills and how to invoke them, so the model is aware of the convention even if it cannot auto-invoke them.
+
+For background on skills as a concept and how Claude Code handles them natively, see [Skills](../claude-code/skills).
+
 ## Limitations
 
 - Execution speed can be slower than other CLI tools, especially for complex multi-step tasks

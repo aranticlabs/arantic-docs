@@ -637,90 +637,11 @@ A few things to keep in mind when using community skills:
 
 ## Using skills with other tools
 
-The concept of a persistent, invocable prompt template does not map identically to every tool. Here is how to get similar functionality in the most common alternatives.
+The concept of a persistent, invocable prompt template does not map identically to every tool. Claude Code has native support; other tools require workarounds. See each tool's page for detailed setup instructions:
 
-### OpenAI Codex CLI
-
-The Codex CLI (OpenAI's terminal-based coding agent) does not have a built-in slash command or skills system. You can approximate skills in two ways:
-
-**Option 1: Shell aliases or wrapper scripts.** Create a shell function that prepends your standard instructions before sending to the CLI:
-
-```bash
-# ~/.bashrc or ~/.zshrc
-codex-review() {
-  codex "Review the staged git changes and summarize potential bugs, missing tests, and whether the commit message is accurate. $*"
-}
-```
-
-**Option 2: A prompts directory with a loader script.** Store your templates as plain text files and source them at invocation:
-
-```bash
-#!/usr/bin/env bash
-# ~/bin/codex-skill
-SKILL_DIR="$HOME/.codex/skills"
-SKILL="$1"; shift
-PROMPT=$(cat "$SKILL_DIR/$SKILL.txt")
-codex "${PROMPT} $*"
-```
-
-There is no native equivalent to project-level shared skills. Keep prompt files in your repository and use the loader script approach above as a team convention.
-
-### Cursor
-
-Cursor does not support custom `/` slash commands defined by you. Its slash commands (like `/edit` and `/explain`) are built-in and not extensible in the same way.
-
-The closest alternatives in Cursor are:
-
-**Notepads.** Notepads are persistent context blocks you can `@mention` in any Cursor chat. Store your reusable prompts there:
-
-1. Open the Notepads panel
-2. Create a notepad named "review-checklist" with your standard review prompt
-3. In chat: `@review-checklist please review the selected code`
-
-**`.cursorrules`.** For project-wide instructions that apply to every prompt automatically (without needing to invoke anything), add them to `.cursorrules` at the project root. This is less flexible than skills because it always applies, rather than being invoked on demand.
-
-**Saved prompts in chat.** You can copy-paste from a shared `prompts/` directory in your repository. Less ergonomic, but functional for teams without extra tooling.
-
-### Gemini CLI
-
-The Gemini CLI (Google's terminal agent for Gemini models) supports a `GEMINI.md` file at the project root for persistent context, similar to Claude Code's `CLAUDE.md`. As of early 2026, it does not have a built-in slash command or skills system.
-
-To replicate skills in Gemini CLI:
-
-- Use shell functions or wrapper scripts (same pattern as Codex CLI above).
-- Place your prompt templates in a `prompts/` directory in your repository and reference them explicitly:
-
-```bash
-gemini "$(cat prompts/review.md)"
-```
-
-Or define a shell helper:
-
-```bash
-gemini-skill() {
-  local skill="$1"; shift
-  gemini "$(cat ~/gemini-skills/$skill.md) $*"
-}
-
-gemini-skill review
-```
-
-You can use `GEMINI.md` to document the available skills and how to invoke them, so the model is aware of the convention even if it cannot auto-invoke them.
-
-### Grok CLI
-
-Grok (xAI) is available via API and through a CLI tool. Like Gemini CLI and Codex CLI, it does not have a built-in skills or custom slash command system.
-
-The same shell wrapper approach applies:
-
-```bash
-grok-skill() {
-  local skill="$1"; shift
-  grok "$(cat ~/grok-skills/$skill.md) $*"
-}
-```
-
-Grok supports system prompts through the API, which is useful if you are building a custom integration. For recurring prompts in direct CLI use, shell wrappers are the practical solution.
+- [OpenAI Codex CLI: Skills and reusable prompts](../tools/codex#skills-and-reusable-prompts)
+- [Cursor: Skills and reusable prompts](../tools/cursor#skills-and-reusable-prompts)
+- [Gemini CLI: Skills and reusable prompts](../tools/gemini-cli#skills-and-reusable-prompts)
 
 ### Summary: skills support across tools
 
