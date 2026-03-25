@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 sidebar_label: CLI Flags
 description: Complete reference for Claude Code CLI flags covering session management, model selection, output formatting, and headless/CI mode options.
 keywords: [Claude Code CLI flags, command line options, --continue, --resume, --model, headless mode, CI integration, CLI reference]
@@ -32,6 +32,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | Flag | Purpose |
 |------|---------|
 | `--permission-mode <mode>` | Permission mode: `default`, `acceptEdits`, `plan`, `bypassPermissions`, `dontAsk` |
+| `--enable-auto-mode` | Enable [auto mode](/claude-code/auto-mode) so a classifier approves safe actions and blocks risky ones |
 | `--allowedTools <tools>` | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`) |
 | `--disallowedTools <tools>` | Deny specific tools (e.g. `"Bash(rm:*)"`) |
 | `--tools <tools>` | Restrict the available tool set entirely (`""` to disable all, `"default"` for all) |

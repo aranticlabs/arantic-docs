@@ -44,6 +44,16 @@ Use wildcard patterns to grant scoped permissions without blanket access. This i
 | `Edit(docs/**)` | Editing any file under docs/ |
 | `Read` | Reading any file (no restriction) |
 
+## Auto mode
+
+For a middle ground between manual confirmations and skipping permissions entirely, use [auto mode](/claude-code/auto-mode). A classifier model evaluates each tool call and automatically approves safe actions while blocking risky ones. Enable it with:
+
+```bash
+claude --enable-auto-mode
+```
+
+See the [Auto Mode](/claude-code/auto-mode) page for full configuration details.
+
 ## Sandbox mode
 
 For additional isolation, use `/sandbox` to restrict file system access and network connections. This reduces permission prompts for trusted operations while keeping untrusted ones blocked.

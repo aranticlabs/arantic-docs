@@ -90,6 +90,7 @@ const sidebars: SidebarsConfig = {
         'claude-code/commands',
         'claude-code/context',
         'claude-code/permissions',
+        'claude-code/auto-mode',
         'claude-code/flags',
         'claude-code/skills',
         'claude-code/subagents',
