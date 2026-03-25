@@ -66,6 +66,24 @@ An older option is a **`.cursorrules`** file at the project root; Cursor still r
 | Rules file | `AGENTS.md`, `.cursor/rules/*.mdc` | No direct equivalent |
 | Inline edit shortcut | `Cmd+K` | `Ctrl+I` |
 
+## Skills and reusable prompts
+
+Cursor does not support custom `/` slash commands defined by you. Its slash commands (like `/edit` and `/explain`) are built-in and not extensible in the same way.
+
+The closest alternatives in Cursor are:
+
+**Notepads.** Notepads are persistent context blocks you can `@mention` in any Cursor chat. Store your reusable prompts there:
+
+1. Open the Notepads panel
+2. Create a notepad named "review-checklist" with your standard review prompt
+3. In chat: `@review-checklist please review the selected code`
+
+**`.cursorrules`.** For project-wide instructions that apply to every prompt automatically (without needing to invoke anything), add them to `.cursorrules` at the project root. This is less flexible than skills because it always applies, rather than being invoked on demand.
+
+**Saved prompts in chat.** You can copy-paste from a shared `prompts/` directory in your repository. Less ergonomic, but functional for teams without extra tooling.
+
+For background on skills as a concept and how Claude Code handles them natively, see [Skills](../claude-code/skills).
+
 ## Tips
 
 - Use `@codebase` in chat to explicitly search across all files
