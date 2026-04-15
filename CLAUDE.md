@@ -79,7 +79,7 @@ arantic-docs/
 ### Start Local Dev Server
 ```bash
 npm start
-# Serves at http://localhost:3000 (browser does NOT auto-open due to --no-open)
+# Serves at http://localhost:3020 (browser does NOT auto-open due to --no-open)
 ```
 
 ### Build for Production

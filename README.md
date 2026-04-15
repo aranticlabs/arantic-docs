@@ -70,7 +70,7 @@ Developers who already know how to code and want to move faster with AI, not rep
 ```bash
 npm install
 npm start
-# Opens at http://localhost:3000
+# Opens at http://localhost:3020
 ```
 
 Build for production:
