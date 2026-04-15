@@ -35,7 +35,7 @@ Claude Code uses several memory files at different scopes. Here is the complete 
 
 The main memory file for your project. Lives at the repository root as `CLAUDE.md` (or inside `.claude/CLAUDE.md`). Committed to git and shared with the whole team. This is where coding standards, build commands, architecture decisions, and guardrails go.
 
-A well-structured CLAUDE.md is the single most impactful way to improve Claude Code's output, but bigger is not better. **Keep your CLAUDE.md under 60 lines.** Files over 150 lines degrade performance because they consume too much of the context window before the real work begins.
+A well-structured CLAUDE.md is the single most impactful way to improve Claude Code's output, but bigger is not better. **Target under 200 lines per CLAUDE.md file.** Longer files consume more context and reduce how consistently Claude follows them. If your instructions are growing large, split them using imports or `.claude/rules/` files.
 
 Focus on what matters most:
 - Build and test commands
@@ -106,6 +106,31 @@ This is for things that are specific to your local setup:
 - My local API runs at http://localhost:3000
 - Use test database "dev_sarah" for integration tests
 - Skip the deploy step, I do not have production credentials
+```
+
+### Importing files into CLAUDE.md
+
+CLAUDE.md files can import additional files using `@path/to/file` syntax anywhere in the body. Imported files are loaded into context at session start alongside the CLAUDE.md that references them:
+
+```markdown
+# CLAUDE.md
+See @README for project overview and @package.json for available npm commands.
+
+# Additional Instructions
+- git workflow @docs/git-instructions.md
+```
+
+Both relative and absolute paths work. Relative paths resolve from the file containing the import. This lets you keep CLAUDE.md concise while pulling in richer reference material on demand.
+
+### AGENTS.md
+
+Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses `AGENTS.md` for other coding agents, create a `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them:
+
+```markdown
+@AGENTS.md
+
+## Claude Code
+Use plan mode for changes under `src/billing/`.
 ```
 
 ### Rules directories
