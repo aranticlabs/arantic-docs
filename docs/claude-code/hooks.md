@@ -38,19 +38,27 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 
 | Event | When it fires | Supports all types? |
 |-------|---------------|---------------------|
-| **SessionStart** | Session begins or resumes | Command only |
+| **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact` | Command only |
 | **UserPromptSubmit** | User submits a prompt, before Claude processes it | All |
 | **PreToolUse** | Before a tool call executes (can block it) | All |
 | **PermissionRequest** | When a permission dialog appears | All |
+| **PermissionDenied** | When auto mode classifier denies a tool call. Return `retry: true` to allow retry | All |
 | **PostToolUse** | After a tool call succeeds | All |
 | **PostToolUseFailure** | After a tool call fails | All |
-| **Notification** | When Claude Code sends a notification | Command only |
-| **SubagentStart** | A subagent spawns | Command only |
+| **Notification** | When Claude Code sends a notification. Matcher values: `permission_prompt`, `idle_prompt`, `auth_success`, `elicitation_dialog` | Command only |
+| **SubagentStart** | A subagent spawns. Matcher values: agent type names | All |
 | **SubagentStop** | A subagent finishes | All |
 | **Stop** | Claude finishes responding (not on user interrupt) | All |
+| **TaskCreated** | A task is created | All |
 | **TaskCompleted** | A task is marked as completed | All |
-| **PreCompact** | Before context compaction | Command only |
-| **ConfigChange** | A config file changes during the session | Command only |
+| **InstructionsLoaded** | A CLAUDE.md or `.claude/rules/` file is loaded. Matcher values: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact` | All |
+| **FileChanged** | A watched file changes on disk. Matcher: literal filename or glob pattern | Command only |
+| **CwdChanged** | Working directory changes | Command only |
+| **PreCompact** | Before context compaction. Matcher values: `manual`, `auto` | Command only |
+| **PostCompact** | After context compaction | Command only |
+| **Elicitation** | An MCP server requests user input | All |
+| **ElicitationResult** | Result of an MCP elicitation | All |
+| **ConfigChange** | A config file changes during the session. Matcher values: `user_settings`, `project_settings`, `local_settings`, `policy_settings`, `skills` | Command only |
 | **WorktreeCreate** | A git worktree is created | Command only |
 | **WorktreeRemove** | A git worktree is removed | Command only |
 | **TeammateIdle** | An agent team teammate is about to go idle | Command only |
@@ -336,6 +344,20 @@ Start the test suite in the background so Claude keeps working while tests run:
 }
 ```
 
+### Persist environment variables across a session
+
+Use `CLAUDE_ENV_FILE` in `SessionStart` or `CwdChanged` hooks to inject environment variables that persist for the rest of the session:
+
+```bash
+#!/bin/bash
+# Set up environment at session start
+if [ -n "$CLAUDE_ENV_FILE" ]; then
+  echo 'export NODE_ENV=development' >> "$CLAUDE_ENV_FILE"
+  echo 'export PATH="$PATH:./node_modules/.bin"' >> "$CLAUDE_ENV_FILE"
+fi
+exit 0
+```
+
 ## How hooks communicate
 
 Hook scripts receive JSON input via stdin and communicate results through exit codes and stdout/stderr.
@@ -449,5 +471,27 @@ fi
 **Relative paths.** Always use `"$CLAUDE_PROJECT_DIR"` or absolute paths. Relative paths may not resolve correctly from the hook's working directory.
 
 **Async hooks cannot control flow.** Since they run in the background, fields like `permissionDecision` and `decision` are ignored. Use async hooks only for logging, notifications, or background tasks.
+
+For async hooks where you want to wake Claude back up when the background job finishes (for example, to report a build failure), use `"asyncRewake": true`. Claude Code wakes the session on exit code 2 and shows the hook's stderr as a system reminder:
+
+```json
+{
+  "type": "command",
+  "command": ".claude/hooks/build-and-report.sh",
+  "async": true,
+  "asyncRewake": true
+}
+```
+
+**Run a hook only once per session.** Set `"once": true` in a hook handler inside skill or agent frontmatter to prevent it from firing on every event after the first:
+
+```yaml
+hooks:
+  SessionStart:
+    - hooks:
+        - type: command
+          command: echo "Setup complete"
+          once: true
+```
 
 **Exit 2 with JSON.** When you exit with code 2, Claude Code ignores any JSON output. Use exit 0 with structured JSON for fine-grained control, or exit 2 with stderr for simple blocking.

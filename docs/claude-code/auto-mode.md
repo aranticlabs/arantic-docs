@@ -55,9 +55,9 @@ Auto mode behavior is customizable via three sections in your settings:
 
 | Section | Purpose |
 |---------|---------|
-| `environment` | Tells the classifier about your org: company name, source control orgs, cloud providers, trusted domains, compliance constraints |
-| `allow` | Actions the classifier should always permit (replaces defaults if set) |
-| `soft_deny` | Actions the classifier should block unless the user's message specifically and directly describes that exact action |
+| `environment` | An array of plain-English strings describing your org: company name, source control orgs, cloud providers, trusted buckets, trusted domains, compliance constraints. Write entries as you would describe your infrastructure to a new engineer. |
+| `allow` | Actions the classifier should always permit (replaces the entire default list if set) |
+| `soft_deny` | Actions the classifier should block unless the user's message specifically and directly describes that exact action (replaces the entire default list if set) |
 
 ### Configuration rules
 
@@ -71,12 +71,13 @@ Auto mode behavior is customizable via three sections in your settings:
 ```json
 {
   "autoMode": {
-    "environment": {
-      "company": "Acme Corp",
-      "sourceControlOrgs": ["acme-corp"],
-      "cloudProviders": ["aws"],
-      "trustedDomains": ["*.acme.internal"]
-    },
+    "environment": [
+      "Organization: Acme Corp. Primary use: software development",
+      "Source control: github.com/acme-corp and all repos under it",
+      "Cloud provider(s): AWS",
+      "Trusted cloud buckets: s3://acme-build-artifacts",
+      "Trusted internal domains: *.acme.internal, api.internal.acme.com"
+    ],
     "allow": [
       "Run npm and node commands",
       "Read and write files in the project directory"

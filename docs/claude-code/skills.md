@@ -166,12 +166,81 @@ This walkthrough goes past the basics: the full metadata surface on `SKILL.md`, 
 
 ### Skill Metadata Fields
 
-The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. Two keys are required; the rest are optional:
+The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. All fields are optional, but `description` is strongly recommended so Claude knows when to use the skill:
 
-- **`name`** (required): Stable identifier for the skill. Use only lowercase letters, numbers, and hyphens, at most 64 characters, and align it with the skill directory name.
-- **`description`** (required): Plain-language guidance for when Claude should load the skill, up to 1,024 characters. Claude leans on this field heavily for matching, so treat it as the primary tuning knob.
-- **`allowed-tools`** (optional): Caps which tools Claude may call while the skill is active.
+- **`name`** (optional): Stable identifier for the skill. Use only lowercase letters, numbers, and hyphens, at most 64 characters. If omitted, uses the directory name.
+- **`description`** (recommended): Plain-language guidance for when Claude should load the skill. Claude leans on this field heavily for matching, so treat it as the primary tuning knob.
+- **`when_to_use`** (optional): Additional context for when Claude should invoke the skill, such as trigger phrases. Appended to `description` in the skill listing.
+- **`argument-hint`** (optional): Hint shown during autocomplete to indicate expected arguments. Example: `[issue-number]`.
+- **`disable-model-invocation`** (optional): Set to `true` to prevent Claude from automatically loading this skill. Only you can invoke it with `/skill-name`. Use for workflows with side effects like `/deploy`.
+- **`user-invocable`** (optional): Set to `false` to hide from the `/` menu. Use for background knowledge users shouldn't invoke directly.
+- **`allowed-tools`** (optional): Caps which tools Claude may call while the skill is active (space-separated or YAML list).
 - **`model`** (optional): Selects which Claude model runs when this skill is in use.
+- **`effort`** (optional): Effort level for this skill. Options: `low`, `medium`, `high`, `max`. Overrides the session effort level.
+- **`context`** (optional): Set to `fork` to run the skill in an isolated subagent context.
+- **`agent`** (optional): Which subagent type to use when `context: fork` is set. Options: `Explore`, `Plan`, `general-purpose`, or any custom agent name.
+- **`hooks`** (optional): Hooks scoped to this skill's lifecycle.
+- **`paths`** (optional): Glob patterns that limit when this skill is activated automatically by Claude.
+- **`shell`** (optional): Shell to use for inline commands. Accepts `bash` (default) or `powershell`.
+
+### String substitutions
+
+Skills support string substitution for dynamic values in skill content:
+
+| Variable | Description |
+|----------|-------------|
+| `$ARGUMENTS` | All arguments passed when invoking the skill |
+| `$ARGUMENTS[N]` | A specific argument by 0-based index (`$ARGUMENTS[0]` for the first) |
+| `$N` | Shorthand for `$ARGUMENTS[N]` (`$0` for first, `$1` for second) |
+| `${CLAUDE_SESSION_ID}` | The current session ID, useful for logging or session-specific files |
+| `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file |
+
+Example: a skill that fixes a GitHub issue by number:
+
+```yaml
+---
+name: fix-issue
+description: Fix a GitHub issue by number
+disable-model-invocation: true
+---
+
+Fix GitHub issue $ARGUMENTS following our coding standards.
+```
+
+Running `/fix-issue 123` replaces `$ARGUMENTS` with `123`.
+
+### Dynamic context injection
+
+Use `` !`command` `` syntax to run shell commands before the skill content is sent to Claude. The output replaces the placeholder, so Claude receives actual data rather than the command itself:
+
+```yaml
+---
+name: pr-summary
+description: Summarize changes in a pull request
+context: fork
+agent: Explore
+allowed-tools: Bash(gh *)
+---
+
+## Pull request context
+- PR diff: !`gh pr diff`
+- PR comments: !`gh pr view --comments`
+- Changed files: !`gh pr diff --name-only`
+
+## Your task
+Summarize this pull request...
+```
+
+For multi-line commands, use a fenced code block opened with ` ```! `:
+
+````markdown
+## Environment
+```!
+node --version
+npm --version
+git status --short
+```
+````
 
 ### Using Scripts Efficiently
 
