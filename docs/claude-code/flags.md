@@ -13,8 +13,10 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 |------|---------|
 | `--continue` | Resume the most recent session |
 | `--resume [id]` | Resume a specific session by ID, or open a picker |
+| `-n <name>` / `--name <name>` | Name the session for easy retrieval later (e.g. `claude -n auth-refactor`) |
 | `--fork-session` | Branch off from a resumed session without modifying the original (use with `--resume` or `--continue`) |
 | `--from-pr [number]` | Start a session from a GitHub pull request |
+| `--teleport` | Pull a session started on the web or iOS app into the local terminal |
 | `--session-id <uuid>` | Use a specific session ID (must be a valid UUID) |
 
 ## Model and effort
@@ -94,4 +96,5 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | Variable | Purpose |
 |----------|---------|
 | `CLAUDE_CODE_EFFORT_LEVEL` | Set effort level: `high`, `medium`, or `low` |
-| `MAX_THINKING_TOKENS` | Control how many tokens the model uses for reasoning |
+| `MAX_THINKING_TOKENS` | Control how many tokens the model uses for reasoning (set to `0` to disable thinking) |
+| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only) |
