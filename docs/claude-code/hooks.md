@@ -23,12 +23,13 @@ Hooks solve this by letting you define rules that execute automatically at the r
 
 ## Hook types
 
-Claude Code supports four types of hooks:
+Claude Code supports five types of hooks:
 
 | Type | What it does | Best for |
 |------|-------------|----------|
 | **command** | Runs a shell command | File operations, linting, formatting, scripts |
 | **http** | Sends a POST request to a URL | External integrations, logging services, webhooks |
+| **mcp_tool** | Calls a tool on a connected MCP server | Delegating to external tools already configured in MCP |
 | **prompt** | Evaluates a single LLM prompt | Judgment-based checks (is this code safe?) |
 | **agent** | Spawns a subagent with tool access | Complex verification (run tests, check coverage) |
 
@@ -40,15 +41,18 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 |-------|---------------|---------------------|
 | **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact` | Command only |
 | **UserPromptSubmit** | User submits a prompt, before Claude processes it | All |
+| **UserPromptExpansion** | A slash command is expanded before Claude sees the prompt. Matcher: command name | All |
 | **PreToolUse** | Before a tool call executes (can block it) | All |
 | **PermissionRequest** | When a permission dialog appears | All |
 | **PermissionDenied** | When auto mode classifier denies a tool call. Return `retry: true` to allow retry | All |
 | **PostToolUse** | After a tool call succeeds | All |
 | **PostToolUseFailure** | After a tool call fails | All |
+| **PostToolBatch** | After a batch of parallel tool calls completes | All |
 | **Notification** | When Claude Code sends a notification. Matcher values: `permission_prompt`, `idle_prompt`, `auth_success`, `elicitation_dialog` | Command only |
-| **SubagentStart** | A subagent spawns. Matcher values: agent type names | All |
+| **SubagentStart** | A subagent spawns. Matcher values: agent type names (e.g. `Explore`, `Plan`) | All |
 | **SubagentStop** | A subagent finishes | All |
 | **Stop** | Claude finishes responding (not on user interrupt) | All |
+| **StopFailure** | A turn ends due to an API error. Matcher values: `rate_limit`, `authentication_failed` | All |
 | **TaskCreated** | A task is created | All |
 | **TaskCompleted** | A task is marked as completed | All |
 | **InstructionsLoaded** | A CLAUDE.md or `.claude/rules/` file is loaded. Matcher values: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact` | All |
@@ -62,7 +66,7 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 | **WorktreeCreate** | A git worktree is created | Command only |
 | **WorktreeRemove** | A git worktree is removed | Command only |
 | **TeammateIdle** | An agent team teammate is about to go idle | Command only |
-| **SessionEnd** | Session terminates | Command only |
+| **SessionEnd** | Session terminates. Matcher values: `clear`, `logout`, `prompt_input_exit` | Command only |
 
 ## Configuration
 
@@ -294,6 +298,32 @@ Use an agent-based hook to verify tests pass before Claude considers its work do
 }
 ```
 
+### Delegate to an MCP tool
+
+Call a connected MCP server tool from a hook. Variable substitution with `${tool_input.field}` injects values from the hook's JSON input:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "security-scanner",
+            "tool": "scan_file",
+            "input": {
+              "file_path": "${tool_input.file_path}"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ### Send events to an external service
 
 POST tool usage data to a monitoring endpoint via HTTP:
@@ -411,6 +441,7 @@ Valid `permissionDecision` values for `PreToolUse`:
 - `"allow"`: bypass the permission prompt and let the tool run
 - `"deny"`: block the tool call and send the reason to Claude
 - `"ask"`: show the normal permission prompt to the user
+- `"defer"`: pause execution for external processing (non-interactive mode only); resume with `claude -p --resume <session-id>`
 
 ## Hooks in skills and agents
 

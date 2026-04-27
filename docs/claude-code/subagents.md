@@ -60,10 +60,22 @@ Output a structured report with severity ratings (critical / high / medium / low
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `name` | Yes | Identifier used to reference the agent |
+| `name` | Yes | Unique identifier using lowercase letters and hyphens |
 | `description` | Yes | Tells the main agent when to invoke this subagent; write it as a usage hint |
-| `model` | No | Defaults to the main agent's model if omitted |
-| `tools` | No | Comma-separated list of allowed tools; omit to inherit all tools |
+| `model` | No | Model to use: `sonnet`, `opus`, `haiku`, a full model ID, or `inherit`. Defaults to `inherit` (uses the parent session's model) |
+| `tools` | No | Comma-separated list of allowed tools; omit to inherit all tools from the parent session |
+| `disallowedTools` | No | Tools to deny, removed from the inherited or specified list |
+| `permissionMode` | No | Permission mode for this subagent: `default`, `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions` |
+| `maxTurns` | No | Maximum number of agentic turns before the subagent stops |
+| `skills` | No | Skills to load into the subagent's context at startup. Full skill content is injected; subagents do not inherit skills from the parent session |
+| `mcpServers` | No | MCP servers available to this subagent. Each entry is a server name referencing an already-configured server or an inline server definition |
+| `hooks` | No | Lifecycle hooks scoped to this subagent |
+| `memory` | No | Persistent memory scope: `user`, `project`, or `local`. Enables cross-session learning for this subagent |
+| `background` | No | Set to `true` to always run this subagent as a background task. Default: `false` |
+| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level |
+| `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
+| `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
+| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` flag). Commands and skills are processed |
 
 ### Project-level example
 
