@@ -61,10 +61,13 @@ Auto mode behavior is customizable via three sections in your settings:
 
 ### Configuration rules
 
-- Setting `allow` or `soft_deny` **replaces the entire default list** for that section.
-- Setting `environment` alone leaves defaults for `allow` and `soft_deny` intact.
+- Setting `allow` or `soft_deny` **replaces the entire default list** for that section unless you include `"$defaults"` in the array.
+- Include the literal string `"$defaults"` anywhere in an array to splice in the built-in default rules at that position. This keeps the built-in protections while adding your own.
+- Setting `environment` alone (without `allow` or `soft_deny`) leaves defaults for `allow` and `soft_deny` intact.
 - Evaluation order: **deny → ask → allow** (first match wins).
 - If the user's message directly describes the exact action Claude is about to take, the classifier allows it even if a `soft_deny` rule matches. General requests (like "clean up the repo") do not override `soft_deny`.
+
+Use `claude auto-mode defaults` to print the built-in rules, and `claude auto-mode config` to see the effective configuration with your settings applied.
 
 ### Example configuration
 
@@ -72,6 +75,7 @@ Auto mode behavior is customizable via three sections in your settings:
 {
   "autoMode": {
     "environment": [
+      "$defaults",
       "Organization: Acme Corp. Primary use: software development",
       "Source control: github.com/acme-corp and all repos under it",
       "Cloud provider(s): AWS",
@@ -79,10 +83,12 @@ Auto mode behavior is customizable via three sections in your settings:
       "Trusted internal domains: *.acme.internal, api.internal.acme.com"
     ],
     "allow": [
+      "$defaults",
       "Run npm and node commands",
       "Read and write files in the project directory"
     ],
     "soft_deny": [
+      "$defaults",
       "Delete more than 5 files at once",
       "Run commands that access production databases"
     ]

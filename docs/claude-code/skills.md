@@ -172,11 +172,12 @@ The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. 
 - **`description`** (recommended): Plain-language guidance for when Claude should load the skill. Claude leans on this field heavily for matching, so treat it as the primary tuning knob.
 - **`when_to_use`** (optional): Additional context for when Claude should invoke the skill, such as trigger phrases. Appended to `description` in the skill listing.
 - **`argument-hint`** (optional): Hint shown during autocomplete to indicate expected arguments. Example: `[issue-number]`.
+- **`arguments`** (optional): Named positional arguments for `$name` substitution in skill content. Accepts a space-separated string or a YAML list. Names map to argument positions in order. Example: `arguments: [issue, branch]` maps `$issue` to the first argument and `$branch` to the second.
 - **`disable-model-invocation`** (optional): Set to `true` to prevent Claude from automatically loading this skill. Only you can invoke it with `/skill-name`. Use for workflows with side effects like `/deploy`.
 - **`user-invocable`** (optional): Set to `false` to hide from the `/` menu. Use for background knowledge users shouldn't invoke directly.
 - **`allowed-tools`** (optional): Caps which tools Claude may call while the skill is active (space-separated or YAML list).
 - **`model`** (optional): Selects which Claude model runs when this skill is in use.
-- **`effort`** (optional): Effort level for this skill. Options: `low`, `medium`, `high`, `max`. Overrides the session effort level.
+- **`effort`** (optional): Effort level for this skill. Options: `low`, `medium`, `high`, `xhigh`, `max`. Overrides the session effort level. Available levels depend on the active model.
 - **`context`** (optional): Set to `fork` to run the skill in an isolated subagent context.
 - **`agent`** (optional): Which subagent type to use when `context: fork` is set. Options: `Explore`, `Plan`, `general-purpose`, or any custom agent name.
 - **`hooks`** (optional): Hooks scoped to this skill's lifecycle.

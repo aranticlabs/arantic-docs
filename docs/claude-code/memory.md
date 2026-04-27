@@ -169,7 +169,7 @@ Claude Code can automatically save notes between sessions. This is stored locall
 **How it works:**
 - Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings)
 - Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
-- At session start, only the **first 200 lines** of `MEMORY.md` are loaded. Content beyond line 200 is still accessible if Claude reads the file on demand.
+- At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand.
 - When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
 
 You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
@@ -197,7 +197,7 @@ Claude Code loads memory files at session start in this order (later entries tak
 5. **Project CLAUDE.md** (`./CLAUDE.md` or `./.claude/CLAUDE.md`)
 6. **Local CLAUDE.md** (`./CLAUDE.local.md`)
 7. **Project rules** (`.claude/rules/*.md`, unconditional ones)
-8. **Auto memory** (`~/.claude/projects/<project>/memory/MEMORY.md`, first 200 lines)
+8. **Auto memory** (`~/.claude/projects/<project>/memory/MEMORY.md`, first 200 lines or 25 KB)
 
 Path-scoped rules and subdirectory CLAUDE.md files load on demand when Claude works with matching files.
 
