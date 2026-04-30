@@ -31,6 +31,7 @@ This page covers only the built-in commands. Custom skills (created in `.claude/
 |---------|-------------|
 | `/model [model]` | Select or change the AI model. Use arrow keys to adjust effort level. |
 | `/fast [on\|off]` | Toggle fast mode (same model, faster output) |
+| `/effort [level]` | Set reasoning depth: `low`, `medium`, or `high` |
 | `/output-style [style]` | Switch between output styles: Default, Explanatory, or Learning |
 | `/plan` | Enter plan mode (Claude analyzes and plans before writing code) |
 
@@ -77,6 +78,8 @@ This page covers only the built-in commands. Custom skills (created in `.claude/
 | `/skills` | List all available skills |
 | `/agents` | Manage agent and subagent configurations |
 | `/tasks` | List and manage background tasks |
+| `/schedule` | Create and manage scheduled tasks and Routines (Anthropic-managed recurring tasks) |
+| `/loop [interval]` | Repeat a prompt on a recurring interval within the current CLI session |
 | `/chrome` | Configure Claude in Chrome settings |
 
 ## Account & System
@@ -89,6 +92,7 @@ This page covers only the built-in commands. Custom skills (created in `.claude/
 | `/status` | Show version, model, account, and connectivity status |
 | `/stats` | Visualize daily usage, session history, streaks, and model preferences |
 | `/insights` | Generate a report analyzing your Claude Code sessions |
+| `/powerup` | Launch interactive lessons with animated demos of Claude Code features |
 | `/feedback [report]` | Submit feedback about Claude Code (alias: `/bug`) |
 | `/release-notes` | View the full changelog |
 | `/upgrade` | Open the upgrade page to switch to a higher plan tier |
