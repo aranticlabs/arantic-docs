@@ -167,10 +167,17 @@ Claude Code can automatically save notes between sessions. This is stored locall
 ```
 
 **How it works:**
-- Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings)
+- Enabled by default. Disable via `/memory` toggle, by setting `"autoMemoryEnabled": false` in settings, or by setting the environment variable `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`.
 - Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
 - At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand.
 - When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
+- To store auto memory in a different location, set `autoMemoryDirectory` in `~/.claude/settings.json` (accepts an absolute path or `~/`-prefixed path):
+
+```json
+{
+  "autoMemoryDirectory": "~/my-custom-memory-dir"
+}
+```
 
 You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
 
@@ -200,6 +207,12 @@ Claude Code loads memory files at session start in this order (later entries tak
 8. **Auto memory** (`~/.claude/projects/<project>/memory/MEMORY.md`, first 200 lines or 25 KB)
 
 Path-scoped rules and subdirectory CLAUDE.md files load on demand when Claude works with matching files.
+
+By default, CLAUDE.md files from directories added with `--add-dir` are **not** loaded. To load them, set the environment variable `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1`:
+
+```bash
+CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir ../shared-config
+```
 
 **Practical example:**
 
