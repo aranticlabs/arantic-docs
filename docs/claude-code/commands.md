@@ -41,6 +41,7 @@ This page covers only the built-in commands. Custom skills (created in `.claude/
 |---------|-------------|
 | `/context` | Visualize current context usage as a colored grid |
 | `/compact [instructions]` | Compact the conversation to free context. Optional instructions guide what to preserve. |
+| `/btw <note>` | Add a quick aside to the session that is noted but does not enter the main conversation history |
 | `/cost` | Show token usage statistics for the current session |
 | `/usage` | Show plan usage limits and rate limit status |
 | `/extra-usage` | Configure extra usage to keep working when rate limits are hit |
