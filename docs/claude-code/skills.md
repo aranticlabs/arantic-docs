@@ -194,6 +194,7 @@ Skills support string substitution for dynamic values in skill content:
 | `$ARGUMENTS[N]` | A specific argument by 0-based index (`$ARGUMENTS[0]` for the first) |
 | `$N` | Shorthand for `$ARGUMENTS[N]` (`$0` for first, `$1` for second) |
 | `${CLAUDE_SESSION_ID}` | The current session ID, useful for logging or session-specific files |
+| `${CLAUDE_EFFORT}` | The current effort level (`low`, `medium`, `high`, `xhigh`, or `max`). Use this to adapt skill instructions to the active effort setting. |
 | `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file |
 
 Example: a skill that fixes a GitHub issue by number:

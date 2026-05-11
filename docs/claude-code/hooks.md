@@ -40,6 +40,7 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 | Event | When it fires | Supports all types? |
 |-------|---------------|---------------------|
 | **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact` | Command only |
+| **Setup** | Runs when Claude Code is invoked with a specific CLI flag. Matcher values: `init`, `maintenance` | Command only |
 | **UserPromptSubmit** | User submits a prompt, before Claude processes it | All |
 | **UserPromptExpansion** | A slash command is expanded before Claude sees the prompt. Matcher: command name | All |
 | **PreToolUse** | Before a tool call executes (can block it) | All |
