@@ -131,6 +131,10 @@ That order lets companies ship non-negotiable standards while individuals and te
 
 Commit `.claude/skills/` to source control when you want the whole team to share the same definitions. Personal skills in `~/.claude/skills` stay on your machine and apply everywhere unless an enterprise or project skill with the same name wins the [precedence chain](#skill-priority) above.
 
+### Live change detection
+
+Claude Code watches skill directories for file changes. Adding, editing, or removing a skill under `~/.claude/skills/` or `.claude/skills/` takes effect within the current session without restarting. Creating a top-level skills directory that did not exist when the session started requires restarting Claude Code.
+
 ## Configuration and multi-file skills
 
 This walkthrough goes past the basics: the full metadata surface on `SKILL.md`, wording descriptions so invocation stays predictable, tightening which tools a skill may use for sensitive flows, and splitting large skills into supporting files so details load only when needed (progressive disclosure). The emphasis is stronger skills that still avoid loading instructions you are not using yet.
@@ -182,7 +186,7 @@ The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. 
 - **`agent`** (optional): Which subagent type to use when `context: fork` is set. Options: `Explore`, `Plan`, `general-purpose`, or any custom agent name.
 - **`hooks`** (optional): Hooks scoped to this skill's lifecycle.
 - **`paths`** (optional): Glob patterns that limit when this skill is activated automatically by Claude.
-- **`shell`** (optional): Shell to use for inline commands. Accepts `bash` (default) or `powershell`.
+- **`shell`** (optional): Shell to use for `` !`command` `` and ` ```! ` blocks in this skill. Accepts `bash` (default) or `powershell`. Setting `powershell` runs inline shell commands via PowerShell on Windows. Requires `CLAUDE_CODE_USE_POWERSHELL_TOOL=1`.
 
 ### String substitutions
 
@@ -194,7 +198,8 @@ Skills support string substitution for dynamic values in skill content:
 | `$ARGUMENTS[N]` | A specific argument by 0-based index (`$ARGUMENTS[0]` for the first) |
 | `$N` | Shorthand for `$ARGUMENTS[N]` (`$0` for first, `$1` for second) |
 | `${CLAUDE_SESSION_ID}` | The current session ID, useful for logging or session-specific files |
-| `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file |
+| `${CLAUDE_EFFORT}` | The current effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Use to adapt skill instructions to the active effort setting |
+| `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file. Use this to reference bundled scripts regardless of where the skill is installed |
 
 Example: a skill that fixes a GitHub issue by number:
 
@@ -242,6 +247,8 @@ npm --version
 git status --short
 ```
 ````
+
+To disable shell command execution in skills (for security in managed environments), set `"disableSkillShellExecution": true` in your settings. Each command is replaced with `[shell command execution disabled by policy]` instead of being run. Bundled and managed skills are not affected.
 
 ### Using Scripts Efficiently
 
