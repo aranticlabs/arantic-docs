@@ -25,7 +25,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 |------|---------|
 | `--model sonnet` | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs) |
 | `--fallback-model <model>` | Automatic fallback when the primary model is overloaded (headless mode only) |
-| `--effort <level>` | Set reasoning depth: `low`, `medium`, or `high` |
+| `--effort <level>` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max` (available levels depend on the model) |
 | `--max-budget-usd 5` | Set a spending cap for the session (headless mode only) |
 | `--max-turns 20` | Limit the number of agentic turns |
 
@@ -95,6 +95,6 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Variable | Purpose |
 |----------|---------|
-| `CLAUDE_CODE_EFFORT_LEVEL` | Set effort level: `high`, `medium`, or `low` |
+| `CLAUDE_CODE_EFFORT_LEVEL` | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max` |
 | `MAX_THINKING_TOKENS` | Control how many tokens the model uses for reasoning (set to `0` to disable thinking) |
 | `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only) |

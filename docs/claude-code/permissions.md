@@ -81,6 +81,9 @@ Permissions are configured in `.claude/settings.json` (project) or `~/.claude/se
       "Bash(npx prettier *)",
       "Edit(src/**)"
     ],
+    "ask": [
+      "Bash(git push *)"
+    ],
     "deny": [
       "Bash(rm -rf *)",
       "Edit(.env*)"
@@ -89,7 +92,7 @@ Permissions are configured in `.claude/settings.json` (project) or `~/.claude/se
 }
 ```
 
-Rules are evaluated in order: **deny → ask → allow**. The first matching rule wins, so deny rules always take precedence.
+Rules are evaluated in order: **deny → ask → allow**. The first matching rule wins, so deny rules always take precedence. The `ask` array prompts for confirmation before executing matching tool calls, even in modes that would otherwise auto-approve them.
 
 ## Permission rule syntax
 
