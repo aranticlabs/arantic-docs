@@ -214,56 +214,60 @@ Let them discuss and reach consensus on the best approach. Output a final decisi
 ```
 
 
-### PRD implementation: New project (5–6 agents)
+### PRD implementation: New project (7–8 agents)
 
 > Use when starting from an empty (or near-empty) directory. No existing codebase, no CLAUDE.md. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
 
-```
+```bash
 Implement the new app defined in docs/prd/[app-name]/.
 
-Read the PRD index first, then technical notes and shared components
-to understand the app, tech stack, and directory structure.
+Use Agent Teams: spawn the teammates below as Agent Teams teammates (not regular subagents). Coordinate through the shared task list and use direct teammate messaging for signals and handoffs.
 
-Spawn 5 teammates (optionally 6):
+Read the PRD index first, then technical notes and shared components to understand the app, tech stack, and directory structure.
 
-- Init + Database Agent (sonnet) — reads technical notes, schema, shared components, and checklist docs.
-  Initializes the project, creates directory structure, generates CLAUDE.md,
-  then implements schema and seed data. Signals "scaffold-ready".
+PRD identifiers used below: US (User Stories), BR (Business Rules), TC (Test Cases). Treat each US/BR/TC as an explicit, atomic requirement that must be satisfied.
 
-- Domain Agent (opus) — reads domain and shared components docs.
-  Waits for "scaffold-ready". Signals "domain-ready".
+Spawn 7 teammates (optionally 8):
 
-- API Agent (sonnet) — reads API and shared components docs.
-  Waits for "domain-ready". Signals "api-ready".
-
-- Frontend Agent (sonnet) — reads frontend, API, and shared components docs.
-  Waits for "api-ready". Signals "frontend-ready".
-
-- QA Agent (sonnet) — reads acceptance criteria and test cases, plus checklist docs.
-  Reviews each phase as it completes (does not wait until the end).
-  Reports gaps to lead after each signal.
-  Writes tests after "api-ready" and "frontend-ready".
+- Init + Database Agent (opus) — reads technical notes, schema, shared components, and checklist docs. Initializes the project, creates directory structure, generates CLAUDE.md, then implements schema and seed data. Signals "scaffold-ready".
+- Domain Agent (opus) — reads domain and shared components docs. Waits for "scaffold-ready". Signals "domain-ready".
+- API Agent (opus) — reads API and shared components docs. Waits for "domain-ready". Signals "api-ready".
+- Frontend Agent (sonnet) — reads frontend, API, and shared components docs. Waits for "api-ready". Signals "frontend-ready".
+- Test Engineer Agent (sonnet) — reads US (acceptance criteria) and TC. Implements every TC as an automated test after "api-ready" and "frontend-ready". Runs the suite and reports failures to lead.
+- Implementation Auditor Agent (opus) — reads the phase implementation plan, phase checklist, and the BRs + USs in scope for the phase. After each phase signals complete, cross-references every planned item, BR, and US against the actual code and reports anything planned/required but not built (or built differently). Runs before the Code Quality Agent.
+- Code Quality Agent (opus) — reviews each phase against coding principles, architecture rules, layer boundaries, naming, file-size limits, and dead code. Runs after the Implementation Auditor on each phase. Reports issues to lead.
 
 Optional for complex UI:
-- UI Agent (sonnet) — reads UI (wireframes, components, interactions).
-  Waits for "scaffold-ready", works in parallel with backend agents.
-  Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
+- UI Agent (sonnet) — reads UI (wireframes, components, interactions). Waits for "scaffold-ready", works in parallel with backend agents. Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
 
 Rules:
-- Each agent gets its own tmux window/pane for isolated terminal sessions
-- All agents read CLAUDE.md (after Init creates it) + their PRD docs before coding
-- Before signaling: re-read your phase checklist, verify every item, include a completion summary
-- Ensure consistency across all layers (DB, domain, API, frontend)
-- Handoffs use signals, no polling
-- Flag PRD gaps to lead, no plan approval needed
-- Never commit or push - lead handles all git operations
+- Auto mode: do not stop between phases. Keep going until the full PRD is implemented.
+- Ambiguity in PRD: make the most defensible choice, document the assumption in your completion summary, keep moving. Do not stall.
+- Flag PRD gaps to lead. No plan approval needed.
+- All agents read CLAUDE.md (after Init creates it) + their PRD docs before coding.
+- Handoffs: wait for the named signal (e.g. "api-ready") via teammate messaging — do not poll or re-check status.
+- Ensure consistency across all layers (DB, domain, API, frontend).
+- Context budget: no agent may exceed ~50% of its context window. If a task is too large, split it and spawn additional sub-agents.
+- Before signaling: re-read your phase checklist, verify every item, include a completion summary.
+- Git: after each phase passes all reviews, the lead creates a single commit for that phase. Use `feat: <short subject>` (~60–72 chars), blank line, then 2–4 bullets summarizing what shipped. Never push.
+
+# Optional rules:
+# Enable in split-pane mode for isolated terminal state per agent
+- Each agent gets its own tmux window/pane for isolated terminal sessions.
+# Enable when building production software
+- Quality bar: enterprise-grade only. No "for now" code, no half-implementations, no silent failures, no skipped error paths.
+# Override the default per-phase commit rule — enable when you want one controlled commit at the end (or no commits at all) instead of one per phase
+- Skip per-phase commits. Teammates never touch git; the lead handles all git operations manually at the end.
 
 Lead (opus): coordinate using the phase checklist.
-After each signal:
-- Compare agent summary + QA report against checklist
+After each signal, before approving the phase:
+- Confirm Implementation Auditor has verified every planned item is built
+- Confirm Code Quality Agent has signed off
+- Confirm Test Engineer's suite passes
+- Run typecheck and the full test suite — both must pass
 - Ensure completeness across all layers
-- Send agent back if items are missing
-- Next phase proceeds only when all checklist items are verified complete
+- Send agent back if items are missing or quality issues remain
+- Next phase proceeds only when all three reviews pass
 
 Final verification:
 - Confirm all acceptance criteria are met
@@ -272,70 +276,74 @@ Final verification:
 - Summarize completed work and deviations
 ```
 
-> **How the pipeline flows:** Init + Database Agent runs first and generates CLAUDE.md. Domain, API, and Frontend agents chain in sequence. QA reviews each phase incrementally as signals arrive rather than waiting until the end — the lead gates each transition by cross-checking the agent summary and QA review against PRD-07. For complex UI, add the optional UI Agent running in parallel with backend agents.
-
-### PRD implementation: Existing app (5–6 agents)
+> **How the pipeline flows:** Init + Database Agent runs first and generates CLAUDE.md. Domain, API, and Frontend agents chain in sequence. After each phase, three reviews run in order — Implementation Auditor (was every planned item built?), Code Quality (does it meet the principles?), Test Engineer (do tests pass?). The lead gates each transition only when all three sign off and typecheck + tests pass. For complex UI, add the optional UI Agent running in parallel with backend agents.
+### PRD implementation: Existing app (7–8 agents)
 
 > Use when adding a feature to an app that already exists — CLAUDE.md, directory structure, and patterns are established. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
 
-```
+```bash
 Implement the feature defined in docs/prd/[feature-name]/.
 
+Use Agent Teams: spawn the teammates below as Agent Teams teammates (not regular subagents). Coordinate through the shared task list and use direct teammate messaging for signals and handoffs.
+
 Read CLAUDE.md, the PRD index, and shared components sections.
-Review the existing app code before spawning — use subagents and tools
-(search, grep, file listing) to explore the codebase efficiently rather
-than reading files sequentially in the main context.
 
-Spawn 5 teammates (optionally 6):
+PRD identifiers used below: US (User Stories), BR (Business Rules), TC (Test Cases). Treat each US/BR/TC as an explicit, atomic requirement that must be satisfied. Review the existing app code before spawning — use subagents and tools (search, grep, file listing) to explore the codebase efficiently rather than reading files sequentially in the main context.
 
-- Database Agent (sonnet) — reads schema and shared components docs.
-  Additive only. Signals "schema-ready".
+Spawn 7 teammates (optionally 8):
 
-- Domain Agent (opus) — reads domain and shared components docs.
-  Waits for "schema-ready". Signals "domain-ready".
-
-- API Agent (sonnet) — reads API and shared components docs.
-  Waits for "domain-ready". Extends existing router (no parallel routes).
-  Signals "api-ready".
-
-- Frontend Agent (sonnet) — reads frontend, API, and shared components docs.
-  Waits for "api-ready". Extends existing navigation and UI patterns.
-  Signals "frontend-ready".
-
-- QA Agent (sonnet) — reads acceptance criteria and test cases, plus checklist docs.
-  Reviews each phase as it completes (does not wait until the end).
-  Reports gaps to lead after each signal.
-  Writes tests after "api-ready" and "frontend-ready".
-  Runs existing tests to confirm no regressions.
+- Database Agent (sonnet) — reads schema and shared components docs. Additive only. Signals "schema-ready".
+- Domain Agent (opus) — reads domain and shared components docs. Waits for "schema-ready". Signals "domain-ready".
+- API Agent (opus) — reads API and shared components docs. Waits for "domain-ready". Extends existing router (no parallel routes). Signals "api-ready".
+- Frontend Agent (sonnet) — reads frontend, API, and shared components docs. Waits for "api-ready". Extends existing navigation and UI patterns. Signals "frontend-ready".
+- Test Engineer Agent (sonnet) — reads US (acceptance criteria) and TC. Implements every TC as an automated test after "api-ready" and "frontend-ready". Runs the full suite (new + existing) and reports failures or regressions to lead.
+- Implementation Auditor Agent (opus) — reads the phase implementation plan, phase checklist, and the BRs + USs in scope for the phase. After each phase signals complete, cross-references every planned item, BR, and US against the actual code and reports anything planned/required but not built (or built differently). Runs before the Code Quality Agent.
+- Code Quality Agent (opus) — reviews each phase against the project's coding principles, architecture rules, layer boundaries, naming, file-size limits, and dead code. Runs after the Implementation Auditor on each phase. Reports issues to lead.
 
 Optional for complex UI:
-- UI Agent (sonnet) — reads UI (wireframes, components, interactions).
-  Waits for "schema-ready", works in parallel with backend agents.
-  Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
+- UI Agent (sonnet) — reads UI (wireframes, components, interactions). Waits for "schema-ready", works in parallel with backend agents. Signals "ui-ready". Frontend Agent then waits for both "api-ready" and "ui-ready".
 
 Rules:
-- Each agent gets its own tmux window/pane for isolated terminal sessions
-- All agents read CLAUDE.md + their PRD docs before coding
-- When reviewing existing code: use subagents and tools to explore the codebase efficiently — do not read files one-by-one in main context
-- Always extend existing patterns, do not introduce duplicate logic or parallel implementations
-- Changes must be additive and must not break existing functionality
-- If regressions occur: signal "blocked" and report affected areas
-- Before signaling: re-read your phase checklist, verify every item, include a completion summary
-- No modifications outside feature scope without lead approval
-- Handoffs use signals, no polling
-- Flag PRD gaps to lead, no plan approval needed
+- Auto mode: do not stop between phases. Keep going until the full PRD is implemented.
+- Ambiguity in PRD: make the most defensible choice, document the assumption in your completion summary, keep moving. Do not stall.
+- Flag PRD gaps to lead. No plan approval needed.
+- All agents read CLAUDE.md + their PRD docs before coding.
+- When reviewing existing code, use subagents and tools to explore the codebase efficiently — do not read files one-by-one in main context.
+- Always extend existing patterns; do not introduce duplicate logic or parallel implementations.
+- Changes must be additive and must not break existing functionality.
+- No modifications outside feature scope without lead approval.
+- If regressions occur: signal "blocked" and report affected areas.
+- Handoffs: wait for the named signal (e.g. "api-ready") via teammate messaging — do not poll or re-check status.
+- Ensure consistency across all layers (DB, domain, API, frontend).
+- Context budget: no agent may exceed ~50% of its context window. If a task is too large, split it and spawn additional sub-agents.
+- Before signaling: re-read your phase checklist, verify every item, include a completion summary.
+- Git: after each phase passes all reviews, the lead creates a single commit for that phase. Use `feat: <short subject>` (~60–72 chars), blank line, then 2–4 bullets summarizing what shipped. Never push.
+
+# Optional rules:
+
+# Enable in split-pane mode for isolated terminal state per agent
+- Each agent gets its own tmux window/pane for isolated terminal sessions.
+
+# Enable when building production software
+- Quality bar: enterprise-grade only. No "for now" code, no half-implementations, no silent failures, no skipped error paths.
+
+# Override the default per-phase commit rule — enable when you want one controlled commit at the end (or no commits at all) instead of one per phase
+- Skip per-phase commits. Teammates never touch git; the lead handles all git operations manually at the end.
 
 Lead (opus): coordinate using the phase checklist.
-After each signal: compare agent summary + QA review against checklist.
-Ensure no regressions and no gaps across DB, domain, API, and frontend.
-Send agent back if items are missing. Next phase proceeds only when complete.
-After all done: verify all acceptance criteria and the end-to-end
-verification checklist. Summarize completed work, deviations,
-and modified files.
+After each signal, before approving the phase:
+- Confirm Implementation Auditor has verified every planned item is built
+- Confirm Code Quality Agent has signed off
+- Confirm Test Engineer's suite passes with no regressions
+- Run typecheck and the full test suite — both must pass and existing tests must still pass
+- Ensure no gaps across DB, domain, API, and frontend
+- Send agent back if items are missing or quality issues remain
+- Next phase proceeds only when all three reviews pass
+
+After all done: verify all acceptance criteria and the end-to-end verification checklist. Summarize completed work, deviations, and modified files.
 ```
 
-> **How the pipeline flows:** Database Agent runs first with additive-only schema changes. Domain, API, and Frontend agents chain in sequence. QA reviews each phase incrementally as signals arrive — the lead gates each transition by cross-checking the agent summary and QA review against PRD-07. Agents use subagents and tools for codebase exploration rather than reading files sequentially. For complex UI, add the optional UI Agent running in parallel with backend agents.
-
+> **How the pipeline flows:** Database Agent runs first with additive-only schema changes. Domain, API, and Frontend agents chain in sequence. After each phase, three reviews run in order — Implementation Auditor (was every planned item built?), Code Quality (does it meet the principles?), Test Engineer (do new and existing tests pass, no regressions?). The lead gates each transition only when all three sign off and typecheck + the full test suite pass. Agents use subagents and tools for codebase exploration rather than reading files sequentially. For complex UI, add the optional UI Agent running in parallel with backend agents.
 ## Useful commands while the team is running
 
 | Action | How |
