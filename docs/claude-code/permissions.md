@@ -130,6 +130,30 @@ Path rules for `Read` and `Edit` follow gitignore pattern types:
 | `/path` | Path relative to project root | `Edit(/src/**/*.ts)` |
 | `path` or `./path` | Path relative to current directory | `Edit(src/**)` |
 
+### PowerShell rules
+
+On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow the same syntax as Bash rules:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(git commit *)"
+    ],
+    "deny": [
+      "PowerShell(Remove-Item *)"
+    ]
+  }
+}
+```
+
+Matching is case-insensitive and common aliases are canonicalized, so `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, and `dir`.
+
+### Built-in read-only commands
+
+Claude Code recognizes a set of Bash commands as read-only and runs them without a permission prompt in every mode. These include `ls`, `cat`, `echo`, `pwd`, `head`, `tail`, `grep`, `find`, `wc`, `which`, `diff`, `stat`, `du`, `cd`, and read-only forms of `git`. This set is not configurable; to require a prompt for any of these, add an `ask` or `deny` rule for it.
+
 ### MCP tool rules
 
 ```text
@@ -192,4 +216,11 @@ If a tool is denied at any level, no other level can allow it.
 
 ## Sandbox mode
 
-For additional OS-level isolation, use `/sandbox` or `--sandbox` to restrict what Bash commands can access at the filesystem and network level. Permissions and sandboxing are complementary: permissions control which tools Claude uses, sandboxing enforces OS-level restrictions on what those tools can reach.
+For additional OS-level isolation, use `/sandbox` or `--sandbox` to restrict what Bash commands can access at the filesystem and network level.
+
+Permissions and sandboxing are complementary security layers:
+
+- **Permissions** control which tools Claude Code can use and which files or domains it can access. They apply to all tools (Bash, Read, Edit, WebFetch, MCP, and others).
+- **Sandboxing** provides OS-level enforcement that restricts Bash commands and their child processes. It applies only to Bash, but does so at the OS level regardless of what Claude decides.
+
+Use both for defense-in-depth: permission deny rules block Claude from even attempting restricted actions, while sandbox restrictions catch anything that slips through (such as prompt injection bypassing Claude's judgment).

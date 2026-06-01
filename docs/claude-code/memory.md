@@ -126,6 +126,8 @@ See @README for project overview and @package.json for available npm commands.
 
 Both relative and absolute paths work. Relative paths resolve from the file containing the import. This lets you keep CLAUDE.md concise while pulling in richer reference material on demand.
 
+Block-level HTML comments (`<!-- ... -->`) in CLAUDE.md files are stripped before the content is loaded into context. Use them to leave maintainer notes without consuming tokens. Comments inside code blocks are preserved.
+
 ### AGENTS.md
 
 Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses `AGENTS.md` for other coding agents, create a `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them:
@@ -171,7 +173,8 @@ Claude Code can automatically save notes between sessions. This is stored locall
 ```
 
 **How it works:**
-- Enabled by default. Disable via `/memory` toggle, by setting `"autoMemoryEnabled": false` in settings, or by setting the environment variable `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`.
+- Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings). Requires Claude Code v2.1.59 or later.
+- Disable via environment variable: `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`
 - Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
 - At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand.
 - When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
@@ -185,9 +188,7 @@ Claude Code can automatically save notes between sessions. This is stored locall
 
 You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
 
-**Custom storage location:**
-
-To store auto memory in a different location, set `autoMemoryDirectory` in your user settings at `~/.claude/settings.json`:
+To store auto memory in a custom location, set `autoMemoryDirectory` in `~/.claude/settings.json`:
 
 ```json
 {
@@ -195,15 +196,7 @@ To store auto memory in a different location, set `autoMemoryDirectory` in your 
 }
 ```
 
-The value must be an absolute path or start with `~/`. This setting is accepted from policy and user settings only, not from project or local settings.
-
-**Loading CLAUDE.md from additional directories:**
-
-When using `--add-dir` to grant access to directories outside your project, Claude does not load their CLAUDE.md files by default. Set `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` to also load memory files from those directories:
-
-```bash
-CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir ../shared-config
-```
+The value must be an absolute path or start with `~/`. All worktrees and subdirectories within the same git repository share one auto memory directory.
 
 ### Managed policy
 
@@ -216,6 +209,14 @@ For enterprise deployments, admins can place a `CLAUDE.md` at an OS-specific pat
 | Windows | `C:\Program Files\ClaudeCode\CLAUDE.md` |
 
 This file cannot be excluded by users. It always loads first and is intended for organization-wide standards and security policies.
+
+Alternatively, organizations can put managed CLAUDE.md content directly inside `managed-settings.json` using the `claudeMd` key, rather than deploying a separate file:
+
+```json
+{
+  "claudeMd": "Always run `make lint` before committing.\nNever push directly to main."
+}
+```
 
 ## Loading order and precedence
 

@@ -72,10 +72,10 @@ Output a structured report with severity ratings (critical / high / medium / low
 | `hooks` | No | Lifecycle hooks scoped to this subagent |
 | `memory` | No | Persistent memory scope: `user`, `project`, or `local`. Enables cross-session learning for this subagent |
 | `background` | No | Set to `true` to always run this subagent as a background task. Default: `false` |
-| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level |
+| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
 | `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
 | `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
-| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` flag). Commands and skills are processed |
+| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag). Commands and skills are processed |
 
 ### Project-level example
 
