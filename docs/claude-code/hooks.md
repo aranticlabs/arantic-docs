@@ -64,6 +64,7 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 | **Elicitation** | An MCP server requests user input | All |
 | **ElicitationResult** | Result of an MCP elicitation | All |
 | **ConfigChange** | A config file changes during the session. Matcher values: `user_settings`, `project_settings`, `local_settings`, `policy_settings`, `skills` | Command only |
+| **MessageDisplay** | When assistant message text displays. Use to replace displayed text or route messages to external systems | All |
 | **WorktreeCreate** | A git worktree is created | Command only |
 | **WorktreeRemove** | A git worktree is removed | Command only |
 | **TeammateIdle** | An agent team teammate is about to go idle | Command only |
