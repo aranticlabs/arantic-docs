@@ -79,7 +79,9 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 |------|---------|
 | `--agent <agent>` | Use a named agent for the session |
 | `--agents <json>` | Define custom agents inline as JSON |
-| `--plugin-dir <paths>` | Load plugins from directories for this session |
+| `--plugin-dir <paths>` | Load plugins from directories or `.zip` archives for this session |
+| `--plugin-url <urls>` | Load a plugin from a hosted `.zip` URL for this session |
+| `--teammate-mode <mode>` | Set Agent Teams display mode: `auto`, `tmux`, or `in-process` |
 
 ## MCP servers
 

@@ -23,6 +23,16 @@ claude --enable-auto-mode
 
 This adds `auto` to the permission mode cycle accessible via **Shift+Tab** (`default` → `acceptEdits` → `plan` → `auto`).
 
+**Persistent default via settings:**
+
+```json
+{
+  "permissions": {
+    "defaultMode": "auto"
+  }
+}
+```
+
 **VS Code / Desktop app:** Enable auto mode in Settings → Claude Code, then select it from the permission mode dropdown.
 
 **Team/Enterprise:** An admin must enable auto mode in Claude Code admin settings before individual users can access it.

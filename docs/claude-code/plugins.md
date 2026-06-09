@@ -108,8 +108,13 @@ A plugin is a directory with a `plugin.json` manifest inside a `.claude-plugin/`
 - **Hooks** (`hooks/hooks.json`): Event handlers that run on Claude Code lifecycle events (tool use, session start/end, etc.)
 - **MCP server config** (`.mcp.json`): External service connections that start automatically when the plugin is enabled
 - **LSP server config** (`.lsp.json`): Language server connections for code intelligence
+- **Background monitors** (`monitors/monitors.json`): Commands that run in the background and stream output to Claude as notifications
+- **Executables** (`bin/`): Binaries added to the Bash tool's `PATH` while the plugin is enabled
+- **Default settings** (`settings.json`): Configuration applied when the plugin is enabled (currently supports `agent` and `subagentStatusLine` keys)
 
 A minimal plugin needs only the manifest. You add components based on what the plugin should do.
+
+**Important:** Do not put `commands/`, `agents/`, `skills/`, or `hooks/` inside the `.claude-plugin/` directory. Only `plugin.json` goes inside `.claude-plugin/`. All other directories must be at the plugin root level.
 
 ## Recommended plugins for AI coding
 
@@ -248,12 +253,38 @@ Helps you build and evaluate new skills. Useful once you outgrow the ready-to-us
 
 ## Creating a plugin
 
-The quickest way to get started is to use the `plugin-dev` or `skill-creator` plugins from the official marketplace, which provide scaffolding and evaluation tooling. You can also test a plugin directory locally without installing it:
+Use the `claude plugin init` command to scaffold a new plugin in your skills directory:
+
+```bash
+claude plugin init my-tool
+```
+
+This creates `~/.claude/skills/my-tool/` with a `.claude-plugin/plugin.json` manifest and a starter `SKILL.md`. The plugin loads automatically on the next session with no marketplace or install step required.
+
+You can also test a plugin directory locally without installing it:
 
 ```bash
 claude --plugin-dir ./my-plugin
 ```
 
+The `--plugin-dir` flag also accepts a `.zip` archive of the plugin directory (requires Claude Code v2.1.128 or later):
+
+```bash
+claude --plugin-dir ./my-plugin.zip
+```
+
+To load a plugin from a hosted `.zip` URL (for example, a CI build artifact), use `--plugin-url`:
+
+```bash
+claude --plugin-url https://example.com/my-plugin.zip
+```
+
+Before submitting a plugin, validate it with:
+
+```bash
+claude plugin validate
+```
+
 The [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) repository on GitHub is the best reference for structure and conventions. The internal plugins developed by Anthropic follow the same specification that community plugins use.
 
-To submit a plugin to the official marketplace, use the submission form at [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit).
+To submit a plugin to the community marketplace, use the submission form at [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit). The official marketplace (`claude-plugins-official`) is curated separately by Anthropic and has no application process.

@@ -202,6 +202,18 @@ Skills support string substitution for dynamic values in skill content:
 | `${CLAUDE_EFFORT}` | The current effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Use to adapt skill instructions to the active effort setting |
 | `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file. Use this to reference bundled scripts regardless of where the skill is installed |
 
+Named positional arguments can be declared in frontmatter with the `arguments` field. Names map to argument positions in order:
+
+```yaml
+---
+name: fix-issue
+arguments: [issue, branch]
+---
+Fix issue $issue on branch $branch.
+```
+
+Running `/fix-issue 123 main` maps `$issue` to `123` and `$branch` to `main`.
+
 Example: a skill that fixes a GitHub issue by number:
 
 ```yaml
@@ -518,7 +530,7 @@ chmod +x path/to/your-script.sh
 
 When you have many skills, Claude Code truncates description text to fit a character budget (1% of the context window by default). Skills you use least get collapsed to bare names first. Use `/doctor` to diagnose budget overflow and see which skills are affected.
 
-To expand the budget, set `skillListingBudgetFraction` in settings (e.g. `0.02` for 2%) or reduce low-priority skill descriptions. You can also hide a skill's description while keeping it available by setting `"name-only"` in `skillOverrides`:
+To expand the budget, set `skillListingBudgetFraction` in settings (for example, `0.02` for 2%) or reduce low-priority skill descriptions. You can also control how individual skills appear using `skillOverrides`:
 
 ```json
 {
@@ -529,7 +541,13 @@ To expand the budget, set `skillListingBudgetFraction` in settings (e.g. `0.02` 
 }
 ```
 
-Valid `skillOverrides` values: `"on"` (default, full description), `"name-only"` (name listed but description hidden), `"user-invocable-only"` (hidden from Claude, visible in `/` menu), `"off"` (hidden everywhere). The `/skills` menu can write this setting for you: highlight a skill and press `Space` to cycle states.
+Valid `skillOverrides` values:
+- `"on"` (default): full description shown to Claude
+- `"name-only"`: name listed but description hidden (skill still usable)
+- `"user-invocable-only"`: hidden from Claude's automatic selection, still visible in the `/` menu
+- `"off"`: hidden from both Claude and the `/` menu
+
+The `/skills` menu can write this setting for you: highlight a skill and press `Space` to cycle through states.
 
 ### Quick troubleshooting checklist
 
@@ -706,7 +724,7 @@ Reads the project's PRD (if one exists), interviews the user about team size, ro
 
 ## Finding more skills
 
-The skills on this page are a starting point. There are two good places to discover more.
+The skills on this page are a starting point. There are several good places to discover more.
 
 ### Official: Anthropic Skills repository
 
@@ -720,6 +738,16 @@ You can install skills from this repo directly in Claude Code:
 ```
 
 The repository also contains a [skill template](https://github.com/anthropics/skills/tree/main/template) and the [Agent Skills specification](https://github.com/anthropics/skills/tree/main/spec), which are useful references if you want to author your own skills in the standard format.
+
+### Community: Skills Marketplace (SkillsMP)
+
+The community-maintained [Skills Marketplace (SkillsMP)](https://skillsmp.com/) aggregates over 270,000 agent skills from public GitHub repositories. It covers Claude Code, OpenAI Codex CLI, and ChatGPT, and provides search, category filtering, and quality indicators to help you find what you need.
+
+A few things to keep in mind when using community skills:
+
+- **Review before installing.** Community skills are open-source code from GitHub. Treat them the same way you would treat any third-party dependency and read the source before adding it to your project.
+- **SkillsMP is not affiliated with Anthropic.** It is an independent community project.
+- **Quality varies.** SkillsMP filters out repositories with fewer than 2 stars, but check that a skill does what you expect before relying on it.
 
 ### Community: Skills Marketplace (SkillsMP)
 
