@@ -33,7 +33,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/model [model]` | Select or change the AI model. Use arrow keys to adjust effort level. |
 | `/fast [on\|off]` | Toggle fast mode (same model, faster output) |
-| `/effort [level]` | Set reasoning depth: `low`, `medium`, or `high` |
+| `/effort [level\|auto]` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. `auto` resets to the model default. |
 | `/output-style [style]` | Switch between output styles: Default, Explanatory, or Learning |
 | `/plan` | Enter plan mode (Claude analyzes and plans before writing code) |
 
@@ -43,6 +43,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/context` | Visualize current context usage as a colored grid |
 | `/compact [instructions]` | Compact the conversation to free context. Optional instructions guide what to preserve. |
+| `/btw <note>` | Add a quick aside to the session that is noted but does not enter the main conversation history |
 | `/cost` | Show token usage statistics for the current session |
 | `/usage` | Show plan usage limits and rate limit status |
 | `/extra-usage` | Configure extra usage to keep working when rate limits are hit |
@@ -92,8 +93,15 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/autofix-pr [prompt]` | Spawn a Claude Code on the web session that watches the current branch's PR and pushes fixes when CI fails or reviewers leave comments. Requires the `gh` CLI |
 | `/chrome` | Configure Claude in Chrome settings |
 | `/debug [description]` | **[Skill]** Enable debug logging for the current session and troubleshoot issues by reading the session debug log |
-| `/simplify [focus]` | **[Skill]** Review recently changed files for code quality and efficiency issues, then apply fixes using parallel review agents |
+| `/simplify [target]` | **[Skill]** Review changed code for cleanup opportunities and apply fixes. From v2.1.154, does not hunt for correctness bugs; use `/code-review` for that. |
+| `/code-review [level] [--fix] [--comment] [target]` | **[Skill]** Review the current diff for correctness bugs and cleanups. Pass `--fix` to apply findings, `--comment` to post as GitHub PR comments, or `ultra` to run a deep multi-agent cloud review. |
 | `/claude-api` | **[Skill]** Load Claude API reference for your project's language. Also activates automatically when code imports `anthropic` or `@anthropic-ai/sdk` |
+| `/run` | **[Skill]** Launch and drive your project's app to see a change working in the running app (not just in tests). Requires Claude Code v2.1.145 or later. |
+| `/verify` | **[Skill]** Confirm a code change does what it should by building and running your app, then observing the result. Requires Claude Code v2.1.145 or later. |
+| `/run-skill-generator` | **[Skill]** Teach `/run` and `/verify` how to build, launch, and drive your project's app by writing a per-project skill. |
+| `/reload-skills` | Re-scan skill and command directories so skills added or changed on disk during the session become available without restarting. |
+| `/workflows` | Open the workflow progress view to watch, pause, resume, or save running and completed workflows. |
+| `/deep-research <question>` | **[Workflow]** Fan out web searches on a question, fetch and cross-check sources, and synthesize a cited report. |
 | `/fewer-permission-prompts` | **[Skill]** Scan session transcripts for common read-only tool calls and add an allowlist to `.claude/settings.json` to reduce future permission prompts |
 
 ## Account & System
@@ -126,7 +134,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/install-slack-app` | Install the Claude Slack app | All platforms |
 | `/mobile` | Show QR code to download the Claude mobile app (aliases: `/ios`, `/android`) | All platforms |
 | `/review [PR]` | Review a pull request for quality, correctness, security, and test coverage | All platforms |
-| `/ultrareview [PR]` | Run a deep, multi-agent cloud-based code review. Includes 3 free runs on Pro/Max plans | All platforms |
+| `/ultrareview [PR]` | Run a deep, multi-agent cloud-based code review. The preferred invocation is now `/code-review ultra`. Includes 3 free runs on Pro/Max plans. | All platforms |
 | `/ultraplan <prompt>` | Draft a plan in an ultraplan session, review it in your browser, then execute remotely or send it back to your terminal | All platforms |
 | `/security-review` | Analyze pending changes on current branch for security vulnerabilities | All platforms |
 

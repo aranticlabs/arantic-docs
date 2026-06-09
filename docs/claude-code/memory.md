@@ -37,6 +37,10 @@ The main memory file for your project. Lives at the repository root as `CLAUDE.m
 
 A well-structured CLAUDE.md is the single most impactful way to improve Claude Code's output, but bigger is not better. **Target under 200 lines per CLAUDE.md file.** Longer files consume more context and reduce how consistently Claude follows them. If your instructions are growing large, split them using imports or `.claude/rules/` files.
 
+:::tip
+Block-level HTML comments (`<!-- like this -->`) in CLAUDE.md files are stripped before the content is injected into Claude's context. Use them to leave notes for human maintainers without spending context tokens. Comments inside code blocks are preserved.
+:::
+
 Focus on what matters most:
 - Build and test commands
 - Non-obvious coding conventions
@@ -174,6 +178,13 @@ Claude Code can automatically save notes between sessions. This is stored locall
 - Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
 - At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand.
 - When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
+- To store auto memory in a different location, set `autoMemoryDirectory` in `~/.claude/settings.json` (accepts an absolute path or `~/`-prefixed path):
+
+```json
+{
+  "autoMemoryDirectory": "~/my-custom-memory-dir"
+}
+```
 
 You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
 
@@ -222,6 +233,12 @@ Claude Code loads memory files at session start in this order (later entries tak
 
 Path-scoped rules and subdirectory CLAUDE.md files load on demand when Claude works with matching files.
 
+By default, CLAUDE.md files from directories added with `--add-dir` are **not** loaded. To load them, set the environment variable `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1`:
+
+```bash
+CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir ../shared-config
+```
+
 **Practical example:**
 
 ```text
@@ -231,6 +248,12 @@ Path-scoped rules and subdirectory CLAUDE.md files load on demand when Claude wo
 ```
 
 The project instruction wins for indentation because it is more specific.
+
+## Generating a CLAUDE.md with /init
+
+Run `/init` in any project to generate a starter `CLAUDE.md` automatically. Claude analyzes your codebase and creates a file with build commands, test instructions, and project conventions it discovers. If a `CLAUDE.md` already exists, `/init` suggests improvements rather than overwriting it.
+
+Set `CLAUDE_CODE_NEW_INIT=1` to enable an interactive multi-phase flow: `/init` asks which artifacts to set up (CLAUDE.md files, skills, and hooks), explores your codebase with a subagent, fills in gaps via follow-up questions, and presents a reviewable proposal before writing any files.
 
 ## The /memory command
 
