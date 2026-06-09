@@ -173,8 +173,8 @@ This walkthrough goes past the basics: the full metadata surface on `SKILL.md`, 
 The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. All fields are optional, but `description` is strongly recommended so Claude knows when to use the skill:
 
 - **`name`** (optional): Stable identifier for the skill. Use only lowercase letters, numbers, and hyphens, at most 64 characters. If omitted, uses the directory name.
-- **`description`** (recommended): Plain-language guidance for when Claude should load the skill. Claude leans on this field heavily for matching, so treat it as the primary tuning knob.
-- **`when_to_use`** (optional): Additional context for when Claude should invoke the skill, such as trigger phrases. Appended to `description` in the skill listing.
+- **`description`** (recommended): Plain-language guidance for when Claude should load the skill. Claude leans on this field heavily for matching, so treat it as the primary tuning knob. The combined `description` and `when_to_use` text is capped at 1,536 characters in the skill listing; put the key use case first.
+- **`when_to_use`** (optional): Additional context for when Claude should invoke the skill, such as trigger phrases. Appended to `description` in the skill listing and counts toward the 1,536-character cap.
 - **`argument-hint`** (optional): Hint shown during autocomplete to indicate expected arguments. Example: `[issue-number]`.
 - **`arguments`** (optional): Named positional arguments for `$name` substitution in skill content. Accepts a space-separated string or a YAML list. Names map to argument positions in order. Example: `arguments: [issue, branch]` maps `$issue` to the first argument and `$branch` to the second.
 - **`disable-model-invocation`** (optional): Set to `true` to prevent Claude from automatically loading this skill. Only you can invoke it with `/skill-name`. Use for workflows with side effects like `/deploy`.
@@ -514,11 +514,29 @@ chmod +x path/to/your-script.sh
 
 - **Path separators:** Prefer forward slashes in paths even on Windows so references behave the same everywhere.
 
+### Skill descriptions are getting cut short
+
+When you have many skills, Claude Code truncates description text to fit a character budget (1% of the context window by default). Skills you use least get collapsed to bare names first. Use `/doctor` to diagnose budget overflow and see which skills are affected.
+
+To expand the budget, set `skillListingBudgetFraction` in settings (e.g. `0.02` for 2%) or reduce low-priority skill descriptions. You can also hide a skill's description while keeping it available by setting `"name-only"` in `skillOverrides`:
+
+```json
+{
+  "skillOverrides": {
+    "legacy-context": "name-only",
+    "deploy": "off"
+  }
+}
+```
+
+Valid `skillOverrides` values: `"on"` (default, full description), `"name-only"` (name listed but description hidden), `"user-invocable-only"` (hidden from Claude, visible in `/` menu), `"off"` (hidden everywhere). The `/skills` menu can write this setting for you: highlight a skill and press `Space` to cycle states.
+
 ### Quick troubleshooting checklist
 
 - **Never triggers:** Improve `description` and add trigger phrases you actually use in chat.
 - **Does not load:** Check folder layout, exact `SKILL.md` filename, and YAML frontmatter syntax.
 - **Wrong skill:** Make overlapping descriptions more distinct.
+- **Descriptions cut short:** Run `/doctor` to check budget overflow; use `skillOverrides` or `skillListingBudgetFraction` to manage it.
 - **Shadowed:** Two definitions can share a name; only the winner in the precedence chain applies. See [Skill priority](#skill-priority) and rename or consolidate if needed.
 - **Plugin skills missing:** Clear cache, restart, reinstall; then validate plugin structure.
 - **Runtime failure:** Dependencies, executable bits on scripts, and path style.

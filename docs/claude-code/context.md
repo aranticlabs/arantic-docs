@@ -39,7 +39,7 @@ On supported models (Sonnet 4.6, Opus 4.6, Opus 4.7), thinking uses **adaptive r
 
 | Way to adjust | How |
 |---------------|-----|
-| `/effort [level]` | Set session effort: `low`, `medium`, or `high` |
+| `/effort [level]` | Set session effort: `low`, `medium`, `high`, `xhigh`, or `max` (available levels depend on the model) |
 | `--effort <level>` | Set effort at startup via CLI flag |
 | `CLAUDE_CODE_EFFORT_LEVEL` | Set effort via environment variable |
 | `Option+T` (macOS) / `Alt+T` | Toggle thinking on or off for the current session |
