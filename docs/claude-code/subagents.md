@@ -75,6 +75,10 @@ Output a structured report with severity ratings (critical / high / medium / low
 | `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
 | `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
 | `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
+| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag) |
+| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
+| `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
+| `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
 | `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag). Commands and skills are processed |
 
 ### Project-level example

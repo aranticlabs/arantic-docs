@@ -20,7 +20,7 @@ Claude Code supports several permission modes that change how much Claude prompt
 | `plan` | Read-only (Claude analyzes but cannot modify files) | Exploring a codebase before changing it |
 | `auto` | Everything, with background safety checks | Long tasks, reducing prompt fatigue |
 | `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
-| `bypassPermissions` | Everything except protected paths | Isolated containers and VMs only |
+| `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
 
 Set a default mode in your settings:
 
@@ -56,7 +56,7 @@ Auto-denies every tool not explicitly allowed. Only actions matching your `permi
 
 ### bypassPermissions mode
 
-Disables permission prompts and safety checks so tool calls execute immediately. **Only use in isolated environments like containers or VMs.** Protected paths still prompt to prevent accidental corruption.
+Disables permission prompts and safety checks so tool calls execute immediately. **Only use in isolated environments like containers or VMs.** As of v2.1.126 this also bypasses writes to protected paths. Explicit `ask` rules still force a prompt, and removals targeting the filesystem root or home directory (`rm -rf /`, `rm -rf ~`) still prompt as a circuit breaker against model error.
 
 ```bash
 claude --permission-mode bypassPermissions
@@ -64,7 +64,7 @@ claude --permission-mode bypassPermissions
 claude --dangerously-skip-permissions
 ```
 
-Administrators can block this mode by setting `permissions.disableBypassPermissionsMode` to `"disable"` in managed settings.
+On Linux and macOS, Claude Code refuses to start in this mode when running as root or under `sudo` (the check is skipped inside a recognized sandbox). Administrators can block this mode by setting `permissions.disableBypassPermissionsMode` to `"disable"` in managed settings.
 
 ## Permission levels
 
@@ -157,12 +157,56 @@ Matching is case-insensitive and common aliases are canonicalized, so `PowerShel
 
 Claude Code recognizes a set of Bash commands as read-only and runs them without a permission prompt in every mode. These include `ls`, `cat`, `echo`, `pwd`, `head`, `tail`, `grep`, `find`, `wc`, `which`, `diff`, `stat`, `du`, `cd`, and read-only forms of `git`. This set is not configurable; to require a prompt for any of these, add an `ask` or `deny` rule for it.
 
+Unquoted glob patterns are permitted for commands whose every flag is read-only, so `ls *.ts` and `wc -l src/*.py` run without a prompt. Commands with write-capable or exec-capable flags still prompt when an unquoted glob is present.
+
+A `cd` into a path inside your working directory or an additional directory is also read-only. A compound command like `cd packages/api && ls` runs without a prompt when each part qualifies on its own.
+
+### PowerShell rules
+
+On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow the same syntax as Bash rules, with case-insensitive matching and canonicalized common aliases:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(git commit *)"
+    ],
+    "deny": [
+      "PowerShell(Remove-Item *)"
+    ]
+  }
+}
+```
+
+A rule written for a cmdlet name also matches its aliases, so `PowerShell(Get-ChildItem *)` matches `gci`, `ls`, and `dir` as well. A bare `PowerShell` or `PowerShell(*)` matches every PowerShell command.
+
 ### MCP tool rules
 
 ```text
 mcp__puppeteer          # All tools from the puppeteer server
 mcp__puppeteer__*       # Same using wildcard syntax
 mcp__puppeteer__navigate # One specific tool
+```
+
+### Agent (subagent) rules
+
+Use `Agent(AgentName)` rules to control which subagents Claude can use:
+
+```text
+Agent(Explore)          # Matches the Explore subagent
+Agent(Plan)             # Matches the Plan subagent
+Agent(my-agent)         # Matches a custom subagent
+```
+
+Add these to the `deny` array in your settings or use the `--disallowedTools` CLI flag to disable specific agents:
+
+```json
+{
+  "permissions": {
+    "deny": ["Agent(Explore)"]
+  }
+}
 ```
 
 ### Agent (subagent) rules

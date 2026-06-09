@@ -30,6 +30,7 @@ Claude Code uses several memory files at different scopes. Here is the complete 
 | **Auto memory** | `~/.claude/projects/<project>/memory/MEMORY.md` | You, this project (machine-local) | No | Claude |
 | **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md` | You, this project (machine-local) | No | Claude |
 | **Subagent memory** | `~/.claude/projects/<project>/subagents/<agent>/MEMORY.md` | Per subagent | No | Claude |
+| **Subagent memory** | `~/.claude/projects/<project>/subagents/<agent>/MEMORY.md` | Per subagent | No | Claude |
 
 ### Project CLAUDE.md
 
@@ -98,6 +99,25 @@ Use this for things like:
 - When writing tests, prefer table-driven test patterns
 ```
 
+### AGENTS.md
+
+Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses `AGENTS.md` for other coding agents, create a `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them:
+
+```markdown
+@AGENTS.md
+
+## Claude Code
+Use plan mode for changes under `src/billing/`.
+```
+
+A symlink also works if you don't need Claude-specific additions:
+
+```bash
+ln -s AGENTS.md CLAUDE.md
+```
+
+Running `/init` in a repo that already has an `AGENTS.md` reads it and incorporates the relevant parts into the generated `CLAUDE.md`.
+
 ### CLAUDE.local.md
 
 Personal, project-specific memory that is NOT committed to git. Lives at `./CLAUDE.local.md` in the project root. Claude Code auto-adds it to `.gitignore`.
@@ -124,7 +144,7 @@ See @README for project overview and @package.json for available npm commands.
 - git workflow @docs/git-instructions.md
 ```
 
-Both relative and absolute paths work. Relative paths resolve from the file containing the import. This lets you keep CLAUDE.md concise while pulling in richer reference material on demand.
+Both relative and absolute paths work. Relative paths resolve from the file containing the import. Imported files can recursively import other files, up to a maximum depth of four hops.
 
 Block-level HTML comments (`<!-- ... -->`) in CLAUDE.md files are stripped before the content is loaded into context. Use them to leave maintainer notes without consuming tokens. Comments inside code blocks are preserved.
 
@@ -188,7 +208,7 @@ Claude Code can automatically save notes between sessions. This is stored locall
 
 You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
 
-To store auto memory in a custom location, set `autoMemoryDirectory` in `~/.claude/settings.json`:
+To store auto memory in a custom location, set `autoMemoryDirectory` in your `settings.json`. This setting can be placed at any settings scope (user, project, local, or policy):
 
 ```json
 {
@@ -196,7 +216,16 @@ To store auto memory in a custom location, set `autoMemoryDirectory` in `~/.clau
 }
 ```
 
-The value must be an absolute path or start with `~/`. All worktrees and subdirectories within the same git repository share one auto memory directory.
+The value must be an absolute path or start with `~/`. All worktrees and subdirectories within the same git repository share one auto memory directory. Auto memory is machine-local and not shared across cloud environments.
+
+The auto memory directory contains a `MEMORY.md` entrypoint and optional topic files Claude creates for specific subjects:
+
+```text
+~/.claude/projects/<project>/memory/
+├── MEMORY.md          # Concise index, loaded into every session
+├── debugging.md       # Detailed notes on debugging patterns
+└── api-conventions.md # API design decisions
+```
 
 ### Managed policy
 
@@ -210,7 +239,7 @@ For enterprise deployments, admins can place a `CLAUDE.md` at an OS-specific pat
 
 This file cannot be excluded by users. It always loads first and is intended for organization-wide standards and security policies.
 
-Alternatively, organizations can put managed CLAUDE.md content directly inside `managed-settings.json` using the `claudeMd` key, rather than deploying a separate file:
+Alternatively, organizations can put managed CLAUDE.md content directly inside `managed-settings.json` using the `claudeMd` key, rather than deploying a separate file. This setting is only honored from managed or policy settings sources, not from user or project settings:
 
 ```json
 {
@@ -377,4 +406,4 @@ In large monorepos, you may want to exclude CLAUDE.md files from other teams. Us
 }
 ```
 
-This accepts glob patterns matched against absolute file paths. Managed policy CLAUDE.md cannot be excluded.
+This accepts glob patterns matched against absolute file paths. The setting can be configured at any settings layer (user, project, local, or managed policy) and arrays merge across layers. Managed policy CLAUDE.md files cannot be excluded, ensuring organization-wide instructions always apply.
