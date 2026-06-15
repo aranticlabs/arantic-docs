@@ -35,7 +35,7 @@ Claude Code enables extended thinking by default, giving Claude space to reason 
 
 ### Effort levels
 
-On supported models (Sonnet 4.6, Opus 4.6, Opus 4.7), thinking uses **adaptive reasoning**: the model dynamically allocates thinking tokens based on your effort level and the task at hand. This means Claude responds faster to routine prompts and reserves deeper thinking for steps that benefit from it.
+On supported models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8), thinking uses **adaptive reasoning**: the model dynamically allocates thinking tokens based on your effort level and the task at hand. This means Claude responds faster to routine prompts and reserves deeper thinking for steps that benefit from it.
 
 | Way to adjust | How |
 |---------------|-----|
