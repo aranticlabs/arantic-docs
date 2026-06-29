@@ -122,6 +122,32 @@ Bash rules support glob patterns with `*`, which can appear anywhere in the comm
 
 A space before `*` enforces a word boundary: `Bash(ls *)` matches `ls -la` but not `lsof`.
 
+### Match by input parameter
+
+Deny and ask rules can match a tool's top-level input parameter with the `Tool(param:value)` syntax (requires Claude Code v2.1.178 or later). The rule matches when Claude calls the tool with that parameter set to that exact value:
+
+| Rule | Matches |
+|------|---------|
+| `Agent(model:opus)` | Subagent spawns that request the Opus model tier |
+| `Agent(isolation:worktree)` | Subagent spawns that request a git worktree |
+| `Bash(run_in_background:true)` | Bash calls that run in the background |
+
+The value accepts `*` as a wildcard, so `Agent(isolation:*)` matches any explicit isolation value. Each rule names one parameter; to gate on two parameters, write two separate rules. Parameter matching only applies to `deny` and `ask` rules; allow rules continue to use each tool's own specifier syntax.
+
+### Tool name wildcards
+
+Deny and ask rules also accept a glob in the tool-name position. `"*"` matches every tool, and `"mcp__*"` matches every MCP tool across all servers, which is the simplest way to deny a whole class of tools at once:
+
+```json
+{
+  "permissions": {
+    "deny": ["mcp__*"]
+  }
+}
+```
+
+Allow rules accept a tool-name glob only after a literal `mcp__<server>__` prefix (for example `mcp__github__get_*`); an unanchored allow glob like `"*"` is skipped with a warning. A deny or ask rule whose tool name matches no known tool produces a startup warning to catch typos.
+
 ### Read and Edit path rules
 
 Path rules for `Read` and `Edit` follow gitignore pattern types:
@@ -236,6 +262,8 @@ Or configure persistently in settings:
   "additionalDirectories": ["/path/to/shared-config"]
 }
 ```
+
+To change the session's primary working directory rather than adding another, use the `/cd` command (v2.1.169 or later). Unlike `/add-dir`, it relocates the session and loads the new directory's `CLAUDE.md`. Restrict where `/cd` can move with `Cd(<path>)` deny or allow rules; a bare `Cd` deny rule disables the command entirely.
 
 ## Managed settings
 

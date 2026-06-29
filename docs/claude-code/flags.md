@@ -24,7 +24,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | Flag | Purpose |
 |------|---------|
 | `--model sonnet` | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs) |
-| `--fallback-model <model>` | Automatic fallback when the primary model is overloaded (headless mode only) |
+| `--fallback-model <model>` | Automatic fallback when the primary model is overloaded or unavailable. Applies to both interactive and headless sessions. Configure up to three fallbacks tried in order with the `fallbackModel` setting. |
 | `--effort <level>` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. |
 | `--max-budget-usd 5` | Set a spending cap for the session (headless mode only) |
 | `--max-turns 20` | Limit the number of agentic turns |
@@ -104,6 +104,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 |------|---------|
 | `--debug [filter]` | Enable debug mode with optional category filtering (e.g. `"api,hooks"`) |
 | `--verbose` | Enable verbose output |
+| `--safe-mode` | Launch with all customizations disabled (`CLAUDE.md`, skills, plugins, hooks, MCP servers, custom commands and agents do not load) to isolate a broken configuration. Authentication, model selection, built-in tools, and permissions still work. Also settable via the `CLAUDE_CODE_SAFE_MODE` environment variable. |
 
 ## Environment variables
 

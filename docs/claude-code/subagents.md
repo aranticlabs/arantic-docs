@@ -730,6 +730,14 @@ Run the test suite in the background while I keep working.
 
 The main agent will notify you when a background subagent completes.
 
+When a background subagent needs a permission decision, the prompt surfaces in your main session instead of being auto-denied. The dialog shows which agent is asking, and pressing **Esc** denies only that one tool call.
+
+### Nested subagents
+
+Since v2.1.172, a subagent can spawn its own subagents. This helps when a delegated task itself splits into parallel subtasks, such as a reviewer subagent that dispatches a verifier per finding: the intermediate output never reaches your main conversation, and only the top-level subagent's summary returns to you. The subagent panel below the prompt shows the full tree, with a descendant count and a path back to `main` on each row.
+
+Subagent chains are capped at **five levels deep** to prevent runaway concurrent trees. A subagent at depth five does not receive the Agent tool and cannot spawn further. The limit is fixed and not configurable.
+
 ### Parallel subagents
 
 The main agent can launch multiple subagents simultaneously for independent tasks:
