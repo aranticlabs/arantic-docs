@@ -13,15 +13,26 @@ This guide takes you from zero to a working Claude Code setup in about 15 minute
 
 You need:
 
-- **Node.js 18+** installed (`node --version` to check)
-- **An Anthropic API key** or a **Claude Pro/Max subscription**
+- **A Claude subscription** (Pro, Max, Team, or Enterprise) or an **Anthropic Console (API) account**. The free Claude.ai plan does not include Claude Code access.
 - **A git repository** to work in (Claude Code works best inside git repos)
 
 ## 2. Install Claude Code
 
+The recommended way to install Claude Code is the **native installer**, which sets up a self-updating binary and does not require Node.js.
+
+**macOS, Linux, WSL:**
+
 ```bash
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 ```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+You can also install via Homebrew (`brew install --cask claude-code`), WinGet (`winget install Anthropic.ClaudeCode`), or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 18+).
 
 Verify the installation:
 
@@ -117,7 +128,7 @@ If something isn't working, run the built-in diagnostic:
 /doctor
 ```
 
-This checks your Node.js version, API key, git status, and other common issues.
+This checks your installation, authentication, git status, and other common issues.
 
 For more troubleshooting tips, see [Debugging](/claude-code/debugging).
 

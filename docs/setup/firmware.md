@@ -41,21 +41,13 @@ If you're locked into a vendor IDE, GitHub Copilot has limited direct integratio
 
 Claude Code is especially valuable for embedded work because it can run the review subagents (memory safety, MISRA-C, interrupt safety) across your entire codebase at once, something impractical to do manually.
 
-**Requires Node.js 18+.** On Windows, download from [nodejs.org](https://nodejs.org). On Linux/macOS:
+Install with the **native installer** (no Node.js required). On Linux/macOS/WSL:
 
 ```bash
-# macOS
-brew install node
-
-# Ubuntu/Debian
-sudo apt update && sudo apt install nodejs npm
+curl -fsSL https://claude.ai/install.sh | bash
 ```
 
-Install Claude Code:
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
+On Windows, run `irm https://claude.ai/install.ps1 | iex` in PowerShell. You can also install via Homebrew, WinGet, or npm (`npm install -g @anthropic-ai/claude-code`, requires Node.js 18+).
 
 Run from your firmware project root:
 

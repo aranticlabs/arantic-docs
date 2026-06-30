@@ -64,22 +64,21 @@ The Visual Studio designer works visually - Copilot helps with the code behind i
 
 If you're building ASP.NET Core APIs, background services, or anything that runs `dotnet` commands, adding Claude Code gives you agentic multi-file tasks that Copilot can't do alone.
 
-### 1. Install Node.js
+### 1. Install Claude Code
 
-Claude Code is distributed via npm. Download Node.js 18+ from [nodejs.org](https://nodejs.org) (Windows installer, no configuration needed).
-
-Verify in a terminal (Command Prompt or PowerShell):
+Install Claude Code with the **native installer**, which sets up a self-updating binary (no Node.js required). In PowerShell:
 
 ```powershell
-node --version   # should print v18.x or higher
-npm --version
+irm https://claude.ai/install.ps1 | iex
 ```
 
-### 2. Install Claude Code
+Or in Command Prompt (CMD):
 
-```powershell
-npm install -g @anthropic-ai/claude-code
+```batch
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
+
+You can also install via WinGet (`winget install Anthropic.ClaudeCode`) or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 18+).
 
 Open a terminal in your project folder and run:
 
@@ -88,7 +87,7 @@ cd C:\Projects\MyService
 claude
 ```
 
-### 3. Configure project context (CLAUDE.md)
+### 2. Configure project context (CLAUDE.md)
 
 Create a `CLAUDE.md` file at the solution root. Claude Code reads it on every session:
 
@@ -118,7 +117,7 @@ Create a `CLAUDE.md` file at the solution root. Claude Code reads it on every se
 - `src/Infrastructure/Migrations/` - managed by EF Core tooling
 ```
 
-### 4. Claude Code tasks for .NET
+### 3. Claude Code tasks for .NET
 
 ```
 Generate a MediatR command and handler for creating a new Order. The handler
