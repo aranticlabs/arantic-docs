@@ -20,7 +20,7 @@ Claude Code supports several permission modes that change how much Claude prompt
 | `plan` | Read-only (Claude analyzes but cannot modify files) | Exploring a codebase before changing it |
 | `auto` | Everything, with background safety checks | Long tasks, reducing prompt fatigue |
 | `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
-| `bypassPermissions` | Everything except protected paths | Isolated containers and VMs only |
+| `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
 
 Set a default mode in your settings:
 
@@ -56,7 +56,7 @@ Auto-denies every tool not explicitly allowed. Only actions matching your `permi
 
 ### bypassPermissions mode
 
-Disables permission prompts and safety checks so tool calls execute immediately. **Only use in isolated environments like containers or VMs.** Protected paths still prompt to prevent accidental corruption.
+Disables permission prompts and safety checks so tool calls execute immediately. **Only use in isolated environments like containers or VMs.** As of v2.1.126 this also bypasses writes to protected paths. Explicit `ask` rules still force a prompt, and removals targeting the filesystem root or home directory (`rm -rf /`, `rm -rf ~`) still prompt as a circuit breaker against model error.
 
 ```bash
 claude --permission-mode bypassPermissions
@@ -64,7 +64,7 @@ claude --permission-mode bypassPermissions
 claude --dangerously-skip-permissions
 ```
 
-Administrators can block this mode by setting `permissions.disableBypassPermissionsMode` to `"disable"` in managed settings.
+On Linux and macOS, Claude Code refuses to start in this mode when running as root or under `sudo` (the check is skipped inside a recognized sandbox). Administrators can block this mode by setting `permissions.disableBypassPermissionsMode` to `"disable"` in managed settings.
 
 ## Permission levels
 

@@ -48,14 +48,14 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 
 ### Circuit breaker
 
-If the classifier blocks an action **3 times in a row** or **20 times total** in one session, auto mode pauses and Claude reverts to prompting for each action. These thresholds are not configurable.
+If the classifier blocks an action **3 times in a row** or **20 times total** in one session, auto mode pauses and Claude reverts to prompting for each action. Approving the prompted action resumes auto mode. Any allowed action resets the consecutive counter, while the total counter persists for the session. These thresholds are not configurable. In non-interactive mode (`-p`), repeated blocks abort the session since there is no user to prompt.
 
 ## Comparison with other permission modes
 
 | Mode | Flag | Behavior |
 |------|------|----------|
 | **default** | (none) | Asks for confirmation on every sensitive operation |
-| **acceptEdits** | `--permission-mode acceptEdits` | Auto-approves file edits; bash commands still prompt |
+| **acceptEdits** | `--permission-mode acceptEdits` | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `mv`, `cp`, `sed`) in the working directory; other bash commands still prompt |
 | **plan** | `--permission-mode plan` | Read-only; Claude can analyze but not make changes |
 | **auto** | `--permission-mode auto` | Classifier auto-approves safe actions, blocks risky ones |
 | **bypassPermissions** | `--dangerously-skip-permissions` | Auto-approves everything; no safety checks (hooks still run) |
