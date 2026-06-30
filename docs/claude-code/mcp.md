@@ -87,6 +87,17 @@ After adding a server, confirm it loaded and see what tools it exposes:
 
 Claude Code lists all active servers and their available tools.
 
+### Authenticating servers from the CLI
+
+For MCP servers that use OAuth, you can run the authentication flow directly from your shell instead of opening the `/mcp` panel inside a session (requires Claude Code v2.1.186 or later):
+
+```bash
+claude mcp login <name>     # Run the configured server's OAuth flow
+claude mcp logout <name>    # Clear the stored credentials
+```
+
+For example, `claude mcp login sentry` opens the browser flow for a server named `sentry`. On a machine with no browser available (such as an SSH session or a Linux host with no display server), the command prints the authorization URL instead: open it on your local machine and paste the full redirect URL back at the prompt. Pass `--no-browser` to force this URL prompt even when a local browser is detected.
+
 ## Recommended daily-use servers
 
 If you are new to MCP, start with these five servers. They cover the most common needs and work well together in a **Research, Debug, Document** workflow:
