@@ -35,7 +35,7 @@ Claude Code enables extended thinking by default, giving Claude space to reason 
 
 ### Effort levels
 
-On supported models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, and Fable 5), thinking uses **adaptive reasoning**: the model dynamically allocates thinking tokens based on your effort level and the task at hand. This means Claude responds faster to routine prompts and reserves deeper thinking for steps that benefit from it.
+On supported models (Sonnet 4.6, Sonnet 5, Opus 4.6, Opus 4.7, Opus 4.8, and Fable 5), thinking uses **adaptive reasoning**: the model dynamically allocates thinking tokens based on your effort level and the task at hand. This means Claude responds faster to routine prompts and reserves deeper thinking for steps that benefit from it.
 
 | Way to adjust | How |
 |---------------|-----|
@@ -52,4 +52,4 @@ Press `Ctrl+O` to toggle verbose mode. Claude's internal reasoning appears as gr
 
 ### Limiting thinking tokens
 
-Use the `MAX_THINKING_TOKENS` environment variable to cap the thinking budget. On Sonnet 4.6 and Opus 4.6, set `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1` to revert to a fixed budget that `MAX_THINKING_TOKENS` controls. Opus 4.7 and later and Fable 5 always use adaptive reasoning and ignore that setting; on those models `MAX_THINKING_TOKENS=0` turns thinking off, except on Fable 5 where thinking cannot be disabled.
+Use the `MAX_THINKING_TOKENS` environment variable to cap the thinking budget. On Sonnet 4.6 and Opus 4.6, set `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1` to revert to a fixed budget that `MAX_THINKING_TOKENS` controls. Opus 4.7 and later, Sonnet 5, and Fable 5 always use adaptive reasoning and ignore that setting; on those models `MAX_THINKING_TOKENS=0` turns thinking off, except on Fable 5 where thinking cannot be disabled.

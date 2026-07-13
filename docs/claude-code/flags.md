@@ -33,7 +33,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Flag | Purpose |
 |------|---------|
-| `--permission-mode <mode>` | Permission mode: `default`, `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
+| `--permission-mode <mode>` | Permission mode: `default` (accepts `manual` as an alias in v2.1.200+), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
 | `--allowedTools <tools>` | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`) |
 | `--disallowedTools <tools>` | Deny specific tools (e.g. `"Bash(rm:*)"`) |
 | `--tools <tools>` | Restrict the available tool set entirely (`""` to disable all, `"default"` for all) |

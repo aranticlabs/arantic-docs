@@ -22,6 +22,10 @@ Claude Code supports several permission modes that change how much Claude prompt
 | `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
 | `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
 
+:::note
+The `default` mode is labeled **Manual** in the CLI, in `claude --help`, and in the VS Code and JetBrains extensions (v2.1.200 or later). Its config value stays `default` (used by hooks and the SDK), but the CLI also accepts `manual` as an alias wherever you set the mode, for example `claude --permission-mode manual` or `"defaultMode": "manual"`.
+:::
+
 Set a default mode in your settings:
 
 ```json

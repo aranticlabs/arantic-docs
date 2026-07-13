@@ -140,7 +140,7 @@ claude auto-mode critique
 | Requirement | Detail |
 |-------------|--------|
 | **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, an admin must enable it first. |
-| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6. On Bedrock, Vertex AI, and Foundry: only Opus 4.7 and Opus 4.8. |
+| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6 or later. On Bedrock, Vertex AI, and Foundry: only Sonnet 5, Opus 4.7, and Opus 4.8. |
 | **Providers** | Available by default on the Anthropic API. On Amazon Bedrock, Google Vertex AI, and Microsoft Foundry, set `CLAUDE_CODE_ENABLE_AUTO_MODE=1` (v2.1.158+) to enable it. |
 | **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
