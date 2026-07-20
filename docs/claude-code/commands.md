@@ -21,7 +21,8 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/exit` | Exit Claude Code (alias: `/quit`) |
 | `/clear` | Clear conversation history and free up context (aliases: `/reset`, `/new`) |
 | `/resume [session]` | Resume a previous conversation by ID or name, or open the session picker (alias: `/continue`) |
-| `/fork [name]` | Create a fork of the current conversation at this point |
+| `/fork [prompt]` | Copy the current conversation into a new background session that runs independently in `claude agents` (agent view) while you keep working here. Pass a prompt to start the copy immediately; without one it waits for its first prompt. |
+| `/subtask [prompt]` | Send a side task to a subagent whose result comes back into the current conversation (the in-session behavior `/fork` used to have) |
 | `/rename [name]` | Rename the current session (auto-generates a name if none provided) |
 | `/export [filename]` | Export current conversation as plain text |
 | `/copy` | Copy the last assistant response to clipboard (shows interactive picker for code blocks) |
@@ -111,7 +112,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/login` | Sign in to your Anthropic account |
 | `/logout` | Sign out from your Anthropic account |
-| `/doctor` | Diagnose and verify your Claude Code installation and settings |
+| `/doctor` | **[Skill]** Run a full setup checkup that diagnoses issues and can fix them: checks installation health, finds unused skills, MCP servers, and plugins versus their context cost, deduplicates and trims `CLAUDE.md` files, and flags slow hooks. Reports findings first and asks before changing anything. (alias: `/checkup`) |
 | `/status` | Show version, model, account, and connectivity status |
 | `/stats` | Visualize daily usage, session history, streaks, and model preferences |
 | `/insights` | Generate a report analyzing your Claude Code sessions |
