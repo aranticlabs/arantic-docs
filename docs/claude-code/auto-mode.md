@@ -37,7 +37,7 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 
 **Team/Enterprise:** An admin must enable auto mode in [Claude Code admin settings](https://claude.ai/admin-settings/claude-code) before individual users can access it.
 
-**Bedrock / Vertex AI / Foundry:** Auto mode is off until you set the `CLAUDE_CODE_ENABLE_AUTO_MODE` environment variable to `1` (Claude Code v2.1.158 or later). See [Availability](#availability).
+**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
 
 ## How it works
 
@@ -140,8 +140,8 @@ claude auto-mode critique
 | Requirement | Detail |
 |-------------|--------|
 | **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, an admin must enable it first. |
-| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6. On Bedrock, Vertex AI, and Foundry: only Opus 4.7 and Opus 4.8. |
-| **Providers** | Available by default on the Anthropic API. On Amazon Bedrock, Google Vertex AI, and Microsoft Foundry, set `CLAUDE_CODE_ENABLE_AUTO_MODE=1` (v2.1.158+) to enable it. |
+| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6. On Bedrock, Google Cloud's Agent Platform, and Foundry: only Opus 4.7 and Opus 4.8. |
+| **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
 | **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
 

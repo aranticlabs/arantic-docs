@@ -15,12 +15,14 @@ Claude Code supports several permission modes that change how much Claude prompt
 
 | Mode | What runs without asking | Best for |
 |------|-------------------------|----------|
-| `default` | Read-only operations | Getting started, sensitive work |
+| `default` (now called **Manual**) | Read-only operations | Getting started, sensitive work |
 | `acceptEdits` | Reads, file edits, and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.) | Iterating on code you're reviewing |
 | `plan` | Read-only (Claude analyzes but cannot modify files) | Exploring a codebase before changing it |
 | `auto` | Everything, with background safety checks | Long tasks, reducing prompt fatigue |
 | `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
 | `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
+
+The `default` mode is now labelled **Manual** across the CLI, `--help`, VS Code, and JetBrains, and `--permission-mode manual` is accepted as an alias for `default`. From v2.1.203, the status bar shows a gray `⏸ manual mode on` badge while it is active. The stored setting value remains `default`.
 
 Set a default mode in your settings:
 

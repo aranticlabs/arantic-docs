@@ -21,7 +21,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/exit` | Exit Claude Code (alias: `/quit`) |
 | `/clear` | Clear conversation history and free up context (aliases: `/reset`, `/new`) |
 | `/resume [session]` | Resume a previous conversation by ID or name, or open the session picker (alias: `/continue`) |
-| `/fork [name]` | Create a fork of the current conversation at this point |
+| `/fork [name]` | Copy the current conversation into a new background session (with its own row in `claude agents`) so it can branch off while you keep working in the original. The in-session forked subagent this used to launch is now `/subtask` |
 | `/rename [name]` | Rename the current session (auto-generates a name if none provided) |
 | `/export [filename]` | Export current conversation as plain text |
 | `/copy` | Copy the last assistant response to clipboard (shows interactive picker for code blocks) |
@@ -86,6 +86,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/agents` | Manage agent and subagent configurations |
 | `/tasks` | List and manage background tasks |
 | `/background [prompt]` | Detach the current session to run as a background agent and free the terminal. Pass a prompt to send one more instruction before detaching. Alias: `/bg` |
+| `/subtask [prompt]` | Launch an in-session forked subagent that continues from the current conversation state. This is the behavior `/fork` used to have before `/fork` became a background-session copy |
 | `/stop` | Stop the current background session (only available while attached to one) |
 | `/batch <instruction>` | **[Skill]** Orchestrate large-scale changes across a codebase in parallel: decomposes the work into independent units and spawns one background subagent per unit in an isolated git worktree |
 | `/goal [condition]` | Set a completion goal; Claude keeps working across turns until the condition is met. `clear` or `cancel` removes the goal early |
@@ -111,12 +112,13 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/login` | Sign in to your Anthropic account |
 | `/logout` | Sign out from your Anthropic account |
-| `/doctor` | Diagnose and verify your Claude Code installation and settings |
+| `/doctor` | Run a full setup checkup (v2.1.205+): diagnoses installation health, finds unused skills, MCP servers, and plugins versus their context cost, deduplicates local `CLAUDE.md` files against checked-in ones, proposes trimming `CLAUDE.md` content Claude could derive from the codebase, and flags slow hooks. Reports findings first and asks for confirmation before changing anything. Alias: `/checkup` |
 | `/status` | Show version, model, account, and connectivity status |
 | `/stats` | Visualize daily usage, session history, streaks, and model preferences |
 | `/insights` | Generate a report analyzing your Claude Code sessions |
 | `/team-onboarding` | Generate a team onboarding guide from your Claude Code usage history |
 | `/powerup` | Launch interactive lessons with animated demos of Claude Code features |
+| `/radio` | Open the Claude FM lo-fi radio stream in your browser (prints the stream URL when no browser is available). Not available on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation (requires a Claude.ai account) |
 | `/feedback [report]` | Submit feedback about Claude Code (alias: `/bug`) |
 | `/release-notes` | View the full changelog |
