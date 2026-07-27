@@ -21,11 +21,12 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/exit` | Exit Claude Code (alias: `/quit`) |
 | `/clear` | Clear conversation history and free up context (aliases: `/reset`, `/new`) |
 | `/resume [session]` | Resume a previous conversation by ID or name, or open the session picker (alias: `/continue`) |
-| `/fork [name]` | Create a fork of the current conversation at this point |
+| `/fork [prompt]` | Copy the current conversation into a new background session that runs independently in `claude agents` (agent view) while you keep working here. Pass a prompt to start the copy immediately; without one it waits for its first prompt. |
+| `/subtask [prompt]` | Send a side task to a subagent whose result comes back into the current conversation (the in-session behavior `/fork` used to have) |
 | `/rename [name]` | Rename the current session (auto-generates a name if none provided) |
 | `/export [filename]` | Export current conversation as plain text |
 | `/copy` | Copy the last assistant response to clipboard (shows interactive picker for code blocks) |
-| `/rewind` | Rewind conversation and code to a previous point, or summarize from a selected message (alias: `/checkpoint`) |
+| `/rewind` | Rewind conversation and code to a previous point, or summarize from a selected message. Can resume a conversation from before `/clear` was run. (alias: `/checkpoint`) |
 
 ## Model & Output
 
@@ -55,7 +56,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 
 | Command | What it does |
 |---------|-------------|
-| `/config` | Open the settings interface (alias: `/settings`) |
+| `/config [key=value]` | Open the settings interface, or pass `key=value` (e.g. `/config thinking=false`) to change a setting directly without opening it. The `key=value` form also works in headless mode with `-p` and from Remote Control. (alias: `/settings`) |
 | `/permissions` | View or update tool permissions (alias: `/allowed-tools`) |
 | `/hooks` | Manage hook configurations for tool lifecycle events |
 | `/keybindings` | Open or create your keybindings configuration file |
@@ -73,6 +74,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/init` | Initialize a project with a `CLAUDE.md` guide |
 | `/memory` | Edit `CLAUDE.md` memory files, enable or disable auto-memory |
 | `/add-dir <path>` | Add a new working directory to the current session |
+| `/cd <path>` | Move the current session to a different working directory without rebuilding the prompt cache. The new directory's `CLAUDE.md` is appended as a message, and the session relocates to the new directory's project storage so `--resume` and `--continue` find it there. Prompts you to trust an unfamiliar directory. Requires v2.1.169 or later. |
 
 ## Tools & Integrations
 
@@ -110,7 +112,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/login` | Sign in to your Anthropic account |
 | `/logout` | Sign out from your Anthropic account |
-| `/doctor` | Diagnose and verify your Claude Code installation and settings |
+| `/doctor` | **[Skill]** Run a full setup checkup that diagnoses issues and can fix them: checks installation health, finds unused skills, MCP servers, and plugins versus their context cost, deduplicates and trims `CLAUDE.md` files, and flags slow hooks. Reports findings first and asks before changing anything. (alias: `/checkup`) |
 | `/status` | Show version, model, account, and connectivity status |
 | `/stats` | Visualize daily usage, session history, streaks, and model preferences |
 | `/insights` | Generate a report analyzing your Claude Code sessions |
@@ -187,7 +189,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | Prefix | What it does |
 |--------|-------------|
 | `/` | Open command and skill menu |
-| `!` | Bash mode: run a shell command and add its output to the session |
+| `!` | Shell mode: run a shell command (with live file-path autocomplete). Claude responds to the output once it lands in the transcript, so `! npm test` explains the failures without a second prompt (costing the same as a normal prompt). Set `respondToBashCommands` to `false` in `settings.json` to add output to context without a response. |
 | `@` | File path autocomplete: mention a file to add it to context |
 
 ## MCP Prompts as Commands

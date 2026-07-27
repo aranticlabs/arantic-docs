@@ -37,11 +37,13 @@ See the full [GitHub Copilot guide](../tools/github-copilot) for tips.
 
 Claude Code handles multi-file tasks that go beyond inline completion: refactoring across files, reviewing a PR, generating a feature end-to-end.
 
-**Requires Node.js 18+.** Check with `node --version`. If you need Node, install it via [nvm](https://github.com/nvm-sh/nvm) (recommended) or [nodejs.org](https://nodejs.org).
+Install with the **native installer** (no Node.js required):
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 ```
+
+On Windows, run `irm https://claude.ai/install.ps1 | iex` in PowerShell. You can also install via Homebrew, WinGet, or npm (`npm install -g @anthropic-ai/claude-code`, requires Node.js 18+).
 
 Run it from your project root (for Go: the directory with `go.mod`):
 
