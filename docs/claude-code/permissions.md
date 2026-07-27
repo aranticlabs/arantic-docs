@@ -179,7 +179,7 @@ On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow 
 }
 ```
 
-Matching is case-insensitive and common aliases are canonicalized, so `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, and `dir`.
+Matching is case-insensitive and common aliases are canonicalized, so `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, and `dir`. A bare `PowerShell` or `PowerShell(*)` matches every PowerShell command.
 
 ### Built-in read-only commands
 
@@ -188,26 +188,6 @@ Claude Code recognizes a set of Bash commands as read-only and runs them without
 Unquoted glob patterns are permitted for commands whose every flag is read-only, so `ls *.ts` and `wc -l src/*.py` run without a prompt. Commands with write-capable or exec-capable flags still prompt when an unquoted glob is present.
 
 A `cd` into a path inside your working directory or an additional directory is also read-only. A compound command like `cd packages/api && ls` runs without a prompt when each part qualifies on its own.
-
-### PowerShell rules
-
-On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow the same syntax as Bash rules, with case-insensitive matching and canonicalized common aliases:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(git commit *)"
-    ],
-    "deny": [
-      "PowerShell(Remove-Item *)"
-    ]
-  }
-}
-```
-
-A rule written for a cmdlet name also matches its aliases, so `PowerShell(Get-ChildItem *)` matches `gci`, `ls`, and `dir` as well. A bare `PowerShell` or `PowerShell(*)` matches every PowerShell command.
 
 ### MCP tool rules
 
@@ -235,14 +215,6 @@ Add these to the `deny` array in your settings or use the `--disallowedTools` CL
     "deny": ["Agent(Explore)"]
   }
 }
-```
-
-### Agent (subagent) rules
-
-```text
-Agent(Explore)          # Matches the Explore subagent
-Agent(Plan)             # Matches the Plan subagent
-Agent(my-agent)         # Matches a custom subagent
 ```
 
 ## Working directories
