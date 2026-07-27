@@ -33,7 +33,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Flag | Purpose |
 |------|---------|
-| `--permission-mode <mode>` | Permission mode: `default` (accepts `manual` as an alias in v2.1.200+), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
+| `--permission-mode <mode>` | Permission mode: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
 | `--allowedTools <tools>` | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`) |
 | `--disallowedTools <tools>` | Deny specific tools (e.g. `"Bash(rm:*)"`) |
 | `--tools <tools>` | Restrict the available tool set entirely (`""` to disable all, `"default"` for all) |
@@ -51,6 +51,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | `--print "prompt"` | Run a single prompt in headless mode (no interactive session) |
 | `--output-format <format>` | Output format with `--print`: `text`, `json`, or `stream-json` |
 | `--input-format <format>` | Input format with `--print`: `text` or `stream-json` |
+| `--forward-subagent-text` | Include subagent text and thinking blocks in `stream-json` output (also settable via `CLAUDE_CODE_FORWARD_SUBAGENT_TEXT`) |
 | `--json-schema <schema>` | Enforce structured output with a JSON Schema |
 | `--no-session-persistence` | Do not save the session to disk (headless mode only) |
 | `--bare` | Minimal mode: skip auto-discovery of hooks, skills, plugins, MCP servers, auto memory, and CLAUDE.md. Faster starts for scripted calls. |
@@ -106,6 +107,12 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | `--verbose` | Enable verbose output |
 | `--safe-mode` | Launch with all customizations disabled (`CLAUDE.md`, skills, plugins, hooks, MCP servers, custom commands and agents do not load) to isolate a broken configuration. Authentication, model selection, built-in tools, and permissions still work. Also settable via the `CLAUDE_CODE_SAFE_MODE` environment variable. |
 
+## Accessibility
+
+| Flag | Purpose |
+|------|---------|
+| `--ax-screen-reader` | Start the session in screen reader mode: replace the visual terminal interface (boxes, spinners, in-place redraws) with plain, linear labeled lines that a screen reader such as VoiceOver or NVDA reads in order. Also settable per shell with the `CLAUDE_AX_SCREEN_READER` environment variable or everywhere with the `axScreenReader` setting. |
+
 ## Environment variables
 
 | Variable | Purpose |
@@ -114,4 +121,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | `MAX_THINKING_TOKENS` | Control how many tokens the model uses for reasoning (set to `0` to disable thinking) |
 | `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only) |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | Set to `1` to disable auto memory globally |
+| `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops |
+| `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION` | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops |
+| `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS` | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable |
 | `ANTHROPIC_MODEL` | Override the default model for all sessions |

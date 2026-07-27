@@ -37,7 +37,7 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 
 **Team/Enterprise:** An admin must enable auto mode in [Claude Code admin settings](https://claude.ai/admin-settings/claude-code) before individual users can access it.
 
-**Bedrock / Agent Platform / Foundry:** As of v2.1.207, auto mode appears in the Shift+Tab cycle by default on Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, with no environment variable required. (In v2.1.158 through v2.1.206 you had to set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; the variable is still accepted for compatibility but has no effect from v2.1.207 onward.) Admins can disable it with `permissions.disableAutoMode`. See [Availability](#availability).
+**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
 
 ## How it works
 
@@ -143,8 +143,8 @@ claude auto-mode reset
 | Requirement | Detail |
 |-------------|--------|
 | **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, an admin must enable it first. |
-| **Models** | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry: only Sonnet 5, Opus 4.7, Opus 4.8, and Fable 5. |
-| **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. On Bedrock, Agent Platform, and Foundry, the `CLAUDE_CODE_ENABLE_AUTO_MODE=1` opt-in was removed in v2.1.207 (it was required in v2.1.158 through v2.1.206). |
+| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6. On Bedrock, Google Cloud's Agent Platform, and Foundry: only Opus 4.7 and Opus 4.8. |
+| **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
 | **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
 

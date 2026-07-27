@@ -15,16 +15,14 @@ Claude Code supports several permission modes that change how much Claude prompt
 
 | Mode | What runs without asking | Best for |
 |------|-------------------------|----------|
-| `default` | Read-only operations | Getting started, sensitive work |
+| `default` (now called **Manual**) | Read-only operations | Getting started, sensitive work |
 | `acceptEdits` | Reads, file edits, and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.) | Iterating on code you're reviewing |
 | `plan` | Read-only (Claude analyzes but cannot modify files) | Exploring a codebase before changing it |
 | `auto` | Everything, with background safety checks | Long tasks, reducing prompt fatigue |
 | `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
 | `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
 
-:::note
-The `default` mode is labeled **Manual** in the CLI, in `claude --help`, and in the VS Code and JetBrains extensions (v2.1.200 or later). Its config value stays `default` (used by hooks and the SDK), but the CLI also accepts `manual` as an alias wherever you set the mode, for example `claude --permission-mode manual` or `"defaultMode": "manual"`.
-:::
+The `default` mode is now labelled **Manual** across the CLI, `--help`, VS Code, and JetBrains, and `--permission-mode manual` is accepted as an alias for `default`. From v2.1.203, the status bar shows a gray `⏸ manual mode on` badge while it is active. The stored setting value remains `default`.
 
 Set a default mode in your settings:
 
@@ -181,7 +179,7 @@ On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow 
 }
 ```
 
-Matching is case-insensitive and common aliases are canonicalized, so `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, and `dir`.
+Matching is case-insensitive and common aliases are canonicalized, so `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, and `dir`. A bare `PowerShell` or `PowerShell(*)` matches every PowerShell command.
 
 ### Built-in read-only commands
 
@@ -190,26 +188,6 @@ Claude Code recognizes a set of Bash commands as read-only and runs them without
 Unquoted glob patterns are permitted for commands whose every flag is read-only, so `ls *.ts` and `wc -l src/*.py` run without a prompt. Commands with write-capable or exec-capable flags still prompt when an unquoted glob is present.
 
 A `cd` into a path inside your working directory or an additional directory is also read-only. A compound command like `cd packages/api && ls` runs without a prompt when each part qualifies on its own.
-
-### PowerShell rules
-
-On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow the same syntax as Bash rules, with case-insensitive matching and canonicalized common aliases:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(git commit *)"
-    ],
-    "deny": [
-      "PowerShell(Remove-Item *)"
-    ]
-  }
-}
-```
-
-A rule written for a cmdlet name also matches its aliases, so `PowerShell(Get-ChildItem *)` matches `gci`, `ls`, and `dir` as well. A bare `PowerShell` or `PowerShell(*)` matches every PowerShell command.
 
 ### MCP tool rules
 
@@ -237,14 +215,6 @@ Add these to the `deny` array in your settings or use the `--disallowedTools` CL
     "deny": ["Agent(Explore)"]
   }
 }
-```
-
-### Agent (subagent) rules
-
-```text
-Agent(Explore)          # Matches the Explore subagent
-Agent(Plan)             # Matches the Plan subagent
-Agent(my-agent)         # Matches a custom subagent
 ```
 
 ## Working directories
