@@ -26,11 +26,13 @@ Claude Code ships with several built-in subagents the main agent can invoke auto
 
 | Subagent | Purpose | Default model |
 |----------|---------|---------------|
-| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Haiku |
+| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Inherits session model (capped at Opus) |
 | **Plan** | Architecture and design research, implementation planning | Sonnet |
 | **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | Sonnet |
 
 The main agent selects these automatically based on the task, or you can nudge it ("use the Explore agent to find all usages of `getUser`").
+
+Since v2.1.198, the Explore agent inherits your main session's model instead of always running on Haiku. On the Claude API the inherited model is capped at Opus, so Explore never costs more than the model you already chose for the session. To keep exploration on a cheaper model, define a custom `Explore` agent with `model: haiku`.
 
 ## Creating custom subagents
 
@@ -722,13 +724,13 @@ Run the test-runner agent on the files I just edited, then continue.
 
 ### Background vs. foreground
 
-By default, subagents run in the foreground; the main agent waits for a result before continuing. For independent tasks you can run them in the background:
+Since v2.1.198, subagents run in the **background by default**: the main agent keeps working while the subagent runs and picks up its result when it finishes. Claude runs a subagent in the foreground only when it needs the result before continuing. You can still steer this per task:
 
 ```
 Run the test suite in the background while I keep working.
 ```
 
-The main agent will notify you when a background subagent completes.
+The main agent notifies you when a background subagent completes. To pin a custom subagent so it always runs in the background, set `background: true` in its frontmatter.
 
 When a background subagent needs a permission decision, the prompt surfaces in your main session instead of being auto-denied. The dialog shows which agent is asking, and pressing **Esc** denies only that one tool call.
 
