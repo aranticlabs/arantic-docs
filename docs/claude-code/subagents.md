@@ -65,17 +65,13 @@ Output a structured report with severity ratings (critical / high / medium / low
 | `model` | No | Model to use: `sonnet`, `opus`, `haiku`, a full model ID, or `inherit`. Defaults to `inherit` (uses the parent session's model) |
 | `tools` | No | Comma-separated list of allowed tools; omit to inherit all tools from the parent session |
 | `disallowedTools` | No | Tools to deny, removed from the inherited or specified list |
-| `permissionMode` | No | Permission mode for this subagent: `default`, `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions` |
+| `permissionMode` | No | Permission mode for this subagent: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions` |
 | `maxTurns` | No | Maximum number of agentic turns before the subagent stops |
 | `skills` | No | Skills to load into the subagent's context at startup. Full skill content is injected; subagents do not inherit skills from the parent session |
 | `mcpServers` | No | MCP servers available to this subagent. Each entry is a server name referencing an already-configured server or an inline server definition |
 | `hooks` | No | Lifecycle hooks scoped to this subagent |
 | `memory` | No | Persistent memory scope: `user`, `project`, or `local`. Enables cross-session learning for this subagent |
-| `background` | No | Set to `true` to always run this subagent as a background task. Default: `false` |
-| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
-| `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
-| `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
-| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag) |
+| `background` | No | Set to `true` to always run this subagent as a background task, even when the main agent needs its result right away. When unset, Claude chooses, and as of v2.1.198 it runs subagents in the background by default |
 | `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
 | `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
 | `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
@@ -722,13 +718,13 @@ Run the test-runner agent on the files I just edited, then continue.
 
 ### Background vs. foreground
 
-By default, subagents run in the foreground; the main agent waits for a result before continuing. For independent tasks you can run them in the background:
+As of v2.1.198, subagents run in the **background by default**: the main agent keeps working and picks up the result when the subagent finishes. The main agent still runs a subagent in the foreground when it needs the result before it can continue. You can also steer this explicitly:
 
 ```
 Run the test suite in the background while I keep working.
 ```
 
-The main agent will notify you when a background subagent completes.
+Press **Ctrl+B** to background a running task. A background subagent's result reaches the main agent as a completion notification in a later turn (v2.1.211+); if you ask about progress before it finishes, the main agent reports that the subagent is still running rather than guessing at results.
 
 When a background subagent needs a permission decision, the prompt surfaces in your main session instead of being auto-denied. The dialog shows which agent is asking, and pressing **Esc** denies only that one tool call.
 
