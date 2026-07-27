@@ -133,6 +133,9 @@ claude auto-mode config
 
 # Get AI feedback on your custom rules
 claude auto-mode critique
+
+# Restore the default auto-mode configuration (add --yes to skip the prompt)
+claude auto-mode reset
 ```
 
 ## Availability

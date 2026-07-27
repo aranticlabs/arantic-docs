@@ -26,11 +26,13 @@ Claude Code ships with several built-in subagents the main agent can invoke auto
 
 | Subagent | Purpose | Default model |
 |----------|---------|---------------|
-| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Haiku |
+| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Inherits session model (capped at Opus) |
 | **Plan** | Architecture and design research, implementation planning | Sonnet |
 | **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | Sonnet |
 
 The main agent selects these automatically based on the task, or you can nudge it ("use the Explore agent to find all usages of `getUser`").
+
+Since v2.1.198, the Explore agent inherits your main session's model instead of always running on Haiku. On the Claude API the inherited model is capped at Opus, so Explore never costs more than the model you already chose for the session. To keep exploration on a cheaper model, define a custom `Explore` agent with `model: haiku`.
 
 ## Creating custom subagents
 
