@@ -734,7 +734,7 @@ When a background subagent needs a permission decision, the prompt surfaces in y
 
 Since v2.1.172, a subagent can spawn its own subagents. This helps when a delegated task itself splits into parallel subtasks, such as a reviewer subagent that dispatches a verifier per finding: the intermediate output never reaches your main conversation, and only the top-level subagent's summary returns to you. The subagent panel below the prompt shows the full tree, with a descendant count and a path back to `main` on each row.
 
-Subagent chains are capped at **five levels deep** to prevent runaway concurrent trees. A subagent at depth five does not receive the Agent tool and cannot spawn further. The limit is fixed and not configurable.
+By default, a subagent can spawn its own subagents up to **three layers below the main conversation**. At the depth limit, a subagent does not receive the Agent tool and cannot spawn further, so it does its delegated work itself and returns one summary. To change the limit, set the `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` environment variable (v2.1.217+) to the number of layers you want below the main conversation. The default was one from v2.1.217 through v2.1.218, and v2.1.219 raised it to three.
 
 ### Parallel subagents
 
