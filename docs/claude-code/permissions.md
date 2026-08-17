@@ -50,7 +50,7 @@ Claude can read files and run shell commands to explore, but cannot edit source 
 
 ### auto mode
 
-Uses a classifier model to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. See the [Auto Mode](./auto-mode) page for full details.
+Uses a classifier model to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. On Pro, Max, and Team plans, auto mode is the built-in starting mode for new terminal and VS Code sessions (requires Claude Code v2.1.228 or later; v2.1.233 or later on native Windows). Enterprise plans and Anthropic API accounts start in Manual mode unless you set `defaultMode: "auto"`. See the [Auto Mode](./auto-mode) page for full details.
 
 ### dontAsk mode
 
@@ -248,7 +248,7 @@ Key managed-only settings:
 | Setting | Effect |
 |---------|--------|
 | `permissions.disableBypassPermissionsMode: "disable"` | Prevents users from using bypassPermissions mode |
-| `permissions.disableAutoMode: "disable"` | Prevents users from enabling auto mode |
+| `permissions.disableAutoMode: "disable"` | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
 | `allowManagedPermissionRulesOnly: true` | Only managed allow/ask/deny rules apply; user/project rules are ignored |
 
 ## Settings precedence
