@@ -24,6 +24,8 @@ Claude Code supports several permission modes that change how much Claude prompt
 
 The `default` mode is now labelled **Manual** across the CLI, `--help`, VS Code, and JetBrains, and `--permission-mode manual` is accepted as an alias for `default`. From v2.1.203, the status bar shows a gray `⏸ manual mode on` badge while it is active. The stored setting value remains `default`.
 
+On **Pro, Max, and Team** plans, new terminal and VS Code sessions now start in `auto` mode by default (requires v2.1.228+, or v2.1.233+ on native Windows), once your account and model support it. On Enterprise, the Anthropic API, and cloud providers, sessions start in Manual mode. See the [Auto Mode](./auto-mode) page for details and how to change the starting mode.
+
 Set a default mode in your settings:
 
 ```json
