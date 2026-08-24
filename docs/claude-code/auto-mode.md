@@ -9,8 +9,8 @@ keywords: [Claude Code auto mode, enable-auto-mode, permission classifier, auto 
 
 Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between the default interactive mode (asks every time) and `--dangerously-skip-permissions` (no checks at all). Requires Claude Code v2.1.83 or later.
 
-:::info Research Preview
-Auto mode is a **research preview**. It reduces prompts but does not guarantee safety, so behavior and configuration options may change before general availability. Use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
+:::info Becoming the default
+Starting **August 14, 2026**, auto mode becomes the default permission mode for new sessions on Pro, Max, and Team plans. You can switch modes at any time, and a default you set yourself (or one your organization manages) stays in place unless you accept the one-time switch prompt. Auto mode reduces prompts but does not guarantee safety, so use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
 :::
 
 ## How to enable
@@ -35,7 +35,7 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 
 **VS Code / Desktop app:** Enable auto mode in Settings → Claude Code, then select it from the permission mode dropdown.
 
-**Team/Enterprise:** An admin must enable auto mode in [Claude Code admin settings](https://claude.ai/admin-settings/claude-code) before individual users can access it.
+**Team/Enterprise:** Auto mode is available by default. Administrators can turn it off for the whole organization by setting `permissions.disableAutoMode` to `"disable"` in [managed settings](./permissions.md).
 
 **Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
 
@@ -142,8 +142,8 @@ claude auto-mode reset
 
 | Requirement | Detail |
 |-------------|--------|
-| **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, an admin must enable it first. |
-| **Models** | On the Anthropic API: Claude Opus 4.6 or later, or Sonnet 4.6. On Bedrock, Google Cloud's Agent Platform, and Foundry: only Opus 4.7 and Opus 4.8. |
+| **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise it is available by default; admins can turn it off. |
+| **Models** | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, and signed-in Claude apps gateway sessions: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5. |
 | **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
 | **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
@@ -152,4 +152,4 @@ claude auto-mode reset
 
 - **Token usage:** Auto mode may slightly increase token consumption, cost, and latency due to classifier calls on shell and network operations.
 - **Not a hard sandbox:** The classifier uses in-context reasoning. Anthropic recommends using auto mode in **sandboxed environments** to limit potential damage.
-- **Research preview:** Behavior and configuration options may change before general availability.
+- **Not a substitute for review:** Auto mode reduces prompts but does not guarantee safety. Use it where you trust the general direction, not as a replacement for reviewing sensitive operations.
