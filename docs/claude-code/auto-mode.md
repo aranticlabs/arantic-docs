@@ -7,7 +7,7 @@ keywords: [Claude Code auto mode, enable-auto-mode, permission classifier, auto 
 
 # Auto Mode
 
-Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between the default interactive mode (asks every time) and `--dangerously-skip-permissions` (no checks at all). Requires Claude Code v2.1.83 or later.
+Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between Manual mode (asks every time) and `--dangerously-skip-permissions` (no checks at all).
 
 :::info Becoming the default
 Starting **August 14, 2026**, auto mode becomes the default permission mode for new sessions on Pro, Max, and Team plans. You can switch modes at any time, and a default you set yourself (or one your organization manages) stays in place unless you accept the one-time switch prompt. Auto mode reduces prompts but does not guarantee safety, so use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
@@ -15,7 +15,7 @@ Starting **August 14, 2026**, auto mode becomes the default permission mode for 
 
 ## How to enable
 
-Auto mode appears in the **Shift+Tab** permission-mode cycle once your account meets the [availability requirements](#availability). The first time you cycle to it, Claude Code shows an opt-in prompt; accept it to activate auto mode, or select **No, don't ask again** to remove it from the cycle.
+Auto mode appears in the **Shift+Tab** permission-mode cycle once your account meets the [availability requirements](#availability). Cycling to it switches modes without a confirmation prompt. On Pro, Max, and Team plans it is already the default for new sessions, so you usually do not need to enable it manually.
 
 ```text
 default → acceptEdits → plan → auto
@@ -54,7 +54,7 @@ If the classifier blocks an action **3 times in a row** or **20 times total** in
 
 | Mode | Flag | Behavior |
 |------|------|----------|
-| **default** | (none) | Asks for confirmation on every sensitive operation |
+| **default** (Manual) | (none) | Asks for confirmation on every sensitive operation |
 | **acceptEdits** | `--permission-mode acceptEdits` | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `mv`, `cp`, `sed`) in the working directory; other bash commands still prompt |
 | **plan** | `--permission-mode plan` | Read-only; Claude can analyze but not make changes |
 | **auto** | `--permission-mode auto` | Classifier auto-approves safe actions, blocks risky ones |

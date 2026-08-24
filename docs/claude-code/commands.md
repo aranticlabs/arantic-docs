@@ -138,7 +138,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/mobile` | Show QR code to download the Claude mobile app (aliases: `/ios`, `/android`) | All platforms |
 | `/review [PR]` | Review a pull request for quality, correctness, security, and test coverage | All platforms |
 | `/ultrareview [PR]` | Run a deep, multi-agent cloud-based code review. The preferred invocation is now `/code-review ultra`. Includes 3 free runs on Pro/Max plans. | All platforms |
-| `/ultraplan <prompt>` | Draft a plan in an ultraplan session, review it in your browser, then execute remotely or send it back to your terminal | All platforms |
+| `/list-agents` | List the other Claude Code sessions this session can reach via [cross-session messaging](./agent-teams) | macOS, Linux |
 | `/security-review` | Analyze pending changes on current branch for security vulnerabilities | All platforms |
 
 ## Keyboard Shortcuts
