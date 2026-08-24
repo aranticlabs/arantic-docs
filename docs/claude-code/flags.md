@@ -123,5 +123,6 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | Set to `1` to disable auto memory globally |
 | `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops |
 | `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION` | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops |
+| `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219) |
 | `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS` | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable |
 | `ANTHROPIC_MODEL` | Override the default model for all sessions |

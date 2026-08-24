@@ -56,7 +56,7 @@ If the classifier blocks an action **3 times in a row** or **20 times total** in
 
 | Mode | Flag | Behavior |
 |------|------|----------|
-| **default** | (none) | Asks for confirmation on every sensitive operation |
+| **default** (Manual) | (none) | Asks for confirmation on every sensitive operation |
 | **acceptEdits** | `--permission-mode acceptEdits` | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `mv`, `cp`, `sed`) in the working directory; other bash commands still prompt |
 | **plan** | `--permission-mode plan` | Read-only; Claude can analyze but not make changes |
 | **auto** | `--permission-mode auto` | Classifier auto-approves safe actions, blocks risky ones |

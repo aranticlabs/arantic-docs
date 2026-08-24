@@ -398,6 +398,18 @@ Agent Teams adds real overhead. Skip it when:
 
 Use Agent Teams when you have genuinely independent workstreams (frontend + backend + tests), need multiple perspectives simultaneously (parallel code review), or when a single agent's context window would overflow from the scope of work.
 
+## Cross-session messaging
+
+Agent Teams coordinates teammates within a single orchestration. Separate Claude Code sessions you start independently can also message each other directly. On macOS and Linux (requires Claude Code v2.1.224 or later), Claude discovers your other running sessions with the `ListAgents` tool and sends a message with `SendMessage`, either when you ask it to or on its own when a change in one session affects what another is working on.
+
+A message is text Claude writes for the other session, never your conversation history or files. Run `/list-agents` to see which sessions the current one can reach. The receiving session shows a `Message from` row once Claude has read the message; press `Ctrl+O` to expand it.
+
+For example, with two sessions open on the same machine, ask one to pass something along:
+
+```text
+Tell the session working on the payments API that users.name is now users.display_name
+```
+
 ## Tips
 
 - **Start small**: 3-5 teammates max; token cost scales with every agent.
