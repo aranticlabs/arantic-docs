@@ -34,7 +34,6 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/model [model]` | Select or change the AI model. Use arrow keys to adjust effort level. |
 | `/fast [on\|off]` | Toggle fast mode (same model, faster output) |
 | `/effort [level\|auto]` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. `auto` resets to the model default. |
-| `/output-style [style]` | Switch between output styles: Default, Explanatory, or Learning |
 | `/plan` | Enter plan mode (Claude analyzes and plans before writing code) |
 
 ## Context & Cost
@@ -104,6 +103,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/reload-skills` | Re-scan skill and command directories so skills added or changed on disk during the session become available without restarting. |
 | `/workflows` | Open the workflow progress view to watch, pause, resume, or save running and completed workflows. |
 | `/deep-research <question>` | **[Workflow]** Fan out web searches on a question, fetch and cross-check sources, and synthesize a cited report. |
+| `/design [prompt]` | **[Skill]** Research preview that brings Claude Design's artboard workflow into the CLI and Desktop: Claude drafts editable UI artboards as artifacts and implements the one you pick |
 | `/fewer-permission-prompts` | **[Skill]** Scan session transcripts for common read-only tool calls and add an allowlist to `.claude/settings.json` to reduce future permission prompts |
 
 ## Account & System
@@ -136,9 +136,8 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/install-github-app` | Set up the Claude GitHub Actions app for a repository | All platforms |
 | `/install-slack-app` | Install the Claude Slack app | All platforms |
 | `/mobile` | Show QR code to download the Claude mobile app (aliases: `/ios`, `/android`) | All platforms |
-| `/review [PR]` | Review a pull request for quality, correctness, security, and test coverage | All platforms |
+| `/review [PR]` | Review a pull request for quality, correctness, security, and test coverage. Now an alias of `/code-review`. | All platforms |
 | `/ultrareview [PR]` | Run a deep, multi-agent cloud-based code review. The preferred invocation is now `/code-review ultra`. Includes 3 free runs on Pro/Max plans. | All platforms |
-| `/list-agents` | List the other Claude Code sessions this session can reach via [cross-session messaging](./agent-teams) | macOS, Linux |
 | `/security-review` | Analyze pending changes on current branch for security vulnerabilities | All platforms |
 
 ## Keyboard Shortcuts
@@ -211,3 +210,5 @@ These are dynamically discovered from your connected MCP servers and appear in t
 - Command history is stored per working directory and resets when you run `/clear`.
 - `/vim` was removed in v2.1.92; toggle editor mode in `/config` instead.
 - `/pr-comments` was removed in v2.1.91; ask Claude directly to view pull request comments instead.
+- `/output-style` was deprecated in v2.1.73 and removed in v2.1.91; switch output styles (Default, Proactive, Concise, Explanatory, Learning) with `/config` or the `outputStyle` setting instead.
+- `/ultraplan` and the `ultraplan` keyword were removed in v2.1.220; use plan mode or Claude Code on the web instead.

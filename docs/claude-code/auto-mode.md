@@ -7,21 +7,23 @@ keywords: [Claude Code auto mode, enable-auto-mode, permission classifier, auto 
 
 # Auto Mode
 
-Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between Manual mode (asks every time) and `--dangerously-skip-permissions` (no checks at all).
+Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between Manual mode (asks every time) and `--dangerously-skip-permissions` (no checks at all). Requires Claude Code v2.1.83 or later.
 
-:::info Becoming the default
-Starting **August 14, 2026**, auto mode becomes the default permission mode for new sessions on Pro, Max, and Team plans. You can switch modes at any time, and a default you set yourself (or one your organization manages) stays in place unless you accept the one-time switch prompt. Auto mode reduces prompts but does not guarantee safety, so use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
+On **Pro, Max, and Team plans**, auto mode is now the built-in **starting permission mode** for new terminal and VS Code sessions, once your account and model support it. This requires v2.1.228 or later on macOS, Linux, and WSL, and v2.1.233 or later on native Windows; on earlier versions, and on Enterprise plans, the Anthropic API, and cloud providers, new sessions still start in Manual mode.
+
+:::warning
+Auto mode reduces permission prompts but does not guarantee safety. Use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations. Anthropic recommends running auto mode inside a [sandboxed environment](#caveats) for defense in depth.
 :::
 
-## How to enable
+## How sessions start in auto mode
 
-Auto mode appears in the **Shift+Tab** permission-mode cycle once your account meets the [availability requirements](#availability). Cycling to it switches modes without a confirmation prompt. On Pro, Max, and Team plans it is already the default for new sessions, so you usually do not need to enable it manually.
+On Pro, Max, and Team plans, new terminal and [VS Code](https://code.claude.com/docs/en/vs-code) sessions start in auto mode automatically once your account meets the [availability requirements](#availability). The first time this happens, Claude Code shows a one-time notice linking to the docs. You can switch to another mode at any time with **Shift+Tab**.
 
-```text
-default → acceptEdits → plan → auto
-```
+On **Enterprise** plans, the **Anthropic API**, and cloud providers (Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry), sessions start in **Manual** mode by default. Auto mode still appears in the Shift+Tab cycle where the plan, provider, and model support it.
 
-**Persistent default via settings:** set `defaultMode` in your **user** settings (`~/.claude/settings.json`):
+**Shift+Tab cycle:** from auto, the first press switches to Manual (`default`); the cycle then runs `default → acceptEdits → plan` and back, with `auto` slotting in after `plan`.
+
+**Persistent default via settings:** set `defaultMode` in your **user** settings (`~/.claude/settings.json`) to pin the starting mode:
 
 ```json
 {
@@ -31,13 +33,13 @@ default → acceptEdits → plan → auto
 }
 ```
 
-As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local settings (`.claude/settings.json`, `.claude/settings.local.json`) so a repository cannot grant itself auto mode. Set it in user settings instead.
+As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local settings (`.claude/settings.json`, `.claude/settings.local.json`) so a repository cannot grant itself auto mode. Set it in user settings instead. If you set a `defaultMode` other than `auto` in your user settings on Pro, Max, or Team, your sessions keep starting in that mode, and Claude Code asks once whether to switch the setting to auto mode.
 
-**VS Code / Desktop app:** Enable auto mode in Settings → Claude Code, then select it from the permission mode dropdown.
+**VS Code / Desktop app:** select auto mode from the permission mode indicator, or leave the extension's `claudeCode.initialPermissionMode` unset so eligible sessions start in Auto.
 
-**Team/Enterprise:** Auto mode is available by default. Administrators can turn it off for the whole organization by setting `permissions.disableAutoMode` to `"disable"` in [managed settings](./permissions.md).
+**Team/Enterprise:** auto mode is available by default. An admin can turn it off for the organization by setting `permissions.disableAutoMode` to `"disable"` in [managed settings](https://code.claude.com/docs/en/managed-settings).
 
-**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
+**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required, but it appears in the Shift+Tab cycle rather than becoming the starting mode. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
 
 ## How it works
 
@@ -142,14 +144,14 @@ claude auto-mode reset
 
 | Requirement | Detail |
 |-------------|--------|
-| **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise it is available by default; admins can turn it off. |
-| **Models** | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, and signed-in Claude apps gateway sessions: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5. |
+| **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, auto mode is available by default and an admin can turn it off. On **Pro, Max, and Team** it is the built-in starting permission mode; elsewhere sessions start in Manual. |
+| **Models** | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5. |
 | **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
 | **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
 
 ## Caveats
 
-- **Token usage:** Auto mode may slightly increase token consumption, cost, and latency due to classifier calls on shell and network operations.
+- **Token usage:** On **Pro, Max, and Team** plans, the classifier calls auto mode makes do **not** count toward your usage limits. On **Enterprise** plans and on accounts that use the Claude API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry, classifier calls count toward token usage, adding some cost and latency on shell and network operations. Reads and working-directory edits skip the classifier.
 - **Not a hard sandbox:** The classifier uses in-context reasoning. Anthropic recommends using auto mode in **sandboxed environments** to limit potential damage.
-- **Not a substitute for review:** Auto mode reduces prompts but does not guarantee safety. Use it where you trust the general direction, not as a replacement for reviewing sensitive operations.
+- **Not a safety guarantee:** Auto mode reduces prompts but does not replace review on sensitive operations.
