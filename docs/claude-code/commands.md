@@ -22,6 +22,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/clear` | Clear conversation history and free up context (aliases: `/reset`, `/new`) |
 | `/resume [session]` | Resume a previous conversation by ID or name, or open the session picker (alias: `/continue`) |
 | `/fork [name]` | Copy the current conversation into a new background session (with its own row in `claude agents`) so it can branch off while you keep working in the original. The in-session forked subagent this used to launch is now `/subtask` |
+| `/branch [name]` | Create a branch of the current conversation so you can try a different direction without losing the conversation as it stands. Switches you into the branch and preserves the original, which you can return to with `/resume`. Unlike `/fork` (a separate background session) or `/subtask` (a subagent that reports back), the branch continues in this session |
 | `/rename [name]` | Rename the current session (auto-generates a name if none provided) |
 | `/export [filename]` | Export current conversation as plain text |
 | `/copy` | Copy the last assistant response to clipboard (shows interactive picker for code blocks) |
@@ -33,6 +34,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 |---------|-------------|
 | `/model [model]` | Select or change the AI model. Use arrow keys to adjust effort level. |
 | `/fast [on\|off]` | Toggle fast mode (same model, faster output) |
+| `/advisor [model\|off]` | Enable or disable the advisor tool, which consults a second model for guidance at key moments during a task. Accepts `fable`, `opus`, `sonnet`, or a full model ID (`fable` requires Fable 5 access). Without an argument, opens a picker. |
 | `/effort [level\|auto]` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. `auto` resets to the model default. |
 | `/plan` | Enter plan mode (Claude analyzes and plans before writing code) |
 
@@ -43,11 +45,10 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/context` | Visualize current context usage as a colored grid |
 | `/compact [instructions]` | Compact the conversation to free context. Optional instructions guide what to preserve. |
 | `/btw <note>` | Add a quick aside to the session that is noted but does not enter the main conversation history |
-| `/cost` | Show token usage statistics for the current session |
 | `/usage` | Show plan usage limits and rate limit status |
+| `/cost` | Alias for `/usage` |
 | `/extra-usage` | Configure extra usage to keep working when rate limits are hit |
 | `/diff` | Open interactive diff viewer showing uncommitted changes and per-turn diffs |
-| `/btw <question>` | Ask a quick side question without adding it to the main conversation history |
 | `/recap` | Generate a one-line summary of the current session on demand |
 
 ## Configuration
@@ -79,6 +80,8 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | Command | What it does |
 |---------|-------------|
 | `/mcp` | Manage MCP server connections and OAuth authentication |
+| `/import [codex\|gemini] [--dry-run] [--yes]` | Bring configuration from other coding agents on your machine (currently OpenAI Codex and Google Gemini CLI) into Claude Code, including instruction files, MCP servers, commands, subagents, and skills. `--dry-run` previews without writing; `--yes` skips the interactive picker. Requires v2.1.213 or later |
+| `/artifacts` | List the artifacts you own or that are shared with you, then attach one to the session, open it in your browser, or copy its link. Requires v2.1.208 or later (attaching with `Enter` requires v2.1.216) |
 | `/plugin` | Manage Claude Code plugins (install, uninstall, enable, disable, update) |
 | `/reload-plugins` | Reload all active plugins to apply pending changes without restarting |
 | `/skills` | List all available skills |
