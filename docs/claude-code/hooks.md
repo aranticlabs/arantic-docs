@@ -39,8 +39,8 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 
 | Event | When it fires | Supports all types? |
 |-------|---------------|---------------------|
-| **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact` | Command only |
-| **Setup** | Runs once per session after SessionStart, before the first user turn. Use for environment setup that should happen regardless of how the session started | Command only |
+| **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact`, `fork` | Command only |
+| **Setup** | Runs when Claude Code is started with `--init-only`, or with `--init` or `--maintenance` in `-p` mode. Use for one-time preparation in CI or scripts. Matcher values: `init`, `maintenance` | Command only |
 | **UserPromptSubmit** | User submits a prompt, before Claude processes it | All |
 | **UserPromptExpansion** | A slash command is expanded before Claude sees the prompt. Matcher: command name | All |
 | **PreToolUse** | Before a tool call executes (can block it) | All |
@@ -59,6 +59,9 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 | **InstructionsLoaded** | A CLAUDE.md or `.claude/rules/` file is loaded. Matcher values: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact` | All |
 | **FileChanged** | A watched file changes on disk. Matcher: literal filename or glob pattern | Command only |
 | **CwdChanged** | Working directory changes | Command only |
+| **DirectoryAdded** | A working directory is added mid-session (via `/add-dir` or the SDK `register_repo_root` request). Matcher values: `slash_command`, `register_repo_root` | Command only |
+| **PreModelSwitch** | Before Claude Code applies a requested model switch (can block it). Matcher: the canonical model name | All |
+| **PostModelSwitch** | After the session's model changes, including changes Claude Code makes on its own | All |
 | **PreCompact** | Before context compaction. Matcher values: `manual`, `auto` | Command only |
 | **PostCompact** | After context compaction | Command only |
 | **Elicitation** | An MCP server requests user input | All |
@@ -68,7 +71,7 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 | **WorktreeCreate** | A git worktree is created | Command only |
 | **WorktreeRemove** | A git worktree is removed | Command only |
 | **TeammateIdle** | An agent team teammate is about to go idle | Command only |
-| **SessionEnd** | Session terminates. Matcher values: `clear`, `logout`, `prompt_input_exit` | Command only |
+| **SessionEnd** | Session terminates. Matcher values: `clear`, `resume`, `logout`, `prompt_input_exit`, `other` | Command only |
 
 ## Configuration
 

@@ -27,8 +27,9 @@ Claude Code ships with several built-in subagents the main agent can invoke auto
 | Subagent | Purpose | Default model |
 |----------|---------|---------------|
 | **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Inherits session model (capped at Opus) |
-| **Plan** | Architecture and design research, implementation planning | Sonnet |
-| **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | Sonnet |
+| **Plan** | Architecture and design research, implementation planning | Inherits session model |
+| **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | `CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise session model |
+| **claude** | Catch-all with every subagent tool available; the default agent for dispatched background sessions | Follows the model resolution order |
 
 The main agent selects these automatically based on the task, or you can nudge it ("use the Explore agent to find all usages of `getUser`").
 
@@ -36,12 +37,15 @@ Since v2.1.198, the Explore agent inherits your main session's model instead of 
 
 ## Creating custom subagents
 
-You can define your own subagents at two levels:
+You can define your own subagents at several levels, listed from highest to lowest precedence:
 
+- **Managed settings**: organization-wide definitions deployed by IT (highest priority)
+- **`--agents` CLI flag**: session-only definitions passed as JSON, not saved to disk
 - **Project-level**: lives in `.claude/agents/` inside your repo; available only in that project
 - **User-level**: lives in `~/.claude/agents/`; available in every project
+- **Plugin agents**: an installed plugin's `agents/` directory (lowest priority)
 
-Each subagent is a single Markdown file. The filename becomes the agent's name.
+Each subagent is a single Markdown file. Both `.claude/agents/` and `~/.claude/agents/` are scanned recursively, so you can organize agents into subfolders; the agent's identity comes from the `name` field, not the filename.
 
 ### File format
 
@@ -64,7 +68,7 @@ Output a structured report with severity ratings (critical / high / medium / low
 |-------|----------|-------------|
 | `name` | Yes | Unique identifier using lowercase letters and hyphens |
 | `description` | Yes | Tells the main agent when to invoke this subagent; write it as a usage hint |
-| `model` | No | Model to use: `sonnet`, `opus`, `haiku`, a full model ID, or `inherit`. Defaults to `inherit` (uses the parent session's model) |
+| `model` | No | Model to use: `sonnet`, `opus`, `haiku`, `fable`, a full model ID (e.g. `claude-opus-5`), or `inherit`. Omit to use the resolution order (`CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise the session's model); `inherit` forces the parent session's model |
 | `tools` | No | Comma-separated list of allowed tools; omit to inherit all tools from the parent session |
 | `disallowedTools` | No | Tools to deny, removed from the inherited or specified list |
 | `permissionMode` | No | Permission mode for this subagent: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions` |
@@ -78,6 +82,7 @@ Output a structured report with severity ratings (critical / high / medium / low
 | `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
 | `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
 | `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag). Commands and skills are processed |
+| `experimental` | No | Set its `cacheTtl` key to `5m` or `1h` to choose the prompt cache lifetime for this subagent's requests (v2.1.248+) |
 
 ### Project-level example
 
@@ -717,6 +722,10 @@ Use the code-reviewer agent to review my staged changes.
 ```
 Run the test-runner agent on the files I just edited, then continue.
 ```
+
+To guarantee a specific subagent is invoked, @-mention it: type `@agent-<name>` for a local subagent (or `@agent-<plugin>:<name>` for a plugin subagent). The mention resolves when you submit.
+
+Run `/agents` to see where subagent definitions live and manage them (as of v2.1.198 it points you to edit `.claude/agents/` directly), and `/tasks` to list running and completed subagents.
 
 ### Background vs. foreground
 
