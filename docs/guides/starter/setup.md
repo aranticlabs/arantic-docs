@@ -32,7 +32,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 irm https://claude.ai/install.ps1 | iex
 ```
 
-You can also install via Homebrew (`brew install --cask claude-code`), WinGet (`winget install Anthropic.ClaudeCode`), or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 18+).
+You can also install via Homebrew (`brew install --cask claude-code`), WinGet (`winget install Anthropic.ClaudeCode`), or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 22+).
 
 Verify the installation:
 
