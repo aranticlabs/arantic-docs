@@ -179,14 +179,17 @@ The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. 
 - **`arguments`** (optional): Named positional arguments for `$name` substitution in skill content. Accepts a space-separated string or a YAML list. Names map to argument positions in order. Example: `arguments: [issue, branch]` maps `$issue` to the first argument and `$branch` to the second.
 - **`disable-model-invocation`** (optional): Set to `true` to prevent Claude from automatically loading this skill. Only you can invoke it with `/skill-name`. Use for workflows with side effects like `/deploy`.
 - **`user-invocable`** (optional): Set to `false` to hide from the `/` menu. Use for background knowledge users shouldn't invoke directly.
-- **`allowed-tools`** (optional): Caps which tools Claude may call while the skill is active (space-separated or YAML list).
+- **`allowed-tools`** (optional): Pre-approves tools Claude may call without a permission prompt during the turn that invokes the skill (space/comma-separated or YAML list). It does not restrict other tools, and the grant clears after your next message.
+- **`disallowed-tools`** (optional): Removes tools from Claude's pool while the skill is active (space/comma-separated or YAML list). Clears after your next message.
 - **`model`** (optional): Selects which Claude model runs when this skill is in use.
 - **`effort`** (optional): Effort level for this skill. Options: `low`, `medium`, `high`, `xhigh`, `max`. Overrides the session effort level. Available levels depend on the active model.
 - **`context`** (optional): Set to `fork` to run the skill in an isolated subagent context.
 - **`agent`** (optional): Which subagent type to use when `context: fork` is set. Options: `Explore`, `Plan`, `general-purpose`, or any custom agent name.
+- **`background`** (optional, default `true`): With `context: fork`, set to `false` to wait for the forked subagent's result in the invoking turn instead of running it in the background.
 - **`hooks`** (optional): Hooks scoped to this skill's lifecycle.
 - **`paths`** (optional): Glob patterns that limit when this skill is activated automatically by Claude.
-- **`shell`** (optional): Shell to use for `` !`command` `` and ` ```! ` blocks in this skill. Accepts `bash` (default) or `powershell`. Setting `powershell` runs inline shell commands via PowerShell on Windows. Requires `CLAUDE_CODE_USE_POWERSHELL_TOOL=1`.
+- **`shell`** (optional): Shell to use for `` !`command` `` and ` ```! ` blocks in this skill. Accepts `bash` (default) or `powershell`. Setting `powershell` runs inline shell commands via PowerShell on Windows.
+- **`metadata`**, **`license`**, **`compatibility`** (optional): Part of the Agent Skills spec. Claude Code accepts them but does not act on them: `metadata` holds free-form key-value data for your own tooling, `license` names the skill's license, and `compatibility` records environment requirements (up to 500 characters).
 
 ### String substitutions
 
@@ -201,6 +204,9 @@ Skills support string substitution for dynamic values in skill content:
 | `${CLAUDE_SESSION_ID}` | The current session ID, useful for logging or session-specific files |
 | `${CLAUDE_EFFORT}` | The current effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Use to adapt skill instructions to the active effort setting |
 | `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file. Use this to reference bundled scripts regardless of where the skill is installed |
+| `${CLAUDE_PROJECT_DIR}` | The project root directory (the same path hooks and MCP servers receive). Works in skill content and in `allowed-tools` Bash rules. Requires v2.1.196+ |
+| `${CLAUDE_PLUGIN_ROOT}` | Plugin skills only: the plugin's installation directory, for referencing bundled scripts and files |
+| `${CLAUDE_PLUGIN_DATA}` | Plugin skills only: the plugin's persistent data directory, which survives updates |
 
 Named positional arguments can be declared in frontmatter with the `arguments` field. Names map to argument positions in order:
 
@@ -472,9 +478,13 @@ When a skill misbehaves, it usually fits one of a few patterns: it never activat
 
 ### Use the skills validator
 
-Start with the agent skills verifier. Install steps depend on your OS; **`uv`** is often the quickest way to get a working install.
+Claude Code has a built-in validator (v2.1.233+). Point it at a skill directory to check that each `SKILL.md`'s frontmatter parses:
 
-Run it against your skill directory (or from the project root, if the tool allows). It flags structural issues up front so you do not burn time debugging the wrong layer.
+```bash
+claude plugin validate .claude/skills
+```
+
+Add `--debug` to surface parse errors, or `--strict` to treat warnings as errors. Running this first flags structural issues up front so you do not burn time debugging the wrong layer.
 
 ### Skill does not trigger
 
@@ -528,7 +538,7 @@ chmod +x path/to/your-script.sh
 
 ### Skill descriptions are getting cut short
 
-When you have many skills, Claude Code truncates description text to fit a character budget (1% of the context window by default). Skills you use least get collapsed to bare names first. Use `/doctor` to diagnose budget overflow and see which skills are affected.
+When you have many skills, Claude Code truncates description text to fit a character budget (1% of the context window by default). Skills you use least get collapsed to bare names first. Use `/skill-doctor` (v2.1.252+) to report each skill's token cost and usage frequency and see which are affected or unused.
 
 To expand the budget, set `skillListingBudgetFraction` in settings (for example, `0.02` for 2%) or reduce low-priority skill descriptions. You can also control how individual skills appear using `skillOverrides`:
 
@@ -554,7 +564,7 @@ The `/skills` menu can write this setting for you: highlight a skill and press `
 - **Never triggers:** Improve `description` and add trigger phrases you actually use in chat.
 - **Does not load:** Check folder layout, exact `SKILL.md` filename, and YAML frontmatter syntax.
 - **Wrong skill:** Make overlapping descriptions more distinct.
-- **Descriptions cut short:** Run `/doctor` to check budget overflow; use `skillOverrides` or `skillListingBudgetFraction` to manage it.
+- **Descriptions cut short:** Run `/skill-doctor` to check per-skill cost and budget overflow; use `skillOverrides` or `skillListingBudgetFraction` to manage it.
 - **Shadowed:** Two definitions can share a name; only the winner in the precedence chain applies. See [Skill priority](#skill-priority) and rename or consolidate if needed.
 - **Plugin skills missing:** Clear cache, restart, reinstall; then validate plugin structure.
 - **Runtime failure:** Dependencies, executable bits on scripts, and path style.
@@ -738,16 +748,6 @@ You can install skills from this repo directly in Claude Code:
 ```
 
 The repository also contains a [skill template](https://github.com/anthropics/skills/tree/main/template) and the [Agent Skills specification](https://github.com/anthropics/skills/tree/main/spec), which are useful references if you want to author your own skills in the standard format.
-
-### Community: Skills Marketplace (SkillsMP)
-
-The community-maintained [Skills Marketplace (SkillsMP)](https://skillsmp.com/) aggregates over 270,000 agent skills from public GitHub repositories. It covers Claude Code, OpenAI Codex CLI, and ChatGPT, and provides search, category filtering, and quality indicators to help you find what you need.
-
-A few things to keep in mind when using community skills:
-
-- **Review before installing.** Community skills are open-source code from GitHub. Treat them the same way you would treat any third-party dependency and read the source before adding it to your project.
-- **SkillsMP is not affiliated with Anthropic.** It is an independent community project.
-- **Quality varies.** SkillsMP filters out repositories with fewer than 2 stars, but check that a skill does what you expect before relying on it.
 
 ### Community: Skills Marketplace (SkillsMP)
 

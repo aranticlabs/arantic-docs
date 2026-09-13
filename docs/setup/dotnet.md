@@ -78,7 +78,7 @@ Or in Command Prompt (CMD):
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
 
-You can also install via WinGet (`winget install Anthropic.ClaudeCode`) or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 18+).
+You can also install via WinGet (`winget install Anthropic.ClaudeCode`) or, if you prefer npm, `npm install -g @anthropic-ai/claude-code` (requires Node.js 22+).
 
 Open a terminal in your project folder and run:
 

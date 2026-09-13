@@ -47,7 +47,7 @@ Install with the **native installer** (no Node.js required). On Linux/macOS/WSL:
 curl -fsSL https://claude.ai/install.sh | bash
 ```
 
-On Windows, run `irm https://claude.ai/install.ps1 | iex` in PowerShell. You can also install via Homebrew, WinGet, or npm (`npm install -g @anthropic-ai/claude-code`, requires Node.js 18+).
+On Windows, run `irm https://claude.ai/install.ps1 | iex` in PowerShell. You can also install via Homebrew, WinGet, or npm (`npm install -g @anthropic-ai/claude-code`, requires Node.js 22+).
 
 Run from your firmware project root:
 

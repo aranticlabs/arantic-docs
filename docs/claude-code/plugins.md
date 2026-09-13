@@ -103,7 +103,7 @@ Output style plugins adjust how Claude formats and presents its responses. For e
 
 A plugin is a directory with a `plugin.json` manifest inside a `.claude-plugin/` folder. Beyond the manifest, it can include any combination of:
 
-- **Skills** (`skills/`): Prompt templates Claude loads when invoked
+- **Skills** (`skills/`): Prompt templates Claude loads when invoked. (The legacy `commands/` directory holds flat Markdown skills; use `skills/` for new plugins.)
 - **Agents** (`agents/`): Subagent definitions with specialized roles and preloaded skills
 - **Hooks** (`hooks/hooks.json`): Event handlers that run on Claude Code lifecycle events (tool use, session start/end, etc.)
 - **MCP server config** (`.mcp.json`): External service connections that start automatically when the plugin is enabled
@@ -115,6 +115,24 @@ A plugin is a directory with a `plugin.json` manifest inside a `.claude-plugin/`
 A minimal plugin needs only the manifest. You add components based on what the plugin should do.
 
 **Important:** Do not put `commands/`, `agents/`, `skills/`, or `hooks/` inside the `.claude-plugin/` directory. Only `plugin.json` goes inside `.claude-plugin/`. All other directories must be at the plugin root level.
+
+Plugin components reference their own bundled files and scripts through environment variables rather than hardcoded paths: `${CLAUDE_PLUGIN_ROOT}` is the absolute path to the plugin's installation directory (for example `"command": "${CLAUDE_PLUGIN_ROOT}/scripts/format.sh"`), and `${CLAUDE_PLUGIN_DATA}` is a persistent per-plugin data directory that survives updates.
+
+### Publishing a marketplace
+
+To distribute plugins, a marketplace repository needs a `.claude-plugin/marketplace.json` at its root listing the plugins it offers:
+
+```json
+{
+  "name": "your-marketplace-name",
+  "owner": { "name": "Your Name" },
+  "plugins": [
+    { "name": "plugin-name", "source": "./plugins/plugin-name" }
+  ]
+}
+```
+
+Each entry's `source` can be a relative path or a remote source (GitHub repo, git URL, npm package, or archive). Others add your marketplace with `/plugin marketplace add <org>/<repo>`.
 
 ## Recommended plugins for AI coding
 
@@ -279,12 +297,14 @@ To load a plugin from a hosted `.zip` URL (for example, a CI build artifact), us
 claude --plugin-url https://example.com/my-plugin.zip
 ```
 
-Before submitting a plugin, validate it with:
+Before submitting a plugin, validate it by pointing the validator at the plugin (or marketplace) directory. Add `--strict` to treat warnings as errors:
 
 ```bash
-claude plugin validate
+claude plugin validate ./my-plugin
 ```
+
+This checks `plugin.json` / `marketplace.json` JSON syntax, duplicate plugin names, and source paths.
 
 The [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) repository on GitHub is the best reference for structure and conventions. The internal plugins developed by Anthropic follow the same specification that community plugins use.
 
-To submit a plugin to the community marketplace, use the submission form at [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit). The official marketplace (`claude-plugins-official`) is curated separately by Anthropic and has no application process.
+Reviewed community submissions are published to the public **`claude-community`** marketplace (add it with `/plugin marketplace add anthropics/claude-community`). The official marketplace (`claude-plugins-official`) is curated separately by Anthropic and has no application process. See the official Claude Code docs for the current plugin submission process.

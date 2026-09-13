@@ -22,18 +22,48 @@ MCP follows a client-server model:
 
 When you ask Claude to query a database, take a screenshot, or search the web, it calls the appropriate tool on the relevant MCP server. The server executes the action and returns the result directly into the conversation.
 
-Servers can run locally (as a child process started by Claude Code) or remotely (connected via Server-Sent Events over HTTPS).
+Servers can run locally (as a child process started by Claude Code) or remotely. Claude Code supports four transports: **stdio** for local processes, **HTTP** (recommended for remote servers), **SSE** (deprecated, use HTTP where available), and **WebSocket** (`"type": "ws"`).
 
 ## Configuring MCPs in Claude Code
 
-MCPs are defined in `settings.json`. Claude Code supports two levels:
+MCP servers are not defined in `settings.json`. They have their own configuration, stored at one of three scopes:
 
-| Level | File | Scope |
-|---|---|---|
-| Project | `.claude/settings.json` | This project only, shared via git |
-| User | `~/.claude/settings.json` | Every project on your machine |
+| Scope | Storage | Availability | Shared with |
+|---|---|---|---|
+| **Local** (default) | `~/.claude.json` (under the project path) | This project only | Just you |
+| **Project** | `.mcp.json` in the project root | This project only | Team, via version control |
+| **User** | `~/.claude.json` | All your projects | Just you |
+
+### Adding servers with the CLI
+
+The primary way to add a server is `claude mcp add`. For a local stdio server, everything after the `--` separator is passed to the server command untouched:
+
+```bash
+claude mcp add --env API_KEY=your-key airtable -- npx -y airtable-mcp-server
+```
+
+For a remote server, choose the transport with `--transport` (`http` is recommended; `sse` is deprecated):
+
+```bash
+claude mcp add --transport http notion https://mcp.notion.com/mcp \
+  --header "Authorization: Bearer your-token"
+```
+
+Common flags: `--scope`/`-s` (`local`, `project`, or `user`), `--env`/`-e` (repeatable), `--header`/`-H`, and `--transport`/`-t`. Using `--scope project` creates or updates `.mcp.json` so the server is shared through git.
+
+Manage configured servers with:
+
+```bash
+claude mcp list             # List servers with health status
+claude mcp get <name>       # Show one server's configuration
+claude mcp remove <name>    # Remove a server (also clears its OAuth tokens)
+claude mcp add-json <name> '<json>'          # Add from a JSON snippet
+claude mcp add-from-claude-desktop           # Import servers from Claude Desktop (macOS/WSL)
+```
 
 ### Configuration format
+
+If you prefer to edit `.mcp.json` (project scope) directly, servers use the same `mcpServers` shape. Use `${VAR}` and `${VAR:-default}` expansion in `command`, `args`, `env`, `url`, and `headers` rather than hardcoding secrets:
 
 ```json
 {
@@ -42,40 +72,25 @@ MCPs are defined in `settings.json`. Claude Code supports two levels:
       "command": "npx",
       "args": ["-y", "@scope/package-name", "optional-arg"],
       "env": {
-        "API_KEY": "your-key-here"
+        "API_KEY": "${API_KEY}"
       }
-    }
-  }
-}
-```
-
-For remote servers using Server-Sent Events:
-
-```json
-{
-  "mcpServers": {
+    },
     "remote-server": {
-      "type": "sse",
-      "url": "https://your-server/sse",
+      "type": "http",
+      "url": "https://your-server/mcp",
       "headers": {
-        "Authorization": "Bearer your-token"
+        "Authorization": "Bearer ${API_TOKEN}"
       }
     }
   }
 }
 ```
 
-Multiple servers can be configured together:
+A project-scoped server from `.mcp.json` prompts for a one-time trust approval before it is used; run `claude mcp reset-project-choices` to reset those approvals.
 
-```json
-{
-  "mcpServers": {
-    "filesystem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "~/projects"] },
-    "github":     { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"], "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_..." } },
-    "brave-search": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-brave-search"], "env": { "BRAVE_API_KEY": "..." } }
-  }
-}
-```
+### Output limits
+
+MCP tool output is capped at 25,000 tokens by default, with a warning at 10,000 tokens. Raise the cap with the `MAX_MCP_OUTPUT_TOKENS` environment variable when a server returns large results.
 
 ### Verifying the connection
 
@@ -487,7 +502,7 @@ MCP is an open standard. While Claude Code was the first major AI coding tool to
 
 | Tool | MCP support | Configuration location | Notes |
 |---|---|---|---|
-| **Claude Code** | Full, stable | `.claude/settings.json` | First-class; multi-server, stdio and SSE |
+| **Claude Code** | Full, stable | `.mcp.json` / `~/.claude.json` | First-class; multi-server, stdio, HTTP, SSE, and WebSocket |
 | **Claude Desktop** | Full, stable | `claude_desktop_config.json` | Same servers, different config file path |
 | **Cursor** | Yes (experimental) | Cursor settings UI or `mcp.json` | Supports stdio and SSE; enable in Settings > MCP |
 | **Gemini CLI** | Yes | `settings.json` | Growing server compatibility |
@@ -501,7 +516,7 @@ Claude Desktop uses the same server packages but a different config file:
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-The format is identical to Claude Code's `settings.json`. You can share MCP server configs between the two.
+The `mcpServers` format is the same as Claude Code's `.mcp.json`, so you can share MCP server configs between the two. To import Desktop's servers into Claude Code directly, run `claude mcp add-from-claude-desktop` (macOS/WSL).
 
 ### Using MCP with Cursor
 
