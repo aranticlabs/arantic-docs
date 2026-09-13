@@ -11,8 +11,8 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Flag | Purpose |
 |------|---------|
-| `--continue` | Resume the most recent session |
-| `--resume [id]` | Resume a specific session by ID, or open a picker |
+| `--continue` / `-c` | Resume the most recent session |
+| `--resume [id]` / `-r` | Resume a specific session by ID, or open a picker |
 | `-n <name>` / `--name <name>` | Name the session for easy retrieval later (e.g. `claude -n auth-refactor`) |
 | `--fork-session` | Branch off from a resumed session without modifying the original (use with `--resume` or `--continue`) |
 | `--from-pr [number]` | Start a session from a GitHub pull request |
@@ -25,7 +25,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 |------|---------|
 | `--model sonnet` | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs) |
 | `--fallback-model <model>` | Automatic fallback when the primary model is overloaded or unavailable. Applies to both interactive and headless sessions. Configure up to three fallbacks tried in order with the `fallbackModel` setting. |
-| `--effort <level>` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. |
+| `--effort <level>` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` starts the session at `xhigh` effort with ultracode turned on. |
 | `--max-budget-usd 5` | Set a spending cap for the session (headless mode only) |
 | `--max-turns 20` | Limit the number of agentic turns |
 
@@ -34,8 +34,8 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | Flag | Purpose |
 |------|---------|
 | `--permission-mode <mode>` | Permission mode: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
-| `--allowedTools <tools>` | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`) |
-| `--disallowedTools <tools>` | Deny specific tools (e.g. `"Bash(rm:*)"`) |
+| `--allowedTools <tools>` / `--allowed-tools` | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`) |
+| `--disallowedTools <tools>` / `--disallowed-tools` | Deny specific tools (e.g. `"Bash(rm:*)"`) |
 | `--tools <tools>` | Restrict the available tool set entirely (`""` to disable all, `"default"` for all) |
 | `--dangerously-skip-permissions` | Bypass all permission checks (sandboxed environments only). Equivalent to `--permission-mode bypassPermissions` |
 | `--allow-dangerously-skip-permissions` | Add `bypassPermissions` to the Shift+Tab mode cycle without starting in it |
@@ -48,7 +48,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Flag | Purpose |
 |------|---------|
-| `--print "prompt"` | Run a single prompt in headless mode (no interactive session) |
+| `--print "prompt"` / `-p` | Run a single prompt in headless mode (no interactive session) |
 | `--output-format <format>` | Output format with `--print`: `text`, `json`, or `stream-json` |
 | `--input-format <format>` | Input format with `--print`: `text` or `stream-json` |
 | `--forward-subagent-text` | Include subagent text and thinking blocks in `stream-json` output (also settable via `CLAUDE_CODE_FORWARD_SUBAGENT_TEXT`) |
@@ -60,7 +60,7 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 
 | Flag | Purpose |
 |------|---------|
-| `--bg` | Start the session as a background agent and return immediately. Prints the session ID and management commands. |
+| `--bg` / `--background` | Start the session as a background agent and return immediately. Prints the session ID and management commands. |
 | `--exec` | Run a shell command as a background job instead of starting a Claude session. Use with `--bg`. |
 
 ## System prompts
@@ -98,6 +98,12 @@ keywords: [Claude Code CLI flags, command line options, --continue, --resume, --
 | `--add-dir <directories>` | Grant tool access to directories outside the working directory |
 | `--worktree [name]` | Create a new git worktree for isolated work |
 | `--tmux` | Create a tmux session for the worktree (requires `--worktree`) |
+
+## Configuration
+
+| Flag | Purpose |
+|------|---------|
+| `--settings <path\|json>` | Path to a settings JSON file or an inline JSON string. Values set here override the same keys in your `settings.json` files for this session; omitted keys keep their file-based values. |
 
 ## Debug
 

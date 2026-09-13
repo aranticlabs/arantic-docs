@@ -98,6 +98,8 @@ Permissions are configured in `.claude/settings.json` (project) or `~/.claude/se
 
 Rules are evaluated in order: **deny → ask → allow**. The first matching rule wins, so deny rules always take precedence. The `ask` array prompts for confirmation before executing matching tool calls, even in modes that would otherwise auto-approve them.
 
+Run `/permissions` in a session to view and manage these rules interactively. The dialog lists every allow/ask/deny rule and shows which `settings.json` file each rule comes from, and includes a **Recently denied** tab.
+
 ## Permission rule syntax
 
 Rules follow the format `Tool` or `Tool(specifier)`.
@@ -124,7 +126,19 @@ Bash rules support glob patterns with `*`, which can appear anywhere in the comm
 | `Bash(git commit *)` | Any git commit command |
 | `Bash(* --version)` | Any version check |
 
-A space before `*` enforces a word boundary: `Bash(ls *)` matches `ls -la` but not `lsof`.
+A space before `*` enforces a word boundary: `Bash(ls *)` matches `ls -la` but not `lsof`. The `:*` suffix is an equivalent way to write a trailing wildcard, so `Bash(ls:*)` matches the same commands as `Bash(ls *)`. The colon form is only recognized at the end of a pattern; elsewhere the colon is literal.
+
+### WebFetch rules
+
+`WebFetch` rules can be scoped to a domain with the `domain:` specifier (wildcards require v2.1.172 or later):
+
+| Rule | Matches |
+|------|---------|
+| `WebFetch(domain:example.com)` | Fetches to that exact host |
+| `WebFetch(domain:*.example.com)` | Any subdomain (not the apex domain) |
+| `WebFetch(domain:*)` | Every domain, and also adds the domain to the sandbox allow/deny list |
+
+Domain matching is case-insensitive. A bare `WebFetch` rule matches all fetches but, unlike `WebFetch(domain:*)`, does not affect the sandbox list.
 
 ### Match by input parameter
 
@@ -160,7 +174,7 @@ Path rules for `Read` and `Edit` follow gitignore pattern types:
 |---------|---------|---------|
 | `//path` | Absolute path from filesystem root | `Read(//etc/hosts)` |
 | `~/path` | Path from home directory | `Read(~/.zshrc)` |
-| `/path` | Path relative to project root | `Edit(/src/**/*.ts)` |
+| `/path` | Path relative to the settings source (project root for project/local settings; `~/.claude` for user settings). A single leading slash is not an absolute filesystem path | `Edit(/src/**/*.ts)` |
 | `path` or `./path` | Path relative to current directory | `Edit(src/**)` |
 
 ### PowerShell rules
@@ -245,13 +259,15 @@ To change the session's primary working directory rather than adding another, us
 
 For organizations, administrators can deploy managed settings that cannot be overridden by user or project settings. Place these in the managed policy location for your OS and distribute via MDM or Group Policy.
 
-Key managed-only settings:
+Key organization-policy settings:
 
 | Setting | Effect |
 |---------|--------|
 | `permissions.disableBypassPermissionsMode: "disable"` | Prevents users from using bypassPermissions mode |
 | `permissions.disableAutoMode: "disable"` | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
 | `allowManagedPermissionRulesOnly: true` | Only managed allow/ask/deny rules apply; user/project rules are ignored |
+
+`disableBypassPermissionsMode` and `disableAutoMode` are most useful in managed settings but work from any scope, so a user can set either in their own settings to lock themselves out. Only `allowManagedPermissionRulesOnly` is genuinely managed-only.
 
 ## Settings precedence
 

@@ -29,8 +29,7 @@ Claude Code uses several memory files at different scopes. Here is the complete 
 | **Local CLAUDE.md** | `./CLAUDE.local.md` | You, this project only | No (auto-gitignored) | You |
 | **Auto memory** | `~/.claude/projects/<project>/memory/MEMORY.md` | You, this project (machine-local) | No | Claude |
 | **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md` | You, this project (machine-local) | No | Claude |
-| **Subagent memory** | `~/.claude/projects/<project>/subagents/<agent>/MEMORY.md` | Per subagent | No | Claude |
-| **Subagent memory** | `~/.claude/projects/<project>/subagents/<agent>/MEMORY.md` | Per subagent | No | Claude |
+| **Subagent memory** | Separate per-subagent directory (enabled with the subagent `memory` field) | Per subagent | No | Claude |
 
 ### Project CLAUDE.md
 
@@ -116,7 +115,9 @@ A symlink also works if you don't need Claude-specific additions:
 ln -s AGENTS.md CLAUDE.md
 ```
 
-Running `/init` in a repo that already has an `AGENTS.md` reads it and incorporates the relevant parts into the generated `CLAUDE.md`.
+Running `/init` reads Cursor rules (`.cursor/rules/` or `.cursorrules`) and Copilot rules (`.github/copilot-instructions.md`) and incorporates the relevant parts into the generated `CLAUDE.md`. With `CLAUDE_CODE_NEW_INIT=1` set, `/init` also reads `AGENTS.md`, `.devin/rules/`, `.windsurf/rules/` (or `.windsurfrules`), and `.clinerules`.
+
+You can also run `/import` (requires v2.1.213 or later) to bring another coding agent's configuration into Claude Code. It appends a one-time copy of instruction files such as `AGENTS.md` to the matching `CLAUDE.md` and carries over MCP servers, commands, subagents, and skills.
 
 ### CLAUDE.local.md
 
@@ -146,18 +147,13 @@ See @README for project overview and @package.json for available npm commands.
 
 Both relative and absolute paths work. Relative paths resolve from the file containing the import. Imported files can recursively import other files, up to a maximum depth of four hops.
 
+Import parsing skips Markdown code spans and fenced code blocks. To mention a path without importing it, wrap it in backticks: `` `@README` `` stays literal, while `@README` outside backticks imports the file.
+
+:::warning
+An import in a project-level memory file is treated as external when its path resolves outside your working directory (for example, a `@~/`-home import). The first time Claude Code encounters external imports in a project, it shows a one-time approval dialog listing the files; if you decline, those imports stay disabled. User-scope files such as `~/.claude/CLAUDE.md` are trusted without the dialog (except in Cowork sessions on your desktop).
+:::
+
 Block-level HTML comments (`<!-- ... -->`) in CLAUDE.md files are stripped before the content is loaded into context. Use them to leave maintainer notes without consuming tokens. Comments inside code blocks are preserved.
-
-### AGENTS.md
-
-Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses `AGENTS.md` for other coding agents, create a `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them:
-
-```markdown
-@AGENTS.md
-
-## Claude Code
-Use plan mode for changes under `src/billing/`.
-```
 
 ### Rules directories
 
@@ -193,12 +189,17 @@ Claude Code can automatically save notes between sessions. This is stored locall
 ```
 
 **How it works:**
-- Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings). Requires Claude Code v2.1.59 or later.
-- Disable via environment variable: `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`
-- Claude writes to this file when it learns something worth remembering: build commands, debugging insights, architecture patterns, workflow habits
-- At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand.
-- When `MEMORY.md` grows large, Claude moves detailed notes into separate topic files like `debugging.md` or `api-conventions.md` in the same directory
-- To store auto memory in a different location, set `autoMemoryDirectory` in `~/.claude/settings.json` (accepts an absolute path or `~/`-prefixed path):
+- Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings). Disable via environment variable: `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`
+- As it works, Claude saves four kinds of notes and records the kind in a `type` frontmatter field:
+  - `user`: your role, expertise, and working preferences
+  - `feedback`: corrections you give Claude and approaches you confirm
+  - `project`: ongoing work, deadlines, and decisions Claude can't derive from the code or git history
+  - `reference`: where to find information outside the project, such as an issue tracker or dashboard
+- Claude deliberately **skips anything it can derive from the codebase** (architecture, file paths, debugging fixes) and anything your CLAUDE.md files already say. It doesn't save something every session; it decides what would be useful in a future conversation.
+- At session start, only the **first 200 lines or 25 KB** of `MEMORY.md` are loaded (whichever limit is reached first). Content beyond that threshold is still accessible if Claude reads the file on demand. (By contrast, Claude Code loads a `CLAUDE.md` file of up to 4 MiB in full and skips a larger one.)
+- `MEMORY.md` is an index with one line per memory. Claude keeps it concise by moving each memory into its own topic file named after that memory.
+
+To store auto memory in a custom location, set `autoMemoryDirectory` in your `settings.json`. It is read from any settings scope (user, project, local, policy, or `--settings`):
 
 ```json
 {
@@ -206,25 +207,15 @@ Claude Code can automatically save notes between sessions. This is stored locall
 }
 ```
 
-You will see "Writing memory" or "Recalled memory" in the interface when Claude updates or reads auto memory.
+The value must be an absolute path or start with `~/`. All worktrees and subdirectories within the same git repository share one auto memory directory. Auto memory is machine-local and not shared across cloud environments. You will see messages like "Saved 2 memories" or "Recalled 2 memories" in the interface when Claude updates or reads auto memory.
 
-To store auto memory in a custom location, set `autoMemoryDirectory` in your `settings.json`. This setting can be placed at any settings scope (user, project, local, or policy):
-
-```json
-{
-  "autoMemoryDirectory": "~/my-custom-memory-dir"
-}
-```
-
-The value must be an absolute path or start with `~/`. All worktrees and subdirectories within the same git repository share one auto memory directory. Auto memory is machine-local and not shared across cloud environments.
-
-The auto memory directory contains a `MEMORY.md` entrypoint and optional topic files Claude creates for specific subjects:
+The auto memory directory contains a `MEMORY.md` index and one topic file per memory:
 
 ```text
 ~/.claude/projects/<project>/memory/
-├── MEMORY.md          # Concise index, loaded into every session
-├── debugging.md       # Detailed notes on debugging patterns
-└── api-conventions.md # API design decisions
+├── MEMORY.md           # Index, one line per memory, loaded into every session
+├── user_role.md        # One memory
+└── feedback_testing.md # One memory
 ```
 
 ### Managed policy
@@ -288,10 +279,12 @@ Set `CLAUDE_CODE_NEW_INIT=1` to enable an interactive multi-phase flow: `/init` 
 
 Type `/memory` in Claude Code to:
 
-- See all CLAUDE.md and rules files currently loaded in your session
+- List your CLAUDE.md, CLAUDE.local.md, and rules file locations across user and project scopes (including user and project CLAUDE.md entries for files that don't exist yet)
 - Toggle auto memory on or off
 - Open the auto memory folder
-- Select any memory file to open it in your editor for manual editing
+- Select any memory file to open it in your editor for manual editing (selecting one that doesn't exist yet creates it first)
+
+To check which files actually loaded into the current session, run `/context` and look under **Memory files**.
 
 To save something to CLAUDE.md mid-session, you can also just ask Claude directly: "Add this to CLAUDE.md: always run tests before committing."
 
@@ -313,7 +306,7 @@ These files contain instructions and constraints you define. Claude reads them b
 
 ### Claude writes it: auto memory
 
-Auto memory (`~/.claude/projects/<project>/memory/MEMORY.md`) is the opposite: Claude writes it, you can read and edit it. This is where Claude stores things it learns during sessions, like which test commands work, how to debug specific issues, or patterns it discovered in your codebase.
+Auto memory (`~/.claude/projects/<project>/memory/MEMORY.md`) is the opposite: Claude writes it, you can read and edit it. This is where Claude stores learnings across sessions: your role and working preferences, corrections you give it, and project context it can't derive from the code. Claude skips anything it can figure out from the codebase itself.
 
 You do not need to manage auto memory actively. It builds up naturally as you work. If Claude keeps forgetting something between sessions, check whether auto memory is enabled (`/memory`).
 
