@@ -2,7 +2,17 @@
 sidebar_position: 1
 sidebar_label: Prompting Basics
 description: Learn the foundational prompting techniques that produce better AI output, including how to be specific, provide context, and constrain scope.
-keywords: [prompting basics, AI prompts, prompt engineering, code generation prompts, AI coding, specificity, context, prompt quality]
+keywords:
+  [
+    prompting basics,
+    AI prompts,
+    prompt engineering,
+    code generation prompts,
+    AI coding,
+    specificity,
+    context,
+    prompt quality,
+  ]
 ---
 
 # Prompting Basics
@@ -14,11 +24,13 @@ The quality of AI output depends almost entirely on the quality of your prompt. 
 Avoid open-ended requests. The more constraints you give, the more useful the output.
 
 **Weak:**
+
 ```
 Write a function to parse dates.
 ```
 
 **Strong:**
+
 ```
 Write a TypeScript function that parses date strings in the formats
 "YYYY-MM-DD" and "DD.MM.YYYY" and returns a Date object. Throw a

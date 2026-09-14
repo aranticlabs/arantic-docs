@@ -22,14 +22,14 @@ List all [resources] with optional filtering and pagination.
 
 **Query Parameters:**
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| page | number | 1 | Page number |
-| pageSize | number | 25 | Items per page |
-| search | string | - | Search by name/title |
-| status | string | - | Filter by status |
-| sortBy | string | "createdAt" | Sort field |
-| sortOrder | string | "desc" | Sort direction (asc/desc) |
+| Parameter | Type   | Default     | Description               |
+| --------- | ------ | ----------- | ------------------------- |
+| page      | number | 1           | Page number               |
+| pageSize  | number | 25          | Items per page            |
+| search    | string | -           | Search by name/title      |
+| status    | string | -           | Filter by status          |
+| sortBy    | string | "createdAt" | Sort field                |
+| sortOrder | string | "desc"      | Sort direction (asc/desc) |
 
 **Response:** `200 OK`
 
@@ -52,9 +52,9 @@ Get a single [resource] by ID.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| id | UUID | [Resource] ID |
+| Parameter | Type | Description   |
+| --------- | ---- | ------------- |
+| id        | UUID | [Resource] ID |
 
 **Response:** `200 OK`
 
@@ -64,9 +64,9 @@ Get a single [resource] by ID.
 
 **Error Responses:**
 
-| Status | Description |
-| --- | --- |
-| 404 | [Resource] not found |
+| Status | Description          |
+| ------ | -------------------- |
+| 404    | [Resource] not found |
 
 **Permissions:** All authenticated users
 
@@ -94,10 +94,10 @@ Create a new [resource].
 
 **Error Responses:**
 
-| Status | Description |
-| --- | --- |
-| 400 | Validation error (missing required fields, invalid values) |
-| 409 | Duplicate [unique field] |
+| Status | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| 400    | Validation error (missing required fields, invalid values) |
+| 409    | Duplicate [unique field]                                   |
 
 **Permissions:** Editor+
 
@@ -109,9 +109,9 @@ Update an existing [resource].
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| id | UUID | [Resource] ID |
+| Parameter | Type | Description   |
+| --------- | ---- | ------------- |
+| id        | UUID | [Resource] ID |
 
 **Request Body:**
 
@@ -131,12 +131,12 @@ Update an existing [resource].
 
 **Error Responses:**
 
-| Status | Description |
-| --- | --- |
-| 400 | Validation error |
-| 404 | [Resource] not found |
-| 409 | Duplicate [unique field] |
-| 422 | Invalid state transition |
+| Status | Description              |
+| ------ | ------------------------ |
+| 400    | Validation error         |
+| 404    | [Resource] not found     |
+| 409    | Duplicate [unique field] |
+| 422    | Invalid state transition |
 
 **Permissions:** Editor+
 
@@ -148,18 +148,18 @@ Delete a [resource] (soft delete or hard delete).
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| id | UUID | [Resource] ID |
+| Parameter | Type | Description   |
+| --------- | ---- | ------------- |
+| id        | UUID | [Resource] ID |
 
 **Response:** `204 No Content`
 
 **Error Responses:**
 
-| Status | Description |
-| --- | --- |
-| 404 | [Resource] not found |
-| 409 | Cannot delete - [resource] has dependencies |
+| Status | Description                                 |
+| ------ | ------------------------------------------- |
+| 404    | [Resource] not found                        |
+| 409    | Cannot delete - [resource] has dependencies |
 
 **Permissions:** Admin+
 
@@ -179,7 +179,7 @@ Follow the same pattern: method, path, parameters, request/response, errors, per
 **Query Parameters:**
 
 | Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
+| --------- | ---- | ------- | ----------- |
 
 **Response:** `200 OK`
 
@@ -263,9 +263,9 @@ Access a shared [resource] without authentication.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| token | string | Share link token |
+| Parameter | Type   | Description      |
+| --------- | ------ | ---------------- |
+| token     | string | Share link token |
 
 **Response:** `200 OK`
 
@@ -275,9 +275,9 @@ Access a shared [resource] without authentication.
 
 **Error Responses:**
 
-| Status | Description |
-| --- | --- |
-| 404 | Token not found or expired |
+| Status | Description                |
+| ------ | -------------------------- |
+| 404    | Token not found or expired |
 
 **Permissions:** None (public access)
 
@@ -289,15 +289,15 @@ Access a shared [resource] without authentication.
 Provide a quick-reference table of all endpoints.
 -->
 
-| Method | Path | Description | Auth |
-| --- | --- | --- | --- |
-| GET | `/api/v1/[app]/[resources]` | List [resources] | All |
-| GET | `/api/v1/[app]/[resources]/:id` | Get [resource] | All |
-| POST | `/api/v1/[app]/[resources]` | Create [resource] | Editor+ |
-| PUT | `/api/v1/[app]/[resources]/:id` | Update [resource] | Editor+ |
-| DELETE | `/api/v1/[app]/[resources]/:id` | Delete [resource] | Admin+ |
-| GET | `/api/v1/[app]/settings/[group]` | Get settings | Admin+ |
-| PUT | `/api/v1/[app]/settings/[group]` | Update settings | Admin+ |
+| Method | Path                             | Description       | Auth    |
+| ------ | -------------------------------- | ----------------- | ------- |
+| GET    | `/api/v1/[app]/[resources]`      | List [resources]  | All     |
+| GET    | `/api/v1/[app]/[resources]/:id`  | Get [resource]    | All     |
+| POST   | `/api/v1/[app]/[resources]`      | Create [resource] | Editor+ |
+| PUT    | `/api/v1/[app]/[resources]/:id`  | Update [resource] | Editor+ |
+| DELETE | `/api/v1/[app]/[resources]/:id`  | Delete [resource] | Admin+  |
+| GET    | `/api/v1/[app]/settings/[group]` | Get settings      | Admin+  |
+| PUT    | `/api/v1/[app]/settings/[group]` | Update settings   | Admin+  |
 
 ---
 

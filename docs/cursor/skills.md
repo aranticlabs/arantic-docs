@@ -2,7 +2,19 @@
 sidebar_position: 8
 sidebar_label: Skills
 description: Cursor skills are SKILL.md folders that package workflows, scripts, and references the agent loads on demand, following the open Agent Skills standard.
-keywords: [Cursor skills, SKILL.md, Agent Skills standard, .cursor/skills, create-skill, migrate-to-skills, Custom Modes, progressive disclosure, skills vs rules, team skills]
+keywords:
+  [
+    Cursor skills,
+    SKILL.md,
+    Agent Skills standard,
+    .cursor/skills,
+    create-skill,
+    migrate-to-skills,
+    Custom Modes,
+    progressive disclosure,
+    skills vs rules,
+    team skills,
+  ]
 ---
 
 # Skills
@@ -15,12 +27,12 @@ This page covers what skills are in Cursor, where they live, the `SKILL.md` form
 
 Cursor's documentation describes skills with four properties:
 
-| Property | Meaning in practice |
-|---|---|
-| **Portable** | A skill written for Cursor works in any agent that supports the Agent Skills standard (and Cursor reads skills written for Claude Code and Codex) |
-| **Version-controlled** | Skills are files. Commit them, review them in PRs, or install them from a GitHub repository |
-| **Actionable** | A skill can ship scripts, templates, and reference documents that the agent runs or reads with its tools |
-| **Progressive** | Only the description is always in context; the body and supporting files load when needed |
+| Property               | Meaning in practice                                                                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Portable**           | A skill written for Cursor works in any agent that supports the Agent Skills standard (and Cursor reads skills written for Claude Code and Codex) |
+| **Version-controlled** | Skills are files. Commit them, review them in PRs, or install them from a GitHub repository                                                       |
+| **Actionable**         | A skill can ship scripts, templates, and reference documents that the agent runs or reads with its tools                                          |
+| **Progressive**        | Only the description is always in context; the body and supporting files load when needed                                                         |
 
 A skill is different from a rule. Rules are short, persistent guidance ("use TypeScript for all new files") that Cursor injects at the start of the context. Skills are longer procedures ("deploy to staging: run tests, build, deploy, verify") that stay dormant until they match. See [Skills vs rules](#skills-vs-rules) below and the [Rules & AGENTS.md](./rules.md) page.
 
@@ -28,16 +40,16 @@ A skill is different from a rule. Rules are short, persistent guidance ("use Typ
 
 Cursor loads skills automatically from these locations:
 
-| Location | Scope | Committed to git? |
-|---|---|---|
-| `.cursor/skills/` | Project (this repository) | Yes |
-| `.agents/skills/` | Project (vendor-neutral folder) | Yes |
-| `~/.cursor/skills/` | User, all projects on this machine | No |
-| `~/.agents/skills/` | User, all projects on this machine (vendor-neutral) | No |
-| `.claude/skills/`, `.codex/skills/` | Project (compatibility with Claude Code and Codex) | Yes |
-| `~/.claude/skills/`, `~/.codex/skills/` | User (compatibility with Claude Code and Codex) | No |
-| Built-in skills | Managed by Cursor, appear alongside your own | N/A |
-| Plugin skills | Installed with a [plugin](./plugins.md) at user or project scope | Via the plugin |
+| Location                                | Scope                                                            | Committed to git? |
+| --------------------------------------- | ---------------------------------------------------------------- | ----------------- |
+| `.cursor/skills/`                       | Project (this repository)                                        | Yes               |
+| `.agents/skills/`                       | Project (vendor-neutral folder)                                  | Yes               |
+| `~/.cursor/skills/`                     | User, all projects on this machine                               | No                |
+| `~/.agents/skills/`                     | User, all projects on this machine (vendor-neutral)              | No                |
+| `.claude/skills/`, `.codex/skills/`     | Project (compatibility with Claude Code and Codex)               | Yes               |
+| `~/.claude/skills/`, `~/.codex/skills/` | User (compatibility with Claude Code and Codex)                  | No                |
+| Built-in skills                         | Managed by Cursor, appear alongside your own                     | N/A               |
+| Plugin skills                           | Installed with a [plugin](./plugins.md) at user or project scope | Via the plugin    |
 
 Two practical consequences:
 
@@ -62,11 +74,11 @@ Each skill is a folder that contains a `SKILL.md` file. Optional subfolders hold
             └── config-template.json
 ```
 
-| Directory | Purpose |
-|---|---|
-| `scripts/` | Executable code the agent runs (any language the environment can execute) |
-| `references/` | Additional documentation loaded on demand |
-| `assets/` | Static resources such as templates, images, or data files |
+| Directory     | Purpose                                                                   |
+| ------------- | ------------------------------------------------------------------------- |
+| `scripts/`    | Executable code the agent runs (any language the environment can execute) |
+| `references/` | Additional documentation loaded on demand                                 |
+| `assets/`     | Static resources such as templates, images, or data files                 |
 
 ### Nested and category folders
 
@@ -128,15 +140,15 @@ Detailed instructions for the agent.
 
 ### Frontmatter fields
 
-| Field | Required | Description |
-|---|---|---|
-| `name` | Yes | Skill identifier. Lowercase letters, numbers, and hyphens only. Must match the parent folder name |
-| `description` | Yes | What the skill does and when to use it. The agent reads this to decide relevance, so it is the main tuning knob |
-| `paths` | No | Glob patterns that scope the skill to matching files. Accepts a list or a comma-separated string. When set, the skill is only surfaced while the agent reads or edits matching files |
-| `disable-model-invocation` | No | When `true`, the skill is only included when you type `/skill-name`. The agent never applies it on its own |
-| `icon` | No | Icon shown on the badge when the skill runs as a Custom Mode. Defaults to a lightning icon. Names come from Cursor's icon set (`code`, `terminal`, `bug`, `git-branch`, `book-open`, `beaker`, `shield`, `rocket`, and others) |
-| `color` | No | Badge color as a Custom Mode: `default`, `green`, `cyan`, `blue`, `purple`, `magenta`, `orange`, `yellow`, `red`, or `brand` |
-| `metadata` | No | Arbitrary key-value mapping for your own tooling |
+| Field                      | Required | Description                                                                                                                                                                                                                    |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `name`                     | Yes      | Skill identifier. Lowercase letters, numbers, and hyphens only. Must match the parent folder name                                                                                                                              |
+| `description`              | Yes      | What the skill does and when to use it. The agent reads this to decide relevance, so it is the main tuning knob                                                                                                                |
+| `paths`                    | No       | Glob patterns that scope the skill to matching files. Accepts a list or a comma-separated string. When set, the skill is only surfaced while the agent reads or edits matching files                                           |
+| `disable-model-invocation` | No       | When `true`, the skill is only included when you type `/skill-name`. The agent never applies it on its own                                                                                                                     |
+| `icon`                     | No       | Icon shown on the badge when the skill runs as a Custom Mode. Defaults to a lightning icon. Names come from Cursor's icon set (`code`, `terminal`, `bug`, `git-branch`, `book-open`, `beaker`, `shield`, `rocket`, and others) |
+| `color`                    | No       | Badge color as a Custom Mode: `default`, `green`, `cyan`, `blue`, `purple`, `magenta`, `orange`, `yellow`, `red`, or `brand`                                                                                                   |
+| `metadata`                 | No       | Arbitrary key-value mapping for your own tooling                                                                                                                                                                               |
 
 The legacy `globs` field is still accepted as a fallback for older skills; new skills should use `paths`.
 
@@ -151,8 +163,8 @@ Cursor's skill frontmatter is deliberately small. There is no `allowed-tools`, `
 name: react-component-patterns
 description: Conventions for writing React components in this codebase.
 paths:
-  - "**/*.tsx"
-  - "packages/ui/**/*.ts"
+  - '**/*.tsx'
+  - 'packages/ui/**/*.ts'
 ---
 
 # React component patterns
@@ -170,18 +182,18 @@ When Cursor starts, it discovers skills from all the directories above and prese
 
 There are four ways a skill enters a conversation:
 
-| Method | How | Lifetime |
-|---|---|---|
-| **Automatic** | The agent decides the skill is relevant based on `description` (and `paths`, if set) | Loaded for the task at hand |
-| **Slash command** | Type `/` in the chat input, search the skill name, press Enter | Attaches to one message and fades as the conversation moves on |
-| **Custom Mode** | Pick the skill from the `/` menu and press Option+Enter (Mac) or Alt+Enter (Windows), or select **Use as Mode** | Stays in context on every turn until you exit the mode |
-| **@ mention** | Type `@` and select the skill to attach it as context | One message |
+| Method            | How                                                                                                             | Lifetime                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Automatic**     | The agent decides the skill is relevant based on `description` (and `paths`, if set)                            | Loaded for the task at hand                                    |
+| **Slash command** | Type `/` in the chat input, search the skill name, press Enter                                                  | Attaches to one message and fades as the conversation moves on |
+| **Custom Mode**   | Pick the skill from the `/` menu and press Option+Enter (Mac) or Alt+Enter (Windows), or select **Use as Mode** | Stays in context on every turn until you exit the mode         |
+| **@ mention**     | Type `@` and select the skill to attach it as context                                                           | One message                                                    |
 
 Set `disable-model-invocation: true` when a skill has side effects (deploying, publishing, sending messages) and should only ever run because a human typed `/skill-name`. This makes the skill behave like a traditional slash command.
 
 ### Using a skill as a Custom Mode
 
-A one-message `/skill` is right for one-shot tasks. For skills that describe *how to work* rather than *what to do once* (a code-review checklist, a TDD playbook, a migration procedure you will follow across many files), use the skill as a Custom Mode. An active mode shows a badge in the chat input, and the skill stays in context for as long as the agent works, even across hours-long sessions. Custom Modes are available in the Agents Window and the [CLI](./cli.md).
+A one-message `/skill` is right for one-shot tasks. For skills that describe _how to work_ rather than _what to do once_ (a code-review checklist, a TDD playbook, a migration procedure you will follow across many files), use the skill as a Custom Mode. An active mode shows a badge in the chat input, and the skill stays in context for as long as the agent works, even across hours-long sessions. Custom Modes are available in the Agents Window and the [CLI](./cli.md).
 
 ```markdown
 ---
@@ -203,27 +215,27 @@ color: green
 
 Cursor ships a set of built-in skills that are managed by Cursor and appear alongside your own. Run any of them by typing `/` and selecting the name; the agent may also use some of them automatically when your request clearly matches.
 
-| Skill | What it does |
-|---|---|
-| `/automate` | Creates Cursor Automations triggered by schedules, Slack messages, GitHub events, and other sources |
-| `/autopilot` | Monitors a pull request and addresses feedback, conflicts, failing checks, and follow-up work |
-| `/canvas` | Creates interactive React artifacts that render alongside the conversation |
-| `/create-hook` | Creates Cursor hooks and updates `hooks.json` for agent lifecycle events |
-| `/create-rule` | Creates Cursor rules with the appropriate scope and instructions |
-| `/create-skill` | Creates Agent Skills, including their structure and `SKILL.md` files |
-| `/create-subagent` | Creates custom subagents with focused roles and delegation instructions |
-| `/cursor-blame` | Investigates AI-authored changes and the prompts that produced them |
-| `/loop` | Runs a prompt or skill repeatedly at a specified interval |
-| `/migrate-to-skills` | Converts eligible dynamic rules and slash commands into Agent Skills |
-| `/review` | Selects and runs the appropriate code-review agent |
-| `/review-bugbot` | Reviews code for likely bugs and regressions with Bugbot |
-| `/review-security` | Reviews code for security vulnerabilities with Security Review |
-| `/sdk` | Helps you build applications and integrations with the Cursor SDK |
-| `/shell` | Runs the provided text as a literal shell command |
-| `/split-to-prs` | Splits large changes into smaller pull requests |
-| `/statusline` | Configures the Cursor CLI status line |
-| `/update-cli-config` | Updates Cursor CLI settings in `~/.cursor/cli-config.json` |
-| `/update-cursor-settings` | Finds and updates the appropriate Cursor or VS Code setting |
+| Skill                     | What it does                                                                                        |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| `/automate`               | Creates Cursor Automations triggered by schedules, Slack messages, GitHub events, and other sources |
+| `/autopilot`              | Monitors a pull request and addresses feedback, conflicts, failing checks, and follow-up work       |
+| `/canvas`                 | Creates interactive React artifacts that render alongside the conversation                          |
+| `/create-hook`            | Creates Cursor hooks and updates `hooks.json` for agent lifecycle events                            |
+| `/create-rule`            | Creates Cursor rules with the appropriate scope and instructions                                    |
+| `/create-skill`           | Creates Agent Skills, including their structure and `SKILL.md` files                                |
+| `/create-subagent`        | Creates custom subagents with focused roles and delegation instructions                             |
+| `/cursor-blame`           | Investigates AI-authored changes and the prompts that produced them                                 |
+| `/loop`                   | Runs a prompt or skill repeatedly at a specified interval                                           |
+| `/migrate-to-skills`      | Converts eligible dynamic rules and slash commands into Agent Skills                                |
+| `/review`                 | Selects and runs the appropriate code-review agent                                                  |
+| `/review-bugbot`          | Reviews code for likely bugs and regressions with Bugbot                                            |
+| `/review-security`        | Reviews code for security vulnerabilities with Security Review                                      |
+| `/sdk`                    | Helps you build applications and integrations with the Cursor SDK                                   |
+| `/shell`                  | Runs the provided text as a literal shell command                                                   |
+| `/split-to-prs`           | Splits large changes into smaller pull requests                                                     |
+| `/statusline`             | Configures the Cursor CLI status line                                                               |
+| `/update-cli-config`      | Updates Cursor CLI settings in `~/.cursor/cli-config.json`                                          |
+| `/update-cursor-settings` | Finds and updates the appropriate Cursor or VS Code setting                                         |
 
 The built-in skills are a good model for your own: each has a narrow purpose and a description that says exactly when it applies. The [Commands & Shortcuts](./commands.md) page covers the rest of the `/` menu.
 
@@ -302,8 +314,8 @@ Then create `.cursor/skills/review-migration/SKILL.md`:
 name: review-migration
 description: Reviews a database migration for reversibility, locking risk, and data safety. Use when a PR or diff touches migrations.
 paths:
-  - "db/migrations/**"
-  - "**/migrations/**/*.sql"
+  - 'db/migrations/**'
+  - '**/migrations/**/*.sql'
 ---
 
 # Migration review
@@ -342,13 +354,13 @@ Put the primary use case first, then add two or three trigger phrases people say
 
 Cursor 2.4 added a built-in `/migrate-to-skills` skill that converts existing artifacts into skills:
 
-| Source | Converted? | Result |
-|---|---|---|
-| Dynamic rules (`alwaysApply: false` or unset, no `globs`, "Apply Intelligently") | Yes | Standard skill with `name` and `description` |
-| Slash commands (user-level and workspace-level) | Yes | Skill with `disable-model-invocation: true`, preserving explicit-only behavior |
-| Rules with `alwaysApply: true` | No | Keep as rules; they are always-on by design |
-| Rules with `globs` | No | Keep as rules (or rewrite by hand as a skill with `paths`) |
-| User rules (settings, not files) | No | Not on the file system |
+| Source                                                                           | Converted? | Result                                                                         |
+| -------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------ |
+| Dynamic rules (`alwaysApply: false` or unset, no `globs`, "Apply Intelligently") | Yes        | Standard skill with `name` and `description`                                   |
+| Slash commands (user-level and workspace-level)                                  | Yes        | Skill with `disable-model-invocation: true`, preserving explicit-only behavior |
+| Rules with `alwaysApply: true`                                                   | No         | Keep as rules; they are always-on by design                                    |
+| Rules with `globs`                                                               | No         | Keep as rules (or rewrite by hand as a skill with `paths`)                     |
+| User rules (settings, not files)                                                 | No         | Not on the file system                                                         |
 
 To migrate:
 
@@ -360,13 +372,13 @@ To migrate:
 
 Keep this split in mind when deciding where new guidance belongs:
 
-| | Rules | Skills |
-|---|---|---|
-| **Purpose** | Short coding guidelines and constraints | Multi-step workflows and procedures |
-| **Length** | A few lines to a few hundred lines | Often longer, with detailed steps and supporting files |
+|                 | Rules                                                         | Skills                                                               |
+| --------------- | ------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Purpose**     | Short coding guidelines and constraints                       | Multi-step workflows and procedures                                  |
+| **Length**      | A few lines to a few hundred lines                            | Often longer, with detailed steps and supporting files               |
 | **How applied** | Included as context in every (or every matching) conversation | Loaded when relevant, or invoked with `/skill-name` or `@skill-name` |
-| **Example** | "Use TypeScript for all new files" | "Deploy to staging: run tests, build, deploy, verify" |
-| **File** | `.cursor/rules/*.mdc`, `AGENTS.md` | `.cursor/skills/<name>/SKILL.md` |
+| **Example**     | "Use TypeScript for all new files"                            | "Deploy to staging: run tests, build, deploy, verify"                |
+| **File**        | `.cursor/rules/*.mdc`, `AGENTS.md`                            | `.cursor/skills/<name>/SKILL.md`                                     |
 
 Use a rule when a short instruction is enough. Use a skill when the agent needs a detailed, repeatable process. See [Rules & AGENTS.md](./rules.md) for the rule side.
 
@@ -374,11 +386,11 @@ Use a rule when a short instruction is enough. Use a skill when the agent needs 
 
 There are three ways to get a skill to other people, and they are not interchangeable:
 
-| Method | Who gets it | How |
-|---|---|---|
-| **Commit to the repo** | Everyone who clones, plus Cloud Agents and self-hosted workers on that repo | Put skills in `.cursor/skills/` (or `.agents/skills/`) and commit |
-| **Publish to the team marketplace** | Teammates who choose to install it (Teams and Enterprise) | **Customize → Skills**, open a personal skill, choose **Publish** |
-| **Ship in a plugin** | Anyone who installs the plugin | Bundle skills in an Agent Plugin or Cursor Plugin; see [Plugins](./plugins.md) |
+| Method                              | Who gets it                                                                 | How                                                                            |
+| ----------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Commit to the repo**              | Everyone who clones, plus Cloud Agents and self-hosted workers on that repo | Put skills in `.cursor/skills/` (or `.agents/skills/`) and commit              |
+| **Publish to the team marketplace** | Teammates who choose to install it (Teams and Enterprise)                   | **Customize → Skills**, open a personal skill, choose **Publish**              |
+| **Ship in a plugin**                | Anyone who installs the plugin                                              | Bundle skills in an Agent Plugin or Cursor Plugin; see [Plugins](./plugins.md) |
 
 ### Publishing a personal skill
 
@@ -444,8 +456,8 @@ Do not add filler such as "This PR introduces". Be direct.
 name: api-review
 description: Reviews REST route handlers for validation, HTTP semantics, auth, and consistency. Use when reviewing API routes, controllers, or endpoint changes.
 paths:
-  - "src/routes/**"
-  - "src/api/**"
+  - 'src/routes/**'
+  - 'src/api/**'
 ---
 
 # API review
@@ -471,6 +483,7 @@ Run `scripts/scan-env.sh` and use its output as the source of truth. Do not
 re-implement the scan by reading files yourself.
 
 Then report:
+
 - Variables read in code but missing from `.env.example`
 - Values that look like committed secrets
 - Variables read without validation or a fallback
@@ -489,6 +502,7 @@ color: red
 # Incident triage
 
 Work in this order and keep a running timeline in your replies:
+
 1. Establish impact and start time from logs and dashboards.
 2. Find the most recent deploy or config change in the window.
 3. Form one hypothesis at a time; verify before moving on.
@@ -510,26 +524,26 @@ Use it as a Custom Mode (Option+Enter or Alt+Enter) so the procedure stays activ
 
 ## Troubleshooting
 
-| Symptom | Check |
-|---|---|
-| Skill never triggers | Improve `description` with the wording you actually use; check `paths` does not exclude the files you are working on |
-| Skill does not appear in **Customize → Skills** | Folder layout (`<root>/<name>/SKILL.md`), exact filename, `name` matches folder, valid YAML frontmatter |
-| Skill fires for the wrong tasks | Narrow the description; add `paths`; or set `disable-model-invocation: true` and invoke it explicitly |
-| Skill missing in a Cloud Agent | Personal skills are not synced by default; commit the skill or turn on **Sync Skills for Cloud Agents** |
-| Skill missing on a self-hosted worker | Only repo skills (or skills baked into the worker image) are available there |
-| Script fails at runtime | Execute permission (`chmod +x`), dependencies installed in the agent's environment, forward slashes in paths |
+| Symptom                                         | Check                                                                                                                |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Skill never triggers                            | Improve `description` with the wording you actually use; check `paths` does not exclude the files you are working on |
+| Skill does not appear in **Customize → Skills** | Folder layout (`<root>/<name>/SKILL.md`), exact filename, `name` matches folder, valid YAML frontmatter              |
+| Skill fires for the wrong tasks                 | Narrow the description; add `paths`; or set `disable-model-invocation: true` and invoke it explicitly                |
+| Skill missing in a Cloud Agent                  | Personal skills are not synced by default; commit the skill or turn on **Sync Skills for Cloud Agents**              |
+| Skill missing on a self-hosted worker           | Only repo skills (or skills baked into the worker image) are available there                                         |
+| Script fails at runtime                         | Execute permission (`chmod +x`), dependencies installed in the agent's environment, forward slashes in paths         |
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|---|---|---|
-| Location | `.cursor/skills/`, `.agents/skills/`, `~/.cursor/skills/`, `~/.agents/skills/`, plus `.claude/skills/` and `.codex/skills/` for compatibility | `.claude/skills/`, `~/.claude/skills/`, plugins, enterprise settings |
-| Frontmatter | `name`, `description`, `paths`, `disable-model-invocation`, `icon`, `color`, `metadata` | Larger surface: `allowed-tools`, `model`, `effort`, `context: fork`, `agent`, `arguments`, `hooks`, `paths`, and more |
-| Arguments and shell injection | Not documented; write the task in the chat message after `/skill` | `$ARGUMENTS`, named arguments, `` !`command` `` injection |
-| Session-long activation | Custom Modes (Option+Enter / Alt+Enter) keep a skill in context every turn | Skills merge into the conversation when matched or invoked |
-| Preloading into subagents | No `skills` field on subagents; repeat the guidance in the subagent prompt | `skills:` list in agent frontmatter injects full skill bodies at startup |
-| Migration tooling | `/migrate-to-skills` converts dynamic rules and commands | `/import` and `/init` pull in other tools' configuration |
-| Sharing | Commit to repo, publish to team marketplace, or bundle in a plugin | Commit to repo, plugins and marketplaces, enterprise-managed settings |
-| Validation | Check **Customize → Skills**; no CLI validator documented | `claude plugin validate`, `/skill-doctor` |
+| Topic                         | Cursor                                                                                                                                        | Claude Code                                                                                                           |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Location                      | `.cursor/skills/`, `.agents/skills/`, `~/.cursor/skills/`, `~/.agents/skills/`, plus `.claude/skills/` and `.codex/skills/` for compatibility | `.claude/skills/`, `~/.claude/skills/`, plugins, enterprise settings                                                  |
+| Frontmatter                   | `name`, `description`, `paths`, `disable-model-invocation`, `icon`, `color`, `metadata`                                                       | Larger surface: `allowed-tools`, `model`, `effort`, `context: fork`, `agent`, `arguments`, `hooks`, `paths`, and more |
+| Arguments and shell injection | Not documented; write the task in the chat message after `/skill`                                                                             | `$ARGUMENTS`, named arguments, `` !`command` `` injection                                                             |
+| Session-long activation       | Custom Modes (Option+Enter / Alt+Enter) keep a skill in context every turn                                                                    | Skills merge into the conversation when matched or invoked                                                            |
+| Preloading into subagents     | No `skills` field on subagents; repeat the guidance in the subagent prompt                                                                    | `skills:` list in agent frontmatter injects full skill bodies at startup                                              |
+| Migration tooling             | `/migrate-to-skills` converts dynamic rules and commands                                                                                      | `/import` and `/init` pull in other tools' configuration                                                              |
+| Sharing                       | Commit to repo, publish to team marketplace, or bundle in a plugin                                                                            | Commit to repo, plugins and marketplaces, enterprise-managed settings                                                 |
+| Validation                    | Check **Customize → Skills**; no CLI validator documented                                                                                     | `claude plugin validate`, `/skill-doctor`                                                                             |
 
 For the Claude Code side, see [Claude Code Skills](../claude-code/skills.md). For the general Cursor overview, see [Cursor](../tools/cursor.md).

@@ -2,7 +2,18 @@
 sidebar_position: 8
 sidebar_label: Mistral
 description: Mistral offers AI coding tools including a terminal CLI agent, code completion models, and IDE integrations with a focus on data privacy and self-hosting.
-keywords: [Mistral, Mistral AI, Vibe CLI, AI coding, self-hosted AI, data privacy, European AI, code completion, terminal agent]
+keywords:
+  [
+    Mistral,
+    Mistral AI,
+    Vibe CLI,
+    AI coding,
+    self-hosted AI,
+    data privacy,
+    European AI,
+    code completion,
+    terminal agent,
+  ]
 ---
 
 # Mistral
@@ -67,6 +78,7 @@ export MISTRAL_API_KEY=your-key-here
 Mistral's dedicated code completion model, optimized for low-latency suggestions across **80+ programming languages**. It powers inline completions in supported editors.
 
 Key strengths:
+
 - Fast response times for real-time autocomplete
 - Fill-in-the-middle capability (completes code at the cursor position, not just at the end)
 - Strong performance on Python, JavaScript, TypeScript, Java, C++, and Rust

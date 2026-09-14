@@ -2,7 +2,18 @@
 sidebar_position: 6
 sidebar_label: Auto-review
 description: Use Codex Auto-review to route sandbox-boundary approval requests through a reviewer agent instead of stopping for a human on every escalation.
-keywords: [Codex Auto-review, approvals_reviewer, auto_review, Approve for me, reviewer agent, sandbox escalation, guardian policy, approval policy, Codex security]
+keywords:
+  [
+    Codex Auto-review,
+    approvals_reviewer,
+    auto_review,
+    Approve for me,
+    reviewer agent,
+    sandbox escalation,
+    guardian policy,
+    approval policy,
+    Codex security,
+  ]
 ---
 
 # Auto-review
@@ -159,13 +170,13 @@ Managed `guardian_policy_config` takes precedence over a user's local `[auto_rev
 
 ## Comparison with other approval setups
 
-| Setup | Config | Who answers boundary crossings | Sandbox |
-|-------|--------|-------------------------------|---------|
-| Ask for approval (default) | `approval_policy = "on-request"`, `approvals_reviewer = "user"` | You | Unchanged |
-| **Approve for me / Auto-review** | `approval_policy = "on-request"`, `approvals_reviewer = "auto_review"` | Reviewer agent | Unchanged |
-| Never ask | `approval_policy = "never"` | Nobody; blocked actions fail | Unchanged |
-| Granular | `approval_policy = { granular = {...} }` | You or the reviewer for enabled categories; others auto-rejected | Unchanged |
-| Full access | `--yolo`, or `danger-full-access` plus `never` | Nobody; nothing is blocked | Removed |
+| Setup                            | Config                                                                 | Who answers boundary crossings                                   | Sandbox   |
+| -------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- | --------- |
+| Ask for approval (default)       | `approval_policy = "on-request"`, `approvals_reviewer = "user"`        | You                                                              | Unchanged |
+| **Approve for me / Auto-review** | `approval_policy = "on-request"`, `approvals_reviewer = "auto_review"` | Reviewer agent                                                   | Unchanged |
+| Never ask                        | `approval_policy = "never"`                                            | Nobody; blocked actions fail                                     | Unchanged |
+| Granular                         | `approval_policy = { granular = {...} }`                               | You or the reviewer for enabled categories; others auto-rejected | Unchanged |
+| Full access                      | `--yolo`, or `danger-full-access` plus `never`                         | Nobody; nothing is blocked                                       | Removed   |
 
 Auto-review also differs from **safety monitoring**, which some models include in Codex and ChatGPT Work. Monitoring runs asynchronously over the whole task and can pause it after the fact; Auto-review evaluates individual actions before they run. An action Auto-review approved can still belong to a task that monitoring later pauses.
 
@@ -179,12 +190,12 @@ If mundane actions keep hitting the reviewer, fix the boundary rather than teach
 
 ## Availability
 
-| Surface | How to enable |
-|---------|---------------|
-| Codex CLI | `approvals_reviewer = "auto_review"` in `config.toml` or `-c approvals_reviewer=auto_review`; `/approve` handles overrides |
-| IDE extension | **Approve for me** in the permissions control beneath the composer |
-| ChatGPT desktop app | Enable **Auto-review** in **Settings > General > Permissions**, then choose **Approve for me** |
-| Managed organizations | Availability follows `allowed_approvals_reviewers`; a disallowed mode appears disabled |
+| Surface               | How to enable                                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Codex CLI             | `approvals_reviewer = "auto_review"` in `config.toml` or `-c approvals_reviewer=auto_review`; `/approve` handles overrides |
+| IDE extension         | **Approve for me** in the permissions control beneath the composer                                                         |
+| ChatGPT desktop app   | Enable **Auto-review** in **Settings > General > Permissions**, then choose **Approve for me**                             |
+| Managed organizations | Availability follows `allowed_approvals_reviewers`; a disallowed mode appears disabled                                     |
 
 Auto-review makes extra model calls, so it adds to Codex usage. Admins can constrain it with `allowed_approvals_reviewers`.
 

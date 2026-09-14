@@ -2,7 +2,19 @@
 sidebar_position: 11
 sidebar_label: MCP
 description: Connect Cursor to external tools with MCP servers via mcp.json, stdio and HTTP transports, OAuth, install links, tool approval, and enterprise allowlists.
-keywords: [Cursor MCP, mcp.json, Model Context Protocol, MCP servers Cursor, stdio transport, Streamable HTTP, MCP OAuth, MCP install link, MCP allowlist, MCP security]
+keywords:
+  [
+    Cursor MCP,
+    mcp.json,
+    Model Context Protocol,
+    MCP servers Cursor,
+    stdio transport,
+    Streamable HTTP,
+    MCP OAuth,
+    MCP install link,
+    MCP allowlist,
+    MCP security,
+  ]
 ---
 
 # MCP
@@ -15,23 +27,23 @@ An MCP server exposes capabilities over the protocol. Cursor connects as a clien
 
 ### Transports
 
-| Transport | Runs | Deployment | Users | Configured with | Auth |
-|-----------|------|------------|-------|-----------------|------|
-| **stdio** | Locally, as a child process Cursor manages | You install it | Single user | `command` and `args` | Manual (env vars) |
-| **SSE** | Local or remote | Deployed as a server | Multiple users | `url` to an SSE endpoint | OAuth |
-| **Streamable HTTP** | Local or remote | Deployed as a server | Multiple users | `url` to an HTTP endpoint | OAuth |
+| Transport           | Runs                                       | Deployment           | Users          | Configured with           | Auth              |
+| ------------------- | ------------------------------------------ | -------------------- | -------------- | ------------------------- | ----------------- |
+| **stdio**           | Locally, as a child process Cursor manages | You install it       | Single user    | `command` and `args`      | Manual (env vars) |
+| **SSE**             | Local or remote                            | Deployed as a server | Multiple users | `url` to an SSE endpoint  | OAuth             |
+| **Streamable HTTP** | Local or remote                            | Deployed as a server | Multiple users | `url` to an HTTP endpoint | OAuth             |
 
 Both remote transports are supported. The MCP specification has moved to Streamable HTTP, so use it for new servers when the provider offers it.
 
 ### Protocol features Cursor supports
 
-| Feature | What it gives you |
-|---------|-------------------|
-| **Tools** | Functions the model can call |
-| **Prompts** | Templated messages and workflows the server provides for users |
-| **Resources** | Structured data sources the agent can read and reference |
-| **Roots** | Server-initiated inquiries into URI or filesystem boundaries |
-| **Elicitation** | Server-initiated requests for more information from the user |
+| Feature              | What it gives you                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Tools**            | Functions the model can call                                                                                 |
+| **Prompts**          | Templated messages and workflows the server provides for users                                               |
+| **Resources**        | Structured data sources the agent can read and reference                                                     |
+| **Roots**            | Server-initiated inquiries into URI or filesystem boundaries                                                 |
+| **Elicitation**      | Server-initiated requests for more information from the user                                                 |
 | **Apps (extension)** | Interactive UI returned by tools, rendered in chat. Falls back to normal tool output where UI cannot render. |
 
 ## Installing servers
@@ -48,12 +60,12 @@ Anyone can share a server as a deeplink. It carries the same JSON you would put 
 cursor://anysphere.cursor-deeplink/mcp/install?name=$NAME&config=$BASE64_ENCODED_CONFIG
 ```
 
-| Part | Meaning |
-|------|---------|
-| `cursor://anysphere.cursor-deeplink` | Protocol scheme and handler |
-| `/mcp/install` | Path |
-| `name` | Server name (the key in `mcpServers`) |
-| `config` | Base64 of `JSON.stringify(<server config>)` |
+| Part                                 | Meaning                                     |
+| ------------------------------------ | ------------------------------------------- |
+| `cursor://anysphere.cursor-deeplink` | Protocol scheme and handler                 |
+| `/mcp/install`                       | Path                                        |
+| `name`                               | Server name (the key in `mcpServers`)       |
+| `config`                             | Base64 of `JSON.stringify(<server config>)` |
 
 To generate one: take the single server's config object, `JSON.stringify` it, base64-encode it, and substitute the two placeholders. Clicking the link opens Cursor, which prompts before installing; deeplinks never execute anything automatically. Swap the scheme for `https://cursor.com/link/` to get a web link that redirects to cursor.com. Deeplink URLs are capped at 8,000 characters. For anything bigger than one server, use a [plugin](./plugins.md).
 
@@ -61,10 +73,10 @@ To generate one: take the single server's config object, `JSON.stringify` it, ba
 
 For custom or private servers, write the config yourself.
 
-| File | Scope | Share it? |
-|------|-------|-----------|
-| `<project>/.cursor/mcp.json` | This project | Yes, commit it so teammates get the same tools |
-| `~/.cursor/mcp.json` | Every project on your machine | No, personal |
+| File                         | Scope                         | Share it?                                      |
+| ---------------------------- | ----------------------------- | ---------------------------------------------- |
+| `<project>/.cursor/mcp.json` | This project                  | Yes, commit it so teammates get the same tools |
+| `~/.cursor/mcp.json`         | Every project on your machine | No, personal                                   |
 
 Both files are merged. If the same server name appears in both, the project-level entry wins. Save the file and restart Cursor (or let it reload) to pick up changes.
 
@@ -75,11 +87,7 @@ Both files are merged. If the same server name appears in both, the project-leve
   "mcpServers": {
     "postgres": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-postgres",
-        "${env:DATABASE_URL}"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "${env:DATABASE_URL}"]
     }
   }
 }
@@ -102,13 +110,13 @@ Both files are merged. If the same server name appears in both, the project-leve
 
 ### stdio fields
 
-| Field | Required | Description | Examples |
-|-------|----------|-------------|----------|
-| `type` | Yes | `"stdio"` | |
-| `command` | Yes | Executable on your PATH or a full path | `npx`, `node`, `python`, `docker` |
-| `args` | No | Arguments array | `["server.py", "--port", "3000"]` |
-| `env` | No | Environment variables for the server | `{"API_KEY": "${env:API_KEY}"}` |
-| `envFile` | No | Path to an env file to load more variables. **stdio only.** | `".env"`, `"${workspaceFolder}/.env"` |
+| Field     | Required | Description                                                 | Examples                              |
+| --------- | -------- | ----------------------------------------------------------- | ------------------------------------- |
+| `type`    | Yes      | `"stdio"`                                                   |                                       |
+| `command` | Yes      | Executable on your PATH or a full path                      | `npx`, `node`, `python`, `docker`     |
+| `args`    | No       | Arguments array                                             | `["server.py", "--port", "3000"]`     |
+| `env`     | No       | Environment variables for the server                        | `{"API_KEY": "${env:API_KEY}"}`       |
+| `envFile` | No       | Path to an env file to load more variables. **stdio only.** | `".env"`, `"${workspaceFolder}/.env"` |
 
 Remote (HTTP/SSE) servers do not support `envFile`; use interpolation from your shell environment instead.
 
@@ -116,13 +124,13 @@ Remote (HTTP/SSE) servers do not support `envFile`; use interpolation from your 
 
 Cursor resolves variables in `command`, `args`, `env`, `url`, `headers`, and `auth`:
 
-| Syntax | Resolves to |
-|--------|-------------|
-| `${env:NAME}` | Environment variable `NAME` |
-| `${userHome}` | Your home directory |
-| `${workspaceFolder}` | The folder containing `.cursor/mcp.json` |
-| `${workspaceFolderBasename}` | Name of that folder |
-| `${pathSeparator}` or `${/}` | OS path separator |
+| Syntax                       | Resolves to                              |
+| ---------------------------- | ---------------------------------------- |
+| `${env:NAME}`                | Environment variable `NAME`              |
+| `${userHome}`                | Your home directory                      |
+| `${workspaceFolder}`         | The folder containing `.cursor/mcp.json` |
+| `${workspaceFolderBasename}` | Name of that folder                      |
+| `${pathSeparator}` or `${/}` | OS path separator                        |
 
 ```json
 {
@@ -159,11 +167,11 @@ Cursor supports OAuth for remote servers that require it. Most servers use dynam
 }
 ```
 
-| Field | Required | Notes |
-|-------|----------|-------|
-| `CLIENT_ID` | Yes | OAuth 2.0 client ID |
-| `CLIENT_SECRET` | No | Only for confidential clients |
-| `scopes` | No | If omitted, Cursor discovers `scopes_supported` from `/.well-known/oauth-authorization-server` |
+| Field           | Required | Notes                                                                                          |
+| --------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `CLIENT_ID`     | Yes      | OAuth 2.0 client ID                                                                            |
+| `CLIENT_SECRET` | No       | Only for confidential clients                                                                  |
+| `scopes`        | No       | If omitted, Cursor discovers `scopes_supported` from `/.well-known/oauth-authorization-server` |
 
 Register these redirect URLs with the provider (both if users authenticate from web and desktop):
 
@@ -194,23 +202,18 @@ Every connected server adds its instructions and tool catalog to the context win
 
 By default Cursor asks before running any MCP tool; click the arrow next to the tool name to inspect the arguments. Approval follows the same [Run Modes](./permissions.md) as terminal commands:
 
-| Run Mode | MCP behavior |
-|----------|--------------|
+| Run Mode                  | MCP behavior                                                                                                                                           |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Auto-review** (default) | Allowlisted tools run immediately; everything else goes to the safety classifier, which allows, asks the agent to try another approach, or prompts you |
-| **Allowlist** | Only allowlisted tools run without a prompt |
-| **Run Everything** | Every tool call runs |
+| **Allowlist**             | Only allowlisted tools run without a prompt                                                                                                            |
+| **Run Everything**        | Every tool call runs                                                                                                                                   |
 
 Pre-approve tools in `permissions.json` with `server:tool` entries, where `server` is the key from `mcp.json`:
 
 ```jsonc
 // ~/.cursor/permissions.json or <project>/.cursor/permissions.json
 {
-  "mcpAllowlist": [
-    "github:*",
-    "linear:list_issues",
-    "linear:get_issue",
-    "notion:search"
-  ]
+  "mcpAllowlist": ["github:*", "linear:list_issues", "linear:get_issue", "notion:search"],
 }
 ```
 
@@ -234,10 +237,10 @@ Configure shared **Team MCP servers** under **Dashboard > Integrations & MCP**. 
 
 Under **Team Settings > MCP Configuration**, admins define which servers and tools members may run. Allowlisting approves a configuration; it does not distribute or install it.
 
-| Entry type | Matches against | Examples |
-|------------|-----------------|----------|
+| Entry type          | Matches against                                                                                                                    | Examples                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | **Command** (stdio) | The full launch string: `command` plus all `args` joined with spaces. Shells often resolve `npx` to a full path, so lead with `*`. | `*npx -y @acme/mcp-tool@latest`, `*npx -y @acme/*`, `*python */scripts/mcp-server.py*` |
-| **URL** (HTTP/SSE) | The server URL | `https://mcp.acme.com/sse`, `https://*.acme.com/*`, `https://mcp.acme.com/*` |
+| **URL** (HTTP/SSE)  | The server URL                                                                                                                     | `https://mcp.acme.com/sse`, `https://*.acme.com/*`, `https://mcp.acme.com/*`           |
 
 Per server, admins can also set:
 
@@ -264,14 +267,14 @@ When an allowlist is active, servers that match no entry are blocked. The effect
 
 Cursor's docs point to the Marketplace for vetted servers and to two worked integrations: the Xcode integration (builds, tests, SwiftUI previews, Apple documentation search for Xcode 26.3+) and the web development guide, which combines Linear, Figma, and browser tools. Beyond those, the servers that pay off fastest for coding work are the same ones covered on the [Claude Code MCP page](../claude-code/mcp.md), and their `mcpServers` blocks drop into Cursor's `mcp.json` unchanged:
 
-| Need | Server type | Why |
-|------|-------------|-----|
-| Current library docs instead of hallucinated APIs | Documentation index (for example Context7) | Cuts the most common class of wrong code |
-| Repo-level understanding of a dependency | DeepWiki-style wiki server | Cheaper than reading vendored source |
-| Issues and PRs | GitHub or GitLab server | Lets the agent read the ticket and open the PR itself |
-| Planning and tickets | Linear, Jira, or Notion server | Keeps specs and status in the loop |
-| UI verification | Browser or Playwright server | Complements Cursor's built-in browser and Design Mode |
-| Database inspection | Postgres or SQLite server with read-only credentials | Lets the agent see real schemas |
+| Need                                              | Server type                                          | Why                                                   |
+| ------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
+| Current library docs instead of hallucinated APIs | Documentation index (for example Context7)           | Cuts the most common class of wrong code              |
+| Repo-level understanding of a dependency          | DeepWiki-style wiki server                           | Cheaper than reading vendored source                  |
+| Issues and PRs                                    | GitHub or GitLab server                              | Lets the agent read the ticket and open the PR itself |
+| Planning and tickets                              | Linear, Jira, or Notion server                       | Keeps specs and status in the loop                    |
+| UI verification                                   | Browser or Playwright server                         | Complements Cursor's built-in browser and Design Mode |
+| Database inspection                               | Postgres or SQLite server with read-only credentials | Lets the agent see real schemas                       |
 
 Start with one or two. Each server's tool catalog costs context on every turn.
 
@@ -303,15 +306,15 @@ MCP servers are written by third parties, not Cursor, and they execute code and 
 
 ## Compared with Claude Code
 
-| Concern | Cursor | Claude Code |
-|---------|--------|-------------|
-| Config files | `.cursor/mcp.json` (project) and `~/.cursor/mcp.json` (global), merged with project winning | `.mcp.json` (project) and `~/.claude.json` (user and local scopes) |
-| Adding servers | Customize UI, Marketplace one-click, install deeplinks, `mcp.json` | `claude mcp add` CLI, `.mcp.json` |
-| Transports | stdio, SSE, Streamable HTTP | stdio, HTTP, SSE (deprecated), WebSocket |
-| Interpolation | `${env:NAME}`, `${workspaceFolder}`, `${userHome}`, and others | `${VAR}` and `${VAR:-default}` |
-| OAuth | Dynamic registration plus static `auth` block; `agent mcp login` in CLI | `/mcp` panel or `claude mcp login` |
-| Per-tool approval | Run Modes plus `mcpAllowlist` in `permissions.json`; `Mcp(server:tool)` in the CLI | `mcp__server__tool` allow/ask/deny rules |
-| Enterprise policy | Dashboard MCP Allowlist with per-server tool and network controls, MDM-pushed `permissions.json` | Managed settings deny rules such as `mcp__*` |
-| MCP hooks | `beforeMCPExecution` and `afterMCPExecution` | `PreToolUse` and `PostToolUse` with `mcp__` matchers, plus `mcp_tool` hook type |
+| Concern           | Cursor                                                                                           | Claude Code                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| Config files      | `.cursor/mcp.json` (project) and `~/.cursor/mcp.json` (global), merged with project winning      | `.mcp.json` (project) and `~/.claude.json` (user and local scopes)              |
+| Adding servers    | Customize UI, Marketplace one-click, install deeplinks, `mcp.json`                               | `claude mcp add` CLI, `.mcp.json`                                               |
+| Transports        | stdio, SSE, Streamable HTTP                                                                      | stdio, HTTP, SSE (deprecated), WebSocket                                        |
+| Interpolation     | `${env:NAME}`, `${workspaceFolder}`, `${userHome}`, and others                                   | `${VAR}` and `${VAR:-default}`                                                  |
+| OAuth             | Dynamic registration plus static `auth` block; `agent mcp login` in CLI                          | `/mcp` panel or `claude mcp login`                                              |
+| Per-tool approval | Run Modes plus `mcpAllowlist` in `permissions.json`; `Mcp(server:tool)` in the CLI               | `mcp__server__tool` allow/ask/deny rules                                        |
+| Enterprise policy | Dashboard MCP Allowlist with per-server tool and network controls, MDM-pushed `permissions.json` | Managed settings deny rules such as `mcp__*`                                    |
+| MCP hooks         | `beforeMCPExecution` and `afterMCPExecution`                                                     | `PreToolUse` and `PostToolUse` with `mcp__` matchers, plus `mcp_tool` hook type |
 
 See [Claude Code MCP Servers](../claude-code/mcp.md) for the server catalog and Claude-side configuration.

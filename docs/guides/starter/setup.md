@@ -2,7 +2,17 @@
 sidebar_position: 1
 sidebar_label: Setup
 description: Step-by-step guide to installing and configuring Claude Code from scratch, including API key setup and a basic CLAUDE.md in about 15 minutes.
-keywords: [Claude Code setup, install Claude Code, CLAUDE.md, API key, getting started, AI coding, beginner setup, Node.js]
+keywords:
+  [
+    Claude Code setup,
+    install Claude Code,
+    CLAUDE.md,
+    API key,
+    getting started,
+    AI coding,
+    beginner setup,
+    Node.js,
+  ]
 ---
 
 # Starter Setup
@@ -77,16 +87,16 @@ Claude Code reads your project files automatically. You don't need to paste code
 
 These commands work inside any Claude Code session:
 
-| Command | What it does |
-|---------|-------------|
-| `/help` | Show available commands |
-| `/plan` | Enter plan mode (think before acting) |
+| Command    | What it does                           |
+| ---------- | -------------------------------------- |
+| `/help`    | Show available commands                |
+| `/plan`    | Enter plan mode (think before acting)  |
 | `/compact` | Summarize conversation to free context |
-| `/clear` | Reset the session entirely |
-| `/doctor` | Diagnose environment issues |
-| `/cost` | Show token usage for the session |
-| `/model` | Switch between available models |
-| `Esc` | Cancel the current response |
+| `/clear`   | Reset the session entirely             |
+| `/doctor`  | Diagnose environment issues            |
+| `/cost`    | Show token usage for the session       |
+| `/model`   | Switch between available models        |
+| `Esc`      | Cancel the current response            |
 
 For the complete command reference, see [Commands](/claude-code/commands).
 

@@ -2,7 +2,19 @@
 sidebar_position: 4
 sidebar_label: Managing Context
 description: How Cursor Agent builds context from search, @-mentions, and rules, how summarization and Max Mode work, and how to keep long sessions productive.
-keywords: [Cursor context, context window, at-mentions, .cursorignore, Max Mode, summarization, side chats, checkpoints, Instant Grep, Explore subagent]
+keywords:
+  [
+    Cursor context,
+    context window,
+    at-mentions,
+    .cursorignore,
+    Max Mode,
+    summarization,
+    side chats,
+    checkpoints,
+    Instant Grep,
+    Explore subagent,
+  ]
 ---
 
 # Managing Context
@@ -31,15 +43,15 @@ Cursor's current documentation describes search in terms of Instant Grep and the
 
 Type `@` in the chat input to attach context deliberately. Start typing after `@` and Cursor shows matching suggestions. You can attach several items in one message.
 
-| Mention | What it attaches |
-|---------|------------------|
-| `@auth.ts`, `@src/components/` | A file or a folder (type `/` after selecting a folder to navigate deeper) |
-| `@Terminals` | Output from your terminals |
-| `@Chats` | Context from a previous conversation, including side chats |
-| `@Commit (Diff of Working State)` | Your uncommitted changes |
-| `@Branch (Diff with Main)` | The full diff of your branch against main |
-| `@Browser` | State and screenshots from the built-in browser |
-| `@rule-name` | A manual rule from `.cursor/rules/` (see [Rules](./rules.md)) |
+| Mention                           | What it attaches                                                          |
+| --------------------------------- | ------------------------------------------------------------------------- |
+| `@auth.ts`, `@src/components/`    | A file or a folder (type `/` after selecting a folder to navigate deeper) |
+| `@Terminals`                      | Output from your terminals                                                |
+| `@Chats`                          | Context from a previous conversation, including side chats                |
+| `@Commit (Diff of Working State)` | Your uncommitted changes                                                  |
+| `@Branch (Diff with Main)`        | The full diff of your branch against main                                 |
+| `@Browser`                        | State and screenshots from the built-in browser                           |
+| `@rule-name`                      | A manual rule from `.cursor/rules/` (see [Rules](./rules.md))             |
 
 **When to mention.** Use `@` when you know which files matter. "Update `@UserCard.tsx` and `@UserCard.test.tsx` to accept an optional avatar prop" saves a search round-trip and prevents Agent from editing a look-alike file. When you do not know which files matter, skip it; Agent's own search is good and mentioning the wrong file anchors it in the wrong place.
 
@@ -70,16 +82,16 @@ Other ways to add context without typing `@`:
 
 The **context ring** next to the prompt input shows how full the window is. Click it to open a breakdown of tokens by category:
 
-| Category | Contents |
-|----------|----------|
-| System prompt | Cursor's built-in instructions for the model |
-| Tools | Definitions of every tool available to Agent |
-| Rules | Project and user rules included in this prompt |
-| Skills | Skill descriptions injected into the system context |
-| MCP | Instructions and tool catalog from connected MCP servers |
-| Subagents | Documentation for the subagent types Agent can launch |
-| Summarized conversation | Compressed summaries of earlier turns |
-| Conversation | Your messages, Agent's replies, and tool results |
+| Category                | Contents                                                 |
+| ----------------------- | -------------------------------------------------------- |
+| System prompt           | Cursor's built-in instructions for the model             |
+| Tools                   | Definitions of every tool available to Agent             |
+| Rules                   | Project and user rules included in this prompt           |
+| Skills                  | Skill descriptions injected into the system context      |
+| MCP                     | Instructions and tool catalog from connected MCP servers |
+| Subagents               | Documentation for the subagent types Agent can launch    |
+| Summarized conversation | Compressed summaries of earlier turns                    |
+| Conversation            | Your messages, Agent's replies, and tool results         |
 
 Hover a segment to highlight it. If **Tools** or **MCP** is large before you have typed anything, you have too many MCP servers enabled; disable the ones this project does not need (see [MCP](./mcp.md)).
 
@@ -105,14 +117,14 @@ To bring old context forward without dragging the whole transcript along, mentio
 
 Side chats are child conversations attached to a parent chat. The parent's history is copied in as hidden reference context, but the side chat has its own visible transcript, so a tangent does not consume the main window.
 
-| Action | How |
-|--------|-----|
-| Open an empty side chat | `/side` in the chat input |
-| Open and send immediately | `/side why does the retry loop in fetchUser never exit?` |
-| From a selection | Select text or a diff in the chat, choose **Ask in Side Chat** |
-| Shortcut | `Shift+Cmd+S` (`Shift+Ctrl+S`) populates a side chat with the current transcript selection |
-| Bring findings back | `@`-mention the side chat in the main thread |
-| Close | Click the **X**; this archives the side chat, it does not delete it |
+| Action                    | How                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| Open an empty side chat   | `/side` in the chat input                                                                  |
+| Open and send immediately | `/side why does the retry loop in fetchUser never exit?`                                   |
+| From a selection          | Select text or a diff in the chat, choose **Ask in Side Chat**                             |
+| Shortcut                  | `Shift+Cmd+S` (`Shift+Ctrl+S`) populates a side chat with the current transcript selection |
+| Bring findings back       | `@`-mention the side chat in the main thread                                               |
+| Close                     | Click the **X**; this archives the side chat, it does not delete it                        |
 
 By default side chats focus on reading, searching, and answering, so the main agent keeps working. They support follow-ups, stay attached to the parent even if you navigate away, cannot be nested, and are local-only (not yet available for Cloud Agents). A side chat is not a fork: forking copies the transcript into a new independent chat, a side chat only seeds the model with the parent history.
 
@@ -140,13 +152,13 @@ fixtures/large-dump.json
 !fixtures/README.md
 ```
 
-| Pattern | Meaning |
-|---------|---------|
-| `*` | Any characters except `/` |
-| `**` | Any characters including `/` |
-| `?` | A single character |
+| Pattern    | Meaning                             |
+| ---------- | ----------------------------------- |
+| `*`        | Any characters except `/`           |
+| `**`       | Any characters including `/`        |
+| `?`        | A single character                  |
 | `!pattern` | Un-ignore a previously ignored path |
-| `# ...` | Comment |
+| `# ...`    | Comment                             |
 
 What you need to know:
 
@@ -206,14 +218,14 @@ Restoring reverts files only; the conversation keeps its messages. To shorten th
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|-------|--------|-------------|
-| See context usage | Context ring and breakdown tray | `/context` grid, status line |
-| Manual compaction | `/summarize` (CLI); automatic in the IDE | `/compact [instructions]` |
-| Keep noise out of the main window | Explore subagent, side chats | Subagents |
-| Exclude files | `.cursorignore`, global ignore list | Permission `deny` rules for `Read` |
-| Extended context | Per-model long context; Max Mode on legacy plans only | Model-dependent |
-| Effort control | Thinking variants and per-model effort in the picker | `/effort`, `--effort`, `Option+T` |
-| Undo | Checkpoints (files only), `/rewind` in the CLI | `/rewind`, `Esc` `Esc` (code and conversation) |
+| Topic                             | Cursor                                                | Claude Code                                    |
+| --------------------------------- | ----------------------------------------------------- | ---------------------------------------------- |
+| See context usage                 | Context ring and breakdown tray                       | `/context` grid, status line                   |
+| Manual compaction                 | `/summarize` (CLI); automatic in the IDE              | `/compact [instructions]`                      |
+| Keep noise out of the main window | Explore subagent, side chats                          | Subagents                                      |
+| Exclude files                     | `.cursorignore`, global ignore list                   | Permission `deny` rules for `Read`             |
+| Extended context                  | Per-model long context; Max Mode on legacy plans only | Model-dependent                                |
+| Effort control                    | Thinking variants and per-model effort in the picker  | `/effort`, `--effort`, `Option+T`              |
+| Undo                              | Checkpoints (files only), `/rewind` in the CLI        | `/rewind`, `Esc` `Esc` (code and conversation) |
 
 See [Claude Code Managing Context](../claude-code/context.md) for the Claude Code side.

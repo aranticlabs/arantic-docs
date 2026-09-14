@@ -2,7 +2,19 @@
 sidebar_position: 6
 sidebar_label: Agent Modes
 description: How Cursor's Agent, Plan, Ask, Debug, and Design modes differ, how to switch between them, and how to pick models, Auto with Cursor Router, and Max Mode.
-keywords: [Cursor agent modes, Plan Mode, Ask Mode, Debug Mode, Design Mode, Custom Modes, Cursor Router, Auto model, Max Mode, Cursor model selection]
+keywords:
+  [
+    Cursor agent modes,
+    Plan Mode,
+    Ask Mode,
+    Debug Mode,
+    Design Mode,
+    Custom Modes,
+    Cursor Router,
+    Auto model,
+    Max Mode,
+    Cursor model selection,
+  ]
 ---
 
 # Agent Modes
@@ -11,14 +23,14 @@ Cursor's agent has one chat surface but several modes that change what it is all
 
 ## Mode overview
 
-| Mode | Edits files? | What it is for | How to enter |
-|------|--------------|----------------|--------------|
-| **Agent** | Yes | Default. Complete tasks end to end: search, edit, run commands, use the browser | Cmd+I opens the panel; Agent is the default |
-| **Plan** | Not until you click Build | Research the codebase, ask clarifying questions, produce an editable plan | Shift+Tab to rotate, mode picker, or `/plan` and `--plan` in the CLI |
-| **Ask** | No | Read-only exploration and explanation | Shift+Tab, mode picker, or `/ask` and `--mode=ask` in the CLI |
-| **Debug** | Yes, instrumentation first, then a targeted fix | Root-cause bugs using hypotheses, log statements, and captured runtime data | Shift+Tab or mode picker in the desktop app |
-| **Design** | Yes | Direct the agent visually from the built-in browser: click elements, draw, speak | Cmd+Shift+D inside the Agents Window browser |
-| **Custom Mode** | Depends on the skill | Keep a skill (checklist, playbook) active on every turn | Pick a skill from `/` and press Option+Enter (Mac) or Alt+Enter (Windows) |
+| Mode            | Edits files?                                    | What it is for                                                                   | How to enter                                                              |
+| --------------- | ----------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Agent**       | Yes                                             | Default. Complete tasks end to end: search, edit, run commands, use the browser  | Cmd+I opens the panel; Agent is the default                               |
+| **Plan**        | Not until you click Build                       | Research the codebase, ask clarifying questions, produce an editable plan        | Shift+Tab to rotate, mode picker, or `/plan` and `--plan` in the CLI      |
+| **Ask**         | No                                              | Read-only exploration and explanation                                            | Shift+Tab, mode picker, or `/ask` and `--mode=ask` in the CLI             |
+| **Debug**       | Yes, instrumentation first, then a targeted fix | Root-cause bugs using hypotheses, log statements, and captured runtime data      | Shift+Tab or mode picker in the desktop app                               |
+| **Design**      | Yes                                             | Direct the agent visually from the built-in browser: click elements, draw, speak | Cmd+Shift+D inside the Agents Window browser                              |
+| **Custom Mode** | Depends on the skill                            | Keep a skill (checklist, playbook) active on every turn                          | Pick a skill from `/` and press Option+Enter (Mac) or Alt+Enter (Windows) |
 
 ## Agent mode
 
@@ -70,7 +82,7 @@ When the build does not match what you wanted, resist the urge to patch it with 
 2. Refine the plan to be more specific about what you need.
 3. Run it again.
 
-Cursor's guidance: for larger changes, spend the extra time on a precise, well-scoped plan. Figuring out *what* to change is the hard part; with clear instructions, implementation can be delegated.
+Cursor's guidance: for larger changes, spend the extra time on a precise, well-scoped plan. Figuring out _what_ to change is the hard part; with clear instructions, implementation can be delegated.
 
 ### When to use Plan Mode
 
@@ -194,11 +206,11 @@ Design Mode lets you direct the agent with visual prompts from the browser insid
 - **Draw on the page.** Circle or box a region. The annotation sits over a frozen frame of the viewport, so the agent sees the exact page state you reacted to.
 - **Narrate by voice.** The mic stays available while agents run, so you can queue the next change without waiting.
 
-| Action | Shortcut |
-|--------|----------|
-| Toggle Design Mode | Cmd+Shift+D |
-| Select an area | Shift+drag |
-| Add element to chat | Cmd+L |
+| Action               | Shortcut     |
+| -------------------- | ------------ |
+| Toggle Design Mode   | Cmd+Shift+D  |
+| Select an area       | Shift+drag   |
+| Add element to chat  | Cmd+L        |
 | Add element to input | Option+click |
 
 ### What the agent sees
@@ -227,17 +239,17 @@ A Custom Mode keeps a [skill](./skills.md) in context on every turn until you ex
 - Any skill with a valid frontmatter block can back a mode. Optional `icon` and `color` frontmatter fields style the mode badge.
 - Custom Modes are available in the Agents Window and the CLI.
 
-They suit skills that describe *how to work* rather than a one-shot task: a code-review checklist you want applied to every file, or a team `/tdd` playbook for an entire feature. Combine with `/goal` when you want a long-running objective executed under a specific playbook.
+They suit skills that describe _how to work_ rather than a one-shot task: a code-review checklist you want applied to every file, or a team `/tdd` playbook for an entire feature. Combine with `/goal` when you want a long-running objective executed under a specific playbook.
 
 ## Switching modes
 
-| Where | How |
-|-------|-----|
-| Desktop chat input | **Shift+Tab** rotates modes; the mode picker dropdown selects one directly |
-| Desktop, Plan Mode | Cursor auto-suggests Plan when the prompt looks complex |
-| Agents Window browser | **Cmd+Shift+D** toggles Design Mode |
-| CLI | **Shift+Tab** rotates Agent, Plan, Ask; `/plan` and `/ask` switch; `--mode plan`, `--mode ask`, or `--plan` set the starting mode |
-| Skill as mode | Option+Enter (Mac) or Alt+Enter (Windows) from the `/` menu; exit the mode to return to normal |
+| Where                 | How                                                                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Desktop chat input    | **Shift+Tab** rotates modes; the mode picker dropdown selects one directly                                                        |
+| Desktop, Plan Mode    | Cursor auto-suggests Plan when the prompt looks complex                                                                           |
+| Agents Window browser | **Cmd+Shift+D** toggles Design Mode                                                                                               |
+| CLI                   | **Shift+Tab** rotates Agent, Plan, Ask; `/plan` and `/ask` switch; `--mode plan`, `--mode ask`, or `--plan` set the starting mode |
+| Skill as mode         | Option+Enter (Mac) or Alt+Enter (Windows) from the `/` menu; exit the mode to return to normal                                    |
 
 Mode is per conversation. Switching to Ask after an Agent turn does not undo edits; use checkpoints or git for that.
 
@@ -253,10 +265,10 @@ Cursor's own guidance: faster models for quick edits and routine tasks, more cap
 
 Open the model picker, select **Auto**, and pick an option under **Optimize For**:
 
-| Mode | Behavior |
-|------|----------|
-| **Cost** | The previous Auto routing logic. Optimizes token spend. |
-| **Balance** | Optimizes for intelligence, speed, and cost. Default for new users. |
+| Mode             | Behavior                                                                                      |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| **Cost**         | The previous Auto routing logic. Optimizes token spend.                                       |
+| **Balance**      | Optimizes for intelligence, speed, and cost. Default for new users.                           |
 | **Intelligence** | Routes to the most capable models for harder tasks. Recommended for complex, multi-step work. |
 
 Facts worth knowing:
@@ -266,7 +278,7 @@ Facts worth knowing:
 - All Auto modes bill at the list price of the model each request is routed to. Third-party models also incur the Cursor Token Rate on Teams and Enterprise.
 - Balance and Intelligence consume usage limits faster than Cost.
 - The routed model is **hidden by default** so you judge results on merit. Admins can switch it to Displayed.
-- Admins can turn the router on or off (Enterprise has it off by default), disable up to two optimization modes, and **Impose Auto**: *Soft* defaults each new chat to Auto, *Hard* locks the model picker to Auto.
+- Admins can turn the router on or off (Enterprise has it off by default), disable up to two optimization modes, and **Impose Auto**: _Soft_ defaults each new chat to Auto, _Hard_ locks the model picker to Auto.
 - From the SDK, Cursor Router is model id `auto-smart` with parameter `optimize_for` set to `cost`, `balanced`, or `intelligence`.
 
 ### Max Mode
@@ -275,14 +287,14 @@ Max Mode exists only on **legacy request-based plans**. It extends a model's con
 
 ## When to use which mode
 
-| Situation | Mode |
-|-----------|------|
-| You know exactly what to build and it is small | Agent |
-| The change spans many files or has several valid designs | Plan, then Build |
-| You need to understand code before touching it | Ask |
-| Something is broken and reading the code has not explained why | Debug |
-| The change is visual and you are looking at the running app | Design |
-| You want a checklist or playbook applied on every turn | Custom Mode |
+| Situation                                                      | Mode                                             |
+| -------------------------------------------------------------- | ------------------------------------------------ |
+| You know exactly what to build and it is small                 | Agent                                            |
+| The change spans many files or has several valid designs       | Plan, then Build                                 |
+| You need to understand code before touching it                 | Ask                                              |
+| Something is broken and reading the code has not explained why | Debug                                            |
+| The change is visual and you are looking at the running app    | Design                                           |
+| You want a checklist or playbook applied on every turn         | Custom Mode                                      |
 | The task is long, well specified, and you do not need to watch | Agent with `/goal`, or hand off to a Cloud Agent |
 
 A common sequence for a feature: Ask to orient, Plan to design, Build, Debug if something regresses, Design to polish the UI.
@@ -305,14 +317,14 @@ A common sequence for a feature: Ask to orient, Plan to design, Build, Debug if 
 
 ## Compared with Claude Code
 
-| Concern | Cursor | Claude Code |
-|---------|--------|-------------|
-| Read-only planning | Plan Mode with an editable plan file and a Build button | `plan` permission mode (`/plan`, Shift+Tab, `--permission-mode plan`) |
-| Read-only Q&A | Ask Mode | No separate mode; use plan mode or ask in prose |
-| Runtime-evidence debugging | Debug Mode with hypotheses, instrumentation, and a local debug server | No dedicated mode; you prompt Claude to add logging and run it |
-| Visual UI direction | Design Mode in the Agents Window browser | No equivalent; use screenshots or a browser MCP |
-| Persistent playbook | Custom Mode backed by a skill | Skills, output styles, and CLAUDE.md instructions |
-| Automatic model routing | Auto via Cursor Router (Cost, Balance, Intelligence) | Pick a model with `/model`; no router |
-| Auto-approval mode | Run Modes are a separate axis, see [Security & Run Modes](./permissions.md) | Permission modes and auto mode combine model and approval, see [Auto Mode](../claude-code/auto-mode.md) |
+| Concern                    | Cursor                                                                      | Claude Code                                                                                             |
+| -------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Read-only planning         | Plan Mode with an editable plan file and a Build button                     | `plan` permission mode (`/plan`, Shift+Tab, `--permission-mode plan`)                                   |
+| Read-only Q&A              | Ask Mode                                                                    | No separate mode; use plan mode or ask in prose                                                         |
+| Runtime-evidence debugging | Debug Mode with hypotheses, instrumentation, and a local debug server       | No dedicated mode; you prompt Claude to add logging and run it                                          |
+| Visual UI direction        | Design Mode in the Agents Window browser                                    | No equivalent; use screenshots or a browser MCP                                                         |
+| Persistent playbook        | Custom Mode backed by a skill                                               | Skills, output styles, and CLAUDE.md instructions                                                       |
+| Automatic model routing    | Auto via Cursor Router (Cost, Balance, Intelligence)                        | Pick a model with `/model`; no router                                                                   |
+| Auto-approval mode         | Run Modes are a separate axis, see [Security & Run Modes](./permissions.md) | Permission modes and auto mode combine model and approval, see [Auto Mode](../claude-code/auto-mode.md) |
 
 See [Claude Code Commands](../claude-code/commands.md) for the plan mode shortcuts on that side.

@@ -2,7 +2,19 @@
 sidebar_position: 10
 sidebar_label: Hooks
 description: Codex hooks run shell commands or MCP tools at lifecycle events like PreToolUse, PostToolUse, and Stop for deterministic control independent of the model.
-keywords: [Codex hooks, hooks.json, lifecycle hooks, PreToolUse, PostToolUse, PermissionRequest, Stop hook, SessionStart, MCP tool hooks, deterministic automation]
+keywords:
+  [
+    Codex hooks,
+    hooks.json,
+    lifecycle hooks,
+    PreToolUse,
+    PostToolUse,
+    PermissionRequest,
+    Stop hook,
+    SessionStart,
+    MCP tool hooks,
+    deterministic automation,
+  ]
 ---
 
 # Hooks
@@ -25,31 +37,31 @@ Runtime behavior to keep in mind:
 
 ## Hook types
 
-| Type | What it does | Status |
-|------|--------------|--------|
-| `command` | Runs a shell command with the event JSON on stdin | Supported |
-| `mcp_tool` | Calls a tool on an already-connected MCP server with templated arguments | Supported |
-| `prompt` | Would evaluate an LLM prompt | Parsed but skipped |
-| `agent` | Would spawn a subagent | Parsed but skipped |
+| Type       | What it does                                                             | Status             |
+| ---------- | ------------------------------------------------------------------------ | ------------------ |
+| `command`  | Runs a shell command with the event JSON on stdin                        | Supported          |
+| `mcp_tool` | Calls a tool on an already-connected MCP server with templated arguments | Supported          |
+| `prompt`   | Would evaluate an LLM prompt                                             | Parsed but skipped |
+| `agent`    | Would spawn a subagent                                                   | Parsed but skipped |
 
 Codex reads the same `hooks.json` shape as Claude Code, which is why `prompt` and `agent` parse without error, but only `command` and `mcp_tool` handlers execute.
 
 ## Lifecycle events
 
-| Event | Fires when | Matcher filters | Can block or steer? |
-|-------|-----------|-----------------|---------------------|
-| `SessionStart` | Session starts or resumes, after `/clear`, or after compaction | `source`: `startup`, `resume`, `clear`, `compact` | Adds context; `continue: false` after `compact` ends the turn |
-| `SessionEnd` | Main thread ends (close, archive, delete, or 30 minutes idle with no client) | `reason`: currently only `other` | No, advisory only |
-| `UserPromptSubmit` | You submit a prompt, before the model sees it | Not supported | Yes, can block the prompt |
-| `PreToolUse` | Before a tool call runs (Bash, `apply_patch`, MCP tools, other local function tools) | Tool name | Yes, deny or rewrite input |
-| `PermissionRequest` | Codex is about to ask you for approval | Tool name | Yes, allow or deny instead of prompting |
-| `PostToolUse` | After a tool produces output (including failed Bash commands) | Tool name | Replaces the tool result with feedback; cannot undo side effects |
-| `PreCompact` | Before context compaction | `trigger`: `manual`, `auto` | `continue: false` stops compaction |
-| `PostCompact` | After context compaction | `trigger`: `manual`, `auto` | `continue: false` stops the turn |
-| `SubagentStart` | A subagent starts | `agent_type` | Adds context; cannot stop the subagent |
-| `SubagentStop` | A subagent finishes | `agent_type` | Yes, can request continuation |
-| `Stop` | Codex finishes a turn | Not supported | Yes, can request continuation |
-| `Interrupt` | You interrupt an active turn on the main thread | Not supported | No, advisory only; 1 to 3 second timeout |
+| Event               | Fires when                                                                           | Matcher filters                                   | Can block or steer?                                              |
+| ------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------- |
+| `SessionStart`      | Session starts or resumes, after `/clear`, or after compaction                       | `source`: `startup`, `resume`, `clear`, `compact` | Adds context; `continue: false` after `compact` ends the turn    |
+| `SessionEnd`        | Main thread ends (close, archive, delete, or 30 minutes idle with no client)         | `reason`: currently only `other`                  | No, advisory only                                                |
+| `UserPromptSubmit`  | You submit a prompt, before the model sees it                                        | Not supported                                     | Yes, can block the prompt                                        |
+| `PreToolUse`        | Before a tool call runs (Bash, `apply_patch`, MCP tools, other local function tools) | Tool name                                         | Yes, deny or rewrite input                                       |
+| `PermissionRequest` | Codex is about to ask you for approval                                               | Tool name                                         | Yes, allow or deny instead of prompting                          |
+| `PostToolUse`       | After a tool produces output (including failed Bash commands)                        | Tool name                                         | Replaces the tool result with feedback; cannot undo side effects |
+| `PreCompact`        | Before context compaction                                                            | `trigger`: `manual`, `auto`                       | `continue: false` stops compaction                               |
+| `PostCompact`       | After context compaction                                                             | `trigger`: `manual`, `auto`                       | `continue: false` stops the turn                                 |
+| `SubagentStart`     | A subagent starts                                                                    | `agent_type`                                      | Adds context; cannot stop the subagent                           |
+| `SubagentStop`      | A subagent finishes                                                                  | `agent_type`                                      | Yes, can request continuation                                    |
+| `Stop`              | Codex finishes a turn                                                                | Not supported                                     | Yes, can request continuation                                    |
+| `Interrupt`         | You interrupt an active turn on the main thread                                      | Not supported                                     | No, advisory only; 1 to 3 second timeout                         |
 
 `Interrupt` and `SessionEnd` do not run for subagents. Hosted tools such as `WebSearch` do not pass through the local hook path, so `PreToolUse` and `PostToolUse` never see them.
 
@@ -59,14 +71,14 @@ Codex reads the same `hooks.json` shape as Claude Code, which is why `prompt` an
 
 Codex discovers hooks next to each active config layer, either as a `hooks.json` file or as inline `[hooks]` tables in `config.toml`:
 
-| Location | Scope | Notes |
-|----------|-------|-------|
-| `~/.codex/hooks.json` | You, all projects | Loaded regardless of project trust |
-| `~/.codex/config.toml` (`[hooks]`) | You, all projects | Same |
-| `<repo>/.codex/hooks.json` | This project | Only when the project `.codex/` layer is trusted; commit it to share |
-| `<repo>/.codex/config.toml` (`[hooks]`) | This project | Same |
-| Plugin `hooks/hooks.json` or manifest `hooks` entry | While the plugin is enabled | See [Plugins](./plugins.md) |
-| `[hooks]` in `requirements.toml` | Managed, organization-wide | Cannot be disabled by users |
+| Location                                            | Scope                       | Notes                                                                |
+| --------------------------------------------------- | --------------------------- | -------------------------------------------------------------------- |
+| `~/.codex/hooks.json`                               | You, all projects           | Loaded regardless of project trust                                   |
+| `~/.codex/config.toml` (`[hooks]`)                  | You, all projects           | Same                                                                 |
+| `<repo>/.codex/hooks.json`                          | This project                | Only when the project `.codex/` layer is trusted; commit it to share |
+| `<repo>/.codex/config.toml` (`[hooks]`)             | This project                | Same                                                                 |
+| Plugin `hooks/hooks.json` or manifest `hooks` entry | While the plugin is enabled | See [Plugins](./plugins.md)                                          |
+| `[hooks]` in `requirements.toml`                    | Managed, organization-wide  | Cannot be disabled by users                                          |
 
 If one layer has both `hooks.json` and inline `[hooks]`, Codex merges them and warns at startup. Pick one representation per layer.
 
@@ -128,16 +140,16 @@ timeout = 120
 
 ### Handler fields
 
-| Field | Applies to | Meaning |
-|-------|-----------|---------|
-| `type` | both | `command` or `mcp_tool` |
-| `command` | command | Shell command. Runs with the session `cwd` as working directory. |
-| `commandWindows` / `command_windows` | command | Windows-only override for `command` |
-| `timeout` | both | Seconds. Default `600`. `SessionEnd` and `Interrupt` default to `1` and allow at most `3`. |
-| `statusMessage` | both | Text shown in the UI while the hook runs |
-| `async` | command | `true` runs the hook in the background. `SessionEnd` always runs synchronously. |
-| `additionalContextLimit` | command | Approximate token threshold before `additionalContext` is spilled to disk. Default `2500`; `0` disables spilling. |
-| `server`, `tool`, `input` | mcp_tool | Target server, tool name, and templated argument object |
+| Field                                | Applies to | Meaning                                                                                                           |
+| ------------------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| `type`                               | both       | `command` or `mcp_tool`                                                                                           |
+| `command`                            | command    | Shell command. Runs with the session `cwd` as working directory.                                                  |
+| `commandWindows` / `command_windows` | command    | Windows-only override for `command`                                                                               |
+| `timeout`                            | both       | Seconds. Default `600`. `SessionEnd` and `Interrupt` default to `1` and allow at most `3`.                        |
+| `statusMessage`                      | both       | Text shown in the UI while the hook runs                                                                          |
+| `async`                              | command    | `true` runs the hook in the background. `SessionEnd` always runs synchronously.                                   |
+| `additionalContextLimit`             | command    | Approximate token threshold before `additionalContext` is spilled to disk. Default `2500`; `0` disables spilling. |
+| `server`, `tool`, `input`            | mcp_tool   | Target server, tool name, and templated argument object                                                           |
 
 ### Matchers
 
@@ -145,12 +157,12 @@ timeout = 120
 
 Tool names you can match in `PreToolUse`, `PostToolUse`, and `PermissionRequest`:
 
-| Tool path | Match as | Notes |
-|-----------|----------|-------|
-| Shell commands | `Bash` | Includes unified exec (`exec_command`) |
-| File edits | `apply_patch`, `Edit`, or `Write` | Hook input still reports `tool_name: "apply_patch"` |
-| MCP tools | `mcp__<server>__<tool>` | For example `mcp__filesystem__read_file` |
-| Other local function tools | Their function name, such as `update_plan` | `spawn_agent` also matches `Agent` |
+| Tool path                  | Match as                                   | Notes                                               |
+| -------------------------- | ------------------------------------------ | --------------------------------------------------- |
+| Shell commands             | `Bash`                                     | Includes unified exec (`exec_command`)              |
+| File edits                 | `apply_patch`, `Edit`, or `Write`          | Hook input still reports `tool_name: "apply_patch"` |
+| MCP tools                  | `mcp__<server>__<tool>`                    | For example `mcp__filesystem__read_file`            |
+| Other local function tools | Their function name, such as `update_plan` | `spawn_agent` also matches `Agent`                  |
 
 Some specialized tool paths can opt out of the hook path, so treat tool hooks as a guardrail rather than a complete enforcement boundary. The sandbox and [rules](./permissions.md#rules-execpolicy) are the enforcement layer.
 
@@ -168,27 +180,27 @@ For automation that has already vetted its hook sources, `codex --dangerously-by
 
 Every command hook receives one JSON object on stdin. Shared fields:
 
-| Field | Type | Meaning |
-|-------|------|---------|
-| `session_id` | string | Session id (subagent hooks report the parent's id) |
-| `transcript_path` | string or null | Path to the session transcript (format not stable) |
-| `cwd` | string | Session working directory |
-| `hook_event_name` | string | Event name |
-| `model` | string | Active model slug (Codex extension) |
-| `turn_id` | string | Active turn id on turn-scoped events (Codex extension) |
-| `permission_mode` | string | `default`, `acceptEdits`, `plan`, `dontAsk`, or `bypassPermissions` on most events |
+| Field             | Type           | Meaning                                                                            |
+| ----------------- | -------------- | ---------------------------------------------------------------------------------- |
+| `session_id`      | string         | Session id (subagent hooks report the parent's id)                                 |
+| `transcript_path` | string or null | Path to the session transcript (format not stable)                                 |
+| `cwd`             | string         | Session working directory                                                          |
+| `hook_event_name` | string         | Event name                                                                         |
+| `model`           | string         | Active model slug (Codex extension)                                                |
+| `turn_id`         | string         | Active turn id on turn-scoped events (Codex extension)                             |
+| `permission_mode` | string         | `default`, `acceptEdits`, `plan`, `dontAsk`, or `bypassPermissions` on most events |
 
 Event-specific fields: `tool_name`, `tool_use_id`, and `tool_input` on tool events (`tool_input.command` for Bash and `apply_patch`, the argument object for MCP and other tools); `tool_response` on `PostToolUse`; `prompt` on `UserPromptSubmit`; `source` on `SessionStart`; `trigger` on compaction events; `agent_id` and `agent_type` on subagent events; `stop_hook_active` and `last_assistant_message` on `Stop` and `SubagentStop`.
 
 ### Exit codes and output
 
-| Exit code | Effect |
-|-----------|--------|
-| `0`, no output | Success, Codex continues |
+| Exit code                 | Effect                                                                                                                                                                                                    |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`, no output            | Success, Codex continues                                                                                                                                                                                  |
 | `0`, plain text on stdout | Added as developer context on `SessionStart`, `SubagentStart`, and `UserPromptSubmit`; ignored on tool and compaction events; **invalid** on `Stop`, `SubagentStop`, and `Interrupt` (those require JSON) |
-| `0`, JSON on stdout | Structured decision or context (see per-event shapes below) |
-| `2`, reason on stderr | Blocks `PreToolUse` and `UserPromptSubmit`; provides feedback on `PostToolUse`; requests continuation on `Stop` and `SubagentStop` |
-| Other non-zero | Reported as a hook failure; Codex continues |
+| `0`, JSON on stdout       | Structured decision or context (see per-event shapes below)                                                                                                                                               |
+| `2`, reason on stderr     | Blocks `PreToolUse` and `UserPromptSubmit`; provides feedback on `PostToolUse`; requests continuation on `Stop` and `SubagentStop`                                                                        |
+| Other non-zero            | Reported as a hook failure; Codex continues                                                                                                                                                               |
 
 Common JSON output fields on `SessionStart`, `PreCompact`, `PostCompact`, `UserPromptSubmit`, `SubagentStop`, and `Stop`:
 
@@ -224,7 +236,7 @@ Common JSON output fields on `SessionStart`, `PreCompact`, `PostCompact`, `UserP
   "hookSpecificOutput": {
     "hookEventName": "PreToolUse",
     "permissionDecision": "allow",
-    "updatedInput": { "command": "npm test -- --runInBand" }
+    "updatedInput": {"command": "npm test -- --runInBand"}
   }
 }
 ```
@@ -237,7 +249,7 @@ Common JSON output fields on `SessionStart`, `PreCompact`, `PostCompact`, `UserP
 {
   "hookSpecificOutput": {
     "hookEventName": "PermissionRequest",
-    "decision": { "behavior": "allow" }
+    "decision": {"behavior": "allow"}
   }
 }
 ```
@@ -262,7 +274,7 @@ Use `{ "behavior": "deny", "message": "Blocked by repository policy." }` to deny
 **Stop** and **SubagentStop**, keep going:
 
 ```json
-{ "decision": "block", "reason": "Run one more pass over the failing tests." }
+{"decision": "block", "reason": "Run one more pass over the failing tests."}
 ```
 
 For `Stop`, the reason becomes a new continuation prompt as if you had typed it. `continue: false` from any matching `Stop` hook takes precedence over continuation requests from others.
@@ -430,7 +442,7 @@ The `reason` becomes the next prompt, so write it as an instruction to the model
 }
 ```
 
-On Linux replace the command with `notify-send 'Codex' 'Finished a turn' >/dev/null 2>&1; exit 0`. To be notified when Codex is *waiting* for you, attach the same command to `PermissionRequest` without returning a decision; the normal prompt still appears.
+On Linux replace the command with `notify-send 'Codex' 'Finished a turn' >/dev/null 2>&1; exit 0`. To be notified when Codex is _waiting_ for you, attach the same command to `PermissionRequest` without returning a decision; the normal prompt still appears.
 
 ### Auto-approve a known-safe escalation
 
@@ -512,7 +524,7 @@ Register under `UserPromptSubmit` (no matcher).
             "type": "mcp_tool",
             "server": "scanner",
             "tool": "scan_patch",
-            "input": { "patch": "${tool_input.command}" },
+            "input": {"patch": "${tool_input.command}"},
             "timeout": 30,
             "statusMessage": "Scanning edited files"
           }
@@ -585,14 +597,14 @@ hooks = false
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Config location | `hooks.json` or `[hooks]` in `config.toml`, next to `~/.codex/` or `<repo>/.codex/` | `hooks` key in `settings.json` at user, project, or local scope |
-| Handler types | `command`, `mcp_tool` (`prompt` and `agent` parsed but skipped) | `command`, `http`, `mcp_tool`, `prompt`, `agent` |
-| Event list | 12 events, including `PermissionRequest` and `Interrupt` | 30+ events, including `Notification`, `PostToolUseFailure`, `FileChanged`, `PreModelSwitch` |
-| Trust model | Explicit review and trust per hook hash via `/hooks` | Hooks in settings run without a separate trust step |
-| Project directory variable | None documented; use `git rev-parse --show-toplevel` | `$CLAUDE_PROJECT_DIR` |
-| Stop behavior | `decision: "block"` reason becomes a new continuation prompt | `decision: "block"` keeps Claude working |
-| Managed hooks | `[hooks]` in `requirements.toml` with `allow_managed_hooks_only` | Managed settings |
+| Topic                      | Codex                                                                               | Claude Code                                                                                 |
+| -------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Config location            | `hooks.json` or `[hooks]` in `config.toml`, next to `~/.codex/` or `<repo>/.codex/` | `hooks` key in `settings.json` at user, project, or local scope                             |
+| Handler types              | `command`, `mcp_tool` (`prompt` and `agent` parsed but skipped)                     | `command`, `http`, `mcp_tool`, `prompt`, `agent`                                            |
+| Event list                 | 12 events, including `PermissionRequest` and `Interrupt`                            | 30+ events, including `Notification`, `PostToolUseFailure`, `FileChanged`, `PreModelSwitch` |
+| Trust model                | Explicit review and trust per hook hash via `/hooks`                                | Hooks in settings run without a separate trust step                                         |
+| Project directory variable | None documented; use `git rev-parse --show-toplevel`                                | `$CLAUDE_PROJECT_DIR`                                                                       |
+| Stop behavior              | `decision: "block"` reason becomes a new continuation prompt                        | `decision: "block"` keeps Claude working                                                    |
+| Managed hooks              | `[hooks]` in `requirements.toml` with `allow_managed_hooks_only`                    | Managed settings                                                                            |
 
 The wire format is deliberately close to Claude Code's, so most `PreToolUse`, `PostToolUse`, `Stop`, and `SessionStart` scripts port with little change. See [Claude Code Hooks](../claude-code/hooks.md) for the Claude details.

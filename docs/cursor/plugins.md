@@ -2,7 +2,19 @@
 sidebar_position: 12
 sidebar_label: Plugins
 description: Cursor plugins bundle rules, skills, subagents, commands, MCP servers, and hooks into packages installed from the Cursor Marketplace or a team marketplace.
-keywords: [Cursor plugins, Cursor Marketplace, Agent Plugins standard, .cursor-plugin/plugin.json, team marketplace, plugin manifest, marketplace security, plugin variables, publish plugin, cursor.directory]
+keywords:
+  [
+    Cursor plugins,
+    Cursor Marketplace,
+    Agent Plugins standard,
+    .cursor-plugin/plugin.json,
+    team marketplace,
+    plugin manifest,
+    marketplace security,
+    plugin variables,
+    publish plugin,
+    cursor.directory,
+  ]
 ---
 
 # Plugins
@@ -11,13 +23,13 @@ Plugins package rules, skills, subagents, commands, MCP servers, and hooks into 
 
 ## Plugins vs skills vs rules vs MCP
 
-| | Rules | Skills | MCP servers | Plugins |
-|---|---|---|---|---|
-| **What it is** | Persistent instructions (`.mdc`, `AGENTS.md`) | On-demand procedures (`SKILL.md` folders) | Connections to external tools and data | A bundle of any of the others |
-| **Unit of sharing** | File in the repo, or team rule in the dashboard | Folder in the repo, published skill, or plugin | `mcp.json` entry, team MCP server, or plugin | Git repository with a manifest |
-| **Install path** | Copy into `.cursor/rules/` | Copy into `.cursor/skills/` | Add to MCP config | **Customize → Install**, choose scope |
-| **Versioning** | Git history | Git history | Git history | Semantic `version` in the manifest, re-indexed on refresh |
-| **Best for** | Project conventions | Repeatable workflows | Tool access | Team tooling, community distribution, one-click setup |
+|                     | Rules                                           | Skills                                         | MCP servers                                  | Plugins                                                   |
+| ------------------- | ----------------------------------------------- | ---------------------------------------------- | -------------------------------------------- | --------------------------------------------------------- |
+| **What it is**      | Persistent instructions (`.mdc`, `AGENTS.md`)   | On-demand procedures (`SKILL.md` folders)      | Connections to external tools and data       | A bundle of any of the others                             |
+| **Unit of sharing** | File in the repo, or team rule in the dashboard | Folder in the repo, published skill, or plugin | `mcp.json` entry, team MCP server, or plugin | Git repository with a manifest                            |
+| **Install path**    | Copy into `.cursor/rules/`                      | Copy into `.cursor/skills/`                    | Add to MCP config                            | **Customize → Install**, choose scope                     |
+| **Versioning**      | Git history                                     | Git history                                    | Git history                                  | Semantic `version` in the manifest, re-indexed on refresh |
+| **Best for**        | Project conventions                             | Repeatable workflows                           | Tool access                                  | Team tooling, community distribution, one-click setup     |
 
 Use rules, skills, and MCP configuration directly when they belong to one project. Use a plugin when the same set should be installed across projects, distributed to a team with access controls, or published to the community. See [Rules & AGENTS.md](./rules.md), [Skills](./skills.md), and [MCP](./mcp.md) for the individual components.
 
@@ -25,10 +37,10 @@ Use rules, skills, and MCP configuration directly when they belong to one projec
 
 Cursor loads plugins in two formats, identified by where the manifest lives:
 
-| Format | Manifest | Components |
-|---|---|---|
-| **Agent Plugins** (open standard) | `plugin.json` at the plugin root | Skills, MCP servers |
-| **Cursor Plugins** | `.cursor-plugin/plugin.json` | Skills, MCP servers, rules, agents, commands, hooks, variables |
+| Format                            | Manifest                         | Components                                                     |
+| --------------------------------- | -------------------------------- | -------------------------------------------------------------- |
+| **Agent Plugins** (open standard) | `plugin.json` at the plugin root | Skills, MCP servers                                            |
+| **Cursor Plugins**                | `.cursor-plugin/plugin.json`     | Skills, MCP servers, rules, agents, commands, hooks, variables |
 
 A plugin that conforms to the [Agent Plugins specification](https://github.com/agentplugins/agent-plugins-spec) loads in Cursor without changes, so a plugin written for another agent works here. Cursor Plugins are developed in parallel with the standard and add the Cursor-specific components (rules, agents, commands, hooks, and dashboard-managed variables). Cursor detects the format from the manifest, so installing either is the same flow.
 
@@ -36,14 +48,14 @@ Choose Agent Plugins when you want portable skills and MCP servers that other to
 
 ## What a plugin contains
 
-| Component | Available in | Description |
-|---|---|---|
-| **Rules** | Cursor Plugins | Persistent guidance and coding standards as `.mdc` files |
-| **Skills** | Both formats | `SKILL.md` folders the agent loads when relevant |
-| **Agents** | Cursor Plugins | Custom subagent definitions (Markdown with frontmatter) |
-| **Commands** | Cursor Plugins | Agent-executable command files invoked with `/` |
-| **MCP servers** | Both formats | `mcp.json` server definitions |
-| **Hooks** | Cursor Plugins | `hooks/hooks.json` automation triggered by agent events |
+| Component       | Available in   | Description                                              |
+| --------------- | -------------- | -------------------------------------------------------- |
+| **Rules**       | Cursor Plugins | Persistent guidance and coding standards as `.mdc` files |
+| **Skills**      | Both formats   | `SKILL.md` folders the agent loads when relevant         |
+| **Agents**      | Cursor Plugins | Custom subagent definitions (Markdown with frontmatter)  |
+| **Commands**    | Cursor Plugins | Agent-executable command files invoked with `/`          |
+| **MCP servers** | Both formats   | `mcp.json` server definitions                            |
+| **Hooks**       | Cursor Plugins | `hooks/hooks.json` automation triggered by agent events  |
 
 Cursor Plugins can also ship **canvases**: shared setup templates a team opens from an installed plugin in Customize. Cursor's own examples are the Hex Canvas (data visualizations) and the Atlassian Canvas (a live view of Jira and Confluence items).
 
@@ -96,7 +108,7 @@ Agent Plugins require the standard's schema identifier:
   "name": "my-plugin",
   "description": "Portable code review tools",
   "version": "1.0.0",
-  "author": { "name": "Your Name" }
+  "author": {"name": "Your Name"}
 }
 ```
 
@@ -107,7 +119,7 @@ A Cursor Plugin manifest only requires `name`:
   "name": "enterprise-plugin",
   "version": "1.2.0",
   "description": "Enterprise development tools with security scanning and compliance checks",
-  "author": { "name": "ACME DevTools", "email": "devtools@acme.com" },
+  "author": {"name": "ACME DevTools", "email": "devtools@acme.com"},
   "keywords": ["enterprise", "security", "compliance"],
   "logo": "assets/logo.svg"
 }
@@ -115,34 +127,34 @@ A Cursor Plugin manifest only requires `name`:
 
 Cursor Plugin manifest fields:
 
-| Field | Type | Description |
-|---|---|---|
-| `name` | string | **Required.** Lowercase kebab-case (alphanumerics, hyphens, periods); must start and end alphanumeric |
-| `description` | string | Brief plugin description |
-| `version` | string | Semantic version, e.g. `1.0.0` |
-| `author` | object | `name` (required), `email` (optional) |
-| `homepage`, `repository` | string | URLs |
-| `license` | string | License identifier, e.g. `MIT` |
-| `keywords` | array | Tags for discovery |
-| `logo` | string | Relative path committed to the repo (preferred) or absolute URL |
-| `rules`, `agents`, `skills`, `commands` | string or array | Explicit paths; replaces folder discovery for that component |
-| `hooks` | string or object | Path to hooks config, or inline config |
-| `mcpServers` | string, object, or array | Path to MCP config, inline config, or an array; overrides default `mcp.json` discovery |
-| `variables` | object | JSON Schema declaring variable names users set in the dashboard |
+| Field                                   | Type                     | Description                                                                                           |
+| --------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `name`                                  | string                   | **Required.** Lowercase kebab-case (alphanumerics, hyphens, periods); must start and end alphanumeric |
+| `description`                           | string                   | Brief plugin description                                                                              |
+| `version`                               | string                   | Semantic version, e.g. `1.0.0`                                                                        |
+| `author`                                | object                   | `name` (required), `email` (optional)                                                                 |
+| `homepage`, `repository`                | string                   | URLs                                                                                                  |
+| `license`                               | string                   | License identifier, e.g. `MIT`                                                                        |
+| `keywords`                              | array                    | Tags for discovery                                                                                    |
+| `logo`                                  | string                   | Relative path committed to the repo (preferred) or absolute URL                                       |
+| `rules`, `agents`, `skills`, `commands` | string or array          | Explicit paths; replaces folder discovery for that component                                          |
+| `hooks`                                 | string or object         | Path to hooks config, or inline config                                                                |
+| `mcpServers`                            | string, object, or array | Path to MCP config, inline config, or an array; overrides default `mcp.json` discovery                |
+| `variables`                             | object                   | JSON Schema declaring variable names users set in the dashboard                                       |
 
 ### Component discovery
 
 When the manifest does not name a path, Cursor discovers components from default folders:
 
-| Component | Default location | Discovered as |
-|---|---|---|
-| Skills | `skills/` | Each subdirectory containing `SKILL.md` |
-| Rules | `rules/` | All `.md`, `.mdc`, `.markdown` files |
-| Agents | `agents/` | All `.md`, `.mdc`, `.markdown` files |
-| Commands | `commands/` | All `.md`, `.mdc`, `.markdown`, `.txt` files |
-| Hooks | `hooks/hooks.json` | Parsed for hook event names |
-| MCP servers | `mcp.json` | Parsed for server entries |
-| Root skill | `SKILL.md` at plugin root | Single-skill plugin (only when there is no `skills/` folder and no manifest `skills` field) |
+| Component   | Default location          | Discovered as                                                                               |
+| ----------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| Skills      | `skills/`                 | Each subdirectory containing `SKILL.md`                                                     |
+| Rules       | `rules/`                  | All `.md`, `.mdc`, `.markdown` files                                                        |
+| Agents      | `agents/`                 | All `.md`, `.mdc`, `.markdown` files                                                        |
+| Commands    | `commands/`               | All `.md`, `.mdc`, `.markdown`, `.txt` files                                                |
+| Hooks       | `hooks/hooks.json`        | Parsed for hook event names                                                                 |
+| MCP servers | `mcp.json`                | Parsed for server entries                                                                   |
+| Root skill  | `SKILL.md` at plugin root | Single-skill plugin (only when there is no `skills/` folder and no manifest `skills` field) |
 
 If a manifest field is set (for example `"skills": "./my-skills/"`), it replaces discovery for that component; the default folder is not also scanned.
 
@@ -199,11 +211,9 @@ Components use the same formats as their standalone versions:
 ```json
 {
   "hooks": {
-    "afterFileEdit": [{ "command": "./scripts/format-code.sh" }],
-    "beforeShellExecution": [
-      { "command": "./scripts/validate-shell.sh", "matcher": "rm|curl|wget" }
-    ],
-    "sessionEnd": [{ "command": "./scripts/audit.sh" }]
+    "afterFileEdit": [{"command": "./scripts/format-code.sh"}],
+    "beforeShellExecution": [{"command": "./scripts/validate-shell.sh", "matcher": "rm|curl|wget"}],
+    "sessionEnd": [{"command": "./scripts/audit.sh"}]
   }
 }
 ```
@@ -250,9 +260,9 @@ A `workspaceOpen` hook can return plugin paths to load when a workspace opens. U
 
 Team marketplaces are private marketplaces for Teams and Enterprise plans. They distribute both Agent Plugins and Cursor Plugins with the same access and installation controls.
 
-| Plan | Team marketplaces |
-|---|---|
-| Teams | Up to 1 |
+| Plan       | Team marketplaces                                           |
+| ---------- | ----------------------------------------------------------- |
+| Teams      | Up to 1                                                     |
 | Enterprise | Unlimited, plus admin-only creation and additional controls |
 
 Manage them under **Dashboard → Plugins**. On Enterprise plans, only admins can add team marketplaces.
@@ -280,11 +290,11 @@ Team marketplaces are visible to the whole team by default. Under **Marketplace 
 
 For each plugin, choose how it reaches that audience:
 
-| Mode | Behavior |
-|---|---|
+| Mode            | Behavior                                                |
+| --------------- | ------------------------------------------------------- |
 | **Default Off** | Developers can find the plugin and choose to install it |
-| **Default On** | Installed by default; developers can opt out |
-| **Required** | Always installed and cannot be uninstalled |
+| **Default On**  | Installed by default; developers can opt out            |
+| **Required**    | Always installed and cannot be uninstalled              |
 
 Developers see team marketplace plugins in **Customize**, install Default Off plugins from there, and can install and configure marketplace MCP servers for the Agents Window, IDE, and CLI.
 
@@ -332,11 +342,11 @@ One repository can hold several Cursor Plugins with a marketplace manifest at `.
 ```json
 {
   "name": "my-marketplace",
-  "owner": { "name": "Your Org", "email": "plugins@yourorg.com" },
-  "metadata": { "description": "A collection of developer tool plugins" },
+  "owner": {"name": "Your Org", "email": "plugins@yourorg.com"},
+  "metadata": {"description": "A collection of developer tool plugins"},
   "plugins": [
-    { "name": "plugin-one", "source": "plugin-one", "description": "First plugin" },
-    { "name": "plugin-two", "source": "plugin-two", "description": "Second plugin" }
+    {"name": "plugin-one", "source": "plugin-one", "description": "First plugin"},
+    {"name": "plugin-two", "source": "plugin-two", "description": "Second plugin"}
   ]
 }
 ```
@@ -398,15 +408,15 @@ Installation is still at the user's discretion and risk; a plugin is third-party
 
 ### Team and enterprise controls summary
 
-| Control | Where | Effect |
-|---|---|---|
-| Team marketplaces | Dashboard → Plugins | Private distribution; Teams get 1, Enterprise unlimited |
-| Marketplace Access | Marketplace Settings | Restrict a marketplace to Organization Groups (SCIM-synced) |
-| Installation modes | Per plugin | Default Off, Default On, or Required |
-| Allow Members to Publish | Default marketplace settings | Whether non-admins can publish personal skills |
-| Allow Local Plugin Imports | Settings → Security & Identity → Marketplace and Plugins | Whether `~/.cursor/plugins/local` is loaded (off by default on Enterprise) |
-| MCP allowlist and blocklist | MCP configuration | Applies to plugin-bundled MCP servers |
-| Plugin variables | Plugins → Configure | Admins supply secret values; repos hold only placeholders |
+| Control                     | Where                                                    | Effect                                                                     |
+| --------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Team marketplaces           | Dashboard → Plugins                                      | Private distribution; Teams get 1, Enterprise unlimited                    |
+| Marketplace Access          | Marketplace Settings                                     | Restrict a marketplace to Organization Groups (SCIM-synced)                |
+| Installation modes          | Per plugin                                               | Default Off, Default On, or Required                                       |
+| Allow Members to Publish    | Default marketplace settings                             | Whether non-admins can publish personal skills                             |
+| Allow Local Plugin Imports  | Settings → Security & Identity → Marketplace and Plugins | Whether `~/.cursor/plugins/local` is loaded (off by default on Enterprise) |
+| MCP allowlist and blocklist | MCP configuration                                        | Applies to plugin-bundled MCP servers                                      |
+| Plugin variables            | Plugins → Configure                                      | Admins supply secret values; repos hold only placeholders                  |
 
 ## What works well
 
@@ -426,16 +436,16 @@ Installation is still at the user's discretion and risk; a plugin is third-party
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|---|---|---|
-| Manifest | `plugin.json` at root (Agent Plugins) or `.cursor-plugin/plugin.json` (Cursor Plugins) | `.claude-plugin/plugin.json` |
-| Components | Rules, skills, agents, commands, MCP servers, hooks, variables, canvases | Skills, agents, hooks, MCP servers, LSP servers, monitors, executables, default settings |
-| Install | **Customize → Install**, project or user scope; no slash command | `/plugin install name@marketplace`, `--scope project` |
-| Marketplaces | Public Cursor Marketplace (curated, reviewed), team marketplaces (Teams: 1, Enterprise: unlimited), cursor.directory for community | Official marketplace plus any Git repo, URL, or local path added with `/plugin marketplace add` |
-| Multi-plugin repos | `.cursor-plugin/marketplace.json` | `.claude-plugin/marketplace.json` |
-| Secrets | `variables` schema with `${VAR}` placeholders, values set in the dashboard | Environment variables such as `${CLAUDE_PLUGIN_ROOT}` for paths; no dashboard-managed secret store |
-| Local testing | `~/.cursor/plugins/local` (symlink friendly), gated by Allow Local Plugin Imports | `claude --plugin-dir ./my-plugin`, `claude plugin validate` |
-| Enterprise controls | Installation modes (Default Off / On / Required), Organization Group access, SCIM, member publishing toggle | Managed settings for enterprise-wide plugins |
-| Open standard | Agent Plugins (agent-plugins.org) supported alongside the Cursor format | Agent Skills spec for skills; plugin format is Claude Code specific |
+| Topic               | Cursor                                                                                                                             | Claude Code                                                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Manifest            | `plugin.json` at root (Agent Plugins) or `.cursor-plugin/plugin.json` (Cursor Plugins)                                             | `.claude-plugin/plugin.json`                                                                       |
+| Components          | Rules, skills, agents, commands, MCP servers, hooks, variables, canvases                                                           | Skills, agents, hooks, MCP servers, LSP servers, monitors, executables, default settings           |
+| Install             | **Customize → Install**, project or user scope; no slash command                                                                   | `/plugin install name@marketplace`, `--scope project`                                              |
+| Marketplaces        | Public Cursor Marketplace (curated, reviewed), team marketplaces (Teams: 1, Enterprise: unlimited), cursor.directory for community | Official marketplace plus any Git repo, URL, or local path added with `/plugin marketplace add`    |
+| Multi-plugin repos  | `.cursor-plugin/marketplace.json`                                                                                                  | `.claude-plugin/marketplace.json`                                                                  |
+| Secrets             | `variables` schema with `${VAR}` placeholders, values set in the dashboard                                                         | Environment variables such as `${CLAUDE_PLUGIN_ROOT}` for paths; no dashboard-managed secret store |
+| Local testing       | `~/.cursor/plugins/local` (symlink friendly), gated by Allow Local Plugin Imports                                                  | `claude --plugin-dir ./my-plugin`, `claude plugin validate`                                        |
+| Enterprise controls | Installation modes (Default Off / On / Required), Organization Group access, SCIM, member publishing toggle                        | Managed settings for enterprise-wide plugins                                                       |
+| Open standard       | Agent Plugins (agent-plugins.org) supported alongside the Cursor format                                                            | Agent Skills spec for skills; plugin format is Claude Code specific                                |
 
 See [Claude Code Plugins](../claude-code/plugins.md) for the Claude Code details, and [Cursor](../tools/cursor.md) for the general tool overview.

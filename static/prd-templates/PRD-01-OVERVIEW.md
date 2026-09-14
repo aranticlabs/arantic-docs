@@ -61,8 +61,8 @@ Who uses this feature, and what is the end-to-end flow?
 
 <!-- Measurable criteria to verify the feature is complete and correct -->
 
-| Criteria | Target |
-| --- | --- |
+| Criteria   | Target         |
+| ---------- | -------------- |
 | [Metric 1] | [Target value] |
 | [Metric 2] | [Target value] |
 | [Metric 3] | [Target value] |
@@ -141,12 +141,12 @@ ASCII art is preferred over descriptions because it gives AI coding assistants a
 
 <!-- Define each column in the list table -->
 
-| Column | Description | Sortable | Width |
-| --- | --- | --- | --- |
-| [Column 1] | [What it shows] | Yes | [Npx] |
-| [Column 2] | [What it shows] | Yes | [Npx] |
-| [Column 3] | [What it shows] | No | [Npx] |
-| Actions | [Available actions] | No | [Npx] |
+| Column     | Description         | Sortable | Width |
+| ---------- | ------------------- | -------- | ----- |
+| [Column 1] | [What it shows]     | Yes      | [Npx] |
+| [Column 2] | [What it shows]     | Yes      | [Npx] |
+| [Column 3] | [What it shows]     | No       | [Npx] |
+| Actions    | [Available actions] | No       | [Npx] |
 
 **Row Actions:**
 

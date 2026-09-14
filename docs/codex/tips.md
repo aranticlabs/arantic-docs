@@ -2,7 +2,19 @@
 sidebar_position: 17
 sidebar_label: Tips
 description: Practical Codex tips grouped by theme, covering prompting, scoping, reviewing, AGENTS.md, approvals, parallel work, and model and reasoning effort choices.
-keywords: [Codex tips, best practices, prompting, AGENTS.md, plan mode, reasoning effort, approvals, worktrees, code review, productivity]
+keywords:
+  [
+    Codex tips,
+    best practices,
+    prompting,
+    AGENTS.md,
+    plan mode,
+    reasoning effort,
+    approvals,
+    worktrees,
+    code review,
+    productivity,
+  ]
 ---
 
 # Tips

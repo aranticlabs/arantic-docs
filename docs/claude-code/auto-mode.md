@@ -2,7 +2,17 @@
 sidebar_position: 6
 sidebar_label: Auto Mode
 description: Use Claude Code auto mode for AI-driven permission decisions that automatically approve safe actions and block risky ones.
-keywords: [Claude Code auto mode, enable-auto-mode, permission classifier, auto approve, safe actions, auto mode configuration, permission modes, Claude Code security]
+keywords:
+  [
+    Claude Code auto mode,
+    enable-auto-mode,
+    permission classifier,
+    auto approve,
+    safe actions,
+    auto mode configuration,
+    permission modes,
+    Claude Code security,
+  ]
 ---
 
 # Auto Mode
@@ -54,25 +64,25 @@ If the classifier blocks an action **3 times in a row** or **20 times total** in
 
 ## Comparison with other permission modes
 
-| Mode | Flag | Behavior |
-|------|------|----------|
-| **default** (Manual) | (none) | Asks for confirmation on every sensitive operation |
-| **acceptEdits** | `--permission-mode acceptEdits` | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `mv`, `cp`, `sed`) in the working directory; other bash commands still prompt |
-| **plan** | `--permission-mode plan` | Read-only; Claude can analyze but not make changes |
-| **auto** | `--permission-mode auto` | Classifier auto-approves safe actions, blocks risky ones |
-| **bypassPermissions** | `--dangerously-skip-permissions` | Auto-approves everything; no safety checks (hooks still run) |
-| **dontAsk** | `--permission-mode dontAsk` | Converts any permission prompt into a denial; only pre-approved tools run |
+| Mode                  | Flag                             | Behavior                                                                                                                                                       |
+| --------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **default** (Manual)  | (none)                           | Asks for confirmation on every sensitive operation                                                                                                             |
+| **acceptEdits**       | `--permission-mode acceptEdits`  | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `mv`, `cp`, `sed`) in the working directory; other bash commands still prompt |
+| **plan**              | `--permission-mode plan`         | Read-only; Claude can analyze but not make changes                                                                                                             |
+| **auto**              | `--permission-mode auto`         | Classifier auto-approves safe actions, blocks risky ones                                                                                                       |
+| **bypassPermissions** | `--dangerously-skip-permissions` | Auto-approves everything; no safety checks (hooks still run)                                                                                                   |
+| **dontAsk**           | `--permission-mode dontAsk`      | Converts any permission prompt into a denial; only pre-approved tools run                                                                                      |
 
 ## Configuration
 
 Auto mode behavior is customizable via four sections in your settings:
 
-| Section | Purpose |
-|---------|---------|
+| Section       | Purpose                                                                                                                                                                                                                                         |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `environment` | An array of plain-English strings describing your org: company name, source control orgs, cloud providers, trusted buckets, trusted domains, compliance constraints. Write entries as you would describe your infrastructure to a new engineer. |
-| `hard_deny` | Unconditional security boundaries. These block even when user intent or an `allow` rule matches (replaces the entire default list if set). |
-| `soft_deny` | Destructive actions the classifier should block unless the user's message specifically and directly describes that exact action (replaces the entire default list if set) |
-| `allow` | Exceptions that override matching `soft_deny` rules (replaces the entire default list if set) |
+| `hard_deny`   | Unconditional security boundaries. These block even when user intent or an `allow` rule matches (replaces the entire default list if set).                                                                                                      |
+| `soft_deny`   | Destructive actions the classifier should block unless the user's message specifically and directly describes that exact action (replaces the entire default list if set)                                                                       |
+| `allow`       | Exceptions that override matching `soft_deny` rules (replaces the entire default list if set)                                                                                                                                                   |
 
 ### Configuration rules
 
@@ -112,15 +122,12 @@ Set `autoMode.classifyAllShell` to `true` to send every Bash and PowerShell comm
       "Delete more than 5 files at once",
       "Run commands that access production databases"
     ],
-    "hard_deny": [
-      "$defaults",
-      "Never send repository contents to third-party code-review APIs"
-    ]
+    "hard_deny": ["$defaults", "Never send repository contents to third-party code-review APIs"]
   }
 }
 ```
 
-For tool-pattern hard blocks that run *before* the classifier and cannot be overridden, use [`permissions.deny`](./permissions.md) in managed settings instead.
+For tool-pattern hard blocks that run _before_ the classifier and cannot be overridden, use [`permissions.deny`](./permissions.md) in managed settings instead.
 
 ## CLI inspection commands
 
@@ -142,13 +149,13 @@ claude auto-mode reset
 
 ## Availability
 
-| Requirement | Detail |
-|-------------|--------|
-| **Plans** | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, auto mode is available by default and an admin can turn it off. On **Pro, Max, and Team** it is the built-in starting permission mode; elsewhere sessions start in Manual. |
-| **Models** | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5. |
-| **Providers** | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
-| **Not available** | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider |
-| **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings |
+| Requirement            | Detail                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Plans**              | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, auto mode is available by default and an admin can turn it off. On **Pro, Max, and Team** it is the built-in starting permission mode; elsewhere sessions start in Manual.                                                                                                                  |
+| **Models**             | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5.                                                                                                                                         |
+| **Providers**          | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
+| **Not available**      | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider                                                                                                                                                                                                                                                                                                                   |
+| **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings                                                                                                                                                                                                                                                                                       |
 
 ## Caveats
 

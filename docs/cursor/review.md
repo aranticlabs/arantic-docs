@@ -2,7 +2,19 @@
 sidebar_position: 15
 sidebar_label: Bugbot & Agent Review
 description: Use Agent Review for in-editor review of local changes and Bugbot for automated PR review, with BUGBOT.md rules, effort levels, Autofix, and Security Agents.
-keywords: [Cursor Bugbot, Agent Review, AI code review, pull request review, BUGBOT.md, review rules, Bugbot Autofix, Security Agents, PR routing, /review-bugbot]
+keywords:
+  [
+    Cursor Bugbot,
+    Agent Review,
+    AI code review,
+    pull request review,
+    BUGBOT.md,
+    review rules,
+    Bugbot Autofix,
+    Security Agents,
+    PR routing,
+    /review-bugbot,
+  ]
 ---
 
 # Bugbot & Agent Review
@@ -23,18 +35,18 @@ Starting in Cursor 3.11, the setting moves to **Git & PRs** > **Pull Requests**.
 
 ### Three ways to run it
 
-| Trigger | What it reviews | When to use |
-|---------|-----------------|-------------|
-| **Automatic** (enabled in settings) | Runs after every commit | You want a gate on every commit without thinking about it |
-| `/agent-review` in the agent input | The current changes, on demand | You finished a chunk of agent work and want a second look before committing |
-| **Source Control tab** → Agent Review | All local changes compared against your main branch | Catching issues across the full branch, not only the latest edit |
+| Trigger                               | What it reviews                                     | When to use                                                                 |
+| ------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Automatic** (enabled in settings)   | Runs after every commit                             | You want a gate on every commit without thinking about it                   |
+| `/agent-review` in the agent input    | The current changes, on demand                      | You finished a chunk of agent work and want a second look before committing |
+| **Source Control tab** → Agent Review | All local changes compared against your main branch | Catching issues across the full branch, not only the latest edit            |
 
 ### Review depth
 
-| Depth | Speed | Cost | Best for |
-|-------|-------|------|----------|
-| **Quick** | Fast | Low | Small diffs, formatting changes, a fast sanity check |
-| **Deep** | Slow | High | Complex logic, security-sensitive code, large refactors |
+| Depth     | Speed | Cost | Best for                                                |
+| --------- | ----- | ---- | ------------------------------------------------------- |
+| **Quick** | Fast  | Low  | Small diffs, formatting changes, a fast sanity check    |
+| **Deep**  | Slow  | High | Complex logic, security-sensitive code, large refactors |
 
 Agent Review reads repository rules from `BUGBOT.md` files, so anything you write for Bugbot (below) also shapes local reviews.
 
@@ -42,11 +54,11 @@ Agent Review reads repository rules from `BUGBOT.md` files, so anything you writ
 
 Two further skills run a review from the agent input before you push, available in Cursor 3.7+ and at [cursor.com/agents](https://cursor.com/agents) (CLI support is listed as coming soon):
 
-| Skill | Runs |
-|-------|------|
-| `/review-bugbot` | A Bugbot review of your branch |
-| `/review-security` | A Security Agent review of your branch |
-| `/review` | The general review entry point covering both |
+| Skill              | Runs                                         |
+| ------------------ | -------------------------------------------- |
+| `/review-bugbot`   | A Bugbot review of your branch               |
+| `/review-security` | A Security Agent review of your branch       |
+| `/review`          | The general review entry point covering both |
 
 By default these review every change relative to the base branch, committed and uncommitted. Ask for uncommitted changes only when you want narrower feedback. They compare against your default base branch; if yours is not the default, name it in the prompt.
 
@@ -76,29 +88,29 @@ On individual plans Bugbot runs only on PRs you author. On Team and Enterprise p
 
 Bugbot publishes a status per review run: a check named `Cursor Bugbot` on GitHub, a build status with key `cursor-bugbot` on Bitbucket, and a status with context `cursor-bugbot/review` on Azure DevOps.
 
-| Conclusion | Meaning |
-|-----------|---------|
-| `success` | No issues found and no unresolved Bugbot comments from earlier runs |
-| `neutral` | Issues found (the default when Bugbot reports findings), or the run was cancelled by a newer commit, or an internal error |
-| `failure` | Issues found and the check is configured to fail on unresolved issues |
+| Conclusion | Meaning                                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `success`  | No issues found and no unresolved Bugbot comments from earlier runs                                                       |
+| `neutral`  | Issues found (the default when Bugbot reports findings), or the run was cancelled by a newer commit, or an internal error |
+| `failure`  | Issues found and the check is configured to fail on unresolved issues                                                     |
 
 :::warning
-Requiring the `Cursor Bugbot` check in branch protection only guarantees Bugbot *ran*. Findings default to `neutral`, which does not block a merge. If fail-on-unresolved-issues is available for your organization, enable it so unresolved findings produce `failure`. Bugbot never emits `skipped`.
+Requiring the `Cursor Bugbot` check in branch protection only guarantees Bugbot _ran_. Findings default to `neutral`, which does not block a merge. If fail-on-unresolved-issues is available for your organization, enable it so unresolved findings produce `failure`. Bugbot never emits `skipped`.
 :::
 
 When Autofix is enabled, GitHub may show a separate `Cursor Bugbot Autofix` check that only uses `success` or `neutral`.
 
 ### Settings
 
-| Setting | Scope | Effect |
-|---------|-------|--------|
-| Enable per repository | Individual, Team, Enterprise | Turns Bugbot on or off for a repo |
-| Allow/deny lists for reviewers | Team, Enterprise admins | Controls who can consume Bugbot |
-| **Run only when mentioned** | Personal override | Skips automatic runs; `cursor review` / `bugbot run` still work |
-| **Run only once** per PR | Personal or installation | Reviews the first push, skips subsequent commits |
-| **Enable reviews on draft PRs** | Personal override (Team, Enterprise) | Includes drafts in automatic reviews |
-| **Incremental Review** | Automations | On by default: review only changes since the previous Bugbot review. Turn off to review the full PR diff on every push |
-| **Effort level** | Automations (usage-based plans) | Low, Default, High, or Smart (see below) |
+| Setting                         | Scope                                | Effect                                                                                                                 |
+| ------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Enable per repository           | Individual, Team, Enterprise         | Turns Bugbot on or off for a repo                                                                                      |
+| Allow/deny lists for reviewers  | Team, Enterprise admins              | Controls who can consume Bugbot                                                                                        |
+| **Run only when mentioned**     | Personal override                    | Skips automatic runs; `cursor review` / `bugbot run` still work                                                        |
+| **Run only once** per PR        | Personal or installation             | Reviews the first push, skips subsequent commits                                                                       |
+| **Enable reviews on draft PRs** | Personal override (Team, Enterprise) | Includes drafts in automatic reviews                                                                                   |
+| **Incremental Review**          | Automations                          | On by default: review only changes since the previous Bugbot review. Turn off to review the full PR diff on every push |
+| **Effort level**                | Automations (usage-based plans)      | Low, Default, High, or Smart (see below)                                                                               |
 
 Team members can override installation defaults for their own PRs.
 
@@ -106,23 +118,23 @@ Team members can override installation defaults for their own PRs.
 
 Effort controls how long Bugbot reasons per review. Higher effort can find more bugs at more cost and time. Effort levels are available only on usage-based Bugbot plans.
 
-| Level | Tradeoff |
-|-------|----------|
-| **Low** | Optimizes for cost, quality close to Default; cheaper but slower |
-| **Default** | Optimizes for efficiency and speed; may find fewer bugs |
-| **High** | More reasoning time; more expensive and slower, may find more bugs |
-| **Smart** | You describe in natural language when to use Low, Default, or High, and Cursor picks per review |
+| Level       | Tradeoff                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| **Low**     | Optimizes for cost, quality close to Default; cheaper but slower                                |
+| **Default** | Optimizes for efficiency and speed; may find fewer bugs                                         |
+| **High**    | More reasoning time; more expensive and slower, may find more bugs                              |
+| **Smart**   | You describe in natural language when to use Low, Default, or High, and Cursor picks per review |
 
 ### Autofix
 
 Bugbot Autofix spawns a Cloud Agent to fix the bugs a review found, pushes the fix, and comments on the original PR with the results.
 
-| Mode | Behavior |
-|------|----------|
-| **Use Installation Default** | Follow the organization setting |
-| **Off** | No automatic fixes; use the manual **Fix in Cursor** / **Fix in Web** links |
-| **Create New Branch** (recommended) | Push fixes to a new branch |
-| **Commit to Existing Branch** | Push fixes to the PR branch, capped at 3 attempts per PR to prevent loops |
+| Mode                                | Behavior                                                                    |
+| ----------------------------------- | --------------------------------------------------------------------------- |
+| **Use Installation Default**        | Follow the organization setting                                             |
+| **Off**                             | No automatic fixes; use the manual **Fix in Cursor** / **Fix in Web** links |
+| **Create New Branch** (recommended) | Push fixes to a new branch                                                  |
+| **Commit to Existing Branch**       | Push fixes to the PR branch, capped at 3 attempts per PR to prevent loops   |
 
 Autofix uses your **Default agent model** from Settings → Models (falling back to the team default, then the system default). It requires on-demand usage pricing and storage enabled (not Legacy Privacy Mode), and is billed as Cloud Agent usage at your plan rates.
 
@@ -148,12 +160,12 @@ Include the request ID when reporting to support.
 
 Bugbot and Agent Review are guided by three rule sources, merged into one review-rules block per run in this order: **Team Rules → project `.cursor/BUGBOT.md` (including nested files) → learned rules → manual rules**.
 
-| Source | Where | Who edits | Scope |
-|--------|-------|-----------|-------|
-| **Team rules** | Bugbot Automations dashboard | Team admins | Every enabled repository in the team |
-| **Project rules** | `.cursor/BUGBOT.md` files in the repo | Anyone with commit access | Root file always; nested files when reviewing files beneath them |
-| **Learned rules** | Bugbot repository rules dashboard | Generated from your team's GitHub activity, or taught inline with `@cursor remember [fact]` | Per repository, optional path globs |
-| **Manual rules** | Bugbot repository rules dashboard | You, per repository | Optional path globs such as `src/components/**` |
+| Source            | Where                                 | Who edits                                                                                   | Scope                                                            |
+| ----------------- | ------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Team rules**    | Bugbot Automations dashboard          | Team admins                                                                                 | Every enabled repository in the team                             |
+| **Project rules** | `.cursor/BUGBOT.md` files in the repo | Anyone with commit access                                                                   | Root file always; nested files when reviewing files beneath them |
+| **Learned rules** | Bugbot repository rules dashboard     | Generated from your team's GitHub activity, or taught inline with `@cursor remember [fact]` | Per repository, optional path globs                              |
+| **Manual rules**  | Bugbot repository rules dashboard     | You, per repository                                                                         | Optional path globs such as `src/components/**`                  |
 
 :::note
 Cursor project rules (`*.mdc` files in `.cursor/rules/`) do **not** apply to Bugbot runs. If you want a coding convention enforced in review, it has to live in `.cursor/BUGBOT.md` or in the Automations dashboard. See [Rules & AGENTS.md](./rules.md) for how `.cursor/rules/` shapes the agent itself.
@@ -224,11 +236,13 @@ A practical starting `.cursor/BUGBOT.md`:
 # Review rules
 
 ## Always check
+
 - Every new API endpoint validates its input with the shared schema helpers in src/validation/.
 - Database migrations in src/db/migrations/ are never edited after they are merged; flag any modification as blocking.
 - No secrets or tokens in source. Flag anything matching /(api[_-]?key|secret|token)\s*[:=]\s*["'][^"']+["']/i as blocking.
 
 ## Do not flag
+
 - Formatting-only changes covered by Prettier.
 - Generated files under src/generated/.
 ```
@@ -241,10 +255,10 @@ Each rule in the dashboard reports **Issues found**, **PRs reviewed**, **Accepte
 
 Security Agents are Cursor-managed agents that scan for security bugs and vulnerabilities. They run on the Automations platform and require Cloud Agents; the docs note Security Agents require a team or enterprise plan.
 
-| Agent | Trigger | Purpose |
-|-------|---------|---------|
-| **Security Reviewer** | Git-based triggers (PR and MR events) | Catch vulnerabilities during code review, before merge |
-| **Vulnerability Scanner** | Cron schedule | Scan the codebase at rest for pre-existing issues and things PR review missed |
+| Agent                     | Trigger                               | Purpose                                                                       |
+| ------------------------- | ------------------------------------- | ----------------------------------------------------------------------------- |
+| **Security Reviewer**     | Git-based triggers (PR and MR events) | Catch vulnerabilities during code review, before merge                        |
+| **Vulnerability Scanner** | Cron schedule                         | Scan the codebase at rest for pre-existing issues and things PR review missed |
 
 Each agent has built-in security checks you can toggle, custom instructions for project-specific expectations, and tools or MCPs (at least one is required) for routing findings to Slack, an issue tracker, or another system. Usage is charged to the team pool under a shared service account, so it does not affect any individual's usage. Analytics track vulnerabilities found, issues fixed, and resolution rate. Configure them in [Automations](https://cursor.com/automations/from-cursor/security), or run one locally with `/review-security`.
 
@@ -277,7 +291,7 @@ Configure it in [Automations](https://cursor.com/automations/from-cursor/pr-rout
 ## What to avoid
 
 - **Expecting `.cursor/rules/*.mdc` to affect reviews.** It does not. Agent rules and review rules are separate files on purpose.
-- **Treating `neutral` as a pass.** It is Bugbot's default when it *finds* issues.
+- **Treating `neutral` as a pass.** It is Bugbot's default when it _finds_ issues.
 - **Dumping a style guide into `BUGBOT.md`.** Rules are truncated at 30,000 characters each and 100,000 combined. Long prose crowds out the rules that matter and may be omitted silently. Run `verbose=true` to check.
 - **Letting Bugbot be the only reviewer.** PR Routing & Approval explicitly does not replace human review, and Bugbot findings are suggestions with a severity, not a verdict.
 - **Commit-to-existing-branch Autofix on shared branches.** Fixes land on the branch without a review step. Use **Create New Branch**.
@@ -285,12 +299,12 @@ Configure it in [Automations](https://cursor.com/automations/from-cursor/pr-rout
 
 ## Compared with Claude Code
 
-| Concern | Cursor | Claude Code |
-|---------|--------|-------------|
-| Local review of your changes | `/agent-review` (Quick or Deep), `/review-bugbot`, `/review-security` | `/code-review [level] [--fix] [--comment]` and `/security-review`, see [Commands](../claude-code/commands.md) |
-| Hosted PR review bot | Bugbot on GitHub, GitLab, Bitbucket, Azure DevOps; comments, CI status, Autofix | `/code-review --comment` posts findings as GitHub PR comments; `/code-review ultra` runs a deep multi-agent cloud review |
-| Review rules file | `.cursor/BUGBOT.md` (root plus nested), team rules, learned rules | Project `CLAUDE.md`, `.claude/rules/`, and reviewer [subagents](../claude-code/subagents.md) such as `code-reviewer` |
-| Fix a finding in the editor | **Fix in Cursor** / **Fix in Web** links, or Autofix via Cloud Agent | `/code-review --fix` applies findings in the current session |
-| Security scanning at rest | Security Agents: Vulnerability Scanner on a cron | No built-in scheduled scanner; `/security-review` is on-demand per branch |
-| Reviewer routing and auto-approval | PR Routing & Approval with `APPROVAL_POLICY.md` | Not a Claude Code feature |
-| Billing | Usage-based per review (roughly $1.00 to $1.50 per average run) | Part of your Claude Code usage; `ultra` includes 3 free runs on Pro/Max |
+| Concern                            | Cursor                                                                          | Claude Code                                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Local review of your changes       | `/agent-review` (Quick or Deep), `/review-bugbot`, `/review-security`           | `/code-review [level] [--fix] [--comment]` and `/security-review`, see [Commands](../claude-code/commands.md)            |
+| Hosted PR review bot               | Bugbot on GitHub, GitLab, Bitbucket, Azure DevOps; comments, CI status, Autofix | `/code-review --comment` posts findings as GitHub PR comments; `/code-review ultra` runs a deep multi-agent cloud review |
+| Review rules file                  | `.cursor/BUGBOT.md` (root plus nested), team rules, learned rules               | Project `CLAUDE.md`, `.claude/rules/`, and reviewer [subagents](../claude-code/subagents.md) such as `code-reviewer`     |
+| Fix a finding in the editor        | **Fix in Cursor** / **Fix in Web** links, or Autofix via Cloud Agent            | `/code-review --fix` applies findings in the current session                                                             |
+| Security scanning at rest          | Security Agents: Vulnerability Scanner on a cron                                | No built-in scheduled scanner; `/security-review` is on-demand per branch                                                |
+| Reviewer routing and auto-approval | PR Routing & Approval with `APPROVAL_POLICY.md`                                 | Not a Claude Code feature                                                                                                |
+| Billing                            | Usage-based per review (roughly $1.00 to $1.50 per average run)                 | Part of your Claude Code usage; `ultra` includes 3 free runs on Pro/Max                                                  |

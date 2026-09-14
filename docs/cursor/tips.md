@@ -2,7 +2,19 @@
 sidebar_position: 17
 sidebar_label: Tips
 description: Concise Cursor tips grouped by theme, covering prompting, context, modes, review, rules and skills, parallel work, and model choice, from the official docs.
-keywords: [Cursor tips, Cursor best practices, prompting Cursor agent, at-mentions, plan mode, context window, Cursor rules, Cursor skills, parallel agents, model selection]
+keywords:
+  [
+    Cursor tips,
+    Cursor best practices,
+    prompting Cursor agent,
+    at-mentions,
+    plan mode,
+    context window,
+    Cursor rules,
+    Cursor skills,
+    parallel agents,
+    model selection,
+  ]
 ---
 
 # Tips
@@ -40,7 +52,7 @@ See [Managing Context](./context.md).
 - **Build in Parallel from a plan.** Independent steps run at once; dependent steps stay ordered.
 - **Ask Mode for reading, Agent Mode for writing.** Ask explores without editing, which is what you want during code review or onboarding.
 - **Debug Mode for bugs you can reproduce but cannot explain.** It instruments your code, asks you to reproduce, and reasons from the logs instead of guessing at fixes. Describe expected versus actual behavior precisely and follow its reproduction steps exactly.
-- **Turn a skill into a Custom Mode** (`Option+Enter` / `Alt+Enter` from the `/` menu, or **Use as Mode**) when it describes *how* to work, like a review checklist or `/tdd`. It stays in context on every turn until you exit.
+- **Turn a skill into a Custom Mode** (`Option+Enter` / `Alt+Enter` from the `/` menu, or **Use as Mode**) when it describes _how_ to work, like a review checklist or `/tdd`. It stays in context on every turn until you exit.
 - **Skip planning for routine changes.** For quick edits and tasks you have done many times, jumping straight to Agent is fine.
 
 See [Agent Modes](./modes.md).

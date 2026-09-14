@@ -2,7 +2,19 @@
 sidebar_position: 10
 sidebar_label: Hooks
 description: Cursor hooks are scripts in hooks.json that run at agent lifecycle events to format, audit, block, or modify what the agent does, independent of model judgment.
-keywords: [Cursor hooks, hooks.json, beforeShellExecution, afterFileEdit, beforeSubmitPrompt, beforeMCPExecution, preToolUse, stop hook, failClosed, deterministic automation]
+keywords:
+  [
+    Cursor hooks,
+    hooks.json,
+    beforeShellExecution,
+    afterFileEdit,
+    beforeSubmitPrompt,
+    beforeMCPExecution,
+    preToolUse,
+    stop hook,
+    failClosed,
+    deterministic automation,
+  ]
 ---
 
 # Hooks
@@ -28,52 +40,52 @@ Cursor groups hooks into three categories by what triggers them.
 
 ### Agent hooks (Agent chat and Cmd+K)
 
-| Event | When it fires | Can block or modify? |
-|-------|---------------|----------------------|
-| `sessionStart` | A new conversation is created | No (fire-and-forget), but can return `env` and `additional_context` |
-| `sessionEnd` | A conversation ends | No |
-| `preToolUse` | Before any tool call (Shell, Read, Write, Grep, Delete, Task, MCP) | Yes: `allow` or `deny`, plus `updated_input` |
-| `postToolUse` | After a tool call succeeds | Can add `additional_context`; for MCP tools can replace output |
-| `postToolUseFailure` | A tool fails, times out, or is denied | No |
-| `subagentStart` | Before a subagent (Task tool) spawns | Yes: `allow` or `deny` |
-| `subagentStop` | A subagent completes, errors, or aborts | Can return `followup_message` |
-| `beforeShellExecution` | Before a terminal command runs | Yes: `allow`, `deny`, or `ask` |
-| `afterShellExecution` | After a terminal command, with its output | No |
-| `beforeMCPExecution` | Before an MCP tool runs | Yes: `allow`, `deny`, or `ask` |
-| `afterMCPExecution` | After an MCP tool, with its result | No |
-| `beforeReadFile` | Before the agent reads a file (content included) | Yes: `allow` or `deny` |
-| `afterFileEdit` | After the agent edits a file | No |
-| `beforeSubmitPrompt` | After you press send, before the request leaves | Yes: `continue: false` blocks |
-| `preCompact` | Before context compaction | No (observational), can show a `user_message` |
-| `stop` | The agent loop ends | Can return `followup_message` to keep iterating |
-| `afterAgentResponse` | After an assistant message completes | No |
-| `afterAgentThought` | After a thinking block completes | No |
+| Event                  | When it fires                                                      | Can block or modify?                                                |
+| ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| `sessionStart`         | A new conversation is created                                      | No (fire-and-forget), but can return `env` and `additional_context` |
+| `sessionEnd`           | A conversation ends                                                | No                                                                  |
+| `preToolUse`           | Before any tool call (Shell, Read, Write, Grep, Delete, Task, MCP) | Yes: `allow` or `deny`, plus `updated_input`                        |
+| `postToolUse`          | After a tool call succeeds                                         | Can add `additional_context`; for MCP tools can replace output      |
+| `postToolUseFailure`   | A tool fails, times out, or is denied                              | No                                                                  |
+| `subagentStart`        | Before a subagent (Task tool) spawns                               | Yes: `allow` or `deny`                                              |
+| `subagentStop`         | A subagent completes, errors, or aborts                            | Can return `followup_message`                                       |
+| `beforeShellExecution` | Before a terminal command runs                                     | Yes: `allow`, `deny`, or `ask`                                      |
+| `afterShellExecution`  | After a terminal command, with its output                          | No                                                                  |
+| `beforeMCPExecution`   | Before an MCP tool runs                                            | Yes: `allow`, `deny`, or `ask`                                      |
+| `afterMCPExecution`    | After an MCP tool, with its result                                 | No                                                                  |
+| `beforeReadFile`       | Before the agent reads a file (content included)                   | Yes: `allow` or `deny`                                              |
+| `afterFileEdit`        | After the agent edits a file                                       | No                                                                  |
+| `beforeSubmitPrompt`   | After you press send, before the request leaves                    | Yes: `continue: false` blocks                                       |
+| `preCompact`           | Before context compaction                                          | No (observational), can show a `user_message`                       |
+| `stop`                 | The agent loop ends                                                | Can return `followup_message` to keep iterating                     |
+| `afterAgentResponse`   | After an assistant message completes                               | No                                                                  |
+| `afterAgentThought`    | After a thinking block completes                                   | No                                                                  |
 
 ### Tab hooks (inline completions)
 
-| Event | When it fires | Can block? |
-|-------|---------------|-----------|
-| `beforeTabFileRead` | Before Tab reads a file | Yes: `allow` or `deny` |
-| `afterTabFileEdit` | After Tab edits a file, with line and column ranges | No |
+| Event               | When it fires                                       | Can block?             |
+| ------------------- | --------------------------------------------------- | ---------------------- |
+| `beforeTabFileRead` | Before Tab reads a file                             | Yes: `allow` or `deny` |
+| `afterTabFileEdit`  | After Tab edits a file, with line and column ranges | No                     |
 
 Tab hooks let you apply a different policy to autonomous completions than to user-directed agent work.
 
 ### App lifecycle hooks
 
-| Event | When it fires | Output |
-|-------|---------------|--------|
+| Event           | When it fires                                                                                                               | Output                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `workspaceOpen` | Cursor opens a workspace, and on every workspace folder change. Skipped with zero folders. Runs in the desktop app and CLI. | `pluginPaths`: extra plugin directories to load for this workspace |
 
 ## Configuration
 
 ### Where hooks live
 
-| Scope | Location | Working directory for relative paths | Priority |
-|-------|----------|--------------------------------------|----------|
-| **Enterprise** (MDM, system-wide) | macOS `/Library/Application Support/Cursor/hooks.json`, Linux/WSL `/etc/cursor/hooks.json`, Windows `C:\ProgramData\Cursor\hooks.json` | Enterprise config directory | Highest |
-| **Team** (Enterprise, cloud-distributed) | Configured in the web dashboard, synced to members every thirty minutes | Managed hooks directory | 2 |
-| **Project** | `<project>/.cursor/hooks.json`, committed with the repo | **Project root** | 3 |
-| **User** | `~/.cursor/hooks.json` | `~/.cursor/` | Lowest |
+| Scope                                    | Location                                                                                                                               | Working directory for relative paths | Priority |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------- |
+| **Enterprise** (MDM, system-wide)        | macOS `/Library/Application Support/Cursor/hooks.json`, Linux/WSL `/etc/cursor/hooks.json`, Windows `C:\ProgramData\Cursor\hooks.json` | Enterprise config directory          | Highest  |
+| **Team** (Enterprise, cloud-distributed) | Configured in the web dashboard, synced to members every thirty minutes                                                                | Managed hooks directory              | 2        |
+| **Project**                              | `<project>/.cursor/hooks.json`, committed with the repo                                                                                | **Project root**                     | 3        |
+| **User**                                 | `~/.cursor/hooks.json`                                                                                                                 | `~/.cursor/`                         | Lowest   |
 
 All matching hooks from every source run. When responses conflict, the higher-priority source wins during merge. Project hooks only run in a trusted workspace. Cursor watches `hooks.json` files and reloads on save.
 
@@ -87,7 +99,7 @@ The working directory differs by scope, and this is the most common setup mistak
 {
   "version": 1,
   "hooks": {
-    "afterFileEdit": [{ "command": ".cursor/hooks/format.sh" }],
+    "afterFileEdit": [{"command": ".cursor/hooks/format.sh"}],
     "beforeShellExecution": [
       {
         "command": ".cursor/hooks/approve-network.sh",
@@ -95,37 +107,37 @@ The working directory differs by scope, and this is the most common setup mistak
         "matcher": "curl|wget|nc "
       }
     ],
-    "stop": [{ "command": ".cursor/hooks/check-done.sh", "loop_limit": 10 }]
+    "stop": [{"command": ".cursor/hooks/check-done.sh", "loop_limit": 10}]
   }
 }
 ```
 
 ### Per-hook options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `command` | string | required | Shell string, absolute path, or path relative to the scope's working directory |
-| `type` | `"command"` or `"prompt"` | `"command"` | Execution type (see below) |
-| `timeout` | number | platform default | Seconds before the hook is killed |
-| `loop_limit` | number or `null` | `5` | Max auto follow-ups for `stop` and `subagentStop` per script. `null` removes the cap. Default is `null` for Claude Code-format hooks. |
-| `failClosed` | boolean | `false` | When `true`, a crash, timeout, or invalid JSON **blocks** the action instead of allowing it. Recommended for security hooks. |
-| `matcher` | string | none | Regex filter on the hook-specific match target |
+| Option       | Type                      | Default          | Description                                                                                                                           |
+| ------------ | ------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `command`    | string                    | required         | Shell string, absolute path, or path relative to the scope's working directory                                                        |
+| `type`       | `"command"` or `"prompt"` | `"command"`      | Execution type (see below)                                                                                                            |
+| `timeout`    | number                    | platform default | Seconds before the hook is killed                                                                                                     |
+| `loop_limit` | number or `null`          | `5`              | Max auto follow-ups for `stop` and `subagentStop` per script. `null` removes the cap. Default is `null` for Claude Code-format hooks. |
+| `failClosed` | boolean                   | `false`          | When `true`, a crash, timeout, or invalid JSON **blocks** the action instead of allowing it. Recommended for security hooks.          |
+| `matcher`    | string                    | none             | Regex filter on the hook-specific match target                                                                                        |
 
 ### Matchers
 
 What the matcher is compared against depends on the event:
 
-| Event | Matcher target | Example |
-|-------|----------------|---------|
-| `preToolUse`, `postToolUse`, `postToolUseFailure` | Tool type: `Shell`, `Read`, `Write`, `Grep`, `Delete`, `Task`, or `MCP:<tool_name>` | `"Shell\|Write"` |
-| `subagentStart`, `subagentStop` | Subagent type: `generalPurpose`, `explore`, `shell`, and others | `"explore\|shell"` |
-| `beforeShellExecution`, `afterShellExecution` | Full shell command string | `"curl\|wget\|nc "` |
-| `beforeReadFile` | Tool type: `Read`, `TabRead`, and others | `"Read"` |
-| `afterFileEdit` | Tool type: `Write`, `TabWrite`, and others | `"Write"` |
-| `beforeSubmitPrompt` | The literal value `UserPromptSubmit` | |
-| `stop` | The literal value `Stop` | |
-| `afterAgentResponse` | The literal value `AgentResponse` | |
-| `afterAgentThought` | The literal value `AgentThought` | |
+| Event                                             | Matcher target                                                                      | Example             |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------- |
+| `preToolUse`, `postToolUse`, `postToolUseFailure` | Tool type: `Shell`, `Read`, `Write`, `Grep`, `Delete`, `Task`, or `MCP:<tool_name>` | `"Shell\|Write"`    |
+| `subagentStart`, `subagentStop`                   | Subagent type: `generalPurpose`, `explore`, `shell`, and others                     | `"explore\|shell"`  |
+| `beforeShellExecution`, `afterShellExecution`     | Full shell command string                                                           | `"curl\|wget\|nc "` |
+| `beforeReadFile`                                  | Tool type: `Read`, `TabRead`, and others                                            | `"Read"`            |
+| `afterFileEdit`                                   | Tool type: `Write`, `TabWrite`, and others                                          | `"Write"`           |
+| `beforeSubmitPrompt`                              | The literal value `UserPromptSubmit`                                                |                     |
+| `stop`                                            | The literal value `Stop`                                                            |                     |
+| `afterAgentResponse`                              | The literal value `AgentResponse`                                                   |                     |
+| `afterAgentThought`                               | The literal value `AgentThought`                                                    |                     |
 
 Without a matcher, the hook fires on every occurrence of the event.
 
@@ -137,11 +149,11 @@ The default. Cursor spawns your command, writes the event JSON to stdin, and rea
 
 **Exit codes:**
 
-| Exit code | Effect |
-|-----------|--------|
-| `0` | Success. Cursor uses the JSON output. |
-| `2` | Block the action. Equivalent to `"permission": "deny"`. Matches Claude Code behavior. |
-| Other | Hook failed. The action proceeds (fail-open) unless `failClosed: true`. |
+| Exit code | Effect                                                                                |
+| --------- | ------------------------------------------------------------------------------------- |
+| `0`       | Success. Cursor uses the JSON output.                                                 |
+| `2`       | Block the action. Equivalent to `"permission": "deny"`. Matches Claude Code behavior. |
+| Other     | Hook failed. The action proceeds (fail-open) unless `failClosed: true`.               |
 
 ### Prompt hooks
 
@@ -178,7 +190,7 @@ Every hook receives these in addition to its event-specific fields:
   "generation_id": "string",
   "model": "string",
   "model_id": "string",
-  "model_params": [{ "id": "string", "value": "string" }],
+  "model_params": [{"id": "string", "value": "string"}],
   "hook_event_name": "string",
   "cursor_version": "string",
   "workspace_roots": ["<path>"],
@@ -193,11 +205,11 @@ Every hook receives these in addition to its event-specific fields:
 
 Hooks that gate an action return a `permission` field:
 
-| Value | Meaning | Supported on |
-|-------|---------|--------------|
-| `"allow"` | Proceed | All gating hooks |
-| `"deny"` | Block; `user_message` is shown to you, `agent_message` is fed back to the agent | All gating hooks |
-| `"ask"` | Show the normal approval prompt | `beforeShellExecution`, `beforeMCPExecution`. Accepted but not enforced on `preToolUse`; treated as `deny` on `subagentStart`. |
+| Value     | Meaning                                                                         | Supported on                                                                                                                   |
+| --------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `"allow"` | Proceed                                                                         | All gating hooks                                                                                                               |
+| `"deny"`  | Block; `user_message` is shown to you, `agent_message` is fed back to the agent | All gating hooks                                                                                                               |
+| `"ask"`   | Show the normal approval prompt                                                 | `beforeShellExecution`, `beforeMCPExecution`. Accepted but not enforced on `preToolUse`; treated as `deny` on `subagentStart`. |
 
 `beforeSubmitPrompt` uses `continue: true | false` instead. `preToolUse` can also return `updated_input` to rewrite the tool call (for example turning `npm install` into `npm ci`).
 
@@ -225,14 +237,14 @@ Hooks that gate an action return a `permission` field:
 
 ### Environment variables
 
-| Variable | Description | Present |
-|----------|-------------|---------|
-| `CURSOR_PROJECT_DIR` | Workspace root | Always |
-| `CURSOR_VERSION` | Cursor version | Always |
-| `CURSOR_USER_EMAIL` | Authenticated user email | If logged in |
-| `CURSOR_TRANSCRIPT_PATH` | Conversation transcript path | If transcripts enabled |
-| `CURSOR_CODE_REMOTE` | `"true"` in a remote workspace | Remote workspaces |
-| `CLAUDE_PROJECT_DIR` | Alias for the project dir (Claude Code compatibility) | Always |
+| Variable                 | Description                                           | Present                |
+| ------------------------ | ----------------------------------------------------- | ---------------------- |
+| `CURSOR_PROJECT_DIR`     | Workspace root                                        | Always                 |
+| `CURSOR_VERSION`         | Cursor version                                        | Always                 |
+| `CURSOR_USER_EMAIL`      | Authenticated user email                              | If logged in           |
+| `CURSOR_TRANSCRIPT_PATH` | Conversation transcript path                          | If transcripts enabled |
+| `CURSOR_CODE_REMOTE`     | `"true"` in a remote workspace                        | Remote workspaces      |
+| `CLAUDE_PROJECT_DIR`     | Alias for the project dir (Claude Code compatibility) | Always                 |
 
 Variables returned from a `sessionStart` hook's `env` are passed to every later hook in that session.
 
@@ -246,7 +258,7 @@ The examples use project-scope paths (`.cursor/hooks/...`). Make each script exe
 {
   "version": 1,
   "hooks": {
-    "afterFileEdit": [{ "command": ".cursor/hooks/format.sh", "matcher": "Write" }]
+    "afterFileEdit": [{"command": ".cursor/hooks/format.sh", "matcher": "Write"}]
   }
 }
 ```
@@ -269,9 +281,7 @@ exit 0
 {
   "version": 1,
   "hooks": {
-    "beforeReadFile": [
-      { "command": ".cursor/hooks/redact-secrets.sh", "failClosed": true }
-    ]
+    "beforeReadFile": [{"command": ".cursor/hooks/redact-secrets.sh", "failClosed": true}]
   }
 }
 ```
@@ -306,9 +316,7 @@ Deny raw `git push`, ask before anything touching production, allow the rest:
 {
   "version": 1,
   "hooks": {
-    "beforeShellExecution": [
-      { "command": ".cursor/hooks/guard-shell.sh", "failClosed": true }
-    ]
+    "beforeShellExecution": [{"command": ".cursor/hooks/guard-shell.sh", "failClosed": true}]
   }
 }
 ```
@@ -347,7 +355,7 @@ The `"ask"` decision hands the command to the normal approval prompt even if you
 {
   "version": 1,
   "hooks": {
-    "beforeSubmitPrompt": [{ "command": ".cursor/hooks/scan-prompt.sh" }]
+    "beforeSubmitPrompt": [{"command": ".cursor/hooks/scan-prompt.sh"}]
   }
 }
 ```
@@ -377,11 +385,11 @@ echo '{ "continue": true }'
 {
   "version": 1,
   "hooks": {
-    "beforeShellExecution": [{ "command": ".cursor/hooks/audit.sh" }],
-    "afterShellExecution": [{ "command": ".cursor/hooks/audit.sh" }],
-    "beforeMCPExecution": [{ "command": ".cursor/hooks/audit.sh" }],
-    "afterMCPExecution": [{ "command": ".cursor/hooks/audit.sh" }],
-    "afterFileEdit": [{ "command": ".cursor/hooks/audit.sh" }]
+    "beforeShellExecution": [{"command": ".cursor/hooks/audit.sh"}],
+    "afterShellExecution": [{"command": ".cursor/hooks/audit.sh"}],
+    "beforeMCPExecution": [{"command": ".cursor/hooks/audit.sh"}],
+    "afterMCPExecution": [{"command": ".cursor/hooks/audit.sh"}],
+    "afterFileEdit": [{"command": ".cursor/hooks/audit.sh"}]
   }
 }
 ```
@@ -404,7 +412,7 @@ Because every payload includes `hook_event_name`, `conversation_id`, and `user_e
 {
   "version": 1,
   "hooks": {
-    "stop": [{ "command": ".cursor/hooks/notify.sh" }]
+    "stop": [{"command": ".cursor/hooks/notify.sh"}]
   }
 }
 ```
@@ -428,7 +436,7 @@ A `stop` hook can push the agent back to work. The `loop_count` field and `loop_
 {
   "version": 1,
   "hooks": {
-    "stop": [{ "command": ".cursor/hooks/until-green.sh", "loop_limit": 3 }]
+    "stop": [{"command": ".cursor/hooks/until-green.sh", "loop_limit": 3}]
   }
 }
 ```
@@ -454,7 +462,7 @@ fi
 {
   "version": 1,
   "hooks": {
-    "sessionStart": [{ "command": ".cursor/hooks/session-init.sh" }]
+    "sessionStart": [{"command": ".cursor/hooks/session-init.sh"}]
   }
 }
 ```
@@ -513,11 +521,11 @@ Not available: `sessionStart`, `sessionEnd`, `beforeMCPExecution`, `afterMCPExec
 
 ## Team distribution
 
-| Method | How | Plan |
-|--------|-----|------|
-| **Project hooks** | Commit `.cursor/hooks.json` and `.cursor/hooks/`. Loads for everyone in a trusted workspace and for Cloud Agents. | All |
-| **MDM** | Push `hooks.json` and scripts to `~/.cursor/` or the system-wide paths above. Your IT team owns deployment; Cursor does not manage MDM. | All |
-| **Cloud distribution** | Configure in the web dashboard. Synced to every member every thirty minutes, with OS targeting for platform-specific hooks. | Enterprise |
+| Method                 | How                                                                                                                                     | Plan       |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **Project hooks**      | Commit `.cursor/hooks.json` and `.cursor/hooks/`. Loads for everyone in a trusted workspace and for Cloud Agents.                       | All        |
+| **MDM**                | Push `hooks.json` and scripts to `~/.cursor/` or the system-wide paths above. Your IT team owns deployment; Cursor does not manage MDM. | All        |
+| **Cloud distribution** | Configure in the web dashboard. Synced to every member every thirty minutes, with OS targeting for platform-specific hooks.             | Enterprise |
 
 Cursor's hardening guide recommends distributing hooks for enforcement and logging and setting `failClosed` on the critical ones.
 
@@ -555,16 +563,16 @@ Vendors have shipped hook-based integrations for MCP governance (MintMCP, Oasis 
 
 ## Compared with Claude Code
 
-| Concern | Cursor | Claude Code |
-|---------|--------|-------------|
-| Config file | `hooks.json` (`.cursor/` or `~/.cursor/`), plus enterprise paths and dashboard | `hooks` key inside `settings.json` at user, project, local, or managed scope |
-| Event naming | camelCase: `beforeShellExecution`, `afterFileEdit`, `stop` | PascalCase: `PreToolUse`, `PostToolUse`, `Stop`, plus many more (`SessionStart`, `Notification`, `PreCompact`, `WorktreeCreate`, ...) |
-| Hook types | `command` and `prompt` | `command`, `http`, `mcp_tool`, `prompt`, `agent` |
-| Decision output | Flat: `permission`, `user_message`, `agent_message`, `updated_input` | Nested `hookSpecificOutput.permissionDecision`, or exit code 2 |
-| Exit code 2 blocks | Yes (for compatibility) | Yes |
-| Fail-closed option | `failClosed: true` per hook | Not a per-hook flag; blocking depends on exit code |
-| Loop control | `loop_limit` on `stop` and `subagentStop`, `followup_message` | `stop_hook_active` field to break loops manually |
-| Cross-tool compatibility | Loads Claude Code hooks from `.claude/settings*.json` | Does not load Cursor hooks |
-| Tab / inline completions | Dedicated `beforeTabFileRead` and `afterTabFileEdit` | Not applicable |
+| Concern                  | Cursor                                                                         | Claude Code                                                                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Config file              | `hooks.json` (`.cursor/` or `~/.cursor/`), plus enterprise paths and dashboard | `hooks` key inside `settings.json` at user, project, local, or managed scope                                                          |
+| Event naming             | camelCase: `beforeShellExecution`, `afterFileEdit`, `stop`                     | PascalCase: `PreToolUse`, `PostToolUse`, `Stop`, plus many more (`SessionStart`, `Notification`, `PreCompact`, `WorktreeCreate`, ...) |
+| Hook types               | `command` and `prompt`                                                         | `command`, `http`, `mcp_tool`, `prompt`, `agent`                                                                                      |
+| Decision output          | Flat: `permission`, `user_message`, `agent_message`, `updated_input`           | Nested `hookSpecificOutput.permissionDecision`, or exit code 2                                                                        |
+| Exit code 2 blocks       | Yes (for compatibility)                                                        | Yes                                                                                                                                   |
+| Fail-closed option       | `failClosed: true` per hook                                                    | Not a per-hook flag; blocking depends on exit code                                                                                    |
+| Loop control             | `loop_limit` on `stop` and `subagentStop`, `followup_message`                  | `stop_hook_active` field to break loops manually                                                                                      |
+| Cross-tool compatibility | Loads Claude Code hooks from `.claude/settings*.json`                          | Does not load Cursor hooks                                                                                                            |
+| Tab / inline completions | Dedicated `beforeTabFileRead` and `afterTabFileEdit`                           | Not applicable                                                                                                                        |
 
 See [Claude Code Hooks](../claude-code/hooks.md) for the full Claude Code event list and examples.

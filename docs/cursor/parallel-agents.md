@@ -2,7 +2,19 @@
 sidebar_position: 14
 sidebar_label: Parallel Agents & Worktrees
 description: Run several Cursor agents at once with the Agents Window, isolate each one in a Git worktree, compare models with /best-of-n, and hand long tasks to the cloud.
-keywords: [Cursor parallel agents, Agents Window, git worktrees, worktrees.json, best-of-n, cloud agents, background agents, multi-agent coding, /worktree, /in-cloud]
+keywords:
+  [
+    Cursor parallel agents,
+    Agents Window,
+    git worktrees,
+    worktrees.json,
+    best-of-n,
+    cloud agents,
+    background agents,
+    multi-agent coding,
+    /worktree,
+    /in-cloud,
+  ]
 ---
 
 # Parallel Agents & Worktrees
@@ -13,12 +25,12 @@ Cursor lets you run more than one agent at the same time, each on its own task, 
 
 The Agents Window is Cursor's agent-first interface. It is a separate view from the classic editor that puts agents, not files, at the center. You manage agents across repositories and environments (local, cloud, remote SSH) from one place, and switch back to the editor whenever you need the full IDE.
 
-| Action | How |
-|--------|-----|
-| Open the Agents Window | `Cmd+Shift+P` (`Ctrl+Shift+P` on Windows/Linux) → **Open Agents Window** |
-| Return to the classic IDE | `Cmd+Shift+P` → **Open IDE** |
-| Search files without leaving the Agents Window | `Cmd+P` (file search) or `Cmd+Shift+F` (search all files) |
-| Manage running agents | Sidebar; pin the chats you return to most so they stay at the top |
+| Action                                         | How                                                                      |
+| ---------------------------------------------- | ------------------------------------------------------------------------ |
+| Open the Agents Window                         | `Cmd+Shift+P` (`Ctrl+Shift+P` on Windows/Linux) → **Open Agents Window** |
+| Return to the classic IDE                      | `Cmd+Shift+P` → **Open IDE**                                             |
+| Search files without leaving the Agents Window | `Cmd+P` (file search) or `Cmd+Shift+F` (search all files)                |
+| Manage running agents                          | Sidebar; pin the chats you return to most so they stay at the top        |
 
 Both views can be open at the same time. You can also view and edit files inside the Agents Window; you do not have to switch back for a quick look.
 
@@ -35,11 +47,11 @@ According to the official docs, these features live in the Agents Window rather 
 
 ### Agents Window or editor?
 
-| You want to | Use |
-|-------------|-----|
-| Run and manage many agents at once, let agents write most of the code | Agents Window |
-| Classic IDE with VS Code extensions and flexible screen splitting to see many files at once | Editor |
-| Both | Keep both open and move between them |
+| You want to                                                                                 | Use                                  |
+| ------------------------------------------------------------------------------------------- | ------------------------------------ |
+| Run and manage many agents at once, let agents write most of the code                       | Agents Window                        |
+| Classic IDE with VS Code extensions and flexible screen splitting to see many files at once | Editor                               |
+| Both                                                                                        | Keep both open and move between them |
 
 The Agents Window is generally available with Cursor 3 (released April 2, 2026). Enterprise admins had a two-week rollout window after launch to control access within their organization; after that, all users have access by default.
 
@@ -47,12 +59,12 @@ The Agents Window is generally available with Cursor 3 (released April 2, 2026).
 
 There are four distinct ways to get parallelism in Cursor. They are not interchangeable, so it helps to know which one you are reaching for.
 
-| Mechanism | Where it runs | Isolation | Best for |
-|-----------|---------------|-----------|----------|
-| **Several agents in the Agents Window** | Local, cloud, or remote | Shared checkout unless you put each one in a worktree | Independent tasks you supervise side by side |
+| Mechanism                                                                                       | Where it runs                                              | Isolation                                                                                            | Best for                                                                  |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Several agents in the Agents Window**                                                         | Local, cloud, or remote                                    | Shared checkout unless you put each one in a worktree                                                | Independent tasks you supervise side by side                              |
 | **Subagents** (`/multitask`, "Build in Parallel", or asking the agent to run tasks in parallel) | Inside one agent session, each with its own context window | Shared checkout by default; ask for isolation to give each one its own worktree or cloud environment | Splitting one task into parallel pieces without crowding the main context |
-| **Worktree runs** (`/worktree`, `/best-of-n`, `--worktree` in the CLI) | Local | Separate Git checkout per run | Risky or experimental changes, comparing models |
-| **Cloud agents** (`/in-cloud`, `&` prefix in the CLI, **Cloud** toggle by the input) | Dedicated VM per agent | Own clone and branch | Long tasks you want to walk away from |
+| **Worktree runs** (`/worktree`, `/best-of-n`, `--worktree` in the CLI)                          | Local                                                      | Separate Git checkout per run                                                                        | Risky or experimental changes, comparing models                           |
+| **Cloud agents** (`/in-cloud`, `&` prefix in the CLI, **Cloud** toggle by the input)            | Dedicated VM per agent                                     | Own clone and branch                                                                                 | Long tasks you want to walk away from                                     |
 
 ### Multitasking with subagents
 
@@ -81,12 +93,12 @@ A Git worktree is a second working directory attached to the same repository, ch
 
 ### Creating worktrees
 
-| Surface | How | Notes |
-|---------|-----|-------|
-| Agents Window | Start an agent in a worktree, or move a running agent into one | Cursor creates a separate checkout; the agent continues the task inside it |
-| Editor chat | `/worktree <task>` | The rest of that chat runs in a separate checkout |
-| Editor chat | `/best-of-n <models> <task>` | One worktree per model run (see below) |
-| CLI | `agent --worktree [name] "<task>"` or `-w` | Name is generated if omitted; add `--workspace <path>` to point at a specific repo root |
+| Surface       | How                                                            | Notes                                                                                   |
+| ------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Agents Window | Start an agent in a worktree, or move a running agent into one | Cursor creates a separate checkout; the agent continues the task inside it              |
+| Editor chat   | `/worktree <task>`                                             | The rest of that chat runs in a separate checkout                                       |
+| Editor chat   | `/best-of-n <models> <task>`                                   | One worktree per model run (see below)                                                  |
+| CLI           | `agent --worktree [name] "<task>"` or `-w`                     | Name is generated if omitted; add `--workspace <path>` to point at a specific repo root |
 
 Example prompts:
 
@@ -114,11 +126,11 @@ git worktree list
 
 A fresh worktree has none of your installed dependencies or local `.env` files. `.cursor/worktrees.json` tells Cursor how to prepare each new worktree. Cursor reads it when creating a worktree from the Agents Window, the editor, or the CLI, looking first in the worktree path and then in the project root.
 
-| Key | Applies to | Precedence |
-|-----|-----------|------------|
-| `setup-worktree-unix` | macOS and Linux | Wins over `setup-worktree` on Unix |
-| `setup-worktree-windows` | Windows | Wins over `setup-worktree` on Windows |
-| `setup-worktree` | All operating systems | Generic fallback |
+| Key                      | Applies to            | Precedence                            |
+| ------------------------ | --------------------- | ------------------------------------- |
+| `setup-worktree-unix`    | macOS and Linux       | Wins over `setup-worktree` on Unix    |
+| `setup-worktree-windows` | Windows               | Wins over `setup-worktree` on Windows |
+| `setup-worktree`         | All operating systems | Generic fallback                      |
 
 Each key accepts either an **array of shell commands** (run sequentially inside the worktree) or a **string path to a script file** relative to `.cursor/worktrees.json`. The environment variable `ROOT_WORKTREE_PATH` points at your main checkout, which is how you copy over untracked files like `.env`.
 
@@ -126,10 +138,7 @@ Node.js project:
 
 ```json
 {
-  "setup-worktree": [
-    "npm ci",
-    "cp $ROOT_WORKTREE_PATH/.env .env"
-  ]
+  "setup-worktree": ["npm ci", "cp $ROOT_WORKTREE_PATH/.env .env"]
 }
 ```
 
@@ -137,11 +146,7 @@ Project with database migrations:
 
 ```json
 {
-  "setup-worktree": [
-    "npm ci",
-    "cp $ROOT_WORKTREE_PATH/.env .env",
-    "npm run db:migrate"
-  ]
+  "setup-worktree": ["npm ci", "cp $ROOT_WORKTREE_PATH/.env .env", "npm run db:migrate"]
 }
 ```
 
@@ -177,11 +182,11 @@ To debug a setup script, open the **Output** panel in the editor and select **Wo
 
 Worktree runs never merge themselves back. When an agent finishes in a worktree you have three options:
 
-| Option | How | When |
-|--------|-----|------|
-| Ship straight from the worktree | Ask the agent: `Commit and push these changes, then open a PR` | The branch is meant to become its own PR anyway |
-| Bring changes into your main checkout | `/apply-worktree` | You want to test or continue the work locally before committing |
-| Discard | `/delete-worktree` | The experiment did not pan out |
+| Option                                | How                                                            | When                                                            |
+| ------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------- |
+| Ship straight from the worktree       | Ask the agent: `Commit and push these changes, then open a PR` | The branch is meant to become its own PR anyway                 |
+| Bring changes into your main checkout | `/apply-worktree`                                              | You want to test or continue the work locally before committing |
+| Discard                               | `/delete-worktree`                                             | The experiment did not pan out                                  |
 
 In the Agents Window, review the result in the diffs view, then keep working in the worktree, create a commit or PR from that checkout, or bring the result back into your main workspace.
 
@@ -225,15 +230,15 @@ Best-of-N multiplies cost by the number of models. Three models on one task is r
 
 Background agents are agents that run for a long time without you watching. In Cursor these are **Cloud Agents**: each one runs on its own dedicated VM with your repository, dependencies, secrets, and network access, plans the task, edits code, runs commands, and tests its work over minutes or hours. Because the VM is sandboxed and isolated from your laptop, you can close the lid and check later.
 
-| Start from | How |
-|-----------|-----|
-| Cursor desktop | Select **Cloud** by the agent input |
-| A local agent session (Agents Window) | `/in-cloud`, then submit the task; it runs as a cloud subagent on its own VM and branch |
-| A PR | `/autopilot` or the quick-action pill: a cloud subagent iterates until the PR is ready to merge |
-| Cursor CLI | Prefix any message with `&` |
-| Web or mobile | [cursor.com/agents](https://cursor.com/agents) |
-| Slack, GitHub, Linear | Mention **@Cursor** |
-| A schedule or event | Automations |
+| Start from                            | How                                                                                             |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Cursor desktop                        | Select **Cloud** by the agent input                                                             |
+| A local agent session (Agents Window) | `/in-cloud`, then submit the task; it runs as a cloud subagent on its own VM and branch         |
+| A PR                                  | `/autopilot` or the quick-action pill: a cloud subagent iterates until the PR is ready to merge |
+| Cursor CLI                            | Prefix any message with `&`                                                                     |
+| Web or mobile                         | [cursor.com/agents](https://cursor.com/agents)                                                  |
+| Slack, GitHub, Linear                 | Mention **@Cursor**                                                                             |
+| A schedule or event                   | Automations                                                                                     |
 
 Cloud agents show their work: as they test changes they attach screenshots, videos, and logs to the pull request, so you can validate without checking out the branch. You can also take control of the agent's remote desktop to use what it built.
 
@@ -289,14 +294,14 @@ Do not touch shared files outside your task. I will merge the branches myself.
 
 ## Cost and context tradeoffs
 
-| Factor | Single agent | N parallel agents |
-|--------|-------------|-------------------|
-| Token usage | Baseline | Roughly N times over the same wall-clock period |
-| Context per agent | Grows across the whole task | Stays focused on one slice |
-| Risk of context compression losing detail | Higher on long tasks | Lower per agent |
-| Wall-clock time for independent work | Sequential | Parallel |
-| Merge and review overhead | None | One branch per agent |
-| Disk and setup | None | One checkout plus dependency install per worktree |
+| Factor                                    | Single agent                | N parallel agents                                 |
+| ----------------------------------------- | --------------------------- | ------------------------------------------------- |
+| Token usage                               | Baseline                    | Roughly N times over the same wall-clock period   |
+| Context per agent                         | Grows across the whole task | Stays focused on one slice                        |
+| Risk of context compression losing detail | Higher on long tasks        | Lower per agent                                   |
+| Wall-clock time for independent work      | Sequential                  | Parallel                                          |
+| Merge and review overhead                 | None                        | One branch per agent                              |
+| Disk and setup                            | None                        | One checkout plus dependency install per worktree |
 
 Practical guidance:
 

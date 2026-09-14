@@ -2,7 +2,19 @@
 sidebar_position: 13
 sidebar_label: Automation & Non-interactive Mode
 description: Run Codex without a TUI using codex exec, the Codex SDK, the GitHub Action, and scheduled tasks, and compose skills, agents, and hooks into workflows.
-keywords: [codex exec, non-interactive mode, Codex SDK, Codex GitHub Action, JSONL output, output schema, scheduled tasks, app server, CI automation, workflow orchestration]
+keywords:
+  [
+    codex exec,
+    non-interactive mode,
+    Codex SDK,
+    Codex GitHub Action,
+    JSONL output,
+    output schema,
+    scheduled tasks,
+    app server,
+    CI automation,
+    workflow orchestration,
+  ]
 ---
 
 # Automation & Non-interactive Mode
@@ -11,19 +23,19 @@ Everything Codex does interactively can also run from a script, a CI job, an app
 
 ## Building blocks
 
-| Block | Role in automation | Where it lives |
-|---|---|---|
-| `AGENTS.md` | Always-on repo rules the automated run inherits | Repo root and nested folders ([AGENTS.md & Memories](./agents-md.md)) |
-| Skill | Named procedure invoked with `$skill` in the prompt | `.agents/skills/<name>/SKILL.md` ([Skills](./skills.md)) |
-| Custom agent | Isolated worker with its own model, effort, sandbox, tools | `.codex/agents/<name>.toml` ([Subagents](./subagents.md)) |
-| Hook | Deterministic script on lifecycle events (`PreToolUse`, `Stop`, and so on) | `.codex/hooks.json` ([Hooks](./hooks.md)) |
-| MCP server | External tools the run may call | `config.toml` or a plugin ([MCP](./mcp.md)) |
-| `codex exec` | Runs one prompt to completion, prints the result | CLI |
-| `codex review` | Non-interactive code review of a diff | CLI |
-| Codex SDK | Threads and turns from TypeScript or Python | `@openai/codex-sdk`, `openai-codex` |
-| GitHub Action | `codex exec` inside a workflow with an API-key proxy | `openai/codex-action@v1` |
-| Scheduled tasks | Recurring unattended runs | ChatGPT desktop app or web |
-| App server | JSON-RPC protocol for building your own client | `codex app-server` |
+| Block           | Role in automation                                                         | Where it lives                                                        |
+| --------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `AGENTS.md`     | Always-on repo rules the automated run inherits                            | Repo root and nested folders ([AGENTS.md & Memories](./agents-md.md)) |
+| Skill           | Named procedure invoked with `$skill` in the prompt                        | `.agents/skills/<name>/SKILL.md` ([Skills](./skills.md))              |
+| Custom agent    | Isolated worker with its own model, effort, sandbox, tools                 | `.codex/agents/<name>.toml` ([Subagents](./subagents.md))             |
+| Hook            | Deterministic script on lifecycle events (`PreToolUse`, `Stop`, and so on) | `.codex/hooks.json` ([Hooks](./hooks.md))                             |
+| MCP server      | External tools the run may call                                            | `config.toml` or a plugin ([MCP](./mcp.md))                           |
+| `codex exec`    | Runs one prompt to completion, prints the result                           | CLI                                                                   |
+| `codex review`  | Non-interactive code review of a diff                                      | CLI                                                                   |
+| Codex SDK       | Threads and turns from TypeScript or Python                                | `@openai/codex-sdk`, `openai-codex`                                   |
+| GitHub Action   | `codex exec` inside a workflow with an API-key proxy                       | `openai/codex-action@v1`                                              |
+| Scheduled tasks | Recurring unattended runs                                                  | ChatGPT desktop app or web                                            |
+| App server      | JSON-RPC protocol for building your own client                             | `codex app-server`                                                    |
 
 ## `codex exec`
 
@@ -45,30 +57,30 @@ codex exec --ephemeral "triage this repository and suggest next steps"   # no se
 
 ### Flags
 
-| Flag | Values | Purpose |
-|---|---|---|
-| `PROMPT` | string or `-` | The task. Use `-` to read the whole prompt from stdin |
-| `--sandbox, -s` | `read-only`, `workspace-write`, `danger-full-access` | Sandbox for model-generated commands. Defaults to config (read-only for `exec`) |
-| `--ask-for-approval, -a` | `on-request`, `never` | Global flag controlling approval pauses; non-interactive runs cannot answer a prompt |
-| `--json` | boolean | Emit newline-delimited JSON events on stdout instead of formatted text |
-| `--output-last-message, -o` | path | Write the final message to a file (still printed to stdout) |
-| `--output-schema` | path | JSON Schema the final response must conform to |
-| `--model, -m` | string | Override the configured model, for example `gpt-5.6-terra` |
-| `--profile, -p` | string | Layer `$CODEX_HOME/<name>.config.toml` on top of the base config |
-| `-c, --config` | `key=value` | Inline config override, repeatable (values parse as TOML) |
-| `--cd, -C` | path | Workspace root for the run |
-| `--add-dir` | path | Extra writable directories (prefer this over `danger-full-access`) |
-| `--image, -i` | paths | Attach images to the first message |
-| `--ephemeral` | boolean | Do not persist session rollout files |
-| `--ignore-user-config` | boolean | Skip `$CODEX_HOME/config.toml` (auth still uses `CODEX_HOME`) |
-| `--ignore-rules` | boolean | Skip user and project execpolicy `.rules` files |
-| `--skip-git-repo-check` | boolean | Allow running outside a Git repository |
-| `--strict-config` | boolean | Fail if `config.toml` has keys this version does not recognize |
-| `--dangerously-bypass-approvals-and-sandbox`, `--yolo` | boolean | No approvals, no sandbox. Only inside an isolated runner |
-| `--dangerously-bypass-hook-trust` | boolean | Run enabled hooks without persisted trust; only when you vet hook sources elsewhere |
-| `--full-auto` | boolean | Deprecated; prints a warning. Use `--sandbox workspace-write` |
-| `--color` | `always`, `never`, `auto` | ANSI color on stdout |
-| `--oss`, `--local-provider` | `lmstudio`, `ollama` | Use a local open-source provider |
+| Flag                                                   | Values                                               | Purpose                                                                              |
+| ------------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `PROMPT`                                               | string or `-`                                        | The task. Use `-` to read the whole prompt from stdin                                |
+| `--sandbox, -s`                                        | `read-only`, `workspace-write`, `danger-full-access` | Sandbox for model-generated commands. Defaults to config (read-only for `exec`)      |
+| `--ask-for-approval, -a`                               | `on-request`, `never`                                | Global flag controlling approval pauses; non-interactive runs cannot answer a prompt |
+| `--json`                                               | boolean                                              | Emit newline-delimited JSON events on stdout instead of formatted text               |
+| `--output-last-message, -o`                            | path                                                 | Write the final message to a file (still printed to stdout)                          |
+| `--output-schema`                                      | path                                                 | JSON Schema the final response must conform to                                       |
+| `--model, -m`                                          | string                                               | Override the configured model, for example `gpt-5.6-terra`                           |
+| `--profile, -p`                                        | string                                               | Layer `$CODEX_HOME/<name>.config.toml` on top of the base config                     |
+| `-c, --config`                                         | `key=value`                                          | Inline config override, repeatable (values parse as TOML)                            |
+| `--cd, -C`                                             | path                                                 | Workspace root for the run                                                           |
+| `--add-dir`                                            | path                                                 | Extra writable directories (prefer this over `danger-full-access`)                   |
+| `--image, -i`                                          | paths                                                | Attach images to the first message                                                   |
+| `--ephemeral`                                          | boolean                                              | Do not persist session rollout files                                                 |
+| `--ignore-user-config`                                 | boolean                                              | Skip `$CODEX_HOME/config.toml` (auth still uses `CODEX_HOME`)                        |
+| `--ignore-rules`                                       | boolean                                              | Skip user and project execpolicy `.rules` files                                      |
+| `--skip-git-repo-check`                                | boolean                                              | Allow running outside a Git repository                                               |
+| `--strict-config`                                      | boolean                                              | Fail if `config.toml` has keys this version does not recognize                       |
+| `--dangerously-bypass-approvals-and-sandbox`, `--yolo` | boolean                                              | No approvals, no sandbox. Only inside an isolated runner                             |
+| `--dangerously-bypass-hook-trust`                      | boolean                                              | Run enabled hooks without persisted trust; only when you vet hook sources elsewhere  |
+| `--full-auto`                                          | boolean                                              | Deprecated; prints a warning. Use `--sandbox workspace-write`                        |
+| `--color`                                              | `always`, `never`, `auto`                            | ANSI color on stdout                                                                 |
+| `--oss`, `--local-provider`                            | `lmstudio`, `ollama`                                 | Use a local open-source provider                                                     |
 
 ### Permissions and safety
 
@@ -112,10 +124,10 @@ The official tip for CI: pair `--json` with `--output-last-message` so you get m
 {
   "type": "object",
   "properties": {
-    "verdict": { "type": "string", "enum": ["pass", "fail"] },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]},
     "findings": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {"type": "string"}
     }
   },
   "required": ["verdict", "findings"],
@@ -131,10 +143,10 @@ codex exec "Review the diff against main for correctness. Return a verdict and f
 
 ### Stdin patterns
 
-| Pattern | Command | When |
-|---|---|---|
-| Prompt plus stdin | `cmd \| codex exec "instruction"` | You know the instruction; piped content becomes context |
-| Stdin is the prompt | `cmd \| codex exec -` | A script assembles the entire prompt |
+| Pattern             | Command                           | When                                                    |
+| ------------------- | --------------------------------- | ------------------------------------------------------- |
+| Prompt plus stdin   | `cmd \| codex exec "instruction"` | You know the instruction; piped content becomes context |
+| Stdin is the prompt | `cmd \| codex exec -`             | A script assembles the entire prompt                    |
 
 ```bash
 npm test 2>&1 | codex exec "summarize the failing tests and propose the smallest likely fix" | tee test-summary.md
@@ -254,28 +266,28 @@ npm install @openai/codex-sdk
 Requires Node.js 18+ and runs server-side; the SDK spawns the `codex` CLI and exchanges JSONL events with it.
 
 ```typescript
-import { Codex } from "@openai/codex-sdk";
+import {Codex} from '@openai/codex-sdk';
 
 const codex = new Codex();
 const thread = codex.startThread({
-  workingDirectory: "/path/to/project",
+  workingDirectory: '/path/to/project',
   skipGitRepoCheck: false,
 });
 
-const plan = await thread.run("Make a plan to diagnose and fix the CI failures");
+const plan = await thread.run('Make a plan to diagnose and fix the CI failures');
 console.log(plan.finalResponse);
 
-const fix = await thread.run("Implement the plan");   // same thread, same context
+const fix = await thread.run('Implement the plan'); // same thread, same context
 console.log(fix.items);
 ```
 
 **Streaming** intermediate events:
 
 ```typescript
-const { events } = await thread.runStreamed("Diagnose the test failure and propose a fix");
+const {events} = await thread.runStreamed('Diagnose the test failure and propose a fix');
 for await (const event of events) {
-  if (event.type === "item.completed") console.log("item", event.item);
-  if (event.type === "turn.completed") console.log("usage", event.usage);
+  if (event.type === 'item.completed') console.log('item', event.item);
+  if (event.type === 'turn.completed') console.log('usage', event.usage);
 }
 ```
 
@@ -283,16 +295,16 @@ for await (const event of events) {
 
 ```typescript
 const schema = {
-  type: "object",
+  type: 'object',
   properties: {
-    summary: { type: "string" },
-    status: { type: "string", enum: ["ok", "action_required"] },
+    summary: {type: 'string'},
+    status: {type: 'string', enum: ['ok', 'action_required']},
   },
-  required: ["summary", "status"],
+  required: ['summary', 'status'],
   additionalProperties: false,
 } as const;
 
-const turn = await thread.run("Summarize repository status", { outputSchema: schema });
+const turn = await thread.run('Summarize repository status', {outputSchema: schema});
 const result = JSON.parse(turn.finalResponse);
 ```
 
@@ -302,17 +314,17 @@ You can generate the schema from Zod with `zod-to-json-schema` using `target: "o
 
 ```typescript
 const thread = codex.resumeThread(process.env.CODEX_THREAD_ID!);
-await thread.run("Pick up where you left off");
+await thread.run('Pick up where you left off');
 ```
 
 **Configuration** is passed as flattened `--config` overrides, and you can pin the CLI's environment:
 
 ```typescript
 const codex = new Codex({
-  env: { PATH: "/usr/local/bin" },
+  env: {PATH: '/usr/local/bin'},
   config: {
-    sandbox_mode: "workspace-write",
-    sandbox_workspace_write: { network_access: false },
+    sandbox_mode: 'workspace-write',
+    sandbox_workspace_write: {network_access: false},
   },
 });
 ```
@@ -392,17 +404,17 @@ jobs:
           CODEX_FINAL_MESSAGE: ${{ needs.codex.outputs.final_message }}
 ```
 
-| Input | Purpose |
-|---|---|
-| `prompt` or `prompt-file` | Inline task or a repo path (store prompts under `.github/codex/prompts/`); set exactly one |
-| `codex-args` | Extra CLI flags as a JSON array or shell string (`["--ephemeral"]`, `--profile ci`, `--output-schema ...`) |
-| `model`, `effort` | Agent configuration; empty means defaults |
-| `sandbox` | `read-only`, `workspace-write`, `danger-full-access` |
-| `output-file` | Save the final message for later steps or artifacts |
-| `codex-version` | Pin a CLI release |
-| `codex-home` | Shared Codex home to reuse config and MCP setup across steps |
-| `safety-strategy` | `drop-sudo` (default, irreversible for the job), `unprivileged-user` (with `codex-user`), `unsafe` (required on Windows) |
-| `allow-users`, `allow-bots` | Who may trigger the workflow beyond write collaborators |
+| Input                       | Purpose                                                                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `prompt` or `prompt-file`   | Inline task or a repo path (store prompts under `.github/codex/prompts/`); set exactly one                               |
+| `codex-args`                | Extra CLI flags as a JSON array or shell string (`["--ephemeral"]`, `--profile ci`, `--output-schema ...`)               |
+| `model`, `effort`           | Agent configuration; empty means defaults                                                                                |
+| `sandbox`                   | `read-only`, `workspace-write`, `danger-full-access`                                                                     |
+| `output-file`               | Save the final message for later steps or artifacts                                                                      |
+| `codex-version`             | Pin a CLI release                                                                                                        |
+| `codex-home`                | Shared Codex home to reuse config and MCP setup across steps                                                             |
+| `safety-strategy`           | `drop-sudo` (default, irreversible for the job), `unprivileged-user` (with `codex-user`), `unsafe` (required on Windows) |
+| `allow-users`, `allow-bots` | Who may trigger the workflow beyond write collaborators                                                                  |
 
 The action's `final-message` output carries the last Codex message. The **autofix on CI failure** pattern from the official docs splits work into two jobs: the Codex job has `contents: read` only and uploads a `git diff` patch as an artifact; a second job with write permissions (but no API key) applies the patch and opens a PR. Keep Codex as the **last** step in its job so later steps do not inherit state changes.
 
@@ -575,19 +587,19 @@ Interactively, the same flow is three prompts: `$rpi-research ...`, `$rpi-plan`,
 
 ## Compared with Claude Code
 
-| | Codex | Claude Code |
-|---|---|---|
-| Non-interactive command | `codex exec "..."`, `codex e` | `claude -p "..."` (`--print`) |
-| Structured stream | `--json` JSONL events (`thread.*`, `turn.*`, `item.*`) | `--output-format stream-json` |
-| Final message to file | `-o`, `--output-last-message` | Redirect stdout |
-| Schema-constrained output | `--output-schema file.json` | `--json-schema <schema>` |
-| No session on disk | `--ephemeral` | `--no-session-persistence` |
-| Resume | `codex exec resume --last`, by session ID | `--resume`, `--continue` |
-| Skip personal config | `--ignore-user-config`, `--ignore-rules` | `--bare` |
-| SDK | `@openai/codex-sdk` (TypeScript), `openai-codex` (Python) | See [Claude Code Flags](../claude-code/flags.md) for headless options |
-| CI integration | `openai/codex-action@v1` with API-key proxy and `safety-strategy` | Claude GitHub Actions app via `/install-github-app` |
-| Scheduled runs | Scheduled tasks in the ChatGPT desktop app or web (not CLI) | `/loop [interval]` inside a session; external schedulers otherwise |
-| Workflow primitives | Skills (`$name`), TOML custom agents, hooks, `AGENTS.md` | Skills (`/name`), Markdown subagents, hooks, `CLAUDE.md` |
-| Long-running interactive mode | `/goal` | Plan mode (`/plan`), background tasks |
+|                               | Codex                                                             | Claude Code                                                           |
+| ----------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Non-interactive command       | `codex exec "..."`, `codex e`                                     | `claude -p "..."` (`--print`)                                         |
+| Structured stream             | `--json` JSONL events (`thread.*`, `turn.*`, `item.*`)            | `--output-format stream-json`                                         |
+| Final message to file         | `-o`, `--output-last-message`                                     | Redirect stdout                                                       |
+| Schema-constrained output     | `--output-schema file.json`                                       | `--json-schema <schema>`                                              |
+| No session on disk            | `--ephemeral`                                                     | `--no-session-persistence`                                            |
+| Resume                        | `codex exec resume --last`, by session ID                         | `--resume`, `--continue`                                              |
+| Skip personal config          | `--ignore-user-config`, `--ignore-rules`                          | `--bare`                                                              |
+| SDK                           | `@openai/codex-sdk` (TypeScript), `openai-codex` (Python)         | See [Claude Code Flags](../claude-code/flags.md) for headless options |
+| CI integration                | `openai/codex-action@v1` with API-key proxy and `safety-strategy` | Claude GitHub Actions app via `/install-github-app`                   |
+| Scheduled runs                | Scheduled tasks in the ChatGPT desktop app or web (not CLI)       | `/loop [interval]` inside a session; external schedulers otherwise    |
+| Workflow primitives           | Skills (`$name`), TOML custom agents, hooks, `AGENTS.md`          | Skills (`/name`), Markdown subagents, hooks, `CLAUDE.md`              |
+| Long-running interactive mode | `/goal`                                                           | Plan mode (`/plan`), background tasks                                 |
 
 See [Claude Code Workflows & Orchestration](../claude-code/workflows.md) for the Claude Code patterns this page mirrors, and [Claude Code Hooks](../claude-code/hooks.md) for the hook model on that side.

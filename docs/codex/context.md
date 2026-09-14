@@ -2,7 +2,19 @@
 sidebar_position: 4
 sidebar_label: Managing Context
 description: How to manage the Codex context window with compaction, reasoning effort, Fast mode, goals, session resume and fork, image inputs, and reasoning display.
-keywords: [Codex context window, /compact, auto compaction, model_reasoning_effort, Codex fast mode, codex resume, /goal, image inputs, hide_agent_reasoning, Codex context management]
+keywords:
+  [
+    Codex context window,
+    /compact,
+    auto compaction,
+    model_reasoning_effort,
+    Codex fast mode,
+    codex resume,
+    /goal,
+    image inputs,
+    hide_agent_reasoning,
+    Codex context management,
+  ]
 ---
 
 # Managing Context
@@ -11,12 +23,12 @@ Even with large context windows, model output degrades as a chat fills with expl
 
 ## Watching context usage
 
-| Where | What you see |
-|-------|--------------|
-| `/status` | Active model, approval policy, writable roots, and token usage including remaining context capacity |
-| Footer status line | Configure with `/statusline`: items include model, model+reasoning, context stats, rate limits, git branch, token counters, session id, and directory |
-| `/usage [daily\|weekly\|cumulative]` | ChatGPT account token activity and rate-limit windows (not the current context window) |
-| IDE `/status` | Chat ID, context usage, and rate limits |
+| Where                                | What you see                                                                                                                                          |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/status`                            | Active model, approval policy, writable roots, and token usage including remaining context capacity                                                   |
+| Footer status line                   | Configure with `/statusline`: items include model, model+reasoning, context stats, rate limits, git branch, token counters, session id, and directory |
+| `/usage [daily\|weekly\|cumulative]` | ChatGPT account token activity and rate-limit windows (not the current context window)                                                                |
+| IDE `/status`                        | Chat ID, context usage, and rate limits                                                                                                               |
 
 If you want the context figure visible at all times, run `/statusline` once and enable the context stats item; the choice persists to `tui.status_line` in `config.toml`.
 
@@ -30,11 +42,11 @@ After a long exchange, type `/compact`. Codex replaces earlier turns with a conc
 
 Codex also compacts automatically when the chat approaches a model-specific token threshold. Three `config.toml` keys tune this:
 
-| Key | Purpose |
-|-----|---------|
-| `model_auto_compact_token_limit` | Token threshold that triggers automatic compaction. Unset uses the model default. |
+| Key                                    | Purpose                                                                                                                              |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `model_auto_compact_token_limit`       | Token threshold that triggers automatic compaction. Unset uses the model default.                                                    |
 | `model_auto_compact_token_limit_scope` | `total` (default) counts the full active context; `body_after_prefix` counts only growth after the carried compaction-window prefix. |
-| `model_context_window` | Override the context window size Codex assumes for the active model (useful with custom providers). |
+| `model_context_window`                 | Override the context window size Codex assumes for the active model (useful with custom providers).                                  |
 
 ```toml
 # ~/.codex/config.toml
@@ -81,14 +93,14 @@ There is no exact mapping between GPT-5.5 and GPT-5.6 effort levels; retry a fam
 
 ### How to set it
 
-| Way to adjust | How |
-|---------------|-----|
-| `/model` | Pick the model and, when available, the reasoning effort for the current chat |
-| `config.toml` | `model_reasoning_effort = "high"` as your default |
-| One run | `codex -c model_reasoning_effort=high` or `codex exec -c model_reasoning_effort=low "..."` |
-| Profile | Put `model_reasoning_effort` in `~/.codex/<name>.config.toml` and select it with `--profile <name>` (see [CLI Flags & Configuration](./flags.md)) |
-| Plan mode | `plan_mode_reasoning_effort` overrides the effort used only while planning (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`) |
-| IDE extension | `/reasoning` in the composer, or the model switcher below it |
+| Way to adjust    | How                                                                                                                                                                        |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/model`         | Pick the model and, when available, the reasoning effort for the current chat                                                                                              |
+| `config.toml`    | `model_reasoning_effort = "high"` as your default                                                                                                                          |
+| One run          | `codex -c model_reasoning_effort=high` or `codex exec -c model_reasoning_effort=low "..."`                                                                                 |
+| Profile          | Put `model_reasoning_effort` in `~/.codex/<name>.config.toml` and select it with `--profile <name>` (see [CLI Flags & Configuration](./flags.md))                          |
+| Plan mode        | `plan_mode_reasoning_effort` overrides the effort used only while planning (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`)                                           |
+| IDE extension    | `/reasoning` in the composer, or the model switcher below it                                                                                                               |
 | Managed defaults | Admins can set `[models.new_thread] model_reasoning_effort` as a default for new threads; an explicit `--model`, `--config`, or `--profile` override makes Codex ignore it |
 
 ```toml
@@ -111,11 +123,11 @@ Fast mode speeds up a supported model in exchange for higher credit consumption:
 - GPT-5.6, GPT-5.5, and GPT-5.4: about 1.5x faster. GPT-5.6 and GPT-5.5 consume credits at 2.5x the Standard rate; GPT-5.4 at 2x.
 - GPT-6 Astra Fast mode consumes credits at 2.5x where available.
 
-| Control | How |
-|---------|-----|
-| Toggle in the TUI | `/fast on`, `/fast off`, `/fast status` (only shown when the model catalog exposes a Fast tier) |
-| Persist the default | `service_tier = "fast"` plus `[features] fast_mode = true` in `config.toml` |
-| Show it in the footer | Add the Fast mode item via `/statusline` |
+| Control               | How                                                                                             |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| Toggle in the TUI     | `/fast on`, `/fast off`, `/fast status` (only shown when the model catalog exposes a Fast tier) |
+| Persist the default   | `service_tier = "fast"` plus `[features] fast_mode = true` in `config.toml`                     |
+| Show it in the footer | Add the Fast mode item via `/statusline`                                                        |
 
 Fast mode is a ChatGPT credit feature available in the CLI, IDE extension, and desktop app when you sign in with ChatGPT. With an API key, Codex bills API token pricing instead: `fast` maps to the API's `priority` service tier, which for GPT-5.6 costs 2x the Standard API rate.
 
@@ -130,21 +142,23 @@ For work that spans many steps, give Codex an outcome, constraints, and a defini
 If the outcome is still fuzzy, start with `/plan`, ask Codex to interview you and turn the result into a goal with measurable success criteria, then start the refined goal with `/goal`.
 
 **Weak:**
+
 ```text
 Migrate the codebase to TypeScript.
 ```
 
 **Strong:**
+
 ```text
 Migrate this codebase from JavaScript to TypeScript. Preserve existing behavior,
 compile in strict mode without explicit `any` types, and make the full test suite pass.
 ```
 
-| Goal element | Include |
-|--------------|---------|
-| **Outcome** | The result you want, not just the activity |
-| **Constraints** | Required tools, boundaries, compatibility needs, approaches to avoid |
-| **Verification** | Tests, measurements, or review criteria that prove completion |
+| Goal element     | Include                                                              |
+| ---------------- | -------------------------------------------------------------------- |
+| **Outcome**      | The result you want, not just the activity                           |
+| **Constraints**  | Required tools, boundaries, compatibility needs, approaches to avoid |
+| **Verification** | Tests, measurements, or review criteria that prove completion        |
 
 ### Steering a running turn
 
@@ -162,15 +176,15 @@ Each chat keeps its own context, results, and goal. Run several concurrently, bu
 
 The docs' rule of thumb: **one chat per coherent unit of work**. Staying in the same chat preserves the reasoning trail while the work is still the same problem; using one chat for an entire project leads to bloated context and worse results. Fork only when the work truly branches.
 
-| Action | In the TUI | From the shell |
-|--------|-----------|----------------|
-| Start fresh | `/new [name]` (keeps the screen) or `/clear [name]` (clears it) | `codex` |
-| Resume a saved chat | `/resume` (picker) | `codex resume` (picker), `codex resume --last`, `codex resume <SESSION_ID or name>`; add `--all` to include other directories, `--include-non-interactive` to include `codex exec` sessions |
-| Branch without losing the original | `/fork` (current chat) | `codex fork` (picker), `codex fork --last` |
-| Rewind to an earlier point | `Esc` `Esc` with an empty composer to edit a previous message and fork from there | |
-| Quick aside | `/side [prompt]` | |
-| Clean up | `/archive`, `/delete` | `codex archive <SESSION>`, `codex unarchive <SESSION>`, `codex delete <SESSION>` |
-| Continue a headless run | | `codex exec resume --last "follow-up"` |
+| Action                             | In the TUI                                                                        | From the shell                                                                                                                                                                              |
+| ---------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Start fresh                        | `/new [name]` (keeps the screen) or `/clear [name]` (clears it)                   | `codex`                                                                                                                                                                                     |
+| Resume a saved chat                | `/resume` (picker)                                                                | `codex resume` (picker), `codex resume --last`, `codex resume <SESSION_ID or name>`; add `--all` to include other directories, `--include-non-interactive` to include `codex exec` sessions |
+| Branch without losing the original | `/fork` (current chat)                                                            | `codex fork` (picker), `codex fork --last`                                                                                                                                                  |
+| Rewind to an earlier point         | `Esc` `Esc` with an empty composer to edit a previous message and fork from there |                                                                                                                                                                                             |
+| Quick aside                        | `/side [prompt]`                                                                  |                                                                                                                                                                                             |
+| Clean up                           | `/archive`, `/delete`                                                             | `codex archive <SESSION>`, `codex unarchive <SESSION>`, `codex delete <SESSION>`                                                                                                            |
+| Continue a headless run            |                                                                                   | `codex exec resume --last "follow-up"`                                                                                                                                                      |
 
 `codex resume` and `codex fork` accept the same global flags as `codex`, including `--model` and sandbox overrides. When your current directory differs from the session's saved directory, Codex asks which to use; set `tui.resume_cwd = "current"` or `"session"` to skip the prompt (an explicit `--cd` wins).
 
@@ -197,11 +211,13 @@ codex exec -i mockup.png "Implement this layout in src/components/Card.tsx"
 Write the prompt around the image: name what it shows, point at the region that matters, and state the output and constraints.
 
 **Weak:**
+
 ```text
 Fix this.
 ```
 
 **Strong:**
+
 ```text
 Compare this checkout screen with the design. Fix spacing and typography only;
 do not change behavior. Verify the result with a new screenshot.
@@ -211,13 +227,13 @@ do not change behavior. Verify the result with a new screenshot.
 
 Codex streams reasoning summaries into the transcript. Control how much you see:
 
-| Key | Values | Effect |
-|-----|--------|--------|
-| `model_reasoning_summary` | `auto`, `concise`, `detailed`, `none` | Summary detail, or disable summaries |
-| `hide_agent_reasoning` | `true` / `false` | Suppress reasoning events in the TUI and `codex exec` output (useful for CI logs) |
-| `show_raw_agent_reasoning` | `true` / `false` | Surface raw reasoning content when the model emits it (some models and providers, such as `gpt-oss`, emit none) |
-| `model_supports_reasoning_summaries` | `true` / `false` | Force Codex to send or not send reasoning metadata |
-| `model_verbosity` | `low`, `medium`, `high` | Response length for GPT-5 family models on the Responses API |
+| Key                                  | Values                                | Effect                                                                                                          |
+| ------------------------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `model_reasoning_summary`            | `auto`, `concise`, `detailed`, `none` | Summary detail, or disable summaries                                                                            |
+| `hide_agent_reasoning`               | `true` / `false`                      | Suppress reasoning events in the TUI and `codex exec` output (useful for CI logs)                               |
+| `show_raw_agent_reasoning`           | `true` / `false`                      | Surface raw reasoning content when the model emits it (some models and providers, such as `gpt-oss`, emit none) |
+| `model_supports_reasoning_summaries` | `true` / `false`                      | Force Codex to send or not send reasoning metadata                                                              |
+| `model_verbosity`                    | `low`, `medium`, `high`               | Response length for GPT-5 family models on the Responses API                                                    |
 
 ```toml
 # Quiet CI output
@@ -239,16 +255,16 @@ Use `/statusline` to add the model+reasoning item if you want the current effort
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Usage view | `/status` and footer via `/statusline` | `/context` grid and `/cost` |
-| Manual compaction | `/compact` (no custom instructions argument documented) | `/compact [instructions]` |
-| Auto compaction tuning | `model_auto_compact_token_limit`, `_scope`, `compact_prompt`; `PreCompact` / `PostCompact` hooks | Automatic at a late threshold; `PreCompact` / `PostCompact` hooks |
-| Effort | `/model` picker or `model_reasoning_effort` (`minimal` to `xhigh`) | `/effort`, `--effort`, `CLAUDE_CODE_EFFORT_LEVEL` (`low` to `max`) |
-| Faster output | `/fast`, `service_tier = "fast"` | `/fast` |
-| Rewind | `Esc` `Esc` edits a previous message and forks; no file checkpoints documented | `/rewind` restores conversation and file state |
-| Long tasks | `/goal` with pause, resume, edit | `/goal` |
-| Aside | `/side` (alias `/btw`) | `/btw` |
-| Thinking display | `model_reasoning_summary`, `hide_agent_reasoning`, `show_raw_agent_reasoning` | `Ctrl+O` verbose toggle, `showThinkingSummaries` |
+| Topic                  | Codex                                                                                            | Claude Code                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Usage view             | `/status` and footer via `/statusline`                                                           | `/context` grid and `/cost`                                        |
+| Manual compaction      | `/compact` (no custom instructions argument documented)                                          | `/compact [instructions]`                                          |
+| Auto compaction tuning | `model_auto_compact_token_limit`, `_scope`, `compact_prompt`; `PreCompact` / `PostCompact` hooks | Automatic at a late threshold; `PreCompact` / `PostCompact` hooks  |
+| Effort                 | `/model` picker or `model_reasoning_effort` (`minimal` to `xhigh`)                               | `/effort`, `--effort`, `CLAUDE_CODE_EFFORT_LEVEL` (`low` to `max`) |
+| Faster output          | `/fast`, `service_tier = "fast"`                                                                 | `/fast`                                                            |
+| Rewind                 | `Esc` `Esc` edits a previous message and forks; no file checkpoints documented                   | `/rewind` restores conversation and file state                     |
+| Long tasks             | `/goal` with pause, resume, edit                                                                 | `/goal`                                                            |
+| Aside                  | `/side` (alias `/btw`)                                                                           | `/btw`                                                             |
+| Thinking display       | `model_reasoning_summary`, `hide_agent_reasoning`, `show_raw_agent_reasoning`                    | `Ctrl+O` verbose toggle, `showThinkingSummaries`                   |
 
 See [Claude Code Managing Context](../claude-code/context.md) for the Claude Code details.

@@ -2,7 +2,19 @@
 sidebar_position: 16
 sidebar_label: Debugging
 description: Troubleshoot Codex with codex doctor, /status, /debug-config, RUST_LOG, log locations, and fixes for login, sandbox, MCP, Windows, WSL, and network issues.
-keywords: [Codex troubleshooting, codex doctor, /status, /debug-config, RUST_LOG, Codex logs, sandbox denied, MCP not connecting, Windows sandbox, WSL]
+keywords:
+  [
+    Codex troubleshooting,
+    codex doctor,
+    /status,
+    /debug-config,
+    RUST_LOG,
+    Codex logs,
+    sandbox denied,
+    MCP not connecting,
+    Windows sandbox,
+    WSL,
+  ]
 ---
 
 # Debugging
@@ -11,29 +23,29 @@ When Codex misbehaves, the cause is usually one of a small number of things: sta
 
 ## First checks
 
-| Command | What it tells you |
-|---------|-------------------|
-| `codex --version` | Installed CLI version. The desktop app bundles its own Codex; compare with `/Applications/Codex.app/Contents/Resources/codex --version` on macOS when a feature works in one surface but not the other |
-| `codex doctor` | A local diagnostic report covering installation, configuration, authentication, runtime, Git, terminal, app-server, and thread inventory. Run it before filing an issue |
-| `codex login status` | Active authentication method; exits `0` when credentials are present |
-| `/status` | Active model, approval policy, writable roots, and token usage. With a remote TUI it also shows the remote address and server version |
-| `/debug-config` | Config layers in precedence order, on/off state, and policy sources (`allowed_approval_policies`, `allowed_sandbox_modes`, `mcp_servers`, `rules`, `experimental_network`). Use it when an effective setting differs from what `config.toml` says |
-| `/mcp` and `/mcp verbose` | Which MCP servers and tools are available; `verbose` adds server diagnostics |
-| `/ps` | Background terminals and their recent output |
-| `codex features` | Feature flags currently enabled or disabled in `config.toml` |
+| Command                   | What it tells you                                                                                                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `codex --version`         | Installed CLI version. The desktop app bundles its own Codex; compare with `/Applications/Codex.app/Contents/Resources/codex --version` on macOS when a feature works in one surface but not the other                                            |
+| `codex doctor`            | A local diagnostic report covering installation, configuration, authentication, runtime, Git, terminal, app-server, and thread inventory. Run it before filing an issue                                                                           |
+| `codex login status`      | Active authentication method; exits `0` when credentials are present                                                                                                                                                                              |
+| `/status`                 | Active model, approval policy, writable roots, and token usage. With a remote TUI it also shows the remote address and server version                                                                                                             |
+| `/debug-config`           | Config layers in precedence order, on/off state, and policy sources (`allowed_approval_policies`, `allowed_sandbox_modes`, `mcp_servers`, `rules`, `experimental_network`). Use it when an effective setting differs from what `config.toml` says |
+| `/mcp` and `/mcp verbose` | Which MCP servers and tools are available; `verbose` adds server diagnostics                                                                                                                                                                      |
+| `/ps`                     | Background terminals and their recent output                                                                                                                                                                                                      |
+| `codex features`          | Feature flags currently enabled or disabled in `config.toml`                                                                                                                                                                                      |
 
 ## Where logs live
 
-| Location | Contents |
-|----------|----------|
-| `$CODEX_HOME` (default `~/.codex`) | Root for config, auth, logs, sessions, skills, and package metadata |
-| `$CODEX_HOME/sessions` | Session transcripts |
-| `$CODEX_HOME/archived_sessions` | Archived transcripts |
-| `~/Library/Logs/com.openai.codex/YYYY/MM/DD` | Desktop app logs on macOS |
-| `<log_dir>/codex-tui.log` | Plaintext TUI log, **opt-in** via `log_dir` (see below) |
-| `<log_dir>/codex-login.log` | Written by direct `codex login` runs; use it for browser or device-code login failures |
-| `CODEX_HOME/.sandbox/sandbox.log` | Windows sandbox log; attach it to Windows sandbox reports |
-| `history.jsonl` | Prompt history when history persistence is enabled |
+| Location                                     | Contents                                                                               |
+| -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `$CODEX_HOME` (default `~/.codex`)           | Root for config, auth, logs, sessions, skills, and package metadata                    |
+| `$CODEX_HOME/sessions`                       | Session transcripts                                                                    |
+| `$CODEX_HOME/archived_sessions`              | Archived transcripts                                                                   |
+| `~/Library/Logs/com.openai.codex/YYYY/MM/DD` | Desktop app logs on macOS                                                              |
+| `<log_dir>/codex-tui.log`                    | Plaintext TUI log, **opt-in** via `log_dir` (see below)                                |
+| `<log_dir>/codex-login.log`                  | Written by direct `codex login` runs; use it for browser or device-code login failures |
+| `CODEX_HOME/.sandbox/sandbox.log`            | Windows sandbox log; attach it to Windows sandbox reports                              |
+| `history.jsonl`                              | Prompt history when history persistence is enabled                                     |
 
 Review logs before sharing them; transcripts can contain source code and secrets. Never send the contents of `CODEX_HOME/.sandbox-secrets/`.
 
@@ -107,12 +119,12 @@ tail -F ./.codex-log/codex-tui.log
 
 Stop watching the terminal and let Codex tell you when a turn finishes or an approval is waiting.
 
-| Surface | Setting |
-|---------|---------|
-| Desktop app | **Settings**: turn-completion alerts (never, only in background, always) plus separate toggles for permission and question notifications. **Activity** view (`Cmd+Option+U` / `Ctrl+Alt+U`) lists unread, running, and waiting chats |
-| CLI | `tui.notifications` (optionally filtered to `agent-turn-complete` and `approval-requested`), `tui.notification_method` (`auto`, `osc9`, `bel`), and `tui.notification_condition` (`unfocused` or `always`) in `config.toml` |
+| Surface     | Setting                                                                                                                                                                                                                                                                                         |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Desktop app | **Settings**: turn-completion alerts (never, only in background, always) plus separate toggles for permission and question notifications. **Activity** view (`Cmd+Option+U` / `Ctrl+Alt+U`) lists unread, running, and waiting chats                                                            |
+| CLI         | `tui.notifications` (optionally filtered to `agent-turn-complete` and `approval-requested`), `tui.notification_method` (`auto`, `osc9`, `bel`), and `tui.notification_condition` (`unfocused` or `always`) in `config.toml`                                                                     |
 | CLI and IDE | `notify = ["python3", "/path/to/notify.py"]` runs an external program on `agent-turn-complete` with a JSON argument containing `thread-id`, `turn-id`, `cwd`, `input-messages`, and `last-assistant-message`. `notify` must live in the user-level `config.toml`; project configs cannot set it |
-| Web | **Settings > Notifications** for push, email, or SMS channels |
+| Web         | **Settings > Notifications** for push, email, or SMS channels                                                                                                                                                                                                                                   |
 
 ## Reporting problems
 

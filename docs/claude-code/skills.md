@@ -2,7 +2,16 @@
 sidebar_position: 7
 sidebar_label: Skills
 description: Skills are reusable prompt templates in Claude Code that encode recurring tasks and team conventions into short slash commands for consistent execution.
-keywords: [Claude Code skills, custom slash commands, prompt templates, reusable prompts, workflow automation, team conventions, skills directory]
+keywords:
+  [
+    Claude Code skills,
+    custom slash commands,
+    prompt templates,
+    reusable prompts,
+    workflow automation,
+    team conventions,
+    skills directory,
+  ]
 ---
 
 # Skills
@@ -91,12 +100,16 @@ Create `SKILL.md` inside it with YAML frontmatter and the body Claude should fol
 
 ```markdown
 # .claude/skills/review/SKILL.md
+
 ---
+
 name: review
 description: Review staged git changes for bugs, regressions, and missing tests
+
 ---
 
 Review the staged git changes and provide a concise summary of:
+
 - What was changed and why
 - Any potential bugs or regressions introduced
 - Missing tests or edge cases
@@ -124,10 +137,10 @@ That order lets companies ship non-negotiable standards while individuals and te
 
 ### Project-level vs user-level paths
 
-| Location | Scope | Use case |
-|---|---|---|
-| `.claude/skills/<name>/SKILL.md` | Project-specific, shared via git | Team workflows, project conventions |
-| `~/.claude/skills/<name>/SKILL.md` | Personal, all repositories | Your own recurring prompts |
+| Location                           | Scope                            | Use case                            |
+| ---------------------------------- | -------------------------------- | ----------------------------------- |
+| `.claude/skills/<name>/SKILL.md`   | Project-specific, shared via git | Team workflows, project conventions |
+| `~/.claude/skills/<name>/SKILL.md` | Personal, all repositories       | Your own recurring prompts          |
 
 Commit `.claude/skills/` to source control when you want the whole team to share the same definitions. Personal skills in `~/.claude/skills` stay on your machine and apply everywhere unless an enterprise or project skill with the same name wins the [precedence chain](#skill-priority) above.
 
@@ -195,18 +208,18 @@ The open standard for Agent Skills defines YAML frontmatter keys in `SKILL.md`. 
 
 Skills support string substitution for dynamic values in skill content:
 
-| Variable | Description |
-|----------|-------------|
-| `$ARGUMENTS` | All arguments passed when invoking the skill |
-| `$ARGUMENTS[N]` | A specific argument by 0-based index (`$ARGUMENTS[0]` for the first) |
-| `$N` | Shorthand for `$ARGUMENTS[N]` (`$0` for first, `$1` for second) |
-| `$name` | Named argument declared in the `arguments` frontmatter list (e.g. with `arguments: [issue, branch]`, `$issue` maps to the first argument) |
-| `${CLAUDE_SESSION_ID}` | The current session ID, useful for logging or session-specific files |
-| `${CLAUDE_EFFORT}` | The current effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Use to adapt skill instructions to the active effort setting |
-| `${CLAUDE_SKILL_DIR}` | The directory containing the skill's `SKILL.md` file. Use this to reference bundled scripts regardless of where the skill is installed |
+| Variable                | Description                                                                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `$ARGUMENTS`            | All arguments passed when invoking the skill                                                                                                           |
+| `$ARGUMENTS[N]`         | A specific argument by 0-based index (`$ARGUMENTS[0]` for the first)                                                                                   |
+| `$N`                    | Shorthand for `$ARGUMENTS[N]` (`$0` for first, `$1` for second)                                                                                        |
+| `$name`                 | Named argument declared in the `arguments` frontmatter list (e.g. with `arguments: [issue, branch]`, `$issue` maps to the first argument)              |
+| `${CLAUDE_SESSION_ID}`  | The current session ID, useful for logging or session-specific files                                                                                   |
+| `${CLAUDE_EFFORT}`      | The current effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Use to adapt skill instructions to the active effort setting                     |
+| `${CLAUDE_SKILL_DIR}`   | The directory containing the skill's `SKILL.md` file. Use this to reference bundled scripts regardless of where the skill is installed                 |
 | `${CLAUDE_PROJECT_DIR}` | The project root directory (the same path hooks and MCP servers receive). Works in skill content and in `allowed-tools` Bash rules. Requires v2.1.196+ |
-| `${CLAUDE_PLUGIN_ROOT}` | Plugin skills only: the plugin's installation directory, for referencing bundled scripts and files |
-| `${CLAUDE_PLUGIN_DATA}` | Plugin skills only: the plugin's persistent data directory, which survives updates |
+| `${CLAUDE_PLUGIN_ROOT}` | Plugin skills only: the plugin's installation directory, for referencing bundled scripts and files                                                     |
+| `${CLAUDE_PLUGIN_DATA}` | Plugin skills only: the plugin's persistent data directory, which survives updates                                                                     |
 
 Named positional arguments can be declared in frontmatter with the `arguments` field. Names map to argument positions in order:
 
@@ -228,7 +241,6 @@ name: fix-issue
 description: Fix a GitHub issue by number
 disable-model-invocation: true
 ---
-
 Fix GitHub issue $ARGUMENTS following our coding standards.
 ```
 
@@ -260,6 +272,7 @@ For multi-line commands, use a fenced code block opened with ` ```! `:
 
 ````markdown
 ## Environment
+
 ```!
 node --version
 npm --version
@@ -278,7 +291,6 @@ Strong fits include:
 - Validating environments, credentials, or dependencies before work starts
 - Fixed-format parsing, normalization, or small ETL steps you want identical every time
 - Behavior you keep in versioned, tested code instead of re-deriving in the chat transcript
-
 
 ## Skills vs. other Claude Code features
 
@@ -406,7 +418,6 @@ Skills compound when a team or organization runs the same definitions. This walk
 
 Subagents do **not** pick up skills just because the main chat already loaded them. Delegation starts a separate context, so anything the subagent should rely on has to be declared on that agent (or repeated in the task you send).
 
-
 Keep three distinctions straight:
 
 - **Built-in agent types** (for example Explore and Plan) are fixed presets. They do not preload your custom skill definitions from the repo the way a **custom** agent can with a `skills` list in frontmatter.
@@ -424,7 +435,7 @@ The scaffold includes a `skills` array listing which skill packages to load. Exa
 ```yaml
 ---
 name: frontend-security-accessibility-reviewer
-description: "Use this agent when you need to review frontend code for accessibility..."
+description: 'Use this agent when you need to review frontend code for accessibility...'
 tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, Skill...
 model: sonnet
 color: blue
@@ -441,7 +452,6 @@ After you delegate to that agent, both skill bodies stay in its context for the 
 - You want checklists and conventions enforced in delegated work without pasting them into every prompt
 
 See [Subagents](./subagents) for the full picture (built-in types, when to delegate, and tips). For agent files and `/agents`, jump to [Creating custom subagents](./subagents#creating-custom-subagents).
-
 
 ## Troubleshooting skills
 
@@ -552,6 +562,7 @@ To expand the budget, set `skillListingBudgetFraction` in settings (for example,
 ```
 
 Valid `skillOverrides` values:
+
 - `"on"` (default): full description shown to Claude
 - `"name-only"`: name listed but description hidden (skill still usable)
 - `"user-invocable-only"`: hidden from Claude's automatic selection, still visible in the `/` menu
@@ -573,12 +584,12 @@ The `/skills` menu can write this setting for you: highlight a skill and press `
 
 You don't strictly need skills to use Claude Code. You can chat, run subagents, and edit code without them. But once you use them, it's hard to go back, because they solve the most common frustrations people hit after the first few days.
 
-| Without skills | With skills |
-|---|---|
-| Repeating the same instructions every session ("always use Tailwind dark mode", "follow our security checklist") | Claude applies your rules automatically when relevant |
-| Results vary from session to session | Consistent, repeatable output every time |
-| Long `CLAUDE.md` files that eat into your context window | Instructions load only when needed, on demand |
-| Subagents starting from scratch every time | Skills can preload into any subagent, giving it your rules from the start |
+| Without skills                                                                                                   | With skills                                                               |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Repeating the same instructions every session ("always use Tailwind dark mode", "follow our security checklist") | Claude applies your rules automatically when relevant                     |
+| Results vary from session to session                                                                             | Consistent, repeatable output every time                                  |
+| Long `CLAUDE.md` files that eat into your context window                                                         | Instructions load only when needed, on demand                             |
+| Subagents starting from scratch every time                                                                       | Skills can preload into any subagent, giving it your rules from the start |
 
 The short version: skills are reusable expert recipes that Claude keeps in its back pocket and pulls out when the task matches. Subagents are the specialist workers you assign tasks to. Most people end up using both together.
 
@@ -586,13 +597,13 @@ The short version: skills are reusable expert recipes that Claude keeps in its b
 
 Claude Code has four overlapping ways to give it persistent context and instructions. Understanding how they differ helps you put the right information in the right place.
 
-| | CLAUDE.md | Subagents | Commands | Skills |
-|---|---|---|---|---|
-| Auto-loaded every session | Yes | No | No | No (invoked on demand) |
-| Token cost | Always in context | Per-session, isolated | Loaded at invocation | Loaded at invocation |
-| Can execute tools / run code | No | Yes | Yes | Yes |
-| Shareable via git | Yes | Yes (`.claude/agents/`) | Yes (`.claude/commands/`) | Yes (`.claude/skills/`) |
-| Best for | Project-wide rules that always apply | Delegating isolated specialist tasks | Reusable prompt workflows | Reusable prompt workflows |
+|                              | CLAUDE.md                            | Subagents                            | Commands                  | Skills                    |
+| ---------------------------- | ------------------------------------ | ------------------------------------ | ------------------------- | ------------------------- |
+| Auto-loaded every session    | Yes                                  | No                                   | No                        | No (invoked on demand)    |
+| Token cost                   | Always in context                    | Per-session, isolated                | Loaded at invocation      | Loaded at invocation      |
+| Can execute tools / run code | No                                   | Yes                                  | Yes                       | Yes                       |
+| Shareable via git            | Yes                                  | Yes (`.claude/agents/`)              | Yes (`.claude/commands/`) | Yes (`.claude/skills/`)   |
+| Best for                     | Project-wide rules that always apply | Delegating isolated specialist tasks | Reusable prompt workflows | Reusable prompt workflows |
 
 <div style={{textAlign: 'center'}}>
   ![CLAUDE.md vs Agents vs Commands vs Skills quick comparison](/img/docs/agents-commands-skills.png)
@@ -612,7 +623,7 @@ Skills can be used in two fundamentally different ways:
 # .claude/agents/api-builder.md
 ---
 name: api-builder
-skills: ["rest-conventions", "error-handling-patterns"]
+skills: ['rest-conventions', 'error-handling-patterns']
 ---
 Build API endpoints following our conventions.
 ```
@@ -620,12 +631,14 @@ Build API endpoints following our conventions.
 The api-builder agent starts every session already knowing your REST conventions and error handling patterns. It does not need to call `/rest-conventions`; the knowledge is already in its context.
 
 **When to use which:**
+
 - **On-demand**: workflows you invoke for a specific task (review, scaffold, generate tests)
 - **Preloaded**: domain knowledge and conventions that an agent needs for every task it handles
 
 For more on how commands, agents, and skills compose together, see [Workflows & Orchestration](./workflows).
 
 A practical rule of thumb:
+
 - **CLAUDE.md**: conventions, constraints, and background context that should always be active
 - **Skills (commands)**: workflows and prompt recipes that you invoke for a specific task
 - **Subagents**: isolated specialist workers for noisy or expensive subtasks
@@ -769,12 +782,12 @@ Skills follow the same `SKILL.md` folder convention across Claude Code, Codex, a
 
 ### Summary: skills support across tools
 
-| Tool | Native skills | Project location | User location |
-|---|---|---|---|
-| Claude Code | Yes | `.claude/skills/<name>/SKILL.md` | `~/.claude/skills/` |
-| Codex | Yes | `.agents/skills/<name>/SKILL.md` (scanned from the working directory up to the repo root) | `~/.agents/skills/` |
-| Cursor | Yes | `.cursor/skills/<name>/SKILL.md` | `~/.cursor/skills/` |
-| Gemini CLI | No | Via `GEMINI.md` (context only) | Shell wrappers + prompts dir |
-| Grok CLI | No | No | Shell wrappers + prompts dir |
+| Tool        | Native skills | Project location                                                                          | User location                |
+| ----------- | ------------- | ----------------------------------------------------------------------------------------- | ---------------------------- |
+| Claude Code | Yes           | `.claude/skills/<name>/SKILL.md`                                                          | `~/.claude/skills/`          |
+| Codex       | Yes           | `.agents/skills/<name>/SKILL.md` (scanned from the working directory up to the repo root) | `~/.agents/skills/`          |
+| Cursor      | Yes           | `.cursor/skills/<name>/SKILL.md`                                                          | `~/.cursor/skills/`          |
+| Gemini CLI  | No            | Via `GEMINI.md` (context only)                                                            | Shell wrappers + prompts dir |
+| Grok CLI    | No            | No                                                                                        | Shell wrappers + prompts dir |
 
 If your team uses more than one of these tools, keep one canonical skills directory in the repository and symlink it into the other tools' locations so the instructions do not drift.

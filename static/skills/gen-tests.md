@@ -6,6 +6,7 @@ description: Generate a complete test file matching the project's existing test 
 Write comprehensive tests for $ARGUMENTS.
 
 Steps:
+
 1. Read the file or function specified.
 2. Identify the test framework already in use (check existing test files, package.json, pytest.ini, etc.) and match that style exactly.
 3. Write tests that cover:
@@ -15,6 +16,7 @@ Steps:
    - Each branch of significant conditional logic
 
 Rules:
+
 - Match the existing test file naming convention and directory structure
 - Use the same assertion style and test helpers as existing tests
 - Do not mock more than necessary; only mock external I/O, databases, and network calls

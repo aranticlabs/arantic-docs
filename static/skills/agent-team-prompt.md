@@ -51,6 +51,7 @@ Use the PRD and user answers to design the agent team. Think through these four 
 **Signal chains** — define wait/signal dependencies only where there is a real dependency. Agents that can genuinely work in parallel should not wait for each other. Agents that need another's output (e.g., API agent needs the schema) should wait for a signal. Keep signal names short and descriptive: "schema-ready", "api-ready", "scaffold-ready".
 
 **Rules block** — keep it short. Only include rules that actively change behavior. The following are almost always appropriate:
+
 - No plan approval — write plans to .claude/plans/ instead (plan approval blocks the whole team)
 - No commits or pushes — lead handles all git operations
 - Handoffs use signals, no polling
@@ -58,6 +59,7 @@ Use the PRD and user answers to design the agent team. Think through these four 
 - Before signaling: re-read the checklist, verify every item, include a completion summary
 
 If the user chose tmux mode, always include this as the first rule in the RULES block:
+
 - Each agent gets its own tmux window/pane for isolated terminal sessions
 
 Study `references/sample-prompts.md` to calibrate the right level of detail for the team type.
@@ -71,7 +73,8 @@ Create `.claude/prompts/` if it does not exist, then save the prompt to `.claude
 The file will be pasted directly into Claude Code, so it must be clean plain text with no markdown artifacts. The person pasting it should not have to clean anything up first.
 
 Rules:
-- Plain text only. No # headers. No **bold** or *italic*. No ``` fences. No > blockquotes.
+
+- Plain text only. No # headers. No **bold** or _italic_. No ``` fences. No > blockquotes.
 - ALL-CAPS labels with a colon for the major sections: TASK:, AGENTS:, RULES:, LEAD:
 - Indent agent entries and sub-items with two spaces or a leading dash
 - One blank line between sections
@@ -82,26 +85,29 @@ Rules:
 
 Adapt this template to the team type — omit sections that do not apply:
 
-  TASK: [one or two sentences on what to build/do and where the PRD or spec lives]
+TASK: [one or two sentences on what to build/do and where the PRD or spec lives]
 
-  Read [what to read before spawning: CLAUDE.md, PRD-00-INDEX.md, relevant docs].
+Read [what to read before spawning: CLAUDE.md, PRD-00-INDEX.md, relevant docs].
 
-  AGENTS:
-  - Agent Name (model): reads [docs]. Signals "x-ready".
-  - Agent Name (model): reads [docs]. Waits for "x-ready". Signals "y-ready".
-  - QA Agent (sonnet): reads [acceptance criteria doc]. Reviews each phase as signals arrive.
+AGENTS:
 
-  RULES:
-  - All agents read CLAUDE.md before coding
-  - Before signaling: re-read checklist, verify every item, include completion summary with signal
-  - Handoffs use signals, no polling
-  - No plan approval — write plans to .claude/plans/ before implementing
-  - No commits or pushes — lead handles all git operations
-  - [Any task-specific rules, e.g. "read-only — do not make code changes"]
+- Agent Name (model): reads [docs]. Signals "x-ready".
+- Agent Name (model): reads [docs]. Waits for "x-ready". Signals "y-ready".
+- QA Agent (sonnet): reads [acceptance criteria doc]. Reviews each phase as signals arrive.
 
-  LEAD (model): [how to coordinate — what to check after each signal, gate conditions, final verification step]
+RULES:
+
+- All agents read CLAUDE.md before coding
+- Before signaling: re-read checklist, verify every item, include completion summary with signal
+- Handoffs use signals, no polling
+- No plan approval — write plans to .claude/plans/ before implementing
+- No commits or pushes — lead handles all git operations
+- [Any task-specific rules, e.g. "read-only — do not make code changes"]
+
+LEAD (model): [how to coordinate — what to check after each signal, gate conditions, final verification step]
 
 Notes on when to omit sections:
+
 - Review teams: no signal chain (all agents work in parallel), no LEAD coordination block beyond "write a consolidated report"
 - Debugging teams: no signal chain, agents share findings via messages and a shared file
 - Research/planning teams: no signal chain, agents discuss and reach consensus

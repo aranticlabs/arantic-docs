@@ -2,7 +2,19 @@
 sidebar_position: 15
 sidebar_label: Worktrees & Parallel Sessions
 description: Run several Codex chats side by side using Git worktrees, local environment setup scripts, handoff between Local and Worktree, and multiple CLI terminals.
-keywords: [Codex worktrees, git worktree, parallel sessions, local environments, setup scripts, handoff, .worktreeinclude, tmux, parallel agents, ChatGPT desktop app]
+keywords:
+  [
+    Codex worktrees,
+    git worktree,
+    parallel sessions,
+    local environments,
+    setup scripts,
+    handoff,
+    .worktreeinclude,
+    tmux,
+    parallel agents,
+    ChatGPT desktop app,
+  ]
 ---
 
 # Worktrees & Parallel Sessions
@@ -15,27 +27,27 @@ A [Git worktree](https://git-scm.com/docs/git-worktree) is a second checkout of 
 
 Codex terminology:
 
-| Term | Meaning |
-|------|---------|
-| **Local** (local checkout) | The repository directory you opened as a project |
-| **Worktree** | A Git worktree that Codex created from your local checkout |
-| **Handoff** | The flow that moves a chat (and its Git state) between Local and Worktree, or between hosts |
+| Term                       | Meaning                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------- |
+| **Local** (local checkout) | The repository directory you opened as a project                                            |
+| **Worktree**               | A Git worktree that Codex created from your local checkout                                  |
+| **Handoff**                | The flow that moves a chat (and its Git state) between Local and Worktree, or between hosts |
 
 Worktrees only work in projects that are inside a Git repository.
 
 ## How Codex manages worktrees
 
-| Aspect | Behavior |
-|--------|----------|
-| Location | `$CODEX_HOME/worktrees` by default (`~/.codex/worktrees`). Change it under **Settings > Worktrees > Worktree root** in the desktop app |
-| Starting commit | The `HEAD` of the branch you select when starting the chat |
-| Uncommitted local changes | If you pick a branch with local changes, Codex applies the uncommitted changes to the worktree as well |
-| Branch state | **Detached HEAD**. Codex does not create a branch, so it can spin up many worktrees without polluting your branch list |
-| Lifetime | **Codex-managed** worktrees are lightweight and disposable, typically dedicated to one chat. **Permanent** worktrees (created from a project's three-dot menu in the sidebar) live as their own project, are never auto-deleted, and can host multiple chats |
-| Cleanup | Codex keeps the most recent **15** managed worktrees by default. Change the limit or disable automatic deletion in settings |
-| Protection from cleanup | A worktree is not auto-deleted while a pinned chat is tied to it, the chat is still running, or it is a permanent worktree |
-| Deletion triggers | Archiving the associated chat, or Codex trimming older worktrees to stay within the limit |
-| Snapshots | Before deleting a managed worktree, Codex saves a snapshot. Reopening the chat later offers to restore it |
+| Aspect                    | Behavior                                                                                                                                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Location                  | `$CODEX_HOME/worktrees` by default (`~/.codex/worktrees`). Change it under **Settings > Worktrees > Worktree root** in the desktop app                                                                                                                       |
+| Starting commit           | The `HEAD` of the branch you select when starting the chat                                                                                                                                                                                                   |
+| Uncommitted local changes | If you pick a branch with local changes, Codex applies the uncommitted changes to the worktree as well                                                                                                                                                       |
+| Branch state              | **Detached HEAD**. Codex does not create a branch, so it can spin up many worktrees without polluting your branch list                                                                                                                                       |
+| Lifetime                  | **Codex-managed** worktrees are lightweight and disposable, typically dedicated to one chat. **Permanent** worktrees (created from a project's three-dot menu in the sidebar) live as their own project, are never auto-deleted, and can host multiple chats |
+| Cleanup                   | Codex keeps the most recent **15** managed worktrees by default. Change the limit or disable automatic deletion in settings                                                                                                                                  |
+| Protection from cleanup   | A worktree is not auto-deleted while a pinned chat is tied to it, the chat is still running, or it is a permanent worktree                                                                                                                                   |
+| Deletion triggers         | Archiving the associated chat, or Codex trimming older worktrees to stay within the limit                                                                                                                                                                    |
+| Snapshots                 | Before deleting a managed worktree, Codex saves a snapshot. Reopening the chat later offers to restore it                                                                                                                                                    |
 
 Each chat keeps the same associated worktree over time. If you hand a chat to Local and back, Codex returns it to the same worktree.
 
@@ -200,11 +212,11 @@ Codex has no built-in tmux integration; this is plain terminal multiplexing. Key
 
 ## Merging results back
 
-| Where the work is | How to bring it together |
-|-------------------|--------------------------|
-| Desktop-app worktree | **Create branch here**, commit, push, open a PR; or **Hand off** to Local and commit there |
-| CLI worktree you created | Commit on its branch, then `git merge` or rebase in the main checkout, or open a PR |
-| Cloud chat | Open a PR from the chat, or `codex apply TASK_ID` locally (see [Codex Cloud & Remote](./cloud.md)) |
+| Where the work is        | How to bring it together                                                                           |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| Desktop-app worktree     | **Create branch here**, commit, push, open a PR; or **Hand off** to Local and commit there         |
+| CLI worktree you created | Commit on its branch, then `git merge` or rebase in the main checkout, or open a PR                |
+| Cloud chat               | Open a PR from the chat, or `codex apply TASK_ID` locally (see [Codex Cloud & Remote](./cloud.md)) |
 
 When you are done with a hand-made worktree:
 
@@ -234,22 +246,22 @@ The best-practices guide's rule is one chat per coherent unit of work. Paralleli
 
 ## Troubleshooting
 
-| Problem | Fix |
-|---------|-----|
-| Code does not run on a worktree | Dependencies or ignored files are missing. Add a local environment setup script, list ignored files in `.worktreeinclude`, or hand the chat off to Local |
-| Teammate's shared local environment is not picked up | The `.codex` folder must be at the root of the project you opened. In a monorepo, open the directory that contains `.codex` |
-| Scheduled tasks created many worktrees | Archive runs you no longer need; avoid pinning runs unless you want to keep their worktrees |
-| `fatal: '<branch>' is already used by worktree` | The branch is checked out elsewhere. Check out another branch there, or use Handoff |
-| Chat exists but its worktree directory is gone | Codex saved a snapshot before deletion; open the chat and choose to restore |
-| Lost the prompt after cancelling worktree creation | Press the up arrow in the composer |
+| Problem                                              | Fix                                                                                                                                                      |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Code does not run on a worktree                      | Dependencies or ignored files are missing. Add a local environment setup script, list ignored files in `.worktreeinclude`, or hand the chat off to Local |
+| Teammate's shared local environment is not picked up | The `.codex` folder must be at the root of the project you opened. In a monorepo, open the directory that contains `.codex`                              |
+| Scheduled tasks created many worktrees               | Archive runs you no longer need; avoid pinning runs unless you want to keep their worktrees                                                              |
+| `fatal: '<branch>' is already used by worktree`      | The branch is checked out elsewhere. Check out another branch there, or use Handoff                                                                      |
+| Chat exists but its worktree directory is gone       | Codex saved a snapshot before deletion; open the chat and choose to restore                                                                              |
+| Lost the prompt after cancelling worktree creation   | Press the up arrow in the composer                                                                                                                       |
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
+| Topic                        | Codex                                                                                                          | Claude Code                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | Built-in worktree management | Desktop app creates, tracks, snapshots, and cleans up worktrees per chat; handoff moves work between checkouts | Worktrees are created by hand (`git worktree add`) and assigned to teammates; `WorktreeCreate` and `WorktreeRemove` hooks exist |
-| Multi-agent display | Separate chats in the desktop app sidebar, or separate terminals; Codex Micro as optional hardware | [Agent Teams](../claude-code/agent-teams.md) render teammates in tmux or iTerm2 split panes, or in-process with `Shift+Up/Down` |
-| tmux | Not integrated; use it as a generic multiplexer | Detected automatically when `teammateMode` is `auto` or `tmux`; see [tmux](../claude-code/tmux.md) |
-| Coordinating agents | Independent chats; subagents within one session via `/agent` | Shared task list and direct teammate messaging inside one orchestration |
-| Cost model | Each chat has its own context and token usage | Each teammate is a full session; a five-agent team uses roughly five times the tokens |
-| When to skip it | One chat per coherent outcome; parallelize only independent work | Same guidance: vanilla sessions outperform teams for small or sequential tasks |
+| Multi-agent display          | Separate chats in the desktop app sidebar, or separate terminals; Codex Micro as optional hardware             | [Agent Teams](../claude-code/agent-teams.md) render teammates in tmux or iTerm2 split panes, or in-process with `Shift+Up/Down` |
+| tmux                         | Not integrated; use it as a generic multiplexer                                                                | Detected automatically when `teammateMode` is `auto` or `tmux`; see [tmux](../claude-code/tmux.md)                              |
+| Coordinating agents          | Independent chats; subagents within one session via `/agent`                                                   | Shared task list and direct teammate messaging inside one orchestration                                                         |
+| Cost model                   | Each chat has its own context and token usage                                                                  | Each teammate is a full session; a five-agent team uses roughly five times the tokens                                           |
+| When to skip it              | One chat per coherent outcome; parallelize only independent work                                               | Same guidance: vanilla sessions outperform teams for small or sequential tasks                                                  |

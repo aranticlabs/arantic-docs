@@ -2,7 +2,19 @@
 sidebar_position: 2
 sidebar_label: Rules & AGENTS.md
 description: How Cursor's rules, AGENTS.md, user rules, and team rules give Agent persistent project context, and which mechanism to use for which job.
-keywords: [Cursor rules, AGENTS.md, .cursor/rules, mdc files, alwaysApply, globs, user rules, team rules, .cursorrules, persistent context]
+keywords:
+  [
+    Cursor rules,
+    AGENTS.md,
+    .cursor/rules,
+    mdc files,
+    alwaysApply,
+    globs,
+    user rules,
+    team rules,
+    .cursorrules,
+    persistent context,
+  ]
 ---
 
 # Rules & AGENTS.md
@@ -13,15 +25,15 @@ Cursor has four rule types and two ways to write them on disk. This page covers 
 
 ## All persistent-instruction mechanisms in Cursor
 
-| Mechanism | Location | Scope | Committed to git? | Managed by |
-|-----------|----------|-------|-------------------|------------|
-| **Team Rules** | Cursor dashboard (Team and Enterprise plans) | Everyone in the team, all repositories | N/A (stored on Cursor servers) | Team admins |
-| **Project Rules** | `.cursor/rules/*.mdc` | Everyone working in the repo | Yes | You |
-| **AGENTS.md** | `./AGENTS.md` and any subdirectory | Everyone working in the repo (nested files scope to their directory) | Yes | You |
-| **CLAUDE.md** | `./CLAUDE.md` | Everyone working in the repo, always applied | Yes | You |
-| **User Rules** | Cursor Settings > Rules (Customize > Rules) | You, all projects, synced with your account | N/A | You |
-| **User rule files** | `~/.cursor/rules` (`%USERPROFILE%\.cursor\rules` on Windows) | You, all projects, this machine only (no sync) | N/A | You |
-| **Legacy `.cursorrules`** | `./.cursorrules` | Everyone working in the repo | Yes | You (deprecated) |
+| Mechanism                 | Location                                                     | Scope                                                                | Committed to git?              | Managed by       |
+| ------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------------------ | ---------------- |
+| **Team Rules**            | Cursor dashboard (Team and Enterprise plans)                 | Everyone in the team, all repositories                               | N/A (stored on Cursor servers) | Team admins      |
+| **Project Rules**         | `.cursor/rules/*.mdc`                                        | Everyone working in the repo                                         | Yes                            | You              |
+| **AGENTS.md**             | `./AGENTS.md` and any subdirectory                           | Everyone working in the repo (nested files scope to their directory) | Yes                            | You              |
+| **CLAUDE.md**             | `./CLAUDE.md`                                                | Everyone working in the repo, always applied                         | Yes                            | You              |
+| **User Rules**            | Cursor Settings > Rules (Customize > Rules)                  | You, all projects, synced with your account                          | N/A                            | You              |
+| **User rule files**       | `~/.cursor/rules` (`%USERPROFILE%\.cursor\rules` on Windows) | You, all projects, this machine only (no sync)                       | N/A                            | You              |
+| **Legacy `.cursorrules`** | `./.cursorrules`                                             | Everyone working in the repo                                         | Yes                            | You (deprecated) |
 
 Rules apply to Agent (Chat) only. They do not affect Tab completion, Inline Edit (`Cmd+K`), or Bugbot PR reviews. Within Agent they apply in every mode: Agent, Ask, Plan, and Debug.
 
@@ -43,20 +55,20 @@ Cursor identifies rules by their full path, so two files with the same name in d
 
 Three frontmatter fields decide when a rule is loaded:
 
-| Field | Type | Meaning |
-|-------|------|---------|
-| `alwaysApply` | boolean | `true` includes the rule in every conversation and ignores the other two fields |
-| `globs` | string | Comma-separated file patterns; the rule attaches when a matching file is in context |
-| `description` | string | Shown to Agent so it can decide whether to pull the rule in |
+| Field         | Type    | Meaning                                                                             |
+| ------------- | ------- | ----------------------------------------------------------------------------------- |
+| `alwaysApply` | boolean | `true` includes the rule in every conversation and ignores the other two fields     |
+| `globs`       | string  | Comma-separated file patterns; the rule attaches when a matching file is in context |
+| `description` | string  | Shown to Agent so it can decide whether to pull the rule in                         |
 
 The rule editor exposes these as four rule types. Under the hood they are just combinations of the fields:
 
-| Rule type (editor label) | `alwaysApply` | `description` | `globs` | Behavior |
-|--------------------------|---------------|---------------|---------|----------|
-| **Always Apply** | `true` | ignored | ignored | Included in every chat session |
-| **Apply to Specific Files** | `false` | optional | provided | Auto-attached when a matching file is in context |
-| **Apply Intelligently** | `false` | provided | omitted | Agent reads the description and pulls the rule in when relevant |
-| **Apply Manually** | `false` | omitted | omitted | Included only when you `@`-mention the rule in chat |
+| Rule type (editor label)    | `alwaysApply` | `description` | `globs`  | Behavior                                                        |
+| --------------------------- | ------------- | ------------- | -------- | --------------------------------------------------------------- |
+| **Always Apply**            | `true`        | ignored       | ignored  | Included in every chat session                                  |
+| **Apply to Specific Files** | `false`       | optional      | provided | Auto-attached when a matching file is in context                |
+| **Apply Intelligently**     | `false`       | provided      | omitted  | Agent reads the description and pulls the rule in when relevant |
+| **Apply Manually**          | `false`       | omitted       | omitted  | Included only when you `@`-mention the rule in chat             |
 
 Older Cursor documentation and community material call these Always, Auto Attached, Agent Requested, and Manual. The behavior is the same.
 
@@ -115,14 +127,14 @@ alwaysApply: false
 
 Separate multiple patterns with commas.
 
-| Pattern | Matches |
-|---------|---------|
-| `*.ts` | All `.ts` files in the root |
-| `**/*.ts` | All `.ts` files in any directory |
-| `src/**` | Everything under `src/` |
-| `src/**/*.tsx` | All `.tsx` files anywhere under `src/` |
-| `docs/**/*.md, docs/**/*.mdx` | `.md` and `.mdx` files under `docs/` |
-| `tailwind.config.*` | `tailwind.config` with any extension |
+| Pattern                       | Matches                                |
+| ----------------------------- | -------------------------------------- |
+| `*.ts`                        | All `.ts` files in the root            |
+| `**/*.ts`                     | All `.ts` files in any directory       |
+| `src/**`                      | Everything under `src/`                |
+| `src/**/*.tsx`                | All `.tsx` files anywhere under `src/` |
+| `docs/**/*.md, docs/**/*.mdx` | `.md` and `.mdx` files under `docs/`   |
+| `tailwind.config.*`           | `tailwind.config` with any extension   |
 
 ### Referencing files from a rule
 
@@ -136,11 +148,13 @@ Write `@path/to/file` on its own line inside the rule body to include that file'
 # Project Instructions
 
 ## Code Style
+
 - Use TypeScript for all new files
 - Prefer functional components in React
 - Use snake_case for database columns
 
 ## Architecture
+
 - Follow the repository pattern
 - Keep business logic in service layers
 ```
@@ -181,10 +195,10 @@ User Rules are used by Agent (Chat) only. They are not applied to Inline Edit (`
 
 Team and Enterprise plans can define rules for the whole organization from the [Cursor dashboard](https://cursor.com/dashboard/team-content). Team Rules are free-form text (no `.mdc` folder structure) and sync automatically to every member across all repositories.
 
-| Option | Effect |
-|--------|--------|
-| **Enable this rule immediately** | Active on creation; unchecked saves it as a draft |
-| **Enforce this rule** | Required for all members; cannot be turned off in Customize |
+| Option                                   | Effect                                                                                                |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Enable this rule immediately**         | Active on creation; unchecked saves it as a draft                                                     |
+| **Enforce this rule**                    | Required for all members; cannot be turned off in Customize                                           |
 | **Glob pattern** (for example `**/*.py`) | Rule applies only when matching files are in context; without a glob it applies to every conversation |
 
 Non-enforced Team Rules are on by default but members can disable them under **Team Rules** in Customize. Enforced rules are sometimes used for internal compliance workflows; treat them as guidance for the model, not as a security control.
@@ -229,14 +243,14 @@ Check what actually landed in a conversation by clicking the context ring next t
 
 ## Creating rules
 
-| Method | How |
-|--------|-----|
-| `/create-rule` in chat | Type `/create-rule` in Agent and describe the rule. Agent writes the `.mdc` file with correct frontmatter into `.cursor/rules/` |
-| Command palette | `Cmd+Shift+P` (`Ctrl+Shift+P`), search **New Cursor Rule**, name the file, pick the type from the dropdown |
-| Customize sidebar | **Customize > Rules > Add Rule**. This view also lists every rule and whether it is active |
-| Ask Agent | "Create a rule that..." works in any conversation |
-| Cursor CLI | `agent generate-rule` (alias `agent rule`) walks through prompts and writes the file |
-| Remote rule (GitHub) | **Add Rule > Remote Rule (Github)**, paste a repo URL. Cursor scans for `.mdc` files and syncs them into `.cursor/rules/imported/<repoName>/`, preserving relative paths |
+| Method                 | How                                                                                                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/create-rule` in chat | Type `/create-rule` in Agent and describe the rule. Agent writes the `.mdc` file with correct frontmatter into `.cursor/rules/`                                          |
+| Command palette        | `Cmd+Shift+P` (`Ctrl+Shift+P`), search **New Cursor Rule**, name the file, pick the type from the dropdown                                                               |
+| Customize sidebar      | **Customize > Rules > Add Rule**. This view also lists every rule and whether it is active                                                                               |
+| Ask Agent              | "Create a rule that..." works in any conversation                                                                                                                        |
+| Cursor CLI             | `agent generate-rule` (alias `agent rule`) walks through prompts and writes the file                                                                                     |
+| Remote rule (GitHub)   | **Add Rule > Remote Rule (Github)**, paste a repo URL. Cursor scans for `.mdc` files and syncs them into `.cursor/rules/imported/<repoName>/`, preserving relative paths |
 
 :::note
 Older Cursor versions offered a `/Generate Cursor Rules` chat command. The current documentation lists `/create-rule` and the **New Cursor Rule** palette command instead.
@@ -256,16 +270,19 @@ alwaysApply: true
 ---
 
 # Commands
+
 - Tests: npm test
 - Lint: npm run lint
 - Type check: npm run typecheck
 
 # Conventions
+
 - TypeScript strict mode, never `any`
 - All API endpoints validate input with Zod schemas
 - Migrations live in src/db/migrations/; never edit an existing one
 
 # Architecture
+
 - Business logic in src/domain/, never import from src/infrastructure/ there
 - Use Result<T, E> for error handling, do not throw
 ```
@@ -298,14 +315,14 @@ Every new endpoint gets a test in tests/api/ that covers the 400 and 404 paths.
 
 ### Pick the right type
 
-| Situation | Use |
-|-----------|-----|
-| Build commands, repo-wide conventions | `AGENTS.md` or an **Always Apply** rule |
-| Rules for one part of the codebase (`src/api/**`, `*.tsx`) | **Apply to Specific Files** with `globs` |
+| Situation                                                                                       | Use                                                |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Build commands, repo-wide conventions                                                           | `AGENTS.md` or an **Always Apply** rule            |
+| Rules for one part of the codebase (`src/api/**`, `*.tsx`)                                      | **Apply to Specific Files** with `globs`           |
 | Knowledge Agent should reach for only when relevant (a migration playbook, a release checklist) | **Apply Intelligently** with a clear `description` |
-| Templates you invoke on demand | **Apply Manually**, then `@rule-name` in chat |
-| Personal tone and style | User Rules |
-| Organization-wide standards | Team Rules (enforced if they must not be disabled) |
+| Templates you invoke on demand                                                                  | **Apply Manually**, then `@rule-name` in chat      |
+| Personal tone and style                                                                         | User Rules                                         |
+| Organization-wide standards                                                                     | Team Rules (enforced if they must not be disabled) |
 
 :::tip
 "Apply Intelligently" rules that are really reusable workflows are often better as [Skills](./skills.md). Cursor ships `/migrate-to-skills`, which converts dynamic rules (`alwaysApply: false`, no `globs`) and legacy slash commands into skills.
@@ -334,12 +351,12 @@ Both approaches work; nested `AGENTS.md` is easier to read and is picked up by o
 
 If your team uses several AI coding tools, keep one canonical instruction file and point the others at it. `AGENTS.md` is the natural choice because Cursor, Codex, and others read it natively, and Claude Code can import it:
 
-| Tool | Reads natively | Bridge |
-|------|----------------|--------|
-| Cursor | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc` | none needed |
-| Claude Code | `CLAUDE.md` | `CLAUDE.md` containing `@AGENTS.md`, or a symlink |
-| OpenAI Codex | `AGENTS.md` | none needed |
-| GitHub Copilot | `.github/copilot-instructions.md` | reference `AGENTS.md` from it |
+| Tool           | Reads natively                                  | Bridge                                            |
+| -------------- | ----------------------------------------------- | ------------------------------------------------- |
+| Cursor         | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc` | none needed                                       |
+| Claude Code    | `CLAUDE.md`                                     | `CLAUDE.md` containing `@AGENTS.md`, or a symlink |
+| OpenAI Codex   | `AGENTS.md`                                     | none needed                                       |
+| GitHub Copilot | `.github/copilot-instructions.md`               | reference `AGENTS.md` from it                     |
 
 Put Cursor-only behavior (globs-scoped rules, manual template rules) in `.cursor/rules/` and keep `AGENTS.md` tool-neutral.
 
@@ -353,14 +370,14 @@ Put Cursor-only behavior (globs-scoped rules, manual template rules) in `.cursor
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|-------|--------|-------------|
-| Primary project file | `AGENTS.md` (plain) or `.cursor/rules/*.mdc` (frontmatter) | `CLAUDE.md`, with `@file` imports |
-| Path-scoped rules | `globs:` in `.mdc` frontmatter | `paths:` in `.claude/rules/*.md` frontmatter |
-| Model-selected rules | **Apply Intelligently** via `description` | No direct equivalent; skills fill this role |
-| Personal, uncommitted project notes | No `AGENTS.local.md` equivalent; use User Rules | `CLAUDE.local.md` |
-| Org-wide rules | Team Rules in the dashboard, optionally enforced | Managed policy `CLAUDE.md` |
-| Auto memory written by the tool | Not documented | `~/.claude/projects/<project>/memory/` |
-| Precedence on conflict | Team > Project > User | Later, more specific files win (project over user) |
+| Topic                               | Cursor                                                     | Claude Code                                        |
+| ----------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- |
+| Primary project file                | `AGENTS.md` (plain) or `.cursor/rules/*.mdc` (frontmatter) | `CLAUDE.md`, with `@file` imports                  |
+| Path-scoped rules                   | `globs:` in `.mdc` frontmatter                             | `paths:` in `.claude/rules/*.md` frontmatter       |
+| Model-selected rules                | **Apply Intelligently** via `description`                  | No direct equivalent; skills fill this role        |
+| Personal, uncommitted project notes | No `AGENTS.local.md` equivalent; use User Rules            | `CLAUDE.local.md`                                  |
+| Org-wide rules                      | Team Rules in the dashboard, optionally enforced           | Managed policy `CLAUDE.md`                         |
+| Auto memory written by the tool     | Not documented                                             | `~/.claude/projects/<project>/memory/`             |
+| Precedence on conflict              | Team > Project > User                                      | Later, more specific files win (project over user) |
 
 See [Claude Code Memory](../claude-code/memory.md) for the Claude Code side, and the [Cursor overview](../tools/cursor.md) for a general introduction to the tool.

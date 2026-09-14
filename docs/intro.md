@@ -3,7 +3,17 @@ sidebar_position: 1
 slug: /
 sidebar_label: AI-Assisted Programming
 description: Practical guides on using AI tools in your daily programming workflow, covering prompting, code generation, debugging, testing, and AI tool integrations.
-keywords: [AI-assisted programming, Claude Code, GitHub Copilot, Cursor, code generation, AI coding tools, prompting, software development]
+keywords:
+  [
+    AI-assisted programming,
+    Claude Code,
+    GitHub Copilot,
+    Cursor,
+    code generation,
+    AI coding tools,
+    prompting,
+    software development,
+  ]
 ---
 
 # AI-Assisted Programming
@@ -16,14 +26,14 @@ Practical, no-fluff guides on using AI tools in your daily programming workflow.
 
 ## What you'll find here
 
-| Section | What's inside |
-|---------|---------------|
-| **[Guides](/guides)** | Step-by-step tutorials on prompting, code generation, debugging, testing, and workflows |
-| **[Tools](/tools)** | Overview and comparison of AI development tools (Claude Code, Copilot, Cursor, Codex, Gemini CLI, Aider, Mistral) |
-| **[Claude Code](/claude-code)** | Deep-dive into commands, memory, skills, hooks, plugins, MCP servers, subagents, and agent teams |
-| **[Codex](/codex)** | Deep-dive into AGENTS.md, slash commands, sandbox and approvals, skills, subagents, hooks, MCP, plugins, `codex exec`, and Codex cloud |
-| **[Cursor](/cursor)** | Deep-dive into rules, agent modes, the Cursor CLI, skills, subagents, hooks, MCP, plugins, cloud agents, parallel agents, and Bugbot |
-| **[Resources](/resources)** | Curated GitHub repos, prompt templates, and useful references |
+| Section                         | What's inside                                                                                                                          |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Guides](/guides)**           | Step-by-step tutorials on prompting, code generation, debugging, testing, and workflows                                                |
+| **[Tools](/tools)**             | Overview and comparison of AI development tools (Claude Code, Copilot, Cursor, Codex, Gemini CLI, Aider, Mistral)                      |
+| **[Claude Code](/claude-code)** | Deep-dive into commands, memory, skills, hooks, plugins, MCP servers, subagents, and agent teams                                       |
+| **[Codex](/codex)**             | Deep-dive into AGENTS.md, slash commands, sandbox and approvals, skills, subagents, hooks, MCP, plugins, `codex exec`, and Codex cloud |
+| **[Cursor](/cursor)**           | Deep-dive into rules, agent modes, the Cursor CLI, skills, subagents, hooks, MCP, plugins, cloud agents, parallel agents, and Bugbot   |
+| **[Resources](/resources)**     | Curated GitHub repos, prompt templates, and useful references                                                                          |
 
 ## Who this is for
 

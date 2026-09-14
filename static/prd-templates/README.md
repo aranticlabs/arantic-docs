@@ -42,15 +42,15 @@ After renaming, update all cross-document links (e.g., `PRD-01-OVERVIEW.md` -> `
 
 ## Template Structure
 
-| File | Purpose | Audience |
-| --- | --- | --- |
-| `00-INDEX` | Navigation hub, feature summary, key decisions | Everyone |
-| `01-OVERVIEW` | Vision, scope, wireframes, technical notes | PO + Developers |
-| `02-BUSINESS-LOGIC` | Domain terms, user stories, rules, test cases | PO + Developers |
-| `03-DATABASE-SCHEMA` | SQL definitions, TypeScript types | Developers |
-| `04-API-ENDPOINTS` | REST API specification | Developers |
-| `05-IMPLEMENTATION` | Code architecture, directory structure, DI | Developers |
-| `06-IMPLEMENTATION-STEPS` | Phased checklist with dependencies | Developers + AI |
+| File                      | Purpose                                        | Audience        |
+| ------------------------- | ---------------------------------------------- | --------------- |
+| `00-INDEX`                | Navigation hub, feature summary, key decisions | Everyone        |
+| `01-OVERVIEW`             | Vision, scope, wireframes, technical notes     | PO + Developers |
+| `02-BUSINESS-LOGIC`       | Domain terms, user stories, rules, test cases  | PO + Developers |
+| `03-DATABASE-SCHEMA`      | SQL definitions, TypeScript types              | Developers      |
+| `04-API-ENDPOINTS`        | REST API specification                         | Developers      |
+| `05-IMPLEMENTATION`       | Code architecture, directory structure, DI     | Developers      |
+| `06-IMPLEMENTATION-STEPS` | Phased checklist with dependencies             | Developers + AI |
 
 ## Working with AI Coding Assistants
 
@@ -75,12 +75,12 @@ These templates are designed to be consumed by AI coding assistants (Claude, Cop
 
 Not every feature needs all 6 documents. Adapt based on complexity:
 
-| Feature Size | Documents to Use |
-| --- | --- |
-| **Small** (bug fix, minor tweak) | No PRD needed |
-| **Medium** (new CRUD feature) | INDEX + OVERVIEW + DATABASE + IMPLEMENTATION-STEPS |
-| **Large** (new module/app) | All 6 documents |
-| **Complex** (multi-app, calculations) | All 6 + additional domain-specific docs |
+| Feature Size                          | Documents to Use                                   |
+| ------------------------------------- | -------------------------------------------------- |
+| **Small** (bug fix, minor tweak)      | No PRD needed                                      |
+| **Medium** (new CRUD feature)         | INDEX + OVERVIEW + DATABASE + IMPLEMENTATION-STEPS |
+| **Large** (new module/app)            | All 6 documents                                    |
+| **Complex** (multi-app, calculations) | All 6 + additional domain-specific docs            |
 
 ## Real Examples
 

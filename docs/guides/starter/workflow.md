@@ -2,7 +2,18 @@
 sidebar_position: 2
 sidebar_label: Workflow
 description: Learn the basic five-step loop for building features with Claude Code, from writing your first prompt to committing a completed task.
-keywords: [Claude Code workflow, feature development, AI coding loop, beginner workflow, prompt, implement, review, commit, Claude Code tutorial]
+keywords:
+  [
+    Claude Code workflow,
+    feature development,
+    AI coding loop,
+    beginner workflow,
+    prompt,
+    implement,
+    review,
+    commit,
+    Claude Code tutorial,
+  ]
 ---
 
 # Your First Feature with Claude Code
@@ -42,6 +53,7 @@ The heart should be filled when favorited and outlined when not.
 ```
 
 A strong prompt includes:
+
 - **What** to build (a toggle button with a heart icon)
 - **Where** it goes (which file and component)
 - **How** it behaves (toggle, persist to localStorage, visual states)
@@ -54,11 +66,11 @@ Plan mode tells Claude Code to think through the approach before making any chan
 
 **Activate plan mode** in any of these ways:
 
-| Method | How |
-|--------|-----|
-| Slash command | Type `/plan` before your prompt |
+| Method            | How                                      |
+| ----------------- | ---------------------------------------- |
+| Slash command     | Type `/plan` before your prompt          |
 | Keyboard shortcut | Press `Shift+Tab` to toggle plan mode on |
-| Inline | Start your message with "plan:" |
+| Inline            | Start your message with "plan:"          |
 
 Example:
 
@@ -81,6 +93,7 @@ that shows all favorited items.
 Claude Code will revise its plan. Keep refining until you're satisfied with the approach. This is much faster than fixing code after the fact.
 
 **Things to check in the plan:**
+
 - Does it modify the right files?
 - Does the approach match your project's patterns?
 - Are there any missing edge cases?
@@ -96,6 +109,7 @@ Looks good, go ahead and implement it.
 Claude Code will start editing files and running commands. Watch the output as it works. If something looks wrong, press `Esc` to stop the current operation.
 
 **During implementation:**
+
 - Claude Code shows you each file it edits and each command it runs
 - You can approve or deny individual tool calls depending on your [permission settings](/claude-code/permissions)
 - If it goes off track, press `Esc` and redirect with a follow-up prompt
@@ -124,13 +138,13 @@ Commit these changes with a descriptive message.
 
 ## When to use plan mode
 
-| Situation | Approach |
-|-----------|----------|
-| Quick fix (typo, rename, one-line change) | Direct prompt, no plan needed |
-| Single-file feature | Direct prompt usually works, plan if unsure |
-| Multi-file feature | Always use plan mode |
-| Refactoring across files | Always use plan mode |
-| Unfamiliar codebase | Always use plan mode |
+| Situation                                 | Approach                                    |
+| ----------------------------------------- | ------------------------------------------- |
+| Quick fix (typo, rename, one-line change) | Direct prompt, no plan needed               |
+| Single-file feature                       | Direct prompt usually works, plan if unsure |
+| Multi-file feature                        | Always use plan mode                        |
+| Refactoring across files                  | Always use plan mode                        |
+| Unfamiliar codebase                       | Always use plan mode                        |
 
 ## Full example: adding a "Mark as Favorite" button
 
@@ -156,6 +170,7 @@ claude
 **Review the plan.** Claude Code responds with something like:
 
 > I'll make changes in 3 files:
+>
 > 1. `src/components/ItemCard.tsx` - Add star toggle button with onClick handler
 > 2. `src/components/FavoritesList.tsx` - New component to display favorited items
 > 3. `src/hooks/useFavorites.ts` - Custom hook for localStorage read/write

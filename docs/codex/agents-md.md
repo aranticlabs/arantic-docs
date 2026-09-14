@@ -2,7 +2,19 @@
 sidebar_position: 2
 sidebar_label: AGENTS.md & Memories
 description: How Codex loads AGENTS.md instruction files across global, project, and nested scopes, and how local Memories carry context between chats.
-keywords: [Codex AGENTS.md, AGENTS.override.md, Codex memories, project instructions, persistent context, project_doc_max_bytes, Codex customization, CODEX_HOME, codex init, codex import]
+keywords:
+  [
+    Codex AGENTS.md,
+    AGENTS.override.md,
+    Codex memories,
+    project instructions,
+    persistent context,
+    project_doc_max_bytes,
+    Codex customization,
+    CODEX_HOME,
+    codex init,
+    codex import,
+  ]
 ---
 
 # AGENTS.md & Memories
@@ -17,15 +29,15 @@ Think of it as onboarding documentation written for the agent rather than for a 
 
 ## All instruction files in Codex
 
-| File | Location | Scope | Committed to git? | Written by |
-|------|----------|-------|-------------------|------------|
-| **Global AGENTS.md** | `~/.codex/AGENTS.md` (or `$CODEX_HOME/AGENTS.md`) | You, across all repositories | N/A | You |
-| **Global override** | `~/.codex/AGENTS.override.md` | You, temporarily replaces the global file | N/A | You |
-| **Project AGENTS.md** | `<repo>/AGENTS.md` | Team (everyone on the project) | Yes | You (or `/init`) |
-| **Nested AGENTS.md** | `<repo>/services/payments/AGENTS.md` | Team, that directory and below | Yes | You |
-| **Nested override** | `<repo>/services/payments/AGENTS.override.md` | Replaces the `AGENTS.md` in the same directory | Usually not | You |
-| **Fallback filenames** | Any name listed in `project_doc_fallback_filenames` | Same as `AGENTS.md` at that level | Yes | You |
-| **Memories** | `~/.codex/memories/` | You, this machine | No | Codex |
+| File                   | Location                                            | Scope                                          | Committed to git? | Written by       |
+| ---------------------- | --------------------------------------------------- | ---------------------------------------------- | ----------------- | ---------------- |
+| **Global AGENTS.md**   | `~/.codex/AGENTS.md` (or `$CODEX_HOME/AGENTS.md`)   | You, across all repositories                   | N/A               | You              |
+| **Global override**    | `~/.codex/AGENTS.override.md`                       | You, temporarily replaces the global file      | N/A               | You              |
+| **Project AGENTS.md**  | `<repo>/AGENTS.md`                                  | Team (everyone on the project)                 | Yes               | You (or `/init`) |
+| **Nested AGENTS.md**   | `<repo>/services/payments/AGENTS.md`                | Team, that directory and below                 | Yes               | You              |
+| **Nested override**    | `<repo>/services/payments/AGENTS.override.md`       | Replaces the `AGENTS.md` in the same directory | Usually not       | You              |
+| **Fallback filenames** | Any name listed in `project_doc_fallback_filenames` | Same as `AGENTS.md` at that level              | Yes               | You              |
+| **Memories**           | `~/.codex/memories/`                                | You, this machine                              | No                | Codex            |
 
 Two configuration keys also inject instructions without an `AGENTS.md` file. `developer_instructions` adds extra instructions before the `AGENTS.md` chain, and `model_instructions_file` replaces Codex's built-in base instructions entirely. Both live in `config.toml` and are meant for advanced setups; for day-to-day guidance use `AGENTS.md`.
 
@@ -126,11 +138,11 @@ project_doc_max_bytes = 65536
 project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
 ```
 
-| Key | Default | What it does |
-|-----|---------|--------------|
-| `project_doc_max_bytes` | 32 KiB | Combined byte limit for the instruction chain. Codex stops adding files once the limit is reached. |
-| `project_doc_fallback_filenames` | none | Extra filenames to treat as instruction files when a directory has no `AGENTS.override.md` or `AGENTS.md`. |
-| `project_root_markers` | `[".git"]` | Filenames that mark the project root when Codex walks upward. Set to `[]` to treat the current directory as the root. |
+| Key                              | Default    | What it does                                                                                                          |
+| -------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------- |
+| `project_doc_max_bytes`          | 32 KiB     | Combined byte limit for the instruction chain. Codex stops adding files once the limit is reached.                    |
+| `project_doc_fallback_filenames` | none       | Extra filenames to treat as instruction files when a directory has no `AGENTS.override.md` or `AGENTS.md`.            |
+| `project_root_markers`           | `[".git"]` | Filenames that mark the project root when Codex walks upward. Set to `[]` to treat the current directory as the root. |
 
 With the fallback list above, each directory is checked in this order: `AGENTS.override.md`, `AGENTS.md`, `TEAM_GUIDE.md`, `.agents.md`. Names not on the list are ignored. Restart Codex after changing the configuration.
 
@@ -144,16 +156,19 @@ Start with only the instructions that matter, and treat the file as a feedback l
 # AGENTS.md
 
 ## Commands
+
 - Tests: npm test
 - Lint: npm run lint
 - Type check: npm run typecheck
 
 ## Conventions
+
 - Use TypeScript strict mode, never use `any`
 - All API endpoints must validate input with Zod
 - Database migrations are in src/db/migrations/, never modify existing ones
 
 ## Routing
+
 - Start in src/domain/ for business logic; ignore legacy/ unless asked
 ```
 
@@ -173,11 +188,13 @@ Start with only the instructions that matter, and treat the file as a feedback l
 ### Use constraints, not aspirations
 
 **Weak:**
+
 ```text
 Write high-quality, maintainable code and follow best practices.
 ```
 
 **Strong:**
+
 ```text
 Keep functions under 30 lines. Extract helpers for repeated logic.
 Never build SQL with string concatenation; use the query builder in src/db/query.ts.
@@ -201,13 +218,13 @@ There is no cache to clear. Codex rebuilds the chain on every run and at the sta
 
 ### Troubleshooting discovery
 
-| Symptom | Check |
-|---------|-------|
-| Nothing loads | Confirm you are in the intended repository (`/status` in the TUI shows the writable roots) and that the files are not empty. |
-| Wrong guidance appears | Look for an `AGENTS.override.md` higher in the tree or in your Codex home; rename or remove it. |
-| Fallback names ignored | Verify the spelling in `project_doc_fallback_filenames`, then restart Codex. |
-| Instructions truncated | Raise `project_doc_max_bytes` or split the file across nested directories. |
-| Edits have no effect | Run `echo $CODEX_HOME`. A non-default value points Codex at a different home directory. |
+| Symptom                | Check                                                                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Nothing loads          | Confirm you are in the intended repository (`/status` in the TUI shows the writable roots) and that the files are not empty. |
+| Wrong guidance appears | Look for an `AGENTS.override.md` higher in the tree or in your Codex home; rename or remove it.                              |
+| Fallback names ignored | Verify the spelling in `project_doc_fallback_filenames`, then restart Codex.                                                 |
+| Instructions truncated | Raise `project_doc_max_bytes` or split the file across nested directories.                                                   |
+| Edits have no effect   | Run `echo $CODEX_HOME`. A non-default value points Codex at a different home directory.                                      |
 
 ## Memories
 
@@ -232,20 +249,20 @@ Treat these files as generated state. Inspect them when troubleshooting, but do 
 
 ### Controlling memories
 
-| Control | What it does |
-|---------|--------------|
-| `/memories` (CLI, IDE, desktop app) | Choose whether the **current chat** may use existing memories and whether it may become an input for future memories. Chat-level choices do not change global settings. |
-| `[features] memories = true` | Turn the feature on globally. |
-| `memories.use_memories` | `false` stops Codex from injecting existing memories into new sessions (default `true`). |
-| `memories.generate_memories` | `false` stops new chats from becoming memory-generation inputs (default `true`). |
-| `memories.disable_on_external_context` | `true` excludes chats that used MCP tools, web search, or tool search from memory generation (default `false`). The older `memories.no_memories_if_mcp_or_web_search` key is accepted as an alias. |
-| `memories.min_rate_limit_remaining_percent` | Minimum remaining rate-limit percentage before generation runs (default `25`). |
-| `memories.min_rollout_idle_hours` | How long a chat must be idle before it is considered (default `6`, range 1 to 48). |
-| `memories.max_rollout_age_days` | Maximum chat age considered for generation (default `30`, max 90). |
-| `memories.max_rollouts_per_startup` | Chats processed per startup pass (default `16`, max 128). |
-| `memories.max_raw_memories_for_consolidation` | Recent raw memories kept for global consolidation (default `256`, max 4096). |
-| `memories.max_unused_days` | Days since last use before a memory drops out of consolidation (default `30`). |
-| `memories.extract_model` / `memories.consolidation_model` | Override the models used for per-chat extraction and global consolidation. |
+| Control                                                   | What it does                                                                                                                                                                                       |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/memories` (CLI, IDE, desktop app)                       | Choose whether the **current chat** may use existing memories and whether it may become an input for future memories. Chat-level choices do not change global settings.                            |
+| `[features] memories = true`                              | Turn the feature on globally.                                                                                                                                                                      |
+| `memories.use_memories`                                   | `false` stops Codex from injecting existing memories into new sessions (default `true`).                                                                                                           |
+| `memories.generate_memories`                              | `false` stops new chats from becoming memory-generation inputs (default `true`).                                                                                                                   |
+| `memories.disable_on_external_context`                    | `true` excludes chats that used MCP tools, web search, or tool search from memory generation (default `false`). The older `memories.no_memories_if_mcp_or_web_search` key is accepted as an alias. |
+| `memories.min_rate_limit_remaining_percent`               | Minimum remaining rate-limit percentage before generation runs (default `25`).                                                                                                                     |
+| `memories.min_rollout_idle_hours`                         | How long a chat must be idle before it is considered (default `6`, range 1 to 48).                                                                                                                 |
+| `memories.max_rollout_age_days`                           | Maximum chat age considered for generation (default `30`, max 90).                                                                                                                                 |
+| `memories.max_rollouts_per_startup`                       | Chats processed per startup pass (default `16`, max 128).                                                                                                                                          |
+| `memories.max_raw_memories_for_consolidation`             | Recent raw memories kept for global consolidation (default `256`, max 4096).                                                                                                                       |
+| `memories.max_unused_days`                                | Days since last use before a memory drops out of consolidation (default `30`).                                                                                                                     |
+| `memories.extract_model` / `memories.consolidation_model` | Override the models used for per-chat extraction and global consolidation.                                                                                                                         |
 
 ```toml
 # ~/.codex/config.toml
@@ -261,17 +278,17 @@ min_rate_limit_remaining_percent = 40
 
 If you already have a Claude Code or Cursor setup, run `/import` in a local CLI session, choose the source agent, and select which items to bring over. Codex leaves the original setup untouched.
 
-| Imported item | Destination in Codex |
-|---------------|----------------------|
-| Instruction files (such as `CLAUDE.md`) | `AGENTS.md` |
-| `settings.json` | `config.toml` |
-| Skills and slash commands | Skills |
-| Plugins | Plugins |
-| MCP server configuration | Codex MCP configuration |
-| Hooks | Codex hooks |
-| Subagents | Codex subagents |
-| Project memories from Claude Code | Memories |
-| Chats from the last 30 days (up to 50) | Local chats |
+| Imported item                           | Destination in Codex    |
+| --------------------------------------- | ----------------------- |
+| Instruction files (such as `CLAUDE.md`) | `AGENTS.md`             |
+| `settings.json`                         | `config.toml`           |
+| Skills and slash commands               | Skills                  |
+| Plugins                                 | Plugins                 |
+| MCP server configuration                | Codex MCP configuration |
+| Hooks                                   | Codex hooks             |
+| Subagents                               | Codex subagents         |
+| Project memories from Claude Code       | Memories                |
+| Chats from the last 30 days (up to 50)  | Local chats             |
 
 `/import` is unavailable while a task is running, in remote sessions, and while connected to a local app-server daemon. After importing, review tool restrictions in imported skills and agents, MCP servers with custom authentication (you may need to sign in again), hooks whose behavior may differ, and prompt templates that relied on arguments or shell interpolation. The desktop app offers the same flow under **Settings > Import**, and can additionally import from Claude Cowork and keep imported work in sync.
 
@@ -291,15 +308,15 @@ Codex does not document an organization-wide `AGENTS.md` that admins deploy to e
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Project file | `AGENTS.md` (plus `AGENTS.override.md` and configurable fallbacks) | `CLAUDE.md` (imports `AGENTS.md` with `@AGENTS.md`) |
-| User file | `~/.codex/AGENTS.md` | `~/.claude/CLAUDE.md` |
-| Personal, uncommitted project notes | No documented equivalent of `CLAUDE.local.md`; use a gitignored `AGENTS.override.md` | `CLAUDE.local.md` (auto-gitignored) |
-| Nested files | Loaded from the root down to your **working directory** only | Ancestors at startup, descendants lazily when files are touched |
-| Path-scoped rules | Not documented for `AGENTS.md`; place rules in the nearest directory instead | `.claude/rules/*.md` with `paths:` frontmatter |
-| Size limit | `project_doc_max_bytes`, 32 KiB combined by default | Up to 4 MiB per file; auto memory index capped at 200 lines / 25 KB |
-| Agent-written memory | Memories, off by default, under `~/.codex/memories/` | Auto memory, on by default, under `~/.claude/projects/<project>/memory/` |
-| Import from other tools | `/import` (Claude Code, Cursor) | `/import` (Codex, Gemini CLI) and `/init` |
+| Topic                               | Codex                                                                                | Claude Code                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Project file                        | `AGENTS.md` (plus `AGENTS.override.md` and configurable fallbacks)                   | `CLAUDE.md` (imports `AGENTS.md` with `@AGENTS.md`)                      |
+| User file                           | `~/.codex/AGENTS.md`                                                                 | `~/.claude/CLAUDE.md`                                                    |
+| Personal, uncommitted project notes | No documented equivalent of `CLAUDE.local.md`; use a gitignored `AGENTS.override.md` | `CLAUDE.local.md` (auto-gitignored)                                      |
+| Nested files                        | Loaded from the root down to your **working directory** only                         | Ancestors at startup, descendants lazily when files are touched          |
+| Path-scoped rules                   | Not documented for `AGENTS.md`; place rules in the nearest directory instead         | `.claude/rules/*.md` with `paths:` frontmatter                           |
+| Size limit                          | `project_doc_max_bytes`, 32 KiB combined by default                                  | Up to 4 MiB per file; auto memory index capped at 200 lines / 25 KB      |
+| Agent-written memory                | Memories, off by default, under `~/.codex/memories/`                                 | Auto memory, on by default, under `~/.claude/projects/<project>/memory/` |
+| Import from other tools             | `/import` (Claude Code, Cursor)                                                      | `/import` (Codex, Gemini CLI) and `/init`                                |
 
 See [Claude Code Memory](../claude-code/memory.md) for the full Claude Code picture.

@@ -2,7 +2,19 @@
 sidebar_position: 11
 sidebar_label: MCP
 description: Connect Codex to MCP servers with codex mcp add or config.toml, handle OAuth, control tool approval and timeouts, and use MCP tools from hooks.
-keywords: [Codex MCP, Model Context Protocol, codex mcp add, mcp_servers, streamable HTTP, stdio server, codex mcp login, OAuth, MCP tool approval, app-server]
+keywords:
+  [
+    Codex MCP,
+    Model Context Protocol,
+    codex mcp add,
+    mcp_servers,
+    streamable HTTP,
+    stdio server,
+    codex mcp login,
+    OAuth,
+    MCP tool approval,
+    app-server,
+  ]
 ---
 
 # MCP
@@ -17,21 +29,21 @@ MCP (Model Context Protocol) is the open standard that lets an AI coding agent c
 
 Supported server features:
 
-| Transport | Supports |
-|-----------|----------|
-| **stdio** | Local command plus `args`, environment variables, working directory, optional remote executor placement |
+| Transport           | Supports                                                                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **stdio**           | Local command plus `args`, environment variables, working directory, optional remote executor placement                                                                                          |
 | **Streamable HTTP** | Bearer token auth, OAuth (including CIMD and Dynamic Client Registration), ChatGPT session auth for trusted first-party servers, static and environment-sourced headers, a header helper command |
 
 Codex reads the MCP `instructions` field returned during initialization and treats it as server-wide guidance. If you maintain a server, put cross-tool workflows, constraints, and rate limits there and keep the first 512 characters self-contained.
 
 ## Where configuration lives
 
-| Location | Scope | Notes |
-|----------|-------|-------|
-| `~/.codex/config.toml` | You, all projects | Default target of `codex mcp add` |
-| `<repo>/.codex/config.toml` | This project | Loaded only when the project is trusted; commit it to share servers with the team |
-| Plugin manifest | While the plugin is enabled | Transport is fixed by the plugin; you control enable state and tool policy |
-| Managed `requirements.toml` | Organization | An `mcp_servers` allowlist that decides which servers may be enabled at all |
+| Location                    | Scope                       | Notes                                                                             |
+| --------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| `~/.codex/config.toml`      | You, all projects           | Default target of `codex mcp add`                                                 |
+| `<repo>/.codex/config.toml` | This project                | Loaded only when the project is trusted; commit it to share servers with the team |
+| Plugin manifest             | While the plugin is enabled | Transport is fixed by the plugin; you control enable state and tool policy        |
+| Managed `requirements.toml` | Organization                | An `mcp_servers` allowlist that decides which servers may be enabled at all       |
 
 There is no separate per-user-per-project "local" scope. Put personal servers in the user file and team servers in the project file, and keep secrets out of both by referencing environment variables.
 
@@ -51,14 +63,14 @@ codex mcp add figma --url https://mcp.figma.com/mcp --bearer-token-env-var FIGMA
 codex mcp add example --url https://mcp.example.com --oauth-client-id my-client
 ```
 
-| `codex mcp add` flag | Purpose |
-|----------------------|---------|
-| `-- <command> [args...]` | Launch command for a stdio server (mutually exclusive with `--url`) |
-| `--env KEY=VALUE` | Environment variable for a stdio server (repeatable) |
-| `--url <https://...>` | Register a streamable HTTP server |
-| `--bearer-token-env-var <ENV_VAR>` | Send the variable's value as a bearer token |
-| `--oauth-client-id <CLIENT_ID>` | Pre-registered OAuth client id (requires `--url`) |
-| `--oauth-resource <RESOURCE>` | RFC 8707 resource parameter for OAuth login (requires `--url`) |
+| `codex mcp add` flag               | Purpose                                                             |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `-- <command> [args...]`           | Launch command for a stdio server (mutually exclusive with `--url`) |
+| `--env KEY=VALUE`                  | Environment variable for a stdio server (repeatable)                |
+| `--url <https://...>`              | Register a streamable HTTP server                                   |
+| `--bearer-token-env-var <ENV_VAR>` | Send the variable's value as a bearer token                         |
+| `--oauth-client-id <CLIENT_ID>`    | Pre-registered OAuth client id (requires `--url`)                   |
+| `--oauth-resource <RESOURCE>`      | RFC 8707 resource parameter for OAuth login (requires `--url`)      |
 
 Manage what you have:
 
@@ -91,14 +103,14 @@ cwd = "/path/to/run/from"           # optional
 MY_ENV_VAR = "MY_ENV_VALUE"         # set explicitly
 ```
 
-| Key | Meaning |
-|-----|---------|
-| `command` (required) | Executable that starts the server |
-| `args` | Arguments |
-| `env` | Environment variables set for the process |
-| `env_vars` | Variables to allow and forward from Codex's environment. Entries can be strings or `{ name = "...", source = "local" \| "remote" }` |
-| `cwd` | Working directory |
-| `experimental_environment` | `remote` starts the stdio server through a remote executor environment when available |
+| Key                        | Meaning                                                                                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `command` (required)       | Executable that starts the server                                                                                                   |
+| `args`                     | Arguments                                                                                                                           |
+| `env`                      | Environment variables set for the process                                                                                           |
+| `env_vars`                 | Variables to allow and forward from Codex's environment. Entries can be strings or `{ name = "...", source = "local" \| "remote" }` |
+| `cwd`                      | Working directory                                                                                                                   |
+| `experimental_environment` | `remote` starts the stdio server through a remote executor environment when available                                               |
 
 ### Streamable HTTP servers
 
@@ -110,17 +122,17 @@ http_headers = { "X-Figma-Region" = "us-east-1" }
 env_http_headers = { "X-Team-Token" = "TEAM_TOKEN_ENV" }
 ```
 
-| Key | Meaning |
-|-----|---------|
-| `url` (required) | Server endpoint |
-| `auth` | Fallback after bearer tokens and headers: `oauth` (default, stored MCP OAuth credentials) or `chatgpt` (current ChatGPT session for the trusted first-party origin, then stored OAuth) |
-| `bearer_token_env_var` | Variable whose value goes into `Authorization` |
-| `http_headers` | Static headers |
-| `env_http_headers` | Header name to environment variable name |
-| `http_headers_helper` | Local command that prints a JSON object of headers. Cached per connection; refreshed once after a same-origin `401` or `403`. Explicit tokens and OAuth take precedence over a helper `Authorization` header. Local HTTP connections only. |
-| `scopes` | OAuth scopes to request |
-| `oauth_resource` | RFC 8707 resource parameter |
-| `oauth.client_id`, `oauth.callback_url`, `oauth.callback_port` | Pre-registered OAuth client settings |
+| Key                                                            | Meaning                                                                                                                                                                                                                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `url` (required)                                               | Server endpoint                                                                                                                                                                                                                            |
+| `auth`                                                         | Fallback after bearer tokens and headers: `oauth` (default, stored MCP OAuth credentials) or `chatgpt` (current ChatGPT session for the trusted first-party origin, then stored OAuth)                                                     |
+| `bearer_token_env_var`                                         | Variable whose value goes into `Authorization`                                                                                                                                                                                             |
+| `http_headers`                                                 | Static headers                                                                                                                                                                                                                             |
+| `env_http_headers`                                             | Header name to environment variable name                                                                                                                                                                                                   |
+| `http_headers_helper`                                          | Local command that prints a JSON object of headers. Cached per connection; refreshed once after a same-origin `401` or `403`. Explicit tokens and OAuth take precedence over a helper `Authorization` header. Local HTTP connections only. |
+| `scopes`                                                       | OAuth scopes to request                                                                                                                                                                                                                    |
+| `oauth_resource`                                               | RFC 8707 resource parameter                                                                                                                                                                                                                |
+| `oauth.client_id`, `oauth.callback_url`, `oauth.callback_port` | Pre-registered OAuth client settings                                                                                                                                                                                                       |
 
 If no credential source resolves, Codex can connect without authentication. Run `codex mcp login <name>` separately to start an OAuth login.
 
@@ -142,17 +154,17 @@ approval_mode = "approve"
 output_token_limit = 30000
 ```
 
-| Key | Default | Meaning |
-|-----|---------|---------|
-| `enabled` | `true` | `false` keeps the definition but does not start the server |
-| `required` | `false` | `true` fails startup or resume if this enabled server cannot initialize |
-| `startup_timeout_sec` | `10` | Time allowed for the server to start (`startup_timeout_ms` is an alias) |
-| `tool_timeout_sec` | `60` | Per-tool call timeout |
-| `enabled_tools` | all | Allow list of tool names |
-| `disabled_tools` | none | Deny list, applied after `enabled_tools` |
-| `default_tools_approval_mode` | | `auto`, `prompt`, `writes` (prompt for tools not marked read-only), or `approve` |
-| `tools.<tool>.approval_mode` | | Per-tool override |
-| `tools.<tool>.output_token_limit` | model default | Output budget for one tool, before the standard 20% serialization allowance |
+| Key                               | Default       | Meaning                                                                          |
+| --------------------------------- | ------------- | -------------------------------------------------------------------------------- |
+| `enabled`                         | `true`        | `false` keeps the definition but does not start the server                       |
+| `required`                        | `false`       | `true` fails startup or resume if this enabled server cannot initialize          |
+| `startup_timeout_sec`             | `10`          | Time allowed for the server to start (`startup_timeout_ms` is an alias)          |
+| `tool_timeout_sec`                | `60`          | Per-tool call timeout                                                            |
+| `enabled_tools`                   | all           | Allow list of tool names                                                         |
+| `disabled_tools`                  | none          | Deny list, applied after `enabled_tools`                                         |
+| `default_tools_approval_mode`     |               | `auto`, `prompt`, `writes` (prompt for tools not marked read-only), or `approve` |
+| `tools.<tool>.approval_mode`      |               | Per-tool override                                                                |
+| `tools.<tool>.output_token_limit` | model default | Output budget for one tool, before the standard 20% serialization allowance      |
 
 Top-level `mcp_optional_startup_grace_ms` (default `1000`) is how long Codex waits for optional servers while building the initial tool catalog. Set it to `0` to wait each server's full `startup_timeout_sec`. Required servers always use their own timeouts.
 
@@ -221,7 +233,7 @@ command = '"$(git rev-parse --show-toplevel)/.codex/hooks/github_policy.sh"'
             "type": "mcp_tool",
             "server": "scanner",
             "tool": "scan_patch",
-            "input": { "patch": "${tool_input.command}" },
+            "input": {"patch": "${tool_input.command}"},
             "timeout": 30
           }
         ]
@@ -255,21 +267,21 @@ Earlier Codex releases could run **as** an MCP server (`codex mcp-server` and th
 
 The replacement is the [Codex app server](https://learn.chatgpt.com/docs/app-server), started with `codex app-server`. It speaks its own JSON-RPC protocol over stdio, WebSocket, or a Unix socket and covers authentication, conversation history, approvals, and streamed events. It is **not** an MCP server or a drop-in replacement for an MCP client, so update the integration to the app-server protocol rather than swapping endpoints. The app-server command is experimental and not supported for production workloads.
 
-This removal affects only *hosting* Codex as a server. Connecting Codex *to* external MCP servers, the subject of this page, is unchanged.
+This removal affects only _hosting_ Codex as a server. Connecting Codex _to_ external MCP servers, the subject of this page, is unchanged.
 
 ## Recommended servers for coding
 
 The official Codex docs list these as common starting points:
 
-| Server | What it gives Codex | Transport |
-|--------|---------------------|-----------|
-| [OpenAI Docs MCP](https://developers.openai.com/learn/docs-mcp) | Search and read OpenAI developer docs | HTTP |
-| [Context7](https://github.com/upstash/context7) | Current library documentation, reduces invented APIs | stdio |
-| [Figma](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/) | Read designs (local or remote server) | stdio or HTTP |
-| [Playwright](https://www.npmjs.com/package/@playwright/mcp) | Drive and inspect a browser | stdio |
-| [Chrome DevTools](https://github.com/ChromeDevTools/chrome-devtools-mcp/) | Control and inspect Chrome | stdio |
-| [Sentry](https://docs.sentry.io/product/sentry-mcp/#codex) | Read errors and logs | HTTP |
-| [GitHub](https://github.com/github/github-mcp-server) | Pull requests, issues, and everything `git` cannot do | HTTP or stdio |
+| Server                                                                                  | What it gives Codex                                   | Transport     |
+| --------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------- |
+| [OpenAI Docs MCP](https://developers.openai.com/learn/docs-mcp)                         | Search and read OpenAI developer docs                 | HTTP          |
+| [Context7](https://github.com/upstash/context7)                                         | Current library documentation, reduces invented APIs  | stdio         |
+| [Figma](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/) | Read designs (local or remote server)                 | stdio or HTTP |
+| [Playwright](https://www.npmjs.com/package/@playwright/mcp)                             | Drive and inspect a browser                           | stdio         |
+| [Chrome DevTools](https://github.com/ChromeDevTools/chrome-devtools-mcp/)               | Control and inspect Chrome                            | stdio         |
+| [Sentry](https://docs.sentry.io/product/sentry-mcp/#codex)                              | Read errors and logs                                  | HTTP          |
+| [GitHub](https://github.com/github/github-mcp-server)                                   | Pull requests, issues, and everything `git` cannot do | HTTP or stdio |
 
 Context7 is the one the Codex docs use as the worked example:
 
@@ -291,16 +303,16 @@ For the others, follow the linked project's install instructions for the exact c
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Config file | `[mcp_servers.<name>]` in `~/.codex/config.toml` or `<repo>/.codex/config.toml` | `.mcp.json` (project) or `~/.claude.json` (user, local) |
-| Scopes | User and trusted project; shared across CLI, IDE, and desktop app | Local, project, user |
-| Add command | `codex mcp add <name> -- cmd` or `--url` | `claude mcp add <name> -- cmd` or `--transport http` |
-| Transports | stdio, streamable HTTP | stdio, HTTP, SSE (deprecated), WebSocket |
-| OAuth | `codex mcp login`, CIMD and DCR, pre-registered client ids, ChatGPT session auth | `claude mcp login`, browser or URL prompt flow |
-| Per-tool control | `enabled_tools`, `disabled_tools`, approval modes, output token limits per tool | `mcp__server__tool` allow and deny permission rules, `MAX_MCP_OUTPUT_TOKENS` |
-| Timeouts | `startup_timeout_sec`, `tool_timeout_sec`, `mcp_optional_startup_grace_ms` | Not configured per server in the same way |
-| Status | `/mcp`, `/mcp verbose`, `codex mcp list` | `/mcp`, `claude mcp list` |
-| Hosting the agent as a server | Removed; use `codex app-server` | Not applicable |
+| Topic                         | Codex                                                                            | Claude Code                                                                  |
+| ----------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Config file                   | `[mcp_servers.<name>]` in `~/.codex/config.toml` or `<repo>/.codex/config.toml`  | `.mcp.json` (project) or `~/.claude.json` (user, local)                      |
+| Scopes                        | User and trusted project; shared across CLI, IDE, and desktop app                | Local, project, user                                                         |
+| Add command                   | `codex mcp add <name> -- cmd` or `--url`                                         | `claude mcp add <name> -- cmd` or `--transport http`                         |
+| Transports                    | stdio, streamable HTTP                                                           | stdio, HTTP, SSE (deprecated), WebSocket                                     |
+| OAuth                         | `codex mcp login`, CIMD and DCR, pre-registered client ids, ChatGPT session auth | `claude mcp login`, browser or URL prompt flow                               |
+| Per-tool control              | `enabled_tools`, `disabled_tools`, approval modes, output token limits per tool  | `mcp__server__tool` allow and deny permission rules, `MAX_MCP_OUTPUT_TOKENS` |
+| Timeouts                      | `startup_timeout_sec`, `tool_timeout_sec`, `mcp_optional_startup_grace_ms`       | Not configured per server in the same way                                    |
+| Status                        | `/mcp`, `/mcp verbose`, `codex mcp list`                                         | `/mcp`, `claude mcp list`                                                    |
+| Hosting the agent as a server | Removed; use `codex app-server`                                                  | Not applicable                                                               |
 
 See [Claude Code MCP Servers](../claude-code/mcp.md) for the Claude configuration and a longer catalog of general-purpose servers, most of which work unchanged with Codex once translated to `config.toml`.

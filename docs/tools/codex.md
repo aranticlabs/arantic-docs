@@ -2,7 +2,18 @@
 sidebar_position: 5
 sidebar_label: OpenAI Codex
 description: OpenAI Codex is a coding agent available as a CLI, IDE extension, desktop app, and cloud service that reads your codebase, edits files, and runs commands.
-keywords: [Codex CLI, OpenAI Codex, terminal coding agent, AI CLI, OpenAI, code generation, local AI agent, Codex cloud, IDE extension]
+keywords:
+  [
+    Codex CLI,
+    OpenAI Codex,
+    terminal coding agent,
+    AI CLI,
+    OpenAI,
+    code generation,
+    local AI agent,
+    Codex cloud,
+    IDE extension,
+  ]
 ---
 
 # OpenAI Codex
@@ -66,12 +77,12 @@ The sign-in method also determines which admin controls and data-handling polici
 
 ## Surfaces
 
-| Surface | Best for | Notes |
-|---------|----------|-------|
-| **CLI** (`codex`) | Terminal workflows, scripting, CI | Full feature set: skills, subagents, hooks, MCP, `codex exec` |
-| **IDE extension** | Editing with open files and selections as context | VS Code, Cursor, Windsurf; Xcode and JetBrains have their own Codex integrations |
-| **ChatGPT desktop app** | Parallel chats, worktrees, long-running work | macOS, Windows, and Linux |
-| **Codex cloud** | Delegated tasks in isolated environments, PR review | Started from the web, CLI (`codex cloud`), or IDE; results applied locally |
+| Surface                 | Best for                                            | Notes                                                                            |
+| ----------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **CLI** (`codex`)       | Terminal workflows, scripting, CI                   | Full feature set: skills, subagents, hooks, MCP, `codex exec`                    |
+| **IDE extension**       | Editing with open files and selections as context   | VS Code, Cursor, Windsurf; Xcode and JetBrains have their own Codex integrations |
+| **ChatGPT desktop app** | Parallel chats, worktrees, long-running work        | macOS, Windows, and Linux                                                        |
+| **Codex cloud**         | Delegated tasks in isolated environments, PR review | Started from the web, CLI (`codex cloud`), or IDE; results applied locally       |
 
 ## Key concepts
 

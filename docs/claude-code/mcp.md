@@ -2,7 +2,17 @@
 sidebar_position: 10
 sidebar_label: MCP Servers
 description: MCP (Model Context Protocol) lets Claude Code connect to external services like databases, APIs, and browsers through a standardized client-server interface.
-keywords: [MCP, Model Context Protocol, MCP servers, Claude Code integrations, external tools, database access, browser tools, API integration]
+keywords:
+  [
+    MCP,
+    Model Context Protocol,
+    MCP servers,
+    Claude Code integrations,
+    external tools,
+    database access,
+    browser tools,
+    API integration,
+  ]
 ---
 
 # MCP Servers
@@ -28,11 +38,11 @@ Servers can run locally (as a child process started by Claude Code) or remotely.
 
 MCP servers are not defined in `settings.json`. They have their own configuration, stored at one of three scopes:
 
-| Scope | Storage | Availability | Shared with |
-|---|---|---|---|
-| **Local** (default) | `~/.claude.json` (under the project path) | This project only | Just you |
-| **Project** | `.mcp.json` in the project root | This project only | Team, via version control |
-| **User** | `~/.claude.json` | All your projects | Just you |
+| Scope               | Storage                                   | Availability      | Shared with               |
+| ------------------- | ----------------------------------------- | ----------------- | ------------------------- |
+| **Local** (default) | `~/.claude.json` (under the project path) | This project only | Just you                  |
+| **Project**         | `.mcp.json` in the project root           | This project only | Team, via version control |
+| **User**            | `~/.claude.json`                          | All your projects | Just you                  |
 
 ### Adding servers with the CLI
 
@@ -117,13 +127,13 @@ For example, `claude mcp login sentry` opens the browser flow for a server named
 
 If you are new to MCP, start with these five servers. They cover the most common needs and work well together in a **Research, Debug, Document** workflow:
 
-| Server | What it does | Workflow phase |
-|--------|-------------|----------------|
-| **Context7** | Fetches current library documentation to prevent hallucinated APIs | Research |
-| **Playwright** | Browser automation for UI testing and interaction | Debug |
-| **Claude in Chrome** | Connects to your actual Chrome browser for console, network, and DOM access | Debug |
-| **DeepWiki** | Structured wiki-style documentation for any GitHub repository | Research |
-| **Excalidraw** | Generates architecture diagrams and flowcharts from natural language | Document |
+| Server               | What it does                                                                | Workflow phase |
+| -------------------- | --------------------------------------------------------------------------- | -------------- |
+| **Context7**         | Fetches current library documentation to prevent hallucinated APIs          | Research       |
+| **Playwright**       | Browser automation for UI testing and interaction                           | Debug          |
+| **Claude in Chrome** | Connects to your actual Chrome browser for console, network, and DOM access | Debug          |
+| **DeepWiki**         | Structured wiki-style documentation for any GitHub repository               | Research       |
+| **Excalidraw**       | Generates architecture diagrams and flowcharts from natural language        | Document       |
 
 ### Context7
 
@@ -500,14 +510,14 @@ Key tools: `list_containers`, `inspect_container`, `container_logs`, `run_contai
 
 MCP is an open standard. While Claude Code was the first major AI coding tool to support it, most others have added support.
 
-| Tool | MCP support | Configuration location | Notes |
-|---|---|---|---|
-| **Claude Code** | Full, stable | `.mcp.json` / `~/.claude.json` | First-class; multi-server, stdio, HTTP, SSE, and WebSocket |
-| **Claude Desktop** | Full, stable | `claude_desktop_config.json` | Same servers, different config file path |
-| **Cursor** | Yes (experimental) | Cursor settings UI or `mcp.json` | Supports stdio and SSE; enable in Settings > MCP |
-| **Gemini CLI** | Yes | `settings.json` | Growing server compatibility |
-| **Codex CLI** | Partial | CLI flags or config file | Tool call compatibility varies by server |
-| **VS Code + Copilot** | Yes (GitHub Copilot agent mode) | `mcp.json` in workspace or user settings | Supported in agent mode only |
+| Tool                  | MCP support                     | Configuration location                   | Notes                                                      |
+| --------------------- | ------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| **Claude Code**       | Full, stable                    | `.mcp.json` / `~/.claude.json`           | First-class; multi-server, stdio, HTTP, SSE, and WebSocket |
+| **Claude Desktop**    | Full, stable                    | `claude_desktop_config.json`             | Same servers, different config file path                   |
+| **Cursor**            | Yes (experimental)              | Cursor settings UI or `mcp.json`         | Supports stdio and SSE; enable in Settings > MCP           |
+| **Gemini CLI**        | Yes                             | `settings.json`                          | Growing server compatibility                               |
+| **Codex CLI**         | Partial                         | CLI flags or config file                 | Tool call compatibility varies by server                   |
+| **VS Code + Copilot** | Yes (GitHub Copilot agent mode) | `mcp.json` in workspace or user settings | Supported in agent mode only                               |
 
 ### Using MCP with Claude Desktop
 

@@ -2,7 +2,19 @@
 sidebar_position: 4
 sidebar_label: Cursor
 description: Cursor is an AI coding agent and editor (VS Code fork) with Agent, Plan, Ask, and Debug modes, a terminal CLI, cloud agents, and Bugbot PR review.
-keywords: [Cursor, AI code editor, VS Code fork, Cursor Agent, Cursor CLI, multi-file editing, Plan Mode, cloud agents, Bugbot, AI pair programming]
+keywords:
+  [
+    Cursor,
+    AI code editor,
+    VS Code fork,
+    Cursor Agent,
+    Cursor CLI,
+    multi-file editing,
+    Plan Mode,
+    cloud agents,
+    Bugbot,
+    AI pair programming,
+  ]
 ---
 
 # Cursor
@@ -38,13 +50,13 @@ See [Cursor CLI](../cursor/cli.md) for authentication, flags, headless mode, and
 
 ## Agent modes
 
-| Mode | Edits files? | Use it for |
-|------|--------------|------------|
-| **Agent** | Yes | Default: end-to-end tasks with search, edits, terminal, and browser |
-| **Plan** | Not until you approve | Research, clarifying questions, and an editable plan before code |
-| **Ask** | No | Read-only exploration and explanation |
-| **Debug** | Instrumentation first, then a fix | Root-causing bugs with hypotheses and runtime evidence |
-| **Design** | Yes | Directing the agent visually from the built-in browser |
+| Mode       | Edits files?                      | Use it for                                                          |
+| ---------- | --------------------------------- | ------------------------------------------------------------------- |
+| **Agent**  | Yes                               | Default: end-to-end tasks with search, edits, terminal, and browser |
+| **Plan**   | Not until you approve             | Research, clarifying questions, and an editable plan before code    |
+| **Ask**    | No                                | Read-only exploration and explanation                               |
+| **Debug**  | Instrumentation first, then a fix | Root-causing bugs with hypotheses and runtime evidence              |
+| **Design** | Yes                               | Directing the agent visually from the built-in browser              |
 
 Details: [Agent Modes](../cursor/modes.md).
 
@@ -71,27 +83,27 @@ Cursor has native support for:
 
 ## Editing shortcuts
 
-| Shortcut | What it does |
-|----------|-------------|
-| `Cmd+I` | Open or toggle the Agent panel |
-| `Cmd+K` | Inline Edit on the current selection (or the terminal prompt bar) |
-| `Cmd+L` with a selection | Add the selection to a new chat |
-| `Tab` | Accept a Tab completion |
-| `Shift+Tab` | Rotate Agent modes |
-| `Cmd+E` | Toggle the Agent layout |
+| Shortcut                 | What it does                                                      |
+| ------------------------ | ----------------------------------------------------------------- |
+| `Cmd+I`                  | Open or toggle the Agent panel                                    |
+| `Cmd+K`                  | Inline Edit on the current selection (or the terminal prompt bar) |
+| `Cmd+L` with a selection | Add the selection to a new chat                                   |
+| `Tab`                    | Accept a Tab completion                                           |
+| `Shift+Tab`              | Rotate Agent modes                                                |
+| `Cmd+E`                  | Toggle the Agent layout                                           |
 
 Full reference: [Commands & Shortcuts](../cursor/commands.md).
 
 ## Cursor vs. Copilot
 
-| | Cursor | Copilot |
-|---|---|---|
-| Codebase search | Repository-wide (Instant Grep, Explore subagent) | Open files plus workspace search |
-| Editor | Standalone (VS Code fork) | Plugin for existing editors |
-| Multi-file agent edits | Yes (Agent, Plan Mode) | Yes (agent mode), less configurable |
-| Instructions files | `AGENTS.md`, `.cursor/rules/*.mdc` | `.github/copilot-instructions.md` |
-| Inline edit shortcut | `Cmd+K` | `Ctrl+I` |
-| Terminal CLI | Yes (`agent`) | Yes (Copilot CLI) |
+|                        | Cursor                                           | Copilot                             |
+| ---------------------- | ------------------------------------------------ | ----------------------------------- |
+| Codebase search        | Repository-wide (Instant Grep, Explore subagent) | Open files plus workspace search    |
+| Editor                 | Standalone (VS Code fork)                        | Plugin for existing editors         |
+| Multi-file agent edits | Yes (Agent, Plan Mode)                           | Yes (agent mode), less configurable |
+| Instructions files     | `AGENTS.md`, `.cursor/rules/*.mdc`               | `.github/copilot-instructions.md`   |
+| Inline edit shortcut   | `Cmd+K`                                          | `Ctrl+I`                            |
+| Terminal CLI           | Yes (`agent`)                                    | Yes (Copilot CLI)                   |
 
 ## Tips
 

@@ -2,7 +2,19 @@
 sidebar_position: 9
 sidebar_label: Subagents
 description: Cursor subagents run delegated work in their own context window, with built-in Explore, Bash, and Browser agents and custom agents defined in .cursor/agents/.
-keywords: [Cursor subagents, .cursor/agents, context isolation, parallel agents, Explore subagent, background subagents, custom subagent, cloud subagents, model per subagent, delegation]
+keywords:
+  [
+    Cursor subagents,
+    .cursor/agents,
+    context isolation,
+    parallel agents,
+    Explore subagent,
+    background subagents,
+    custom subagent,
+    cloud subagents,
+    model per subagent,
+    delegation,
+  ]
 ---
 
 # Subagents
@@ -13,21 +25,21 @@ Subagents are specialized assistants that Cursor's Agent delegates tasks to. Eac
 
 A subagent is a child agent launched by the main Agent inside the same session. It receives a prompt that the parent writes, works autonomously with its own tools, and hands back a final message. Four properties define it:
 
-| Property | What it means |
-|---|---|
-| **Context isolation** | A clean context window. Intermediate output (search results, logs, DOM snapshots) stays inside the subagent; the parent sees only the summary |
-| **Parallel execution** | Several subagents can run at once on different parts of the codebase |
-| **Specialized expertise** | Custom prompt, optional model, and optional read-only restriction per subagent |
-| **Reusability** | Custom subagents are Markdown files you can commit and reuse across projects |
+| Property                  | What it means                                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Context isolation**     | A clean context window. Intermediate output (search results, logs, DOM snapshots) stays inside the subagent; the parent sees only the summary |
+| **Parallel execution**    | Several subagents can run at once on different parts of the codebase                                                                          |
+| **Specialized expertise** | Custom prompt, optional model, and optional read-only restriction per subagent                                                                |
+| **Reusability**           | Custom subagents are Markdown files you can commit and reuse across projects                                                                  |
 
 Subagents start with no conversation history. The parent includes whatever context the subagent needs in the prompt it sends, so a subagent is only as well-briefed as that prompt.
 
 ### Foreground vs background
 
-| Mode | Behavior | Best for |
-|---|---|---|
-| **Foreground** | Blocks until the subagent completes and returns the result immediately | Sequential steps where the parent needs the output before continuing |
-| **Background** | Returns immediately; the subagent works independently and writes its state as it runs | Long-running tasks and parallel workstreams |
+| Mode           | Behavior                                                                              | Best for                                                             |
+| -------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Foreground** | Blocks until the subagent completes and returns the result immediately                | Sequential steps where the parent needs the output before continuing |
+| **Background** | Returns immediately; the subagent works independently and writes its state as it runs | Long-running tasks and parallel workstreams                          |
 
 Background subagents write output to `~/.cursor/subagents/`, and the parent can read those files to check progress. Set `is_background: true` in a custom subagent's frontmatter to always run it in the background.
 
@@ -35,10 +47,10 @@ Background subagents write output to `~/.cursor/subagents/`, and the parent can 
 
 Cursor ships three built-in subagents. They were added after analysis of conversations that hit context limits, and each one isolates a specific kind of noisy work. You do not configure them; Agent uses them automatically when appropriate.
 
-| Subagent | Purpose | Why it is a subagent |
-|---|---|---|
-| **Explore** (`explore`) | Searches and analyzes the codebase | Exploration produces large intermediate output. Uses a faster model by default so it can run many parallel searches |
-| **Bash** (`bash`) | Runs a series of shell commands | Command output is verbose. Isolating it keeps the parent focused on decisions, not logs |
+| Subagent                | Purpose                              | Why it is a subagent                                                                                                 |
+| ----------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| **Explore** (`explore`) | Searches and analyzes the codebase   | Exploration produces large intermediate output. Uses a faster model by default so it can run many parallel searches  |
+| **Bash** (`bash`)       | Runs a series of shell commands      | Command output is verbose. Isolating it keeps the parent focused on decisions, not logs                              |
 | **Browser** (`browser`) | Controls a browser through MCP tools | Browser interactions produce noisy DOM snapshots and screenshots. The subagent filters them down to relevant results |
 
 The design trade-offs behind these three carry over to your own subagents: isolate work that generates noise, use a cheaper or faster model when the task is mechanical, and tune the prompt and tools for one job.
@@ -49,12 +61,12 @@ The Cloud Agents API reserves additional built-in names (`explore`, `debug`, `sh
 
 ## When to use subagents (and when not to)
 
-| Use a subagent when... | Use a skill instead when... |
-|---|---|
-| You need context isolation for a long research task | The task is single-purpose (generate a changelog, format imports) |
-| You want several workstreams to run in parallel | You want a quick, repeatable action |
-| The task needs specialized expertise across many steps | The task completes in one shot |
-| You want an independent verification of work | You do not need a separate context window |
+| Use a subagent when...                                 | Use a skill instead when...                                       |
+| ------------------------------------------------------ | ----------------------------------------------------------------- |
+| You need context isolation for a long research task    | The task is single-purpose (generate a changelog, format imports) |
+| You want several workstreams to run in parallel        | You want a quick, repeatable action                               |
+| The task needs specialized expertise across many steps | The task completes in one shot                                    |
+| You want an independent verification of work           | You do not need a separate context window                         |
 
 If you catch yourself writing a subagent for "generate a changelog" or "format imports", write a [skill](./skills.md) instead. Subagents cost startup time and tokens; they pay off when isolation or parallelism matters.
 
@@ -62,14 +74,14 @@ If you catch yourself writing a subagent for "generate a changelog" or "format i
 
 ### File locations
 
-| Type | Location | Scope |
-|---|---|---|
-| **Project subagents** | `.cursor/agents/` | Current project only |
-| | `.claude/agents/` | Current project (Claude Code compatibility) |
-| | `.codex/agents/` | Current project (Codex compatibility) |
-| **User subagents** | `~/.cursor/agents/` | All projects for the current user |
-| | `~/.claude/agents/` | All projects (Claude Code compatibility) |
-| | `~/.codex/agents/` | All projects (Codex compatibility) |
+| Type                  | Location            | Scope                                       |
+| --------------------- | ------------------- | ------------------------------------------- |
+| **Project subagents** | `.cursor/agents/`   | Current project only                        |
+|                       | `.claude/agents/`   | Current project (Claude Code compatibility) |
+|                       | `.codex/agents/`    | Current project (Codex compatibility)       |
+| **User subagents**    | `~/.cursor/agents/` | All projects for the current user           |
+|                       | `~/.claude/agents/` | All projects (Claude Code compatibility)    |
+|                       | `~/.codex/agents/`  | All projects (Codex compatibility)          |
 
 Project subagents take precedence over user subagents when names conflict. Among the compatibility folders, `.cursor/` wins over `.claude/` and `.codex/` for the same name. If your team already maintains `.claude/agents/`, Cursor reads it as is; the Cursor-specific fields below are simply ignored by other tools.
 
@@ -88,12 +100,14 @@ readonly: true
 You are a security expert auditing code for vulnerabilities.
 
 When invoked:
+
 1. Identify security-sensitive code paths
 2. Check for common vulnerabilities (injection, XSS, auth bypass)
 3. Verify secrets are not hardcoded
 4. Review input validation and sanitization
 
 Report findings by severity:
+
 - Critical (must fix before deploy)
 - High (fix soon)
 - Medium (address when possible)
@@ -101,13 +115,13 @@ Report findings by severity:
 
 ### Frontmatter fields
 
-| Field | Type | Required | Default | Description |
-|---|---|---|---|---|
-| `name` | string | No | Derived from filename | Display name and identifier. Lowercase letters and hyphens |
-| `description` | string | No | none | Short description shown in Task tool hints. Agent reads this to decide when to delegate |
-| `model` | string | No | `inherit` | `inherit` or a specific model ID, optionally with bracketed parameters. See [Model selection](#model-selection-per-subagent) |
-| `readonly` | boolean | No | `false` | When `true`, the subagent runs with restricted write permissions: no file edits and no state-changing shell commands |
-| `is_background` | boolean | No | `false` | When `true`, the subagent runs in the background without blocking the parent |
+| Field           | Type    | Required | Default               | Description                                                                                                                  |
+| --------------- | ------- | -------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `name`          | string  | No       | Derived from filename | Display name and identifier. Lowercase letters and hyphens                                                                   |
+| `description`   | string  | No       | none                  | Short description shown in Task tool hints. Agent reads this to decide when to delegate                                      |
+| `model`         | string  | No       | `inherit`             | `inherit` or a specific model ID, optionally with bracketed parameters. See [Model selection](#model-selection-per-subagent) |
+| `readonly`      | boolean | No       | `false`               | When `true`, the subagent runs with restricted write permissions: no file edits and no state-changing shell commands         |
+| `is_background` | boolean | No       | `false`               | When `true`, the subagent runs in the background without blocking the parent                                                 |
 
 :::note
 There is no `tools` allowlist in Cursor subagent frontmatter. Subagents inherit all tools from the parent, including MCP tools from configured servers. The one restriction knob is `readonly: true`, which is the right default for reviewers, auditors, and explorers. To limit specific tools or commands, use [hooks](./hooks.md) (for example `subagentStart` or `beforeShellExecution`) rather than frontmatter.
@@ -130,9 +144,9 @@ Or write the file by hand in `.cursor/agents/` (project) or `~/.cursor/agents/` 
 
 The `model` field has two forms:
 
-| Value | Behavior |
-|---|---|
-| `inherit` | Same model as the parent agent (default) |
+| Value               | Behavior                                                                                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inherit`           | Same model as the parent agent (default)                                                                                                                                        |
 | A specific model ID | Exactly that model, regardless of the parent, for example `composer-2` or `gpt-5.6-sol`. See the [models reference](https://cursor.com/docs/models-and-pricing) for current IDs |
 
 Use `inherit` when the subagent needs the same reasoning power as the parent. Pin a model when the job needs a particular model's strengths, or when a mechanical task should run on something cheaper.
@@ -141,13 +155,13 @@ Use `inherit` when the subagent needs the same reasoning power as the parent. Pi
 
 Append square brackets to a model ID to set per-model options as `id=value` pairs, comma-separated:
 
-| Example | Behavior |
-|---|---|
-| `composer-2.5[]` | Pins the base model; empty brackets select the standard variant instead of the fast one |
-| `composer-2.5[fast=false]` | Selects the standard (non-fast) variant explicitly |
-| `claude-opus-5[effort=high]` | Sets reasoning effort to `high` |
-| `claude-opus-5[context=300k]` | Sets the context window to 300k tokens |
-| `claude-opus-5[effort=high,context=300k]` | Combines options |
+| Example                                   | Behavior                                                                                |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| `composer-2.5[]`                          | Pins the base model; empty brackets select the standard variant instead of the fast one |
+| `composer-2.5[fast=false]`                | Selects the standard (non-fast) variant explicitly                                      |
+| `claude-opus-5[effort=high]`              | Sets reasoning effort to `high`                                                         |
+| `claude-opus-5[context=300k]`             | Sets the context window to 300k tokens                                                  |
+| `claude-opus-5[effort=high,context=300k]` | Combines options                                                                        |
 
 Available options depend on the model and use the same `id=value` pairs as the SDK's model parameters.
 
@@ -257,7 +271,7 @@ Since Cursor 2.5, subagents can launch child subagents to form a tree of coordin
 
 ## Context isolation in practice
 
-The point of a subagent is what does *not* come back. A codebase search that touches forty files, a test run that prints two thousand lines, a browser session with a dozen DOM snapshots: all of it stays in the child context, and the parent receives a few paragraphs. That keeps the main conversation readable and postpones context compression.
+The point of a subagent is what does _not_ come back. A codebase search that touches forty files, a test run that prints two thousand lines, a browser session with a dozen DOM snapshots: all of it stays in the child context, and the parent receives a few paragraphs. That keeps the main conversation readable and postpones context compression.
 
 Two consequences to design for:
 
@@ -268,11 +282,11 @@ Cursor's documentation also suggests [hooks](./hooks.md) when subagents must pro
 
 ## Cost considerations
 
-| Benefit | Trade-off |
-|---|---|
-| Context isolation | Startup overhead: each subagent gathers its own context |
-| Parallel execution | Higher token usage: several contexts running at once |
-| Specialized focus | Latency: often slower than the main agent for simple tasks |
+| Benefit            | Trade-off                                                  |
+| ------------------ | ---------------------------------------------------------- |
+| Context isolation  | Startup overhead: each subagent gathers its own context    |
+| Parallel execution | Higher token usage: several contexts running at once       |
+| Specialized focus  | Latency: often slower than the main agent for simple tasks |
 
 - Subagents consume tokens independently. Five in parallel use roughly five times the tokens of one agent.
 - For quick, simple tasks the main agent is usually faster. Subagents shine for complex, long-running, or parallel work.
@@ -412,27 +426,27 @@ For complex work, the parent coordinates specialists in sequence: a planner anal
 
 ## Troubleshooting
 
-| Symptom | What to check |
-|---|---|
-| Subagent never gets used | Make `description` specific and add "use proactively" or "always use for" phrasing; test by invoking it explicitly with `/name` |
-| Wrong model is used | Team model restrictions, plan limitations, legacy Max Mode setting |
-| Subagent fails | It returns an error status to the parent, which can retry, resume with more context, or handle it differently |
-| Cannot see progress | Background subagents write to `~/.cursor/subagents/`; ask the parent to read those files |
-| MCP tools missing in a cloud subagent | Cloud subagents use the team's MCP configuration at cursor.com/agents, not your local servers |
-| Nested spawn does not happen | Depth limit reached, Task tool unavailable in the current mode, or a hook or tool policy blocked it |
+| Symptom                               | What to check                                                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Subagent never gets used              | Make `description` specific and add "use proactively" or "always use for" phrasing; test by invoking it explicitly with `/name` |
+| Wrong model is used                   | Team model restrictions, plan limitations, legacy Max Mode setting                                                              |
+| Subagent fails                        | It returns an error status to the parent, which can retry, resume with more context, or handle it differently                   |
+| Cannot see progress                   | Background subagents write to `~/.cursor/subagents/`; ask the parent to read those files                                        |
+| MCP tools missing in a cloud subagent | Cloud subagents use the team's MCP configuration at cursor.com/agents, not your local servers                                   |
+| Nested spawn does not happen          | Depth limit reached, Task tool unavailable in the current mode, or a hook or tool policy blocked it                             |
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|---|---|---|
-| Built-ins | Explore, Bash, Browser (context-heavy operations) | Explore, Plan, General-purpose, and a catch-all `claude` agent |
-| Definition files | `.cursor/agents/*.md`, `~/.cursor/agents/*.md`, plus `.claude/agents/` and `.codex/agents/` read for compatibility | `.claude/agents/*.md`, `~/.claude/agents/*.md`, `--agents` JSON, plugins, managed settings |
-| Frontmatter | `name`, `description`, `model`, `readonly`, `is_background` | Larger surface: `tools`, `disallowedTools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `isolation`, `effort`, and more |
-| Tool restriction | `readonly: true` only; hooks for finer control | Per-tool allow and deny lists |
-| Model syntax | Model ID with bracket parameters, e.g. `claude-opus-5[effort=high]` | Aliases (`sonnet`, `opus`, `haiku`) or full IDs, plus `effort` field |
-| Isolation per subagent | Ask for isolated worktrees or cloud environments in the prompt | `isolation: worktree` in frontmatter |
-| Cloud handoff | `/in-cloud`, `/autopilot`, cloud subagents on their own VM | No direct subagent equivalent |
-| Nesting | Since Cursor 2.5, two levels below main | Configurable depth via `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` |
-| Peer teams | No peer-to-peer agent teams; parallel agents run as separate sessions | Agent Teams (experimental) |
+| Topic                  | Cursor                                                                                                             | Claude Code                                                                                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Built-ins              | Explore, Bash, Browser (context-heavy operations)                                                                  | Explore, Plan, General-purpose, and a catch-all `claude` agent                                                                                       |
+| Definition files       | `.cursor/agents/*.md`, `~/.cursor/agents/*.md`, plus `.claude/agents/` and `.codex/agents/` read for compatibility | `.claude/agents/*.md`, `~/.claude/agents/*.md`, `--agents` JSON, plugins, managed settings                                                           |
+| Frontmatter            | `name`, `description`, `model`, `readonly`, `is_background`                                                        | Larger surface: `tools`, `disallowedTools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `isolation`, `effort`, and more |
+| Tool restriction       | `readonly: true` only; hooks for finer control                                                                     | Per-tool allow and deny lists                                                                                                                        |
+| Model syntax           | Model ID with bracket parameters, e.g. `claude-opus-5[effort=high]`                                                | Aliases (`sonnet`, `opus`, `haiku`) or full IDs, plus `effort` field                                                                                 |
+| Isolation per subagent | Ask for isolated worktrees or cloud environments in the prompt                                                     | `isolation: worktree` in frontmatter                                                                                                                 |
+| Cloud handoff          | `/in-cloud`, `/autopilot`, cloud subagents on their own VM                                                         | No direct subagent equivalent                                                                                                                        |
+| Nesting                | Since Cursor 2.5, two levels below main                                                                            | Configurable depth via `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`                                                                                        |
+| Peer teams             | No peer-to-peer agent teams; parallel agents run as separate sessions                                              | Agent Teams (experimental)                                                                                                                           |
 
 See [Claude Code Subagents](../claude-code/subagents.md) for the Claude Code details, and [Cursor](../tools/cursor.md) for the general tool overview.

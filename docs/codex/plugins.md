@@ -2,7 +2,18 @@
 sidebar_position: 12
 sidebar_label: Plugins
 description: Codex plugins bundle skills, MCP servers, and hooks into installable packages shared through marketplaces and the universal ChatGPT and Codex plugin directory.
-keywords: [Codex plugins, plugin marketplace, plugin.json, .agents/plugins/marketplace.json, plugin-creator, Codex Security plugin, MCP servers, skills bundle, workspace plugin management]
+keywords:
+  [
+    Codex plugins,
+    plugin marketplace,
+    plugin.json,
+    .agents/plugins/marketplace.json,
+    plugin-creator,
+    Codex Security plugin,
+    MCP servers,
+    skills bundle,
+    workspace plugin management,
+  ]
 ---
 
 # Plugins
@@ -13,33 +24,33 @@ Plugins work in Codex in the ChatGPT desktop app and through the Codex CLI plugi
 
 ## What a plugin contains
 
-| Part | What it adds | Notes |
-|---|---|---|
-| **Skills** | Reusable instructions Codex loads when a task matches | Invoked as `$plugin-name:skill-name` or implicitly |
-| **MCP servers** | Tools and data from external systems (GitHub, Slack, Google Drive, your own service) | Define tools, enforce authentication, return structured data; may include custom UI in ChatGPT |
-| **Browser extensions** | Browser capabilities a workflow needs | Surface-specific |
-| **Hooks** | Commands that run at configured lifecycle points in the Codex runtime | Scripts must exist in the execution environment; installing on the web does not deploy them. Non-managed plugin hooks must be reviewed and trusted before they run. See [Hooks](./hooks.md) |
+| Part                   | What it adds                                                                         | Notes                                                                                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Skills**             | Reusable instructions Codex loads when a task matches                                | Invoked as `$plugin-name:skill-name` or implicitly                                                                                                                                          |
+| **MCP servers**        | Tools and data from external systems (GitHub, Slack, Google Drive, your own service) | Define tools, enforce authentication, return structured data; may include custom UI in ChatGPT                                                                                              |
+| **Browser extensions** | Browser capabilities a workflow needs                                                | Surface-specific                                                                                                                                                                            |
+| **Hooks**              | Commands that run at configured lifecycle points in the Codex runtime                | Scripts must exist in the execution environment; installing on the web does not deploy them. Non-managed plugin hooks must be reviewed and trusted before they run. See [Hooks](./hooks.md) |
 
 Plugin shapes, from the official architecture guide:
 
-| Shape | Choose it when |
-|---|---|
-| Skills only | Instructions plus the tools Codex already has are enough |
-| MCP server only | You need tools but no extra workflow guidance |
-| Skills and MCP server | Skills should guide Codex through workflows that use your tools |
-| MCP server with UI | Visual interaction (compare, edit, confirm) materially improves the workflow |
+| Shape                 | Choose it when                                                               |
+| --------------------- | ---------------------------------------------------------------------------- |
+| Skills only           | Instructions plus the tools Codex already has are enough                     |
+| MCP server only       | You need tools but no extra workflow guidance                                |
+| Skills and MCP server | Skills should guide Codex through workflows that use your tools              |
+| MCP server with UI    | Visual interaction (compare, edit, confirm) materially improves the workflow |
 
 Start with the smallest shape and add parts later.
 
 ## Plugins vs skills vs MCP
 
-| | Skill | MCP server | Plugin |
-|---|---|---|---|
-| What it is | Folder with `SKILL.md` | A tool provider Codex connects to | Installable bundle of skills, MCP servers, hooks |
-| Where it lives | `.agents/skills`, `~/.agents/skills` | `config.toml` `[mcp_servers]`, or inside a plugin | Marketplace, installed into `~/.codex/plugins/cache` |
-| Shared via | Git (commit the folder) | Config, or plugin | Marketplace or the public directory |
-| Versioned | No | No | Yes (`version` in the manifest) |
-| Best for | Authoring and iterating on one workflow in one repo | Reaching external systems | Distributing a proven workflow across repos, teams, or the public |
+|                | Skill                                               | MCP server                                        | Plugin                                                            |
+| -------------- | --------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------- |
+| What it is     | Folder with `SKILL.md`                              | A tool provider Codex connects to                 | Installable bundle of skills, MCP servers, hooks                  |
+| Where it lives | `.agents/skills`, `~/.agents/skills`                | `config.toml` `[mcp_servers]`, or inside a plugin | Marketplace, installed into `~/.codex/plugins/cache`              |
+| Shared via     | Git (commit the folder)                             | Config, or plugin                                 | Marketplace or the public directory                               |
+| Versioned      | No                                                  | No                                                | Yes (`version` in the manifest)                                   |
+| Best for       | Authoring and iterating on one workflow in one repo | Reaching external systems                         | Distributing a proven workflow across repos, teams, or the public |
 
 Recommended order from the Codex customization guide: write `AGENTS.md` first, install an existing plugin if one covers the workflow, otherwise author a skill and package it as a plugin when you want to share it, add MCP when the workflow needs external systems, and add subagents last. See [MCP](./mcp.md) and [Subagents](./subagents.md).
 
@@ -224,21 +235,21 @@ The skill scaffolds the folder and a `.codex-plugin/plugin.json` compatibility m
 
 A marketplace is a JSON catalog of plugins. Local and repo marketplaces are how you test and distribute privately; they are separate from the public directory.
 
-| Marketplace | Path | Plugins usually stored in |
-|---|---|---|
-| Repo | `$REPO_ROOT/.agents/plugins/marketplace.json` | `$REPO_ROOT/plugins/` |
-| Personal | `~/.agents/plugins/marketplace.json` | `~/.codex/plugins/` |
-| Legacy-compatible | `$REPO_ROOT/.claude-plugin/marketplace.json` | as referenced |
+| Marketplace       | Path                                          | Plugins usually stored in |
+| ----------------- | --------------------------------------------- | ------------------------- |
+| Repo              | `$REPO_ROOT/.agents/plugins/marketplace.json` | `$REPO_ROOT/plugins/`     |
+| Personal          | `~/.agents/plugins/marketplace.json`          | `~/.codex/plugins/`       |
+| Legacy-compatible | `$REPO_ROOT/.claude-plugin/marketplace.json`  | as referenced             |
 
 ```json
 {
   "name": "team-plugins",
-  "interface": { "displayName": "Team plugins" },
+  "interface": {"displayName": "Team plugins"},
   "plugins": [
     {
       "name": "release-prep",
-      "source": { "source": "local", "path": "./plugins/release-prep" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "source": {"source": "local", "path": "./plugins/release-prep"},
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
       "category": "Productivity"
     }
   ]
@@ -305,14 +316,14 @@ Import and sync do not set installation or authentication policies. Admins confi
 
 A plugin spans several control layers, and making a plugin available does not grant access to the services it connects to:
 
-| Layer | What it determines | Managed in |
-|---|---|---|
-| Availability | Whether the bundle is available to a role | Workspace settings; CLI plugin browser for CLI |
-| Included skills | Which instructions the plugin contributes | The package and skill controls |
-| MCP server access | Whether users can use a server's capabilities | Workspace apps and roles |
-| Actions and permissions | Which actions run and when Codex asks first | Action control and app permissions per connection |
-| Service authorization | What the authenticated identity can reach | The external service and its identity provider |
-| Runtime permissions | What the agent may do with the tool or data | Sandbox and approvals on the active surface |
+| Layer                   | What it determines                            | Managed in                                        |
+| ----------------------- | --------------------------------------------- | ------------------------------------------------- |
+| Availability            | Whether the bundle is available to a role     | Workspace settings; CLI plugin browser for CLI    |
+| Included skills         | Which instructions the plugin contributes     | The package and skill controls                    |
+| MCP server access       | Whether users can use a server's capabilities | Workspace apps and roles                          |
+| Actions and permissions | Which actions run and when Codex asks first   | Action control and app permissions per connection |
+| Service authorization   | What the authenticated identity can reach     | The external service and its identity provider    |
+| Runtime permissions     | What the agent may do with the tool or data   | Sandbox and approvals on the active surface       |
 
 Rollout advice from the official guidance: start with a focused set of plugins tied to a business need, begin with read actions, record an owner and a removal contact per connected service, and test write actions with a least-privilege account before enabling them broadly. Eligible Enterprise admins can export a CSV of the public catalog (`public-plugins-security-review.csv`) to review plugin, MCP server, and skill metadata before enabling anything.
 
@@ -344,17 +355,17 @@ Managed local clients can pin plugin availability with `features.plugins` in `re
 
 ## Compared with Claude Code
 
-| | Codex | Claude Code |
-|---|---|---|
-| Install command | `/plugins` browser, `codex plugin add name@marketplace` | `/plugin install name@marketplace` |
-| Manifest | Root `plugin.json` (Agent Plugins schema) with `extensions.com.openai`; `.codex-plugin/plugin.json` compatibility overlay | `.claude-plugin/plugin.json` |
-| Marketplace catalog | `.agents/plugins/marketplace.json` (also reads `.claude-plugin/marketplace.json`) | `.claude-plugin/marketplace.json` |
-| Components | Skills, MCP servers, hooks, browser capabilities | Skills, agents, hooks, MCP, LSP servers, monitors, binaries, settings |
-| Bundled agents | Not part of the plugin format; agents live in `.codex/agents` | `agents/` directory in the plugin |
-| Skill namespace | `$plugin:skill` | `/plugin:skill` |
-| Per-repo enable | `[plugins."name@marketplace"] enabled = true` in `.codex/config.toml` | `--scope project` install |
-| Public distribution | One universal directory shared with ChatGPT, submission review | Official and community marketplaces |
-| Enterprise import | Admin GitHub marketplace import with daily sync and role policies | Managed settings |
-| Cross-compatibility | Reads Claude-compatible manifests and marketplaces; sets `CLAUDE_PLUGIN_ROOT` for hooks | Not applicable |
+|                     | Codex                                                                                                                     | Claude Code                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Install command     | `/plugins` browser, `codex plugin add name@marketplace`                                                                   | `/plugin install name@marketplace`                                    |
+| Manifest            | Root `plugin.json` (Agent Plugins schema) with `extensions.com.openai`; `.codex-plugin/plugin.json` compatibility overlay | `.claude-plugin/plugin.json`                                          |
+| Marketplace catalog | `.agents/plugins/marketplace.json` (also reads `.claude-plugin/marketplace.json`)                                         | `.claude-plugin/marketplace.json`                                     |
+| Components          | Skills, MCP servers, hooks, browser capabilities                                                                          | Skills, agents, hooks, MCP, LSP servers, monitors, binaries, settings |
+| Bundled agents      | Not part of the plugin format; agents live in `.codex/agents`                                                             | `agents/` directory in the plugin                                     |
+| Skill namespace     | `$plugin:skill`                                                                                                           | `/plugin:skill`                                                       |
+| Per-repo enable     | `[plugins."name@marketplace"] enabled = true` in `.codex/config.toml`                                                     | `--scope project` install                                             |
+| Public distribution | One universal directory shared with ChatGPT, submission review                                                            | Official and community marketplaces                                   |
+| Enterprise import   | Admin GitHub marketplace import with daily sync and role policies                                                         | Managed settings                                                      |
+| Cross-compatibility | Reads Claude-compatible manifests and marketplaces; sets `CLAUDE_PLUGIN_ROOT` for hooks                                   | Not applicable                                                        |
 
 See [Claude Code Plugins](../claude-code/plugins.md) for the Claude Code side, and the [Codex overview](../tools/codex.md) for installation basics.

@@ -2,7 +2,19 @@
 sidebar_position: 5
 sidebar_label: Security & Run Modes
 description: Configure Cursor's Run Modes, Auto-review classifier, sandbox, allowlists, .cursorignore, and CLI permissions to control what the agent can do.
-keywords: [Cursor security, Run Modes, Auto-review, Cursor sandbox, permissions.json, sandbox.json, cursorignore, terminal allowlist, MCP allowlist, Cursor enterprise controls]
+keywords:
+  [
+    Cursor security,
+    Run Modes,
+    Auto-review,
+    Cursor sandbox,
+    permissions.json,
+    sandbox.json,
+    cursorignore,
+    terminal allowlist,
+    MCP allowlist,
+    Cursor enterprise controls,
+  ]
 ---
 
 # Security & Run Modes
@@ -13,14 +25,14 @@ Cursor's agent can edit files, run terminal commands, call MCP tools, and fetch 
 
 Out of the box, Cursor applies these rules to first-party tools:
 
-| Action | Default behavior |
-|--------|------------------|
-| Read files, search code | No approval. Use `.cursorignore` to hide files from the agent. |
-| Edit workspace files | No approval. Changes save to disk immediately, so use version control. |
-| Edit configuration files (for example workspace settings) | Approval required |
-| Run terminal commands | Approval required, unless your Run Mode or allowlist says otherwise |
-| Call MCP tools | The MCP connection needs approval, and each tool call needs approval unless allowlisted |
-| Network requests | Only GitHub, direct link retrieval, and web search providers. The agent cannot make arbitrary network requests with default settings. |
+| Action                                                    | Default behavior                                                                                                                      |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Read files, search code                                   | No approval. Use `.cursorignore` to hide files from the agent.                                                                        |
+| Edit workspace files                                      | No approval. Changes save to disk immediately, so use version control.                                                                |
+| Edit configuration files (for example workspace settings) | Approval required                                                                                                                     |
+| Run terminal commands                                     | Approval required, unless your Run Mode or allowlist says otherwise                                                                   |
+| Call MCP tools                                            | The MCP connection needs approval, and each tool call needs approval unless allowlisted                                               |
+| Network requests                                          | Only GitHub, direct link retrieval, and web search providers. The agent cannot make arbitrary network requests with default settings. |
 
 :::warning
 If your dev server has auto-reload enabled, agent edits can execute before you review them. Keep that in mind when running long-lived processes while the agent works.
@@ -32,11 +44,11 @@ Cursor describes Run Modes, allowlists, and the Auto-review classifier as **best
 
 Run Modes control how the agent runs shell commands, MCP tools, and Fetch calls, and when Cursor interrupts you for approval. Pick one in **Settings > Agents > Approvals & Execution**.
 
-| Mode | What runs without asking | Sandbox | Classifier | Use it when |
-|------|--------------------------|---------|------------|-------------|
-| **Auto-review** (default since Cursor 3.6) | Allowlisted calls run immediately. Other shell commands run in the sandbox when possible. Anything that cannot be sandboxed goes to the Auto-review classifier. | Yes, for shell commands | Yes | You want fewer prompts with a safety review before higher-risk calls. Cursor's recommended setup. |
-| **Allowlist** | Only actions in your allowlist. With sandboxing enabled, supported shell commands can also run in the sandbox. | Optional | No | You want deterministic behavior with a small set of trusted repeat actions. |
-| **Run Everything** | Every tool call. | No | No | You accept the risk and want zero prompts. Use only in disposable environments. |
+| Mode                                       | What runs without asking                                                                                                                                        | Sandbox                 | Classifier | Use it when                                                                                       |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| **Auto-review** (default since Cursor 3.6) | Allowlisted calls run immediately. Other shell commands run in the sandbox when possible. Anything that cannot be sandboxed goes to the Auto-review classifier. | Yes, for shell commands | Yes        | You want fewer prompts with a safety review before higher-risk calls. Cursor's recommended setup. |
+| **Allowlist**                              | Only actions in your allowlist. With sandboxing enabled, supported shell commands can also run in the sandbox.                                                  | Optional                | No         | You want deterministic behavior with a small set of trusted repeat actions.                       |
+| **Run Everything**                         | Every tool call.                                                                                                                                                | No                      | No         | You accept the risk and want zero prompts. Use only in disposable environments.                   |
 
 Two older modes were retired in Cursor 3.5 (May 2026):
 
@@ -65,9 +77,9 @@ Auto-review is not a security boundary. The classifier can allow a call you woul
 
 Auto-review needs no configuration to work. If there are actions you always want to review manually, describe them in plain English in `permissions.json`. The easiest way is to ask the agent: "I want every AWS CLI command to go through approval first," and it edits the file for you.
 
-| Location | Scope |
-|----------|-------|
-| `~/.cursor/permissions.json` | All projects on your machine |
+| Location                             | Scope                                                                |
+| ------------------------------------ | -------------------------------------------------------------------- |
+| `~/.cursor/permissions.json`         | All projects on your machine                                         |
 | `<project>/.cursor/permissions.json` | One project. Commit it when the team should share the same guidance. |
 
 If both files exist, Cursor **concatenates** the arrays in every field. The files are read on startup, re-read when they change, and accept JSONC (comments allowed).
@@ -75,14 +87,12 @@ If both files exist, Cursor **concatenates** the arrays in every field. The file
 ```jsonc
 {
   "autoRun": {
-    "allow_instructions": [
-      "Read-only inspections of build artifacts under ./dist are fine."
-    ],
+    "allow_instructions": ["Read-only inspections of build artifacts under ./dist are fine."],
     "block_instructions": [
       "Every AWS CLI command should go through approval first.",
-      "Every command that modifies Kubernetes resources should go through approval first."
-    ]
-  }
+      "Every command that modifies Kubernetes resources should go through approval first.",
+    ],
+  },
 }
 ```
 
@@ -99,38 +109,29 @@ Allowlists name the terminal commands and MCP tools that run without approval in
 
 Each entry is a command or command prefix. Matching is case-sensitive and uses prefix semantics.
 
-| Pattern | Matches |
-|---------|---------|
-| `git` | Any command starting with `git` (`git status`, `git diff`), but not `gitk` |
-| `git status` | Only `git status` and anything starting with `git status ` |
+| Pattern        | Matches                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------ |
+| `git`          | Any command starting with `git` (`git status`, `git diff`), but not `gitk`                             |
+| `git status`   | Only `git status` and anything starting with `git status `                                             |
 | `npm:install*` | `npm install`, `npm install express`, and so on. The `:` separates the base command from an args glob. |
 
 ### MCP allowlist format
 
 Each entry is `server:tool`, matched case-insensitively, where `server` is the key from `mcp.json`. `*` matches any value and also works inside names (`my-server:list_*`). Entries without a `:` are ignored.
 
-| Pattern | Matches |
-|---------|---------|
-| `github:*` | All tools from the `github` server |
-| `*:search` | The `search` tool from any server |
-| `linear:list_issues` | Exactly that tool on that server |
-| `*:*` | Every MCP tool (use with caution) |
+| Pattern              | Matches                            |
+| -------------------- | ---------------------------------- |
+| `github:*`           | All tools from the `github` server |
+| `*:search`           | The `search` tool from any server  |
+| `linear:list_issues` | Exactly that tool on that server   |
+| `*:*`                | Every MCP tool (use with caution)  |
 
 ### Example
 
 ```jsonc
 {
-  "mcpAllowlist": [
-    "github:*",
-    "linear:*",
-    "notion:search"
-  ],
-  "terminalAllowlist": [
-    "git",
-    "npm",
-    "cargo build",
-    "cargo test"
-  ]
+  "mcpAllowlist": ["github:*", "linear:*", "notion:search"],
+  "terminalAllowlist": ["git", "npm", "cargo build", "cargo test"],
 }
 ```
 
@@ -148,24 +149,24 @@ Before Cursor 3.5, allowlists were not consulted in the deprecated Ask Every Tim
 
 ## Sandboxing
 
-The sandbox runs terminal commands without giving them full machine access. A sandboxed command can work in your project but cannot freely read protected files, write outside approved paths, or reach arbitrary network destinations. Sandboxing is a layer on top of Run Modes: it decides *where* a supported command runs, not whether the classifier is used.
+The sandbox runs terminal commands without giving them full machine access. A sandboxed command can work in your project but cannot freely read protected files, write outside approved paths, or reach arbitrary network destinations. Sandboxing is a layer on top of Run Modes: it decides _where_ a supported command runs, not whether the classifier is used.
 
-| Access | Default sandbox behavior |
-|--------|--------------------------|
-| **Workspace files** | Read and write inside the workspace. `.cursorignore` can hide files from the agent. |
+| Access              | Default sandbox behavior                                                                                        |
+| ------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Workspace files** | Read and write inside the workspace. `.cursorignore` can hide files from the agent.                             |
 | **Protected paths** | `.git/config`, `.git/hooks`, `.vscode`, `.cursorignore`, and sensitive Cursor config files are write-protected. |
-| **Network** | Blocked by default, then opened by your network mode and `sandbox.json`. |
-| **Temporary files** | `/tmp` and platform temp directories are writable unless disabled. |
+| **Network**         | Blocked by default, then opened by your network mode and `sandbox.json`.                                        |
+| **Temporary files** | `/tmp` and platform temp directories are writable unless disabled.                                              |
 
 Some commands need full system access and bypass the sandbox. Cursor indicates when a command runs outside the sandbox and asks for approval.
 
 ### How the sandbox works per OS
 
-| Platform | Mechanism | Requirements |
-|----------|-----------|--------------|
-| **macOS** | Seatbelt via `sandbox-exec`. A generated profile limits file, network, and process behavior for the whole subprocess tree. | Cursor v2.0 or later. No extra setup. |
-| **Linux** | Landlock (filesystem) plus seccomp (blocks unsafe syscalls). | Kernel 6.2 or later with Landlock v3 (`CONFIG_SECURITY_LANDLOCK=y`) and unprivileged user namespaces enabled. If the kernel does not qualify, Cursor falls back to asking for approval before running commands. |
-| **Windows** | Not described in the Run Modes documentation. | See the [official page](https://cursor.com/docs/agent/security/run-modes) for current platform coverage. |
+| Platform    | Mechanism                                                                                                                  | Requirements                                                                                                                                                                                                    |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS**   | Seatbelt via `sandbox-exec`. A generated profile limits file, network, and process behavior for the whole subprocess tree. | Cursor v2.0 or later. No extra setup.                                                                                                                                                                           |
+| **Linux**   | Landlock (filesystem) plus seccomp (blocks unsafe syscalls).                                                               | Kernel 6.2 or later with Landlock v3 (`CONFIG_SECURITY_LANDLOCK=y`) and unprivileged user namespaces enabled. If the kernel does not qualify, Cursor falls back to asking for approval before running commands. |
+| **Windows** | Not described in the Run Modes documentation.                                                                              | See the [official page](https://cursor.com/docs/agent/security/run-modes) for current platform coverage.                                                                                                        |
 
 **AppArmor on Linux (remote environments and CLI only).** The desktop package ships the required AppArmor profile. Remote environments and the standalone CLI do not. If sandbox creation fails with a user-namespace permissions error, install the package for your distribution and restart Cursor or the CLI session:
 
@@ -183,12 +184,12 @@ sudo rpm -i cursor-sandbox-apparmor.rpm
 
 Cursor injects these into every sandboxed child process:
 
-| Variable | Platforms | Meaning |
-|----------|-----------|---------|
-| `CURSOR_SANDBOX` | macOS, Linux | `"seatbelt"` (macOS) or `"native"` (Linux) when running inside the sandbox |
-| `CURSOR_ORIG_UID` | macOS, Linux | UID of the user who launched Cursor, captured before namespace changes |
-| `CURSOR_ORIG_GID` | macOS, Linux | GID of the user who launched Cursor |
-| `CURSOR_SANDBOX_LANDLOCK_STATUS` | Linux | Active backend: `fully_enforced` (Landlock) or `bubblewrap` (fallback) |
+| Variable                         | Platforms    | Meaning                                                                    |
+| -------------------------------- | ------------ | -------------------------------------------------------------------------- |
+| `CURSOR_SANDBOX`                 | macOS, Linux | `"seatbelt"` (macOS) or `"native"` (Linux) when running inside the sandbox |
+| `CURSOR_ORIG_UID`                | macOS, Linux | UID of the user who launched Cursor, captured before namespace changes     |
+| `CURSOR_ORIG_GID`                | macOS, Linux | GID of the user who launched Cursor                                        |
+| `CURSOR_SANDBOX_LANDLOCK_STATUS` | Linux        | Active backend: `fully_enforced` (Landlock) or `bubblewrap` (fallback)     |
 
 On Linux the sandbox remaps the process to UID 0 inside a user namespace, so `id -u` returns `0`. Scripts that need the real host identity (for example `docker run --user`) should read `CURSOR_ORIG_UID` and `CURSOR_ORIG_GID`:
 
@@ -203,33 +204,33 @@ The fallback keeps the command working outside the sandbox, where the variables 
 
 ### Network access modes
 
-| Mode | Behavior |
-|------|----------|
-| **sandbox.json Only** | Network limited to domains in your `sandbox.json` allowlist. Cursor defaults are not added. |
+| Mode                                  | Behavior                                                                                                                                                                      |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **sandbox.json Only**                 | Network limited to domains in your `sandbox.json` allowlist. Cursor defaults are not added.                                                                                   |
 | **sandbox.json + Defaults** (default) | Your allowlist plus Cursor's built-in defaults for common package managers and language tools (npm, PyPI, crates.io, Docker registries, GitHub, Maven, NuGet, and many more). |
-| **Allow All** | All network access is allowed in the sandbox regardless of `sandbox.json`. |
+| **Allow All**                         | All network access is allowed in the sandbox regardless of `sandbox.json`.                                                                                                    |
 
 ### sandbox.json
 
 `permissions.json` steers which calls run automatically. `sandbox.json` controls what a sandboxed command can reach. You do not need either file to get started.
 
-| Location | Scope | Priority |
-|----------|-------|----------|
-| `~/.cursor/sandbox.json` | All workspaces | Lower |
-| `<workspace>/.cursor/sandbox.json` | One workspace | Higher |
+| Location                           | Scope          | Priority |
+| ---------------------------------- | -------------- | -------- |
+| `~/.cursor/sandbox.json`           | All workspaces | Lower    |
+| `<workspace>/.cursor/sandbox.json` | One workspace  | Higher   |
 
 Both files are merged with per-repo taking priority. Team-admin policies and Cursor's hardcoded rules layer on top, so local files cannot weaken those protections.
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `type` | string | `"workspace_readwrite"` | `"workspace_readwrite"`, `"workspace_readonly"`, or `"insecure_none"` (disables the sandbox) |
-| `additionalReadwritePaths` | `string[]` | `[]` | Extra read/write paths (only with `workspace_readwrite`) |
-| `additionalReadonlyPaths` | `string[]` | `[]` | Extra read-only paths |
-| `disableTmpWrite` | boolean | `false` | Remove default write access to `/tmp` and system temp dirs |
-| `enableSharedBuildCache` | boolean | `false` | Redirect npm, cargo, pip caches to a shared tmpdir so sandboxed and unsandboxed runs share them |
-| `networkPolicy.default` | `"allow"` or `"deny"` | `"deny"` | Action when no rule matches |
-| `networkPolicy.allow` | `string[]` | `[]` | Exact domains, `*.wildcards`, or CIDR ranges |
-| `networkPolicy.deny` | `string[]` | `[]` | Always wins over `allow` |
+| Field                      | Type                  | Default                 | Description                                                                                     |
+| -------------------------- | --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------- |
+| `type`                     | string                | `"workspace_readwrite"` | `"workspace_readwrite"`, `"workspace_readonly"`, or `"insecure_none"` (disables the sandbox)    |
+| `additionalReadwritePaths` | `string[]`            | `[]`                    | Extra read/write paths (only with `workspace_readwrite`)                                        |
+| `additionalReadonlyPaths`  | `string[]`            | `[]`                    | Extra read-only paths                                                                           |
+| `disableTmpWrite`          | boolean               | `false`                 | Remove default write access to `/tmp` and system temp dirs                                      |
+| `enableSharedBuildCache`   | boolean               | `false`                 | Redirect npm, cargo, pip caches to a shared tmpdir so sandboxed and unsandboxed runs share them |
+| `networkPolicy.default`    | `"allow"` or `"deny"` | `"deny"`                | Action when no rule matches                                                                     |
+| `networkPolicy.allow`      | `string[]`            | `[]`                    | Exact domains, `*.wildcards`, or CIDR ranges                                                    |
+| `networkPolicy.deny`       | `string[]`            | `[]`                    | Always wins over `allow`                                                                        |
 
 Example for a full-stack project that installs packages, pulls images, and reads a shared design-tokens repo:
 
@@ -278,10 +279,10 @@ The `.cursor` subdirectories `rules/`, `commands/`, `worktrees/`, `skills/`, and
 
 These can require approval even when a Run Mode would otherwise run automatically:
 
-| Protection | What it does |
-|------------|--------------|
-| **Browser Protection** | Prevents the agent from automatically running Browser tools |
-| **File-Deletion Protection** | Prevents automatic file deletion, including `rm` commands |
+| Protection                   | What it does                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------- |
+| **Browser Protection**       | Prevents the agent from automatically running Browser tools                           |
+| **File-Deletion Protection** | Prevents automatic file deletion, including `rm` commands                             |
 | **External-File Protection** | Prevents automatic creation, modification, or deletion of files outside the workspace |
 
 Keep them enabled. Cursor's own hardening guide recommends leaving all three on.
@@ -328,20 +329,20 @@ The Cursor CLI has its own permission system, separate from the desktop app's `p
 
 ### Permission tokens
 
-| Type | Format | Examples |
-|------|--------|----------|
-| Shell | `Shell(commandBase)` | `Shell(ls)`, `Shell(git)`, `Shell(curl:*)`, `Shell(rm)` in `deny` |
-| File reads | `Read(pathOrGlob)` | `Read(src/**/*.ts)`, `Read(.env*)` in `deny` |
-| File writes | `Write(pathOrGlob)` | `Write(src/**)`, `Write(**/*.key)` in `deny` |
-| Web fetch | `WebFetch(domainOrPattern)` | `WebFetch(docs.github.com)`, `WebFetch(*.example.com)`, `WebFetch(*)` |
-| MCP tools | `Mcp(server:tool)` | `Mcp(datadog:*)`, `Mcp(*:search)`, `Mcp(*:*)` |
+| Type        | Format                      | Examples                                                              |
+| ----------- | --------------------------- | --------------------------------------------------------------------- |
+| Shell       | `Shell(commandBase)`        | `Shell(ls)`, `Shell(git)`, `Shell(curl:*)`, `Shell(rm)` in `deny`     |
+| File reads  | `Read(pathOrGlob)`          | `Read(src/**/*.ts)`, `Read(.env*)` in `deny`                          |
+| File writes | `Write(pathOrGlob)`         | `Write(src/**)`, `Write(**/*.key)` in `deny`                          |
+| Web fetch   | `WebFetch(domainOrPattern)` | `WebFetch(docs.github.com)`, `WebFetch(*.example.com)`, `WebFetch(*)` |
+| MCP tools   | `Mcp(server:tool)`          | `Mcp(datadog:*)`, `Mcp(*:search)`, `Mcp(*:*)`                         |
 
 Pattern rules: globs use `**`, `*`, and `?`; relative paths are scoped to the workspace; absolute paths can target files outside the project; `command:args` (for example `curl:*`) matches both command and arguments; **deny always beats allow**. Without a `WebFetch` allow entry, each fetch prompts for approval.
 
 ```json
 {
   "version": 1,
-  "editor": { "vimMode": false },
+  "editor": {"vimMode": false},
   "permissions": {
     "allow": [
       "Shell(ls)",
@@ -352,28 +353,23 @@ Pattern rules: globs use `**`, `*`, and `?`; relative paths are scoped to the wo
       "WebFetch(docs.github.com)",
       "Mcp(github:*)"
     ],
-    "deny": [
-      "Shell(rm)",
-      "Read(.env*)",
-      "Write(**/*.key)",
-      "Write(**/.env*)"
-    ]
+    "deny": ["Shell(rm)", "Read(.env*)", "Write(**/*.key)", "Write(**/.env*)"]
   }
 }
 ```
 
 ### CLI approval and sandbox settings
 
-| Setting or flag | Effect |
-|-----------------|--------|
-| `approvalMode` (config) | `allowlist`, `auto-review`, or `unrestricted` |
-| `sandbox.mode`, `sandbox.networkAccess` (config) | Sandbox mode and network setting for the CLI |
-| `-f, --force` (`--yolo` alias) | Force allow commands unless explicitly denied |
-| `--sandbox enabled` or `disabled` | Override the sandbox for this run |
-| `--approve-mcps` | Automatically approve all MCP servers |
-| `--trust` | Trust the workspace without prompting (headless mode only) |
-| `agent sandbox enable` / `disable` / `reset` | Persist sandbox mode; `disable` switches to allowlist mode |
-| `agent sandbox run <cmd>` | Run one command in the sandbox, with `--allow-paths`, `--readonly-paths`, `--blocked-patterns`, `--network`, `--sb-debug` |
+| Setting or flag                                  | Effect                                                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `approvalMode` (config)                          | `allowlist`, `auto-review`, or `unrestricted`                                                                             |
+| `sandbox.mode`, `sandbox.networkAccess` (config) | Sandbox mode and network setting for the CLI                                                                              |
+| `-f, --force` (`--yolo` alias)                   | Force allow commands unless explicitly denied                                                                             |
+| `--sandbox enabled` or `disabled`                | Override the sandbox for this run                                                                                         |
+| `--approve-mcps`                                 | Automatically approve all MCP servers                                                                                     |
+| `--trust`                                        | Trust the workspace without prompting (headless mode only)                                                                |
+| `agent sandbox enable` / `disable` / `reset`     | Persist sandbox mode; `disable` switches to allowlist mode                                                                |
+| `agent sandbox run <cmd>`                        | Run one command in the sandbox, with `--allow-paths`, `--readonly-paths`, `--blocked-patterns`, `--network`, `--sb-debug` |
 
 Non-interactive mode (`-p` / `--print`) has full write and shell access. Use `permissions.allow`, `permissions.deny`, and `--force` to decide what runs without prompts in scripts and CI. The CLI sandbox on Linux needs the same AppArmor package as remote environments (see above). See [Cursor CLI](./cli.md) for the rest of the CLI surface.
 
@@ -381,18 +377,18 @@ Non-interactive mode (`-p` / `--print`) has full write and shell access. Use `pe
 
 Admins configure these in the web dashboard. Team settings take precedence over individual and project configuration.
 
-| Control | What it does | Plan |
-|---------|--------------|------|
-| **Run Mode policy** | Override which Run Modes members can pick; set the org baseline to Auto-review and enable sandboxing | Teams / Enterprise |
-| **Sandbox network rules** | Central network allowlist for sandboxed terminal commands; replaces local allow lists | Teams / Enterprise |
-| **Global Auto-review configuration** | Team `autoRun` instructions that override user and project `permissions.json` | Teams / Enterprise |
-| **MCP Allowlist** | Approve servers by command pattern (stdio) or URL pattern (HTTP/SSE), restrict tools per server, set per-server network mode. See [MCP](./mcp.md). | Enterprise |
-| **Model access control** | Choose which models are available; affects Auto-review availability and Cursor Router | Enterprise |
-| **.cursor Directory Protection** | Agents cannot modify or delete `.cursor/` or change rules and settings files without approval | Enterprise |
-| **Browser Controls** | Allowlist of origins the browser tool may navigate to | Enterprise |
-| **Repository Blocklist** | Cursor refuses to index or work with listed repositories | Enterprise |
-| **Hooks distribution** | Enterprise and team hooks synced to all machines (every thirty minutes) or deployed via MDM. See [Hooks](./hooks.md). | Enterprise |
-| **Privacy Mode enforcement, BYOK restrictions, audit logs** | Data governance controls outside the scope of this page | Enterprise |
+| Control                                                     | What it does                                                                                                                                       | Plan               |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| **Run Mode policy**                                         | Override which Run Modes members can pick; set the org baseline to Auto-review and enable sandboxing                                               | Teams / Enterprise |
+| **Sandbox network rules**                                   | Central network allowlist for sandboxed terminal commands; replaces local allow lists                                                              | Teams / Enterprise |
+| **Global Auto-review configuration**                        | Team `autoRun` instructions that override user and project `permissions.json`                                                                      | Teams / Enterprise |
+| **MCP Allowlist**                                           | Approve servers by command pattern (stdio) or URL pattern (HTTP/SSE), restrict tools per server, set per-server network mode. See [MCP](./mcp.md). | Enterprise         |
+| **Model access control**                                    | Choose which models are available; affects Auto-review availability and Cursor Router                                                              | Enterprise         |
+| **.cursor Directory Protection**                            | Agents cannot modify or delete `.cursor/` or change rules and settings files without approval                                                      | Enterprise         |
+| **Browser Controls**                                        | Allowlist of origins the browser tool may navigate to                                                                                              | Enterprise         |
+| **Repository Blocklist**                                    | Cursor refuses to index or work with listed repositories                                                                                           | Enterprise         |
+| **Hooks distribution**                                      | Enterprise and team hooks synced to all machines (every thirty minutes) or deployed via MDM. See [Hooks](./hooks.md).                              | Enterprise         |
+| **Privacy Mode enforcement, BYOK restrictions, audit logs** | Data governance controls outside the scope of this page                                                                                            | Enterprise         |
 
 MDM can also distribute `~/.cursor/permissions.json` to set a managed per-user MCP allowlist.
 
@@ -414,14 +410,14 @@ MDM can also distribute `~/.cursor/permissions.json` to set a managed per-user M
 
 ## Compared with Claude Code
 
-| Concern | Cursor | Claude Code |
-|---------|--------|-------------|
-| Permission modes | Three Run Modes: Auto-review, Allowlist, Run Everything | Six modes: Manual, `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
-| AI-reviewed approvals | Auto-review classifier (Claude 4.5 Haiku or GPT-5.4 Mini), steered by plain-English `autoRun` instructions | Auto mode classifier, steered by `environment`, `allow`, `soft_deny`, `hard_deny` |
-| Allow and deny rules | Desktop: `permissions.json` allowlists only (no deny list; use hooks or `block_instructions`). CLI: `allow` and `deny` tokens in `cli-config.json` | `permissions.allow`, `ask`, `deny` in `settings.json`, evaluated deny then ask then allow |
-| Rule syntax | `Shell(git)`, `Read(glob)`, `Write(glob)`, `WebFetch(domain)`, `Mcp(server:tool)` (CLI) | `Bash(git *)`, `Read(path)`, `Edit(path)`, `WebFetch(domain:x)`, `mcp__server__tool` |
-| Sandbox | Seatbelt (macOS) and Landlock plus seccomp (Linux), configured in `sandbox.json`, on by default in Auto-review | `/sandbox` or `--sandbox`, opt-in |
-| File exclusion | `.cursorignore` plus default ignore list | `Read`/`Edit` deny rules |
-| Org policy | Team dashboard, MDM-distributed JSON files | Managed settings via MDM or Group Policy |
+| Concern               | Cursor                                                                                                                                             | Claude Code                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Permission modes      | Three Run Modes: Auto-review, Allowlist, Run Everything                                                                                            | Six modes: Manual, `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions`          |
+| AI-reviewed approvals | Auto-review classifier (Claude 4.5 Haiku or GPT-5.4 Mini), steered by plain-English `autoRun` instructions                                         | Auto mode classifier, steered by `environment`, `allow`, `soft_deny`, `hard_deny`         |
+| Allow and deny rules  | Desktop: `permissions.json` allowlists only (no deny list; use hooks or `block_instructions`). CLI: `allow` and `deny` tokens in `cli-config.json` | `permissions.allow`, `ask`, `deny` in `settings.json`, evaluated deny then ask then allow |
+| Rule syntax           | `Shell(git)`, `Read(glob)`, `Write(glob)`, `WebFetch(domain)`, `Mcp(server:tool)` (CLI)                                                            | `Bash(git *)`, `Read(path)`, `Edit(path)`, `WebFetch(domain:x)`, `mcp__server__tool`      |
+| Sandbox               | Seatbelt (macOS) and Landlock plus seccomp (Linux), configured in `sandbox.json`, on by default in Auto-review                                     | `/sandbox` or `--sandbox`, opt-in                                                         |
+| File exclusion        | `.cursorignore` plus default ignore list                                                                                                           | `Read`/`Edit` deny rules                                                                  |
+| Org policy            | Team dashboard, MDM-distributed JSON files                                                                                                         | Managed settings via MDM or Group Policy                                                  |
 
 See [Claude Code Permissions](../claude-code/permissions.md) and [Claude Code Auto Mode](../claude-code/auto-mode.md) for the other side of this table.

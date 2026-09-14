@@ -2,7 +2,19 @@
 sidebar_position: 5
 sidebar_label: Permissions & Sandbox
 description: Configure Codex sandbox modes, approval policies, writable roots, network access, execpolicy rules, permission profiles, and managed requirements.
-keywords: [Codex permissions, Codex sandbox, sandbox_mode, approval_policy, workspace-write, danger-full-access, execpolicy rules, permission profiles, requirements.toml, Windows sandbox]
+keywords:
+  [
+    Codex permissions,
+    Codex sandbox,
+    sandbox_mode,
+    approval_policy,
+    workspace-write,
+    danger-full-access,
+    execpolicy rules,
+    permission profiles,
+    requirements.toml,
+    Windows sandbox,
+  ]
 ---
 
 # Permissions & Sandbox
@@ -11,10 +23,10 @@ Codex controls what the agent can do with two separate layers: an OS-enforced **
 
 ## Two layers, not one
 
-| Layer | Question it answers | Main setting | CLI flag |
-|-------|---------------------|--------------|----------|
-| **Sandbox mode** | What can commands technically touch (files, network)? | `sandbox_mode` | `--sandbox` / `-s` |
-| **Approval policy** | When does Codex pause and ask before acting? | `approval_policy` | `--ask-for-approval` / `-a` |
+| Layer                  | Question it answers                                          | Main setting         | CLI flag                            |
+| ---------------------- | ------------------------------------------------------------ | -------------------- | ----------------------------------- |
+| **Sandbox mode**       | What can commands technically touch (files, network)?        | `sandbox_mode`       | `--sandbox` / `-s`                  |
+| **Approval policy**    | When does Codex pause and ask before acting?                 | `approval_policy`    | `--ask-for-approval` / `-a`         |
 | **Approvals reviewer** | Who answers those approval prompts: you or a reviewer agent? | `approvals_reviewer` | `-c approvals_reviewer=auto_review` |
 
 The sandbox applies to every spawned command, not just built-in file operations. If Codex runs `git`, a package manager, or a test runner, those processes inherit the same limits. Changing who reviews an approval never expands the sandbox.
@@ -23,11 +35,11 @@ Codex cloud is different: tasks run in isolated OpenAI-managed containers with a
 
 ## Sandbox modes
 
-| Mode | What commands can do | Typical use |
-|------|----------------------|-------------|
-| `read-only` | Read files and run commands that do not write. Edits and other writes need approval. | Exploring an unfamiliar or untracked folder, planning |
-| `workspace-write` | Read anywhere the OS allows, write inside the workspace and temp directories, no network by default. | Default for local work in a git repository |
-| `danger-full-access` | No filesystem or network restrictions. | Only inside a container or VM that already isolates the process |
+| Mode                 | What commands can do                                                                                 | Typical use                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `read-only`          | Read files and run commands that do not write. Edits and other writes need approval.                 | Exploring an unfamiliar or untracked folder, planning           |
+| `workspace-write`    | Read anywhere the OS allows, write inside the workspace and temp directories, no network by default. | Default for local work in a git repository                      |
+| `danger-full-access` | No filesystem or network restrictions.                                                               | Only inside a container or VM that already isolates the process |
 
 Set a default in `~/.codex/config.toml`:
 
@@ -70,11 +82,11 @@ For a single session, `--add-dir <path>` (repeatable) grants write access to ext
 
 ## Approval policies
 
-| Policy | Behavior |
-|--------|----------|
-| `on-request` | Codex works inside the sandbox and asks only when it needs to go beyond it (write outside the workspace, use the network, run a command blocked by a rule). Default for interactive work. |
-| `never` | Codex never asks. It does its best within the sandbox and gives up or works around anything the sandbox blocks. Use for CI and scripts. |
-| `{ granular = { ... } }` | Keep some prompt categories interactive and auto-reject the rest. |
+| Policy                   | Behavior                                                                                                                                                                                  |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `on-request`             | Codex works inside the sandbox and asks only when it needs to go beyond it (write outside the workspace, use the network, run a command blocked by a rule). Default for interactive work. |
+| `never`                  | Codex never asks. It does its best within the sandbox and gives up or works around anything the sandbox blocks. Use for CI and scripts.                                                   |
+| `{ granular = { ... } }` | Keep some prompt categories interactive and auto-reject the rest.                                                                                                                         |
 
 ```bash
 codex --ask-for-approval on-request
@@ -117,13 +129,13 @@ approvals_reviewer = "user"         # default: prompts surface to you
 
 ## Common combinations
 
-| Intent | Flags or config | Effect |
-|--------|-----------------|--------|
-| Auto (preset) | no flags, or `--sandbox workspace-write --ask-for-approval on-request` | Read, edit, and run commands in the workspace; ask for anything outside it or on the network |
-| Read-only browsing | `--sandbox read-only --ask-for-approval on-request` | Read files and run non-writing commands; ask for anything else |
-| Read-only CI | `--sandbox read-only --ask-for-approval never` | Read-only, never asks |
-| Auto-review | `--sandbox workspace-write --ask-for-approval on-request -c approvals_reviewer=auto_review` | Same boundary as Auto; a reviewer agent answers eligible prompts |
-| Full access | `--dangerously-bypass-approvals-and-sandbox` (alias `--yolo`) | No sandbox, no approvals. Not recommended outside an isolated environment. |
+| Intent             | Flags or config                                                                             | Effect                                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Auto (preset)      | no flags, or `--sandbox workspace-write --ask-for-approval on-request`                      | Read, edit, and run commands in the workspace; ask for anything outside it or on the network |
+| Read-only browsing | `--sandbox read-only --ask-for-approval on-request`                                         | Read files and run non-writing commands; ask for anything else                               |
+| Read-only CI       | `--sandbox read-only --ask-for-approval never`                                              | Read-only, never asks                                                                        |
+| Auto-review        | `--sandbox workspace-write --ask-for-approval on-request -c approvals_reviewer=auto_review` | Same boundary as Auto; a reviewer agent answers eligible prompts                             |
+| Full access        | `--dangerously-bypass-approvals-and-sandbox` (alias `--yolo`)                               | No sandbox, no approvals. Not recommended outside an isolated environment.                   |
 
 For non-interactive runs use `codex exec --sandbox workspace-write`. The older `codex exec --full-auto` still works as a deprecated compatibility path and prints a warning.
 
@@ -147,14 +159,14 @@ codex --profile readonly_quiet
 
 ## Switching modes mid-session
 
-| Action | How |
-|--------|-----|
-| Change the approval preset or permission profile | `/permissions`, then pick `Auto`, `Read Only`, or a named profile |
-| See the active model, approval policy, and writable roots | `/status` |
-| Retry one action that Auto-review denied | `/approve` |
-| Grant read access to a directory (native Windows only) | `/sandbox-add-read-dir C:\absolute\path` |
-| Set up the elevated Windows sandbox | `/setup-default-sandbox` (appears only when the degraded sandbox is active) |
-| Run a shell command yourself under the current sandbox and approval settings | prefix the line with `!` |
+| Action                                                                       | How                                                                         |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Change the approval preset or permission profile                             | `/permissions`, then pick `Auto`, `Read Only`, or a named profile           |
+| See the active model, approval policy, and writable roots                    | `/status`                                                                   |
+| Retry one action that Auto-review denied                                     | `/approve`                                                                  |
+| Grant read access to a directory (native Windows only)                       | `/sandbox-add-read-dir C:\absolute\path`                                    |
+| Set up the elevated Windows sandbox                                          | `/setup-default-sandbox` (appears only when the degraded sandbox is active) |
+| Run a shell command yourself under the current sandbox and approval settings | prefix the line with `!`                                                    |
 
 In the ChatGPT desktop app and the IDE extension, use the permissions control beneath the composer. Depending on your configuration it offers **Ask for approval**, **Approve for me** (Auto-review), **Full access**, and any named permission profiles. In the desktop app, modes other than Ask for approval must first be enabled under **Settings > General > Permissions**. Modes that managed configuration disallows appear disabled.
 
@@ -187,11 +199,11 @@ codex -c 'features.network_proxy=true' -c 'sandbox_workspace_write.network_acces
 
 How the two settings interact:
 
-| `network_access` | `network_proxy` | Result |
-|------------------|-----------------|--------|
-| off | any | No network. The proxy does nothing. |
-| on | off | Direct, unrestricted outbound access |
-| on | on | Outbound traffic constrained by the domain policy |
+| `network_access` | `network_proxy` | Result                                            |
+| ---------------- | --------------- | ------------------------------------------------- |
+| off              | any             | No network. The proxy does nothing.               |
+| on               | off             | Direct, unrestricted outbound access              |
+| on               | on              | Outbound traffic constrained by the domain policy |
 
 ### Domain rules
 
@@ -214,12 +226,12 @@ Web search defaults to `cached` (an OpenAI-maintained index, no live fetch). Use
 
 ## How the sandbox works on each OS
 
-| Platform | Mechanism | Notes |
-|----------|-----------|-------|
-| **macOS** | Seatbelt via `sandbox-exec` with a profile matching the selected mode | Works out of the box. If a policy cannot be enforced, Codex refuses to run the command rather than running it unsandboxed. |
-| **Linux** | `bwrap` (bubblewrap) plus `seccomp`; Landlock remains as a compatibility fallback | Install `bubblewrap` with your package manager. Codex uses the first `bwrap` on `PATH`, otherwise a bundled helper that needs unprivileged user namespaces. |
-| **WSL2** | Same as Linux | WSL1 was supported through Codex 0.114; from 0.115 the Linux sandbox moved to `bwrap`, so WSL1 no longer works. |
-| **Native Windows** | Windows sandbox in `elevated` or `unelevated` mode | Configured under `[windows]` in `config.toml`. |
+| Platform           | Mechanism                                                                         | Notes                                                                                                                                                       |
+| ------------------ | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS**          | Seatbelt via `sandbox-exec` with a profile matching the selected mode             | Works out of the box. If a policy cannot be enforced, Codex refuses to run the command rather than running it unsandboxed.                                  |
+| **Linux**          | `bwrap` (bubblewrap) plus `seccomp`; Landlock remains as a compatibility fallback | Install `bubblewrap` with your package manager. Codex uses the first `bwrap` on `PATH`, otherwise a bundled helper that needs unprivileged user namespaces. |
+| **WSL2**           | Same as Linux                                                                     | WSL1 was supported through Codex 0.114; from 0.115 the Linux sandbox moved to `bwrap`, so WSL1 no longer works.                                             |
+| **Native Windows** | Windows sandbox in `elevated` or `unelevated` mode                                | Configured under `[windows]` in `config.toml`.                                                                                                              |
 
 ### Linux setup
 
@@ -278,12 +290,12 @@ codex sandbox macos --permission-profile project-edit -- ./scripts/check.sh
 
 Rules decide which commands may run **outside** the sandbox: allow silently, prompt, or forbid. They are Starlark files with a `.rules` extension in a `rules/` folder next to an active config layer. Rules are experimental and may change.
 
-| Location | Scope |
-|----------|-------|
-| `~/.codex/rules/*.rules` | You, all projects |
-| `<repo>/.codex/rules/*.rules` | This project, loaded only when the project `.codex/` layer is trusted |
-| Team Config locations | Organization-distributed |
-| `[rules]` in `requirements.toml` | Admin-enforced; `prompt` or `forbidden` only |
+| Location                         | Scope                                                                 |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `~/.codex/rules/*.rules`         | You, all projects                                                     |
+| `<repo>/.codex/rules/*.rules`    | This project, loaded only when the project `.codex/` layer is trusted |
+| Team Config locations            | Organization-distributed                                              |
+| `[rules]` in `requirements.toml` | Admin-enforced; `prompt` or `forbidden` only                          |
 
 ```python
 # ~/.codex/rules/default.rules
@@ -307,12 +319,12 @@ prefix_rule(
 )
 ```
 
-| Field | Meaning |
-|-------|---------|
-| `pattern` (required) | Argument-prefix list. Each element is a literal or a list of alternatives for that position. |
-| `decision` | `allow` (default), `prompt`, or `forbidden`. When several rules match, the most restrictive wins: `forbidden` > `prompt` > `allow`. |
-| `justification` | Human-readable reason shown in prompts and rejections. For `forbidden`, suggest an alternative. |
-| `match` / `not_match` | Inline examples Codex validates when it loads the file. |
+| Field                 | Meaning                                                                                                                             |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `pattern` (required)  | Argument-prefix list. Each element is a literal or a list of alternatives for that position.                                        |
+| `decision`            | `allow` (default), `prompt`, or `forbidden`. When several rules match, the most restrictive wins: `forbidden` > `prompt` > `allow`. |
+| `justification`       | Human-readable reason shown in prompts and rejections. For `forbidden`, suggest an alternative.                                     |
+| `match` / `not_match` | Inline examples Codex validates when it loads the file.                                                                             |
 
 Codex compares the command's argument vector (what `execvp` receives) against `pattern`. For `bash -lc "a && b"` style wrappers, Codex splits linear chains of plain words joined by `&&`, `||`, `;`, or `|` into separate commands and evaluates each one, so `git add . && rm -rf /` is never auto-allowed by a `git add` rule. Scripts with redirection, substitution, variables, wildcards, or control flow are not split and are evaluated as a single `bash -lc` invocation.
 
@@ -355,14 +367,14 @@ enabled = true
 "api.openai.com" = "allow"
 ```
 
-| Concept | Details |
-|---------|---------|
-| Access values | `read`, `write`, `deny`. More specific paths override broader ones; on the same path `deny` > `write` > `read`. |
-| Path forms | `:root`, `:minimal` (runtime paths common tools need), `:workspace_roots`, `:tmpdir`, `:slash_tmp`, absolute paths, `~/path` |
-| `extends` | Start from `:read-only`, `:workspace`, or another named profile. `:danger-full-access` cannot be extended. |
-| `workspace_roots` | Extra directories that receive the `:workspace_roots` rules alongside the session root |
-| `glob_scan_max_depth` | Bounds pre-expansion of `**` deny-read globs on Linux, WSL, and Windows |
-| `network.enabled` | Grants command network access. Domain rules only apply when `features.network_proxy` (or managed `[experimental_network]`) is active. |
+| Concept               | Details                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Access values         | `read`, `write`, `deny`. More specific paths override broader ones; on the same path `deny` > `write` > `read`.                       |
+| Path forms            | `:root`, `:minimal` (runtime paths common tools need), `:workspace_roots`, `:tmpdir`, `:slash_tmp`, absolute paths, `~/path`          |
+| `extends`             | Start from `:read-only`, `:workspace`, or another named profile. `:danger-full-access` cannot be extended.                            |
+| `workspace_roots`     | Extra directories that receive the `:workspace_roots` rules alongside the session root                                                |
+| `glob_scan_max_depth` | Bounds pre-expansion of `**` deny-read globs on Linux, WSL, and Windows                                                               |
+| `network.enabled`     | Grants command network access. Domain rules only apply when `features.network_proxy` (or managed `[experimental_network]`) is active. |
 
 Extending `:workspace` keeps the workspace root's `.codex` directory read-only unless you override it. Layers compose: a system config and a user config can each add `workspace_roots` to the same profile name.
 
@@ -408,52 +420,52 @@ Other managed keys that affect permissions: `guardian_policy_config` (Auto-revie
 
 ### config.toml keys
 
-| Key | Values | Purpose |
-|-----|--------|---------|
-| `sandbox_mode` | `read-only`, `workspace-write`, `danger-full-access` | Sandbox policy |
-| `approval_policy` | `on-request`, `never`, `{ granular = {...} }` | When Codex asks |
-| `approvals_reviewer` | `user`, `auto_review` | Who answers eligible prompts |
-| `sandbox_workspace_write.writable_roots` | array of paths | Extra writable directories |
-| `sandbox_workspace_write.network_access` | bool | Outbound network in workspace-write |
-| `sandbox_workspace_write.exclude_tmpdir_env_var` | bool | Drop `$TMPDIR` from writable roots |
-| `sandbox_workspace_write.exclude_slash_tmp` | bool | Drop `/tmp` from writable roots |
-| `features.network_proxy` | bool or table | Enforce domain rules on command traffic |
-| `allow_login_shell` | bool | Allow login-shell semantics for shell tools (default `true`) |
-| `windows.sandbox` | `elevated`, `unelevated` | Native Windows sandbox mode |
-| `windows.sandbox_private_desktop` | bool | Private desktop for UI isolation (default `true`) |
-| `default_permissions` | profile name | Active permission profile (beta) |
-| `[permissions.<name>]` | table | Custom permission profile |
-| `projects."<path>".trust_level` | `trusted`, `untrusted` | Project trust; untrusted skips `.codex/` layers |
-| `web_search` | `cached`, `indexed`, `live`, `disabled` | Web search tool mode |
+| Key                                              | Values                                               | Purpose                                                      |
+| ------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------ |
+| `sandbox_mode`                                   | `read-only`, `workspace-write`, `danger-full-access` | Sandbox policy                                               |
+| `approval_policy`                                | `on-request`, `never`, `{ granular = {...} }`        | When Codex asks                                              |
+| `approvals_reviewer`                             | `user`, `auto_review`                                | Who answers eligible prompts                                 |
+| `sandbox_workspace_write.writable_roots`         | array of paths                                       | Extra writable directories                                   |
+| `sandbox_workspace_write.network_access`         | bool                                                 | Outbound network in workspace-write                          |
+| `sandbox_workspace_write.exclude_tmpdir_env_var` | bool                                                 | Drop `$TMPDIR` from writable roots                           |
+| `sandbox_workspace_write.exclude_slash_tmp`      | bool                                                 | Drop `/tmp` from writable roots                              |
+| `features.network_proxy`                         | bool or table                                        | Enforce domain rules on command traffic                      |
+| `allow_login_shell`                              | bool                                                 | Allow login-shell semantics for shell tools (default `true`) |
+| `windows.sandbox`                                | `elevated`, `unelevated`                             | Native Windows sandbox mode                                  |
+| `windows.sandbox_private_desktop`                | bool                                                 | Private desktop for UI isolation (default `true`)            |
+| `default_permissions`                            | profile name                                         | Active permission profile (beta)                             |
+| `[permissions.<name>]`                           | table                                                | Custom permission profile                                    |
+| `projects."<path>".trust_level`                  | `trusted`, `untrusted`                               | Project trust; untrusted skips `.codex/` layers              |
+| `web_search`                                     | `cached`, `indexed`, `live`, `disabled`              | Web search tool mode                                         |
 
 ### CLI flags
 
-| Flag | Purpose |
-|------|---------|
-| `--sandbox`, `-s <mode>` | Sandbox policy for this run |
-| `--ask-for-approval`, `-a <policy>` | `on-request` or `never` |
-| `--add-dir <path>` | Extra writable directory (repeatable) |
-| `--dangerously-bypass-approvals-and-sandbox`, `--yolo` | No sandbox, no approvals |
-| `--search` | Live web search (`web_search = "live"`) |
-| `-c key=value` | Any config override, for example `-c approvals_reviewer=auto_review` |
-| `--profile`, `-p <name>` | Layer `$CODEX_HOME/<name>.config.toml` on top of user config |
-| `codex exec --full-auto` | Deprecated alias for `--sandbox workspace-write` |
-| `codex exec --ignore-rules` | Skip `.rules` files for one run |
-| `codex sandbox <os> [--permission-profile NAME] -- CMD` | Run a command under the Codex sandbox |
-| `codex execpolicy check --rules FILE -- CMD` | Evaluate rules against a command |
+| Flag                                                    | Purpose                                                              |
+| ------------------------------------------------------- | -------------------------------------------------------------------- |
+| `--sandbox`, `-s <mode>`                                | Sandbox policy for this run                                          |
+| `--ask-for-approval`, `-a <policy>`                     | `on-request` or `never`                                              |
+| `--add-dir <path>`                                      | Extra writable directory (repeatable)                                |
+| `--dangerously-bypass-approvals-and-sandbox`, `--yolo`  | No sandbox, no approvals                                             |
+| `--search`                                              | Live web search (`web_search = "live"`)                              |
+| `-c key=value`                                          | Any config override, for example `-c approvals_reviewer=auto_review` |
+| `--profile`, `-p <name>`                                | Layer `$CODEX_HOME/<name>.config.toml` on top of user config         |
+| `codex exec --full-auto`                                | Deprecated alias for `--sandbox workspace-write`                     |
+| `codex exec --ignore-rules`                             | Skip `.rules` files for one run                                      |
+| `codex sandbox <os> [--permission-profile NAME] -- CMD` | Run a command under the Codex sandbox                                |
+| `codex execpolicy check --rules FILE -- CMD`            | Evaluate rules against a command                                     |
 
 See [CLI Flags & Configuration](./flags.md) for the full flag list and [Automation & Non-interactive Mode](./automation.md) for `codex exec` patterns.
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Primary control | OS sandbox (`sandbox_mode`) plus approval policy | Permission rules (`allow` / `ask` / `deny`) plus permission modes; sandbox is an extra layer |
-| Per-command rules | Starlark `prefix_rule` files matched on argument vectors; `allow`, `prompt`, `forbidden` | `Bash(npm run *)` glob rules in `settings.json` |
-| Deterministic file protection | Read-only `.git`, `.codex`, `.agents`; permission-profile `deny` rules; managed `deny_read` | `Edit(.env*)` deny rules, protected paths |
-| Switching modes | `/permissions` picker; desktop and IDE permissions menu | `Shift+Tab` cycle, `/permissions`, `--permission-mode` |
-| AI-reviewed approvals | `approvals_reviewer = "auto_review"` | `auto` permission mode with a classifier |
-| Enterprise lockdown | `requirements.toml` allowlists, MDM, cloud-managed requirements | Managed settings, `disableBypassPermissionsMode`, `allowManagedPermissionRulesOnly` |
-| Full bypass | `--yolo` | `--dangerously-skip-permissions` |
+| Topic                         | Codex                                                                                       | Claude Code                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Primary control               | OS sandbox (`sandbox_mode`) plus approval policy                                            | Permission rules (`allow` / `ask` / `deny`) plus permission modes; sandbox is an extra layer |
+| Per-command rules             | Starlark `prefix_rule` files matched on argument vectors; `allow`, `prompt`, `forbidden`    | `Bash(npm run *)` glob rules in `settings.json`                                              |
+| Deterministic file protection | Read-only `.git`, `.codex`, `.agents`; permission-profile `deny` rules; managed `deny_read` | `Edit(.env*)` deny rules, protected paths                                                    |
+| Switching modes               | `/permissions` picker; desktop and IDE permissions menu                                     | `Shift+Tab` cycle, `/permissions`, `--permission-mode`                                       |
+| AI-reviewed approvals         | `approvals_reviewer = "auto_review"`                                                        | `auto` permission mode with a classifier                                                     |
+| Enterprise lockdown           | `requirements.toml` allowlists, MDM, cloud-managed requirements                             | Managed settings, `disableBypassPermissionsMode`, `allowManagedPermissionRulesOnly`          |
+| Full bypass                   | `--yolo`                                                                                    | `--dangerously-skip-permissions`                                                             |
 
 Read [Claude Code Permissions](../claude-code/permissions.md) for the Claude side of this comparison.

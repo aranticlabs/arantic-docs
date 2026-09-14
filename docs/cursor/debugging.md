@@ -2,27 +2,39 @@
 sidebar_position: 16
 sidebar_label: Debugging
 description: Troubleshoot Cursor when the agent stalls, Tab stops, installs fail, or proxies block AI features, and learn where logs and request IDs live for bug reports.
-keywords: [Cursor troubleshooting, Cursor debugging, request ID, Developer Tools, Output panel, HTTP compatibility mode, .cursorignore, reindex, Cursor CLI logs, extension conflicts]
+keywords:
+  [
+    Cursor troubleshooting,
+    Cursor debugging,
+    request ID,
+    Developer Tools,
+    Output panel,
+    HTTP compatibility mode,
+    .cursorignore,
+    reindex,
+    Cursor CLI logs,
+    extension conflicts,
+  ]
 ---
 
 # Debugging
 
-This page is about debugging Cursor itself: an agent that stalls or ignores files, Tab going quiet, a blank window on launch, AI features dying behind a corporate proxy. For using the agent to debug *your* code, see Debug Mode in [Agent Modes](./modes.md), which instruments your program and reasons from runtime logs. The pattern below is the same each time: collect the request ID or logs first, then change one thing at a time.
+This page is about debugging Cursor itself: an agent that stalls or ignores files, Tab going quiet, a blank window on launch, AI features dying behind a corporate proxy. For using the agent to debug _your_ code, see Debug Mode in [Agent Modes](./modes.md), which instruments your program and reasons from runtime logs. The pattern below is the same each time: collect the request ID or logs first, then change one thing at a time.
 
 ## Where the evidence lives
 
-| You need | Where to find it |
-|----------|------------------|
-| Request ID for a bad agent response | **...** menu at the bottom of the response → **Copy Request ID** |
-| Console errors | **Help** > **Toggle Developer Tools** |
-| Extension host output | `Cmd/Ctrl+Shift+P` → **Output**, pick **Extension Host** from the dropdown |
-| Worktree setup output | Output panel → **Worktrees Setup** |
-| Exported logs (Main, Window, Extension Host) | `Cmd/Ctrl+Shift+P` → **Developer: Export Logs...** |
-| Cursor version | **Cursor** > **About Cursor** (macOS) or **Help** > **About** (Windows/Linux) |
-| Network diagnostics | **Cursor Settings** > **Network** > **Run Diagnostics** |
-| CLI debug log path | `/logs` inside `agent` (also copies the path to the clipboard) |
-| CLI version, system, account info | `agent about` or `/about` |
-| Bugbot logs and request ID | Comment `cursor review verbose=true` on the PR |
+| You need                                     | Where to find it                                                              |
+| -------------------------------------------- | ----------------------------------------------------------------------------- |
+| Request ID for a bad agent response          | **...** menu at the bottom of the response → **Copy Request ID**              |
+| Console errors                               | **Help** > **Toggle Developer Tools**                                         |
+| Extension host output                        | `Cmd/Ctrl+Shift+P` → **Output**, pick **Extension Host** from the dropdown    |
+| Worktree setup output                        | Output panel → **Worktrees Setup**                                            |
+| Exported logs (Main, Window, Extension Host) | `Cmd/Ctrl+Shift+P` → **Developer: Export Logs...**                            |
+| Cursor version                               | **Cursor** > **About Cursor** (macOS) or **Help** > **About** (Windows/Linux) |
+| Network diagnostics                          | **Cursor Settings** > **Network** > **Run Diagnostics**                       |
+| CLI debug log path                           | `/logs` inside `agent` (also copies the path to the clipboard)                |
+| CLI version, system, account info            | `agent about` or `/about`                                                     |
+| Bugbot logs and request ID                   | Comment `cursor review verbose=true` on the PR                                |
 
 ## Agent issues
 
@@ -55,14 +67,14 @@ When running terminal commands, prefix with `unset CI &&` if the command's behav
 
 ## Tab issues
 
-| Symptom | Check |
-|---------|-------|
-| No suggestions at all | Free (Hobby) has a monthly Tab allowance that pauses when used up; Tab needs a connection; run **Cursor: Attempt Update** if the build is old |
-| Stopped on a corporate network | Some networks block HTTP/2. **Cursor Settings** > **HTTP Compatibility Mode** > enable (HTTP/1.1), then restart |
-| Weak suggestions in a new file | Tab reads recent edits and surrounding code; make a few manual edits first |
-| Fighting another tool | See Extension conflicts; other AI completion extensions are the usual cause |
-| Slow | Check connection speed, disable unused extensions; VPNs and proxies add latency |
-| Noisy in Markdown or JSON | Click the **Tab** status indicator (bottom-right) and disable it per file extension |
+| Symptom                        | Check                                                                                                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| No suggestions at all          | Free (Hobby) has a monthly Tab allowance that pauses when used up; Tab needs a connection; run **Cursor: Attempt Update** if the build is old |
+| Stopped on a corporate network | Some networks block HTTP/2. **Cursor Settings** > **HTTP Compatibility Mode** > enable (HTTP/1.1), then restart                               |
+| Weak suggestions in a new file | Tab reads recent edits and surrounding code; make a few manual edits first                                                                    |
+| Fighting another tool          | See Extension conflicts; other AI completion extensions are the usual cause                                                                   |
+| Slow                           | Check connection speed, disable unused extensions; VPNs and proxies add latency                                                               |
+| Noisy in Markdown or JSON      | Click the **Tab** status indicator (bottom-right) and disable it per file extension                                                           |
 
 ## Install, startup, and update
 
@@ -106,10 +118,10 @@ build/
 
 Post on [forum.cursor.com](https://forum.cursor.com) with: Cursor version and OS, steps to reproduce, expected versus actual behavior, screenshots or recordings for visual issues, console errors from **Help** > **Toggle Developer Tools**, and the **request ID** (conversation → **...** → **Copy Request ID**). Request IDs are lookup keys with no meaning outside Cursor's backend, so they are not confidential.
 
-| Privacy setting | Support can see |
-|-----------------|-----------------|
-| **Privacy Mode** on | Which model was used, whether tool failures occurred (not which tools), backend failures unrelated to your prompt or code |
-| **Share Data** on | The full conversation, tool calls including failures, and the context given to the agent (system prompt, rules, git status) |
+| Privacy setting     | Support can see                                                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Privacy Mode** on | Which model was used, whether tool failures occurred (not which tools), backend failures unrelated to your prompt or code   |
+| **Share Data** on   | The full conversation, tool calls including failures, and the context given to the agent (system prompt, rules, git status) |
 
 Privacy Mode is per request and not retroactive. Connectivity issues can usually be debugged with it on. For unexpected agent behavior, the documented steps are: temporarily enable **Share Data**, reproduce, copy the new request ID, send it, then switch back to **Privacy Mode**.
 
@@ -117,17 +129,17 @@ Privacy Mode is per request and not retroactive. Connectivity issues can usually
 
 There is no `doctor` command in the Cursor CLI. The documented equivalents:
 
-| Task | Command |
-|------|---------|
-| Confirm the install | `agent --version` |
-| Version, system, account info | `agent about` (or `/about` in a session) |
-| Auth state | `agent status` or `agent whoami` (`--format json` available) |
-| Re-authenticate | `agent logout` then `agent login` |
-| Update | `agent update` or `/update`; the CLI also auto-updates by default |
-| Debug log path | `/logs` in a session |
-| MCP servers and status | `agent mcp list` |
-| Self-hosted worker preflight | `agent worker debug [--json]` |
-| Sandbox debugging | `agent sandbox run --sb-debug ...` writes logs to a temp folder and prints the path |
+| Task                          | Command                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| Confirm the install           | `agent --version`                                                                   |
+| Version, system, account info | `agent about` (or `/about` in a session)                                            |
+| Auth state                    | `agent status` or `agent whoami` (`--format json` available)                        |
+| Re-authenticate               | `agent logout` then `agent login`                                                   |
+| Update                        | `agent update` or `/update`; the CLI also auto-updates by default                   |
+| Debug log path                | `/logs` in a session                                                                |
+| MCP servers and status        | `agent mcp list`                                                                    |
+| Self-hosted worker preflight  | `agent worker debug [--json]`                                                       |
+| Sandbox debugging             | `agent sandbox run --sb-debug ...` writes logs to a temp folder and prints the path |
 
 - **`agent: command not found`**: add `~/.local/bin` to `PATH` and reload the shell.
 - **Config errors**: `mv ~/.cursor/cli-config.json ~/.cursor/cli-config.json.bad` and restart; the CLI backs up corrupt files as `.bad` and recreates them.

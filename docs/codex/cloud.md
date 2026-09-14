@@ -2,7 +2,19 @@
 sidebar_position: 14
 sidebar_label: Codex Cloud & Remote
 description: Delegate Codex tasks to isolated cloud environments, drive a connected computer from your phone, connect over SSH, and review pull requests with @codex.
-keywords: [Codex cloud, cloud environments, Codex Remote, remote connections, SSH, agent internet access, codex apply, code review, codex review command, GitHub integration]
+keywords:
+  [
+    Codex cloud,
+    cloud environments,
+    Codex Remote,
+    remote connections,
+    SSH,
+    agent internet access,
+    codex apply,
+    code review,
+    codex review command,
+    GitHub integration,
+  ]
 ---
 
 # Codex Cloud & Remote
@@ -13,22 +25,22 @@ Codex is not tied to the terminal on your laptop. A chat can run locally, in a G
 
 When you start a chat in the ChatGPT desktop app or the IDE extension, you choose an execution target under the composer:
 
-| Target | Runs on | Files | Best for |
-|--------|---------|-------|----------|
-| **Local** | Your computer | Your current project directory | Interactive work, running your dev server, inspecting in your IDE |
-| **Worktree** | Your computer | A separate Git worktree under `$CODEX_HOME/worktrees` | Parallel chats in the same repo without touching your checkout |
-| **Cloud** | An OpenAI-hosted container | A fresh clone of the repo at the branch you pick | Long background tasks, several attempts in parallel, work started from GitHub, Slack, or Linear |
+| Target       | Runs on                    | Files                                                 | Best for                                                                                        |
+| ------------ | -------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Local**    | Your computer              | Your current project directory                        | Interactive work, running your dev server, inspecting in your IDE                               |
+| **Worktree** | Your computer              | A separate Git worktree under `$CODEX_HOME/worktrees` | Parallel chats in the same repo without touching your checkout                                  |
+| **Cloud**    | An OpenAI-hosted container | A fresh clone of the repo at the branch you pick      | Long background tasks, several attempts in parallel, work started from GitHub, Slack, or Linear |
 
 Local and Worktree both run on your machine and share your credentials, MCP servers, and tools. Cloud runs in a container built from a cloud environment you configure. Worktrees are covered in detail in [Worktrees & Parallel Sessions](./worktrees.md).
 
 Slash commands switch the target for a chat in the desktop app and IDE extension:
 
-| Command | Effect |
-|---------|--------|
-| `/local` | Run the chat in the selected local project |
-| `/worktree` | Run the chat in a new Git worktree |
-| `/cloud` | Run the chat in the cloud, when cloud execution is available |
-| `/cloud-environment` | Choose the cloud environment for the chat |
+| Command              | Effect                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `/local`             | Run the chat in the selected local project                   |
+| `/worktree`          | Run the chat in a new Git worktree                           |
+| `/cloud`             | Run the chat in the cloud, when cloud execution is available |
+| `/cloud-environment` | Choose the cloud environment for the chat                    |
 
 If you started a chat with the wrong target, cancel the run and press the up arrow in the composer to recover your prompt.
 
@@ -54,14 +66,14 @@ Codex cloud runs each task in its own container. You submit a prompt, Codex clon
 
 ### Starting a cloud task from each surface
 
-| Surface | How |
-|---------|-----|
-| **Web** | Open [chatgpt.com/codex](https://chatgpt.com/codex), pick an environment, write the prompt |
+| Surface                         | How                                                                                                                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Web**                         | Open [chatgpt.com/codex](https://chatgpt.com/codex), pick an environment, write the prompt                                                                                                                   |
 | **Desktop app / IDE extension** | Select **Cloud** under the composer (or `/cloud`), then pick the environment with `/cloud-environment`. The new cloud chat carries over the existing chat context, including a plan and local source changes |
-| **CLI** | `codex cloud` (interactive picker), `codex cloud exec` (submit directly), `codex cloud list` (inspect recent chats) |
-| **GitHub / GitLab** | Mention `@codex` in a PR or MR comment |
-| **Slack** | Mention `@Codex` in a channel or thread |
-| **Linear** | Assign an issue to Codex or mention `@Codex` in a comment |
+| **CLI**                         | `codex cloud` (interactive picker), `codex cloud exec` (submit directly), `codex cloud list` (inspect recent chats)                                                                                          |
+| **GitHub / GitLab**             | Mention `@codex` in a PR or MR comment                                                                                                                                                                       |
+| **Slack**                       | Mention `@Codex` in a channel or thread                                                                                                                                                                      |
+| **Linear**                      | Assign an issue to Codex or mention `@Codex` in a comment                                                                                                                                                    |
 
 The CLI commands:
 
@@ -92,12 +104,12 @@ Cloud chats run in the `universal` container image, which ships with common lang
 
 ### Environment variables and secrets
 
-| | Environment variables | Secrets |
-|-|----------------------|---------|
-| Available during setup script | Yes | Yes |
-| Available during agent phase | Yes | **No** (removed before the agent starts) |
-| Storage | Standard | Extra layer of encryption, decrypted only for execution |
-| Use for | Feature flags, non-sensitive config, `NODE_ENV` | Package registry tokens, private dependency credentials |
+|                               | Environment variables                           | Secrets                                                 |
+| ----------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| Available during setup script | Yes                                             | Yes                                                     |
+| Available during agent phase  | Yes                                             | **No** (removed before the agent starts)                |
+| Storage                       | Standard                                        | Extra layer of encryption, decrypted only for execution |
+| Use for                       | Feature flags, non-sensitive config, `NODE_ENV` | Package registry tokens, private dependency credentials |
 
 Because secrets disappear before the agent phase, anything the agent itself needs at runtime (for example a test database URL) has to be an environment variable, not a secret.
 
@@ -134,10 +146,10 @@ All outbound traffic from a cloud environment passes through an HTTP/HTTPS proxy
 
 During the agent phase, internet access is **off by default**. Setup scripts always have access so you can install dependencies. You enable agent access per environment:
 
-| Setting | Behavior |
-|---------|----------|
-| **Off** | Blocks all internet access during the agent phase |
-| **On** | Allows access, optionally restricted by a domain allowlist and allowed HTTP methods |
+| Setting | Behavior                                                                            |
+| ------- | ----------------------------------------------------------------------------------- |
+| **Off** | Blocks all internet access during the agent phase                                   |
+| **On**  | Allows access, optionally restricted by a domain allowlist and allowed HTTP methods |
 
 Domain allowlist presets:
 
@@ -261,13 +273,13 @@ Codex creates or reuses a worktree on the destination, transfers the chat and Gi
 
 ### Troubleshooting Remote
 
-| Symptom | What to check |
-|---------|---------------|
-| Host does not appear on the phone | Desktop app is running, **Allow other devices to connect** is on, both devices use the same account and workspace. Connections unused since June 8, 2026 need both apps updated and re-paired |
-| Remote Control is off after signing back in | Signing out turns off Remote Control but keeps pairings. Turn it back on; if **Add** errors, restart the desktop app |
-| Approval request never shows | Open **Remote** in the mobile app, confirm account and workspace, re-scan the QR code; workspace admins may need to enable Remote Control |
-| Session disconnects | Host went to sleep, lost network, or closed the app |
-| Authentication blocks setup | Finish the SSO, MFA, or passkey flow shown during setup |
+| Symptom                                     | What to check                                                                                                                                                                                 |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Host does not appear on the phone           | Desktop app is running, **Allow other devices to connect** is on, both devices use the same account and workspace. Connections unused since June 8, 2026 need both apps updated and re-paired |
+| Remote Control is off after signing back in | Signing out turns off Remote Control but keeps pairings. Turn it back on; if **Add** errors, restart the desktop app                                                                          |
+| Approval request never shows                | Open **Remote** in the mobile app, confirm account and workspace, re-scan the QR code; workspace admins may need to enable Remote Control                                                     |
+| Session disconnects                         | Host went to sleep, lost network, or closed the app                                                                                                                                           |
+| Authentication blocks setup                 | Finish the SSO, MFA, or passkey flow shown during setup                                                                                                                                       |
 
 ## Code review on GitHub and GitLab
 
@@ -282,13 +294,13 @@ Codex can review pull requests as a teammate would. It reads the PR diff, follow
 
 ### Triggering a review
 
-| Comment on the PR | What happens |
-|-------------------|--------------|
-| `@codex review` | Codex reacts with an eyes emoji, then posts a review |
-| `@codex review for issues in the database migration` | Review with a one-off focus |
-| `@codex security review` | Security Review (research preview): deeper pass on security risks, full report in the **Security Report** tab of the Codex task |
-| `@codex fix the P1 issue` | Codex starts a cloud chat with the PR as context and pushes a fix when it has permission |
-| `@codex fix the CI failures` | Any mention other than `review` starts a cloud chat using the PR as context |
+| Comment on the PR                                    | What happens                                                                                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `@codex review`                                      | Codex reacts with an eyes emoji, then posts a review                                                                            |
+| `@codex review for issues in the database migration` | Review with a one-off focus                                                                                                     |
+| `@codex security review`                             | Security Review (research preview): deeper pass on security risks, full report in the **Security Report** tab of the Codex task |
+| `@codex fix the P1 issue`                            | Codex starts a cloud chat with the PR as context and pushes a fix when it has permission                                        |
+| `@codex fix the CI failures`                         | Any mention other than `review` starts a cloud chat using the PR as context                                                     |
 
 ### Custom review rules in AGENTS.md
 
@@ -369,11 +381,11 @@ See [MCP](./mcp.md).
 
 ## Compared with Claude Code
 
-| Topic | Codex | Claude Code |
-|-------|-------|-------------|
-| Hosted execution | Codex cloud: per-task containers with configurable environments, started from web, app, IDE, CLI, GitHub, Slack, or Linear | Claude Code on the web sessions; local parallelism comes from [Agent Teams](../claude-code/agent-teams.md) and subagents |
-| Parallel work | Several cloud chats or worktree chats, each isolated | Teammates in tmux or in-process panes, optionally one worktree per teammate |
-| Mobile / remote control | Codex Remote in the ChatGPT mobile app; desktop app connects to SSH hosts with chat handoff between hosts | `/remote-control` exposes a session to claude.ai; `/teleport` pulls a web session into the terminal (see [Slash Commands](../claude-code/commands.md)) |
-| PR review | `@codex review` on GitHub or GitLab, rules in `AGENTS.md`, optional automatic reviews | `/code-review --comment` posts findings to a PR; `/autofix-pr` watches a PR and pushes fixes |
-| Pulling remote results | `codex apply TASK_ID` or open a PR from the cloud chat | `/teleport` a web session, or merge teammate branches manually |
-| Orchestration patterns | Cloud tasks plus [Automation](./automation.md) for scheduled and scripted runs | Skill and subagent pipelines described in [Workflows & Orchestration](../claude-code/workflows.md) |
+| Topic                   | Codex                                                                                                                      | Claude Code                                                                                                                                            |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Hosted execution        | Codex cloud: per-task containers with configurable environments, started from web, app, IDE, CLI, GitHub, Slack, or Linear | Claude Code on the web sessions; local parallelism comes from [Agent Teams](../claude-code/agent-teams.md) and subagents                               |
+| Parallel work           | Several cloud chats or worktree chats, each isolated                                                                       | Teammates in tmux or in-process panes, optionally one worktree per teammate                                                                            |
+| Mobile / remote control | Codex Remote in the ChatGPT mobile app; desktop app connects to SSH hosts with chat handoff between hosts                  | `/remote-control` exposes a session to claude.ai; `/teleport` pulls a web session into the terminal (see [Slash Commands](../claude-code/commands.md)) |
+| PR review               | `@codex review` on GitHub or GitLab, rules in `AGENTS.md`, optional automatic reviews                                      | `/code-review --comment` posts findings to a PR; `/autofix-pr` watches a PR and pushes fixes                                                           |
+| Pulling remote results  | `codex apply TASK_ID` or open a PR from the cloud chat                                                                     | `/teleport` a web session, or merge teammate branches manually                                                                                         |
+| Orchestration patterns  | Cloud tasks plus [Automation](./automation.md) for scheduled and scripted runs                                             | Skill and subagent pipelines described in [Workflows & Orchestration](../claude-code/workflows.md)                                                     |

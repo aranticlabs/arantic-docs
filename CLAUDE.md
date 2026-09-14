@@ -9,6 +9,7 @@ This file provides context, conventions, and workflows for AI assistants (Claude
 **arantic-docs** is the official documentation site for [Arantic Digital](https://docs.arantic.com), covering how to use AI effectively in software development workflows. It is built with **Docusaurus 3.9** (React 19, TypeScript) and deployed as a static site.
 
 The site covers:
+
 - Experience-level guides (starter, intermediate, pro) including PRD-driven development
 - Prompting techniques (basics and advanced)
 - Code generation, debugging, and refactoring with AI
@@ -22,14 +23,14 @@ The site covers:
 
 ## Tech Stack
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Site framework | Docusaurus | 3.9.2 |
-| UI library | React / React DOM | 19.0.0 |
-| Language | TypeScript | ~5.6.2 |
-| Search | @easyops-cn/docusaurus-search-local | 0.52.2 |
-| Syntax highlighting | prism-react-renderer | 2.3.0 |
-| Runtime | Node.js | ≥20.0 |
+| Layer               | Technology                          | Version |
+| ------------------- | ----------------------------------- | ------- |
+| Site framework      | Docusaurus                          | 3.9.2   |
+| UI library          | React / React DOM                   | 19.0.0  |
+| Language            | TypeScript                          | ~5.6.2  |
+| Search              | @easyops-cn/docusaurus-search-local | 0.52.2  |
+| Syntax highlighting | prism-react-renderer                | 2.3.0   |
+| Runtime             | Node.js                             | ≥20.0   |
 
 ---
 
@@ -77,28 +78,33 @@ arantic-docs/
 ## Development Workflows
 
 ### Start Local Dev Server
+
 ```bash
 npm start
 # Serves at http://localhost:3020 (browser does NOT auto-open due to --no-open)
 ```
 
 ### Build for Production
+
 ```bash
 npm run build       # Outputs to /build
 npm run serve       # Preview the production build locally
 ```
 
 ### Type Checking
+
 ```bash
 npm run typecheck   # Runs tsc — no Jest/Vitest, this is the only validation
 ```
 
 ### Cache Management
+
 ```bash
 npm run clear       # Clears Docusaurus cache (use when experiencing stale build issues)
 ```
 
 ### Translations & Heading IDs
+
 ```bash
 npm run write-translations   # Generate/update i18n translation files
 npm run write-heading-ids    # Auto-generate stable heading anchor IDs
@@ -114,16 +120,17 @@ Every `.md` / `.mdx` file must include YAML frontmatter:
 
 ```yaml
 ---
-sidebar_position: 1       # Controls order within its category (required)
-slug: /optional-override  # Only needed to override the default URL path
+sidebar_position: 1 # Controls order within its category (required)
+slug: /optional-override # Only needed to override the default URL path
 description: One sentence describing the page, under 160 characters (required for SEO/GEO)
-keywords: [keyword one, keyword two, keyword three]   # 6-10 terms, inline bracket format (required for SEO/GEO)
+keywords: [keyword one, keyword two, keyword three] # 6-10 terms, inline bracket format (required for SEO/GEO)
 ---
 ```
 
 `intro.md` uses `slug: /` to serve as the site root.
 
 **SEO/GEO rules for `description` and `keywords`:**
+
 - `description`: one sentence, max 160 characters, accurate to the page content
 - `keywords`: inline YAML array (`[term1, term2]`), 6-10 terms relevant to the page topic — do NOT use a comma-separated string or block list format, as Docusaurus requires an array and will throw a build error otherwise
 
@@ -176,6 +183,7 @@ The `sidebars.ts` file defines navigation manually. When adding a new document:
 ### `docusaurus.config.ts`
 
 Key settings to be aware of:
+
 - `url`: `https://docs.arantic.com` — do not change without a redirect plan
 - `onBrokenLinks: 'throw'` — broken internal links will **fail the build**
 - i18n: English (`en`) default, German (`de`) supported
@@ -186,12 +194,12 @@ Key settings to be aware of:
 
 Brand colors (do not arbitrarily change these):
 
-| Token | Color | Hex |
-|-------|-------|-----|
-| Primary | Plum | `#963484` |
-| Secondary | Lapis | `#00648c` |
-| Accent | Cyan | `#009a9a` |
-| Tertiary | Violet | `#4b2364` |
+| Token      | Color  | Hex       |
+| ---------- | ------ | --------- |
+| Primary    | Plum   | `#963484` |
+| Secondary  | Lapis  | `#00648c` |
+| Accent     | Cyan   | `#009a9a` |
+| Tertiary   | Violet | `#4b2364` |
 | Background | Oxford | `#00002d` |
 
 Both light and dark variants are defined. Code block highlighting uses the plum palette.
@@ -211,6 +219,7 @@ Explicitly permits major AI web crawlers including `Claude-Web`, `anthropic-ai`,
 ## Static Assets
 
 All brand assets are in `static/img/brand/`:
+
 - `arantic-logo-light.svg` / `arantic-logo-dark.svg` — navbar and README logo
 - `favicon.svg`, `favicon.ico`, `favicon-96x96.png` — favicons
 - `og-image.png` — social sharing image (1200×630px)
@@ -248,15 +257,15 @@ The site supports **English (en)** and **German (de)**. English is the default/p
 
 ## Common Pitfalls
 
-| Problem | Solution |
-|---------|----------|
-| Build fails with broken link error | Check all internal links; Docusaurus throws on broken links |
-| Sidebar not updating | Verify `sidebar_position` frontmatter and `sidebars.ts` category entries |
-| Stale content in dev server | Run `npm run clear` then `npm start` |
-| Type errors in config files | Run `npm run typecheck` for details; config files use `satisfies` for strict typing |
-| i18n content missing | Run `npm run write-translations` to generate scaffolding |
+| Problem                                        | Solution                                                                               |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Build fails with broken link error             | Check all internal links; Docusaurus throws on broken links                            |
+| Sidebar not updating                           | Verify `sidebar_position` frontmatter and `sidebars.ts` category entries               |
+| Stale content in dev server                    | Run `npm run clear` then `npm start`                                                   |
+| Type errors in config files                    | Run `npm run typecheck` for details; config files use `satisfies` for strict typing    |
+| i18n content missing                           | Run `npm run write-translations` to generate scaffolding                               |
 | Build fails with `"keywords" must be an array` | `keywords` frontmatter must use inline bracket format: `[term1, term2]` — not a string |
-| Logo/favicon not appearing | Assets are in `static/img/brand/`, not `static/img/` |
+| Logo/favicon not appearing                     | Assets are in `static/img/brand/`, not `static/img/`                                   |
 
 ---
 

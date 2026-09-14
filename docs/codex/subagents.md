@@ -2,7 +2,18 @@
 sidebar_position: 9
 sidebar_label: Subagents
 description: Codex subagents run delegated work in parallel agent threads with their own model, reasoning effort, and sandbox, keeping noisy output out of the main chat.
-keywords: [Codex subagents, custom agents, agent threads, .codex/agents, parallel agents, context isolation, model_reasoning_effort, agents.max_concurrent_threads_per_session, Codex CLI]
+keywords:
+  [
+    Codex subagents,
+    custom agents,
+    agent threads,
+    .codex/agents,
+    parallel agents,
+    context isolation,
+    model_reasoning_effort,
+    agents.max_concurrent_threads_per_session,
+    Codex CLI,
+  ]
 ---
 
 # Subagents
@@ -36,11 +47,11 @@ Start with **read-heavy** parallel work: exploration, running tests, triage, sum
 
 Codex ships with three agent roles:
 
-| Agent | Purpose |
-|---|---|
-| `default` | General-purpose fallback |
-| `worker` | Execution-focused: implementation and fixes |
-| `explorer` | Read-heavy codebase exploration |
+| Agent      | Purpose                                     |
+| ---------- | ------------------------------------------- |
+| `default`  | General-purpose fallback                    |
+| `worker`   | Execution-focused: implementation and fixes |
+| `explorer` | Read-heavy codebase exploration             |
 
 Codex picks among these when you ask it to delegate. If you define a custom agent with the same `name` as a built-in (for example `explorer`), your definition takes precedence.
 
@@ -80,10 +91,10 @@ Codex orchestrates the rest: spawning, routing follow-ups, waiting, and closing 
 
 Custom agents are standalone **TOML** files, one agent per file:
 
-| Location | Scope |
-|---|---|
-| `~/.codex/agents/*.toml` | Personal, all projects |
-| `.codex/agents/*.toml` | Project, committed with the repo (loaded for trusted projects) |
+| Location                 | Scope                                                          |
+| ------------------------ | -------------------------------------------------------------- |
+| `~/.codex/agents/*.toml` | Personal, all projects                                         |
+| `.codex/agents/*.toml`   | Project, committed with the repo (loaded for trusted projects) |
 
 Codex does not document a Markdown agent format; if you are coming from Claude Code's `.claude/agents/*.md`, the TOML file plays the same role.
 
@@ -91,21 +102,21 @@ Codex loads each file as a **configuration layer** for the spawned session. That
 
 ### Required fields
 
-| Field | Type | Purpose |
-|---|---|---|
-| `name` | string | Identifier Codex uses when spawning or referring to the agent. The `name` field, not the filename, is the source of truth (matching them is the simplest convention) |
-| `description` | string | Guidance for when Codex should choose this agent. Write it as a usage hint |
-| `developer_instructions` | string | The agent's core instructions (its system-level brief) |
+| Field                    | Type   | Purpose                                                                                                                                                              |
+| ------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                   | string | Identifier Codex uses when spawning or referring to the agent. The `name` field, not the filename, is the source of truth (matching them is the simplest convention) |
+| `description`            | string | Guidance for when Codex should choose this agent. Write it as a usage hint                                                                                           |
+| `developer_instructions` | string | The agent's core instructions (its system-level brief)                                                                                                               |
 
 ### Optional fields (any supported `config.toml` key)
 
-| Field | Typical values | Notes |
-|---|---|---|
-| `model` | `gpt-5.6`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.3-codex-spark` | Overrides explicit spawn values and `[agents]` defaults |
-| `model_reasoning_effort` | `low`, `medium`, `high`, `xhigh`, `max`, `ultra` (model-dependent) | Set it whenever you set `model`, otherwise the previously resolved effort is kept |
-| `sandbox_mode` | `read-only`, `workspace-write`, `danger-full-access` | Tighten a reviewer or explorer to `read-only` |
-| `mcp_servers` | `[mcp_servers.<name>]` tables | Give an agent tools the parent does not have (docs server, browser devtools, log store) |
-| `skills.config` | `[[skills.config]]` entries | Enable or disable specific skills for this agent |
+| Field                    | Typical values                                                     | Notes                                                                                   |
+| ------------------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `model`                  | `gpt-5.6`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.3-codex-spark`  | Overrides explicit spawn values and `[agents]` defaults                                 |
+| `model_reasoning_effort` | `low`, `medium`, `high`, `xhigh`, `max`, `ultra` (model-dependent) | Set it whenever you set `model`, otherwise the previously resolved effort is kept       |
+| `sandbox_mode`           | `read-only`, `workspace-write`, `danger-full-access`               | Tighten a reviewer or explorer to `read-only`                                           |
+| `mcp_servers`            | `[mcp_servers.<name>]` tables                                      | Give an agent tools the parent does not have (docs server, browser devtools, log store) |
+| `skills.config`          | `[[skills.config]]` entries                                        | Enable or disable specific skills for this agent                                        |
 
 Settings the file omits (`sandbox_mode`, `mcp_servers`, `skills.config`, and so on) are inherited from the parent session.
 
@@ -150,11 +161,11 @@ Then, if the custom agent file sets `model` or `model_reasoning_effort`, the fil
 
 Model guidance from the official docs:
 
-| Model | Use for |
-|---|---|
-| `gpt-5.6` | Demanding agents: ambiguous, multi-step work with planning, tool use, and validation |
+| Model           | Use for                                                                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gpt-5.6`       | Demanding agents: ambiguous, multi-step work with planning, tool use, and validation                                                         |
 | `gpt-5.6-terra` | Speed and efficiency: exploration, read-heavy scans, large-file review, processing supporting documents; a good default for parallel workers |
-| `gpt-5.6-luna` | Fast, narrowly scoped, repeatable or high-volume work |
+| `gpt-5.6-luna`  | Fast, narrowly scoped, repeatable or high-volume work                                                                                        |
 
 Reasoning effort: `medium` is the balanced default; `high` for agents that must trace complex logic or check edge cases (reviewers, security); `low` when speed matters most; `xhigh`, `max`, and `ultra` for the hardest work when the model supports them. Higher effort costs more time and tokens.
 
@@ -162,13 +173,13 @@ Reasoning effort: `medium` is the balanced default; `high` for agents that must 
 
 All global knobs live under `[agents]` in `config.toml`:
 
-| Key | Type | Default | Purpose |
-|---|---|---|---|
-| `agents.enabled` | boolean | `true` | Turn multi-agent tools on or off |
-| `agents.max_concurrent_threads_per_session` | number | Codex-chosen | Cap on concurrently open spawned threads, excluding the primary thread. `agents.max_threads` is a legacy alias |
-| `agents.default_subagent_model` | string | inherit | Default model for spawned agents |
-| `agents.default_subagent_reasoning_effort` | string | inherit | Default effort for spawned agents |
-| `agents.interrupt_message` | boolean | `true` | Record a model-visible message when an agent turn is interrupted |
+| Key                                         | Type    | Default      | Purpose                                                                                                        |
+| ------------------------------------------- | ------- | ------------ | -------------------------------------------------------------------------------------------------------------- |
+| `agents.enabled`                            | boolean | `true`       | Turn multi-agent tools on or off                                                                               |
+| `agents.max_concurrent_threads_per_session` | number  | Codex-chosen | Cap on concurrently open spawned threads, excluding the primary thread. `agents.max_threads` is a legacy alias |
+| `agents.default_subagent_model`             | string  | inherit      | Default model for spawned agents                                                                               |
+| `agents.default_subagent_reasoning_effort`  | string  | inherit      | Default effort for spawned agents                                                                              |
+| `agents.interrupt_message`                  | boolean | `true`       | Record a model-visible message when an agent turn is interrupted                                               |
 
 Example project config (`.codex/config.toml`):
 
@@ -194,11 +205,11 @@ Skills are not automatically shared with a subagent beyond what its config layer
 
 ## Managing running subagents
 
-| Surface | Controls |
-|---|---|
-| CLI | `/agent` switches between active agent threads; ask Codex in plain language to steer, stop, or close a subagent |
-| IDE extension | Background-agent panel above the composer shows status, lets you stop all agents or open a thread |
-| Desktop app | Open a subagent thread from the main-thread activity; ask Codex to steer, stop, or close |
+| Surface       | Controls                                                                                                        |
+| ------------- | --------------------------------------------------------------------------------------------------------------- |
+| CLI           | `/agent` switches between active agent threads; ask Codex in plain language to steer, stop, or close a subagent |
+| IDE extension | Background-agent panel above the composer shows status, lets you stop all agents or open a thread               |
+| Desktop app   | Open a subagent thread from the main-thread activity; ask Codex to steer, stop, or close                        |
 
 ## Cost
 
@@ -211,13 +222,13 @@ Every subagent is a separate model session with its own tool calls. Three parall
 
 ## Subagents vs skills vs AGENTS.md
 
-| Need | Use |
-|---|---|
-| Rules for every task in the repo | `AGENTS.md` ([AGENTS.md & Memories](./agents-md.md)) |
-| A repeatable procedure that runs inside the current conversation | [Skill](./skills.md) |
-| Work that should run in its own context with its own model, sandbox, or tools | Custom agent (this page) |
-| A procedure that itself fans out to parallel workers | Skill whose steps tell Codex to spawn named agents |
-| Deterministic checks regardless of model decisions | [Hooks](./hooks.md) |
+| Need                                                                          | Use                                                  |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Rules for every task in the repo                                              | `AGENTS.md` ([AGENTS.md & Memories](./agents-md.md)) |
+| A repeatable procedure that runs inside the current conversation              | [Skill](./skills.md)                                 |
+| Work that should run in its own context with its own model, sandbox, or tools | Custom agent (this page)                             |
+| A procedure that itself fans out to parallel workers                          | Skill whose steps tell Codex to spawn named agents   |
+| Deterministic checks regardless of model decisions                            | [Hooks](./hooks.md)                                  |
 
 Reach for a subagent when the work is noisy (tests, logs), read-heavy and parallel (exploration across packages), or needs different permissions (a read-only auditor, a browser-enabled debugger). Reach for a skill when you want guidance available in the main thread across many turns.
 
@@ -329,16 +340,16 @@ Investigate why the settings modal fails to save. Have explorer trace the respon
 
 ## Compared with Claude Code
 
-| | Codex | Claude Code |
-|---|---|---|
-| Definition format | TOML, `.codex/agents/*.toml` and `~/.codex/agents/*.toml` | Markdown with YAML frontmatter, `.claude/agents/*.md` and `~/.claude/agents/*.md` |
-| Required fields | `name`, `description`, `developer_instructions` | `name`, `description` |
-| Built-ins | `default`, `worker`, `explorer` | Explore, Plan, General-purpose |
-| Tool restriction | Via `sandbox_mode`, `mcp_servers`, `skills.config` (config layer) | `tools` / `disallowedTools` allowlists |
-| Concurrency cap | `agents.max_concurrent_threads_per_session` | Fixed limit; nesting depth via `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` |
-| Triggering | Direct request, or `AGENTS.md`/skill instructions | Automatic based on `description`, `@agent-name` mention |
-| Inspecting threads | `/agent` in CLI, thread panels in app and IDE | `/tasks`, subagent panel |
-| Peer-to-peer agent teams | Not documented; parallel subagents report to the main thread | Agent Teams (experimental) |
-| Preloaded skills | Enable/disable via `skills.config` in the agent file | `skills:` list injects full skill bodies |
+|                          | Codex                                                             | Claude Code                                                                       |
+| ------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Definition format        | TOML, `.codex/agents/*.toml` and `~/.codex/agents/*.toml`         | Markdown with YAML frontmatter, `.claude/agents/*.md` and `~/.claude/agents/*.md` |
+| Required fields          | `name`, `description`, `developer_instructions`                   | `name`, `description`                                                             |
+| Built-ins                | `default`, `worker`, `explorer`                                   | Explore, Plan, General-purpose                                                    |
+| Tool restriction         | Via `sandbox_mode`, `mcp_servers`, `skills.config` (config layer) | `tools` / `disallowedTools` allowlists                                            |
+| Concurrency cap          | `agents.max_concurrent_threads_per_session`                       | Fixed limit; nesting depth via `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`             |
+| Triggering               | Direct request, or `AGENTS.md`/skill instructions                 | Automatic based on `description`, `@agent-name` mention                           |
+| Inspecting threads       | `/agent` in CLI, thread panels in app and IDE                     | `/tasks`, subagent panel                                                          |
+| Peer-to-peer agent teams | Not documented; parallel subagents report to the main thread      | Agent Teams (experimental)                                                        |
+| Preloaded skills         | Enable/disable via `skills.config` in the agent file              | `skills:` list injects full skill bodies                                          |
 
 See [Claude Code Subagents](../claude-code/subagents.md) for the Claude Code side, and [Worktrees & Parallel Sessions](./worktrees.md) for running whole Codex sessions in parallel instead of subagents.

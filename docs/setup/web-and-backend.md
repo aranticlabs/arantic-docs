@@ -2,7 +2,19 @@
 sidebar_position: 2
 sidebar_label: Web & Backend Developer Setup
 description: Set up AI-assisted coding for React, TypeScript, Angular frontend and Go backend projects using Cursor or VS Code with Claude Code integration.
-keywords: [web developer setup, backend setup, React AI, TypeScript AI, Go AI, Angular, Cursor setup, Claude Code, VS Code, frontend backend]
+keywords:
+  [
+    web developer setup,
+    backend setup,
+    React AI,
+    TypeScript AI,
+    Go AI,
+    Angular,
+    Cursor setup,
+    Claude Code,
+    VS Code,
+    frontend backend,
+  ]
 ---
 
 # Web & Backend Developer Setup
@@ -70,24 +82,28 @@ touch CLAUDE.md
 # Project context
 
 ## Stack
+
 - React 18, TypeScript 5, Vite
 - Tailwind CSS v4
 - React Query for server state, Zustand for client state
 - React Router v6
 
 ## Conventions
+
 - Components: functional only, no class components
 - File naming: PascalCase for components, camelCase for hooks and utilities
 - Hooks live in src/hooks/, components in src/components/
-- All new components must have a co-located *.test.tsx file
+- All new components must have a co-located \*.test.tsx file
 
 ## Commands
+
 - npm run dev - start dev server
 - npm run test - run Vitest
 - npm run build - production build
 - npm run lint - ESLint
 
 ## Do not modify
+
 - src/generated/ - auto-generated from OpenAPI spec, never edit by hand
 ```
 
@@ -97,16 +113,19 @@ touch CLAUDE.md
 # Project context
 
 ## Stack
+
 - Angular 18, TypeScript 5, RxJS 7
 - Angular Material for UI components
 - NgRx for state management
 
 ## Conventions
+
 - Follow Angular style guide naming: feature.component.ts, feature.service.ts
 - Use standalone components (not NgModules) for all new code
 - Observables: always unsubscribe with takeUntilDestroyed() or async pipe
 
 ## Commands
+
 - ng serve - start dev server
 - ng test - run Karma/Jasmine unit tests
 - ng build - production build
@@ -119,6 +138,7 @@ touch CLAUDE.md
 # Project context
 
 ## Stack
+
 - Go 1.23
 - net/http standard library (no framework)
 - PostgreSQL via pgx/v5 (no ORM)
@@ -126,6 +146,7 @@ touch CLAUDE.md
 - Docker for local development
 
 ## Conventions
+
 - Error handling: always wrap errors with fmt.Errorf("context: %w", err)
 - Never use panic() in application code - return errors
 - Table-driven tests only; test files live alongside the code they test
@@ -133,6 +154,7 @@ touch CLAUDE.md
 - Context is always the first parameter; never store context in a struct
 
 ## Commands
+
 - go build ./... - build
 - go test ./... - run all tests
 - go vet ./... - static analysis
@@ -140,6 +162,7 @@ touch CLAUDE.md
 - docker compose up -d - start local Postgres + dependencies
 
 ## Do not modify
+
 - internal/gen/ - generated from proto files via make proto
 - vendor/ - managed by go mod vendor
 ```
@@ -148,10 +171,12 @@ touch CLAUDE.md
 
 ```markdown
 ## Stack
+
 - Go 1.23, cobra v1, viper for config
 - Released as a single static binary
 
 ## Conventions
+
 - Commands live in cmd/, business logic in internal/
 - All flags have both short and long forms
 - cobra commands use RunE (not Run) so errors propagate correctly
@@ -169,20 +194,20 @@ mkdir -p .claude/agents
 
 ### Frontend subagents
 
-| Subagent | What it does |
-|----------|-------------|
-| [ux-reviewer](../claude-code/subagents#ux-reviewer) | Audits JSX/TSX for visual hierarchy, spacing, states, and copy quality |
-| [accessibility-auditor](../claude-code/subagents#accessibility-auditor) | Checks HTML/JSX/TSX against WCAG 2.1 |
-| [security-auditor](../claude-code/subagents#security-auditor) | Scans for XSS, CSRF, auth issues, and other web vulnerabilities |
-| [api-contract-reviewer](../claude-code/subagents#api-contract-reviewer) | Reviews REST/GraphQL endpoints for consistency and missing validation |
+| Subagent                                                                | What it does                                                           |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [ux-reviewer](../claude-code/subagents#ux-reviewer)                     | Audits JSX/TSX for visual hierarchy, spacing, states, and copy quality |
+| [accessibility-auditor](../claude-code/subagents#accessibility-auditor) | Checks HTML/JSX/TSX against WCAG 2.1                                   |
+| [security-auditor](../claude-code/subagents#security-auditor)           | Scans for XSS, CSRF, auth issues, and other web vulnerabilities        |
+| [api-contract-reviewer](../claude-code/subagents#api-contract-reviewer) | Reviews REST/GraphQL endpoints for consistency and missing validation  |
 
 ### Go backend subagents
 
-| Subagent | What it does |
-|----------|-------------|
-| [security-auditor](../claude-code/subagents#security-auditor) | Scans for injection, auth issues, insecure crypto, and SSRF patterns |
+| Subagent                                                                | What it does                                                               |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [security-auditor](../claude-code/subagents#security-auditor)           | Scans for injection, auth issues, insecure crypto, and SSRF patterns       |
 | [api-contract-reviewer](../claude-code/subagents#api-contract-reviewer) | Reviews REST/gRPC handlers for consistency, validation, and error handling |
-| [dependency-auditor](../claude-code/subagents#dependency-auditor) | Checks `go.mod` / `go.sum` for outdated packages and known CVEs |
+| [dependency-auditor](../claude-code/subagents#dependency-auditor)       | Checks `go.mod` / `go.sum` for outdated packages and known CVEs            |
 
 ---
 
@@ -193,17 +218,21 @@ mkdir -p .claude/agents
 As you type, completions appear automatically. Accept with `Tab`. For longer generations, open the chat panel and describe what you want in context of the open file.
 
 **Frontend chat examples:**
+
 ```
 Add a loading skeleton for this component that matches the existing layout.
 ```
+
 ```
 Extract the form validation logic into a custom hook called useContactForm.
 ```
 
 **Go chat examples:**
+
 ```
 Add godoc comments to every exported function in this file.
 ```
+
 ```
 Suggest a table-driven test structure for this function.
 ```
@@ -213,16 +242,19 @@ Suggest a table-driven test structure for this function.
 Open a terminal in your project root and run `claude`:
 
 **Frontend:**
+
 ```
 Add a dark mode toggle to the app. Store the preference in localStorage.
 Use the existing ThemeContext pattern in src/context/ThemeContext.tsx.
 ```
+
 ```
 Refactor all fetch calls in src/services/ to use React Query.
 Don't change the component interfaces - only the data-fetching layer.
 ```
 
 **Go backend:**
+
 ```
 Generate a REST handler for POST /users. It should:
 - Decode a JSON body into a CreateUserRequest struct
@@ -231,6 +263,7 @@ Generate a REST handler for POST /users. It should:
 - Return 201 with the created user as JSON, or 400/500 with a JSON error body
 Follow the error handling patterns in internal/handler/health.go.
 ```
+
 ```
 Refactor the database layer in internal/store/ to use pgx/v5 connection pooling.
 Right now it creates a new connection per query. Don't change the Store interface.
@@ -244,11 +277,13 @@ that violates the conventions in CLAUDE.md.
 ```
 
 **Frontend: run specialist subagents:**
+
 ```
 Run the ux-reviewer and accessibility-auditor agents on src/components/CheckoutForm/.
 ```
 
 **Go backend: run specialist subagents:**
+
 ```
 Run the security-auditor agent on internal/handler/ and internal/auth/.
 ```
@@ -258,15 +293,18 @@ Run the security-auditor agent on internal/handler/ and internal/auth/.
 ## Tips
 
 **Shared:**
+
 - **Reference files by name.** Claude Code has full access to your repo, so "look at src/hooks/useCart.ts" or "internal/handler/health.go" is unambiguous.
 - **Paste error messages directly.** "Fix this error: [paste]" works better than a vague description.
 - **Lock down generated directories.** Add `src/generated/`, `internal/gen/`, `dist/`, `vendor/` to `CLAUDE.md` under "Do not modify".
 
 **Frontend specific:**
+
 - **Angular: always specify `standalone: true`** in your prompts or CLAUDE.md if you're on Angular 15+. Older codebases default to NgModules and Claude will follow that pattern if unspecified.
 - **Use the Explore subagent for search tasks.** "Use the Explore agent to find all places where we call useEffect without a dependency array" is faster and cheaper than Claude scanning files itself.
 
 **Go specific:**
+
 - **Always run `go vet ./...` after AI-generated code.** Claude handles idiomatic Go well but occasionally generates code that compiles yet fails vet (shadowed errors, unused params).
 - **Specify the interface.** Paste an existing interface and say "implement this". Generated code will match the signature exactly.
 - **Goroutine safety:** Say explicitly "this struct will be called from multiple goroutines simultaneously" if that's the case. Claude won't assume it.

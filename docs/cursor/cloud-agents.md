@@ -2,7 +2,19 @@
 sidebar_position: 13
 sidebar_label: Cloud Agents & Automations
 description: Run Cursor agents unattended in cloud VMs, trigger them from schedules and events with Automations, and compose skills, subagents, and hooks into workflows.
-keywords: [Cursor Cloud Agents, Cursor Automations, environment.json, Cloud Agent Builds, Cloud Agents API, Cursor SDK, self-hosted machines, Slack cursor agent, Linear cursor agent, agent workflows]
+keywords:
+  [
+    Cursor Cloud Agents,
+    Cursor Automations,
+    environment.json,
+    Cloud Agent Builds,
+    Cloud Agents API,
+    Cursor SDK,
+    self-hosted machines,
+    Slack cursor agent,
+    Linear cursor agent,
+    agent workflows,
+  ]
 ---
 
 # Cloud Agents & Automations
@@ -35,15 +47,15 @@ Cloud Agents were formerly called Background Agents.
 
 ### Where you start them
 
-| Surface | How |
-|---|---|
-| Cursor Desktop | Select **Cloud** in the dropdown under the agent input; in the Agents Window, `/in-cloud` sends the next task to a cloud subagent |
-| Cursor Web | [cursor.com/agents](https://cursor.com/agents) on any device (on Android, install it as a PWA from Chrome) |
-| Cursor for iOS | Native iPhone and iPad app: start agents, follow them live, review and merge PRs, get push notifications |
-| Slack | Mention `@cursor` with a prompt |
-| GitHub or Bitbucket | Comment `@cursor` on a PR or issue (GitHub) or a PR (Bitbucket) |
-| Linear | Delegate an issue to Cursor or mention `@Cursor` in a comment |
-| API and SDK | `POST /v1/agents`, or `Agent.create({ cloud: ... })` |
+| Surface             | How                                                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Cursor Desktop      | Select **Cloud** in the dropdown under the agent input; in the Agents Window, `/in-cloud` sends the next task to a cloud subagent |
+| Cursor Web          | [cursor.com/agents](https://cursor.com/agents) on any device (on Android, install it as a PWA from Chrome)                        |
+| Cursor for iOS      | Native iPhone and iPad app: start agents, follow them live, review and merge PRs, get push notifications                          |
+| Slack               | Mention `@cursor` with a prompt                                                                                                   |
+| GitHub or Bitbucket | Comment `@cursor` on a PR or issue (GitHub) or a PR (Bitbucket)                                                                   |
+| Linear              | Delegate an issue to Cursor or mention `@Cursor` in a comment                                                                     |
+| API and SDK         | `POST /v1/agents`, or `Agent.create({ cloud: ... })`                                                                              |
 
 Before anyone can start a cloud agent, a Cursor account admin connects source control (GitHub Cloud or Enterprise Server, GitLab Cloud or Self-Hosted, Bitbucket Cloud, or Azure DevOps). Each user then connects their own Git account. Cloud Agents need a paid plan, and you set a spend limit the first time you use them; they are billed at API pricing for the selected model.
 
@@ -53,10 +65,10 @@ Cursor's documentation is blunt about this: not configuring an environment for y
 
 Two ways to configure an environment, both created from the Cloud Agents dashboard (**Environments**):
 
-| Option | When to use |
-|---|---|
+| Option                               | When to use                                                                                                                                                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Agent-driven setup** (recommended) | Cursor's agent installs dependencies, verifies the environment in a shared terminal you can watch, and creates the first Build, usually in under 10 minutes. Commit the result to `.cursor/environment.json` |
-| **Dockerfile** (advanced) | You need system packages, specific compiler versions, debuggers, or a different base image. Do not `COPY` the project; Cursor manages the workspace and checks out the right commit |
+| **Dockerfile** (advanced)            | You need system packages, specific compiler versions, debuggers, or a different base image. Do not `COPY` the project; Cursor manages the workspace and checks out the right commit                          |
 
 Cursor resolves the configuration for a repository or repo group in this order, first match wins:
 
@@ -87,9 +99,7 @@ Dockerfile-based, referencing `.cursor/Dockerfile` and an install script:
   },
   "install": "pnpm install && ./custom_script.sh",
   "start": "sudo service docker start",
-  "terminals": [
-    { "name": "web", "command": "pnpm dev" }
-  ]
+  "terminals": [{"name": "web", "command": "pnpm dev"}]
 }
 ```
 
@@ -97,11 +107,11 @@ Path behavior: `dockerfile` and `context` are relative to `.cursor`; omitting `c
 
 Three commands run at different phases:
 
-| Command | When it runs | Use it for |
-|---|---|---|
-| `install` | During each Build | Installing dependencies, generating code, compiling artifacts, warming disk caches. Must be idempotent and must complete |
-| `start` | At the start of each agent run | Starting Docker, databases, tunnels, and other services |
-| `terminals` | At the start of each agent run | App processes in `tmux` terminals shared between you and the agent |
+| Command     | When it runs                   | Use it for                                                                                                               |
+| ----------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `install`   | During each Build              | Installing dependencies, generating code, compiling artifacts, warming disk caches. Must be idempotent and must complete |
+| `start`     | At the start of each agent run | Starting Docker, databases, tunnels, and other services                                                                  |
+| `terminals` | At the start of each agent run | App processes in `tmux` terminals shared between you and the agent                                                       |
 
 Builds preserve disk state only. Running processes, exported shell variables, and in-memory caches do not survive into an agent run, so services belong in `start` or `terminals`, not `install`.
 
@@ -126,12 +136,12 @@ Cloud agents read `AGENTS.md`. Add a dedicated section (Cursor suggests a title 
 
 A **Build** is a bootable snapshot of a prepared environment. Cursor creates Builds ahead of runs so agents boot from a machine with repositories cloned and `install` already completed.
 
-| Trigger | When it runs |
-|---|---|
-| Recurring | On a regular schedule for every environment; skipped (in seconds, without running `install`) when nothing changed |
-| Configuration change | When you save the environment configuration or change its secrets |
-| Manual | **Trigger build** in the Builds tab |
-| Agent-requested | When an agent runs a test Build, for example during environment setup |
+| Trigger              | When it runs                                                                                                      |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Recurring            | On a regular schedule for every environment; skipped (in seconds, without running `install`) when nothing changed |
+| Configuration change | When you save the environment configuration or change its secrets                                                 |
+| Manual               | **Trigger build** in the Builds tab                                                                               |
+| Agent-requested      | When an agent runs a test Build, for example during environment setup                                             |
 
 What Builds give you:
 
@@ -145,18 +155,18 @@ To debug a failed Build, open its logs in the **Builds** tab, or start an agent 
 
 ### Capabilities
 
-| Capability | What it does |
-|---|---|
-| **Computer use** | Each VM has a full desktop; the agent drives mouse and keyboard to start dev servers, open the browser, click through flows, and verify changes. Supported for Dockerfile repos on Debian/Ubuntu bases |
-| **Artifacts** | Screenshots, videos, and log references attached to the PR. Opt in to embedding them in GitHub PR descriptions (**Allow posting artifacts to GitHub**); embedded artifacts use long unguessable public URLs because of GitHub's image proxy |
-| **Remote desktop control** | Take over the agent's desktop to test the software yourself, then hand control back |
-| **MCP tools** | Team and personal MCP servers over HTTP (recommended; credentials never enter the VM, calls are proxied) or stdio (runs inside the VM). SSE and `mcp-remote` are not supported. OAuth is per user |
-| **Cursor Cloud MCP** | Built-in diagnostics server: `run-info`, `environment-info`, `get-events`, `list-cloud-agents`, `batch-fetch-details`, Build tools, and environment setup actions. Non-admins only see their own runs |
-| **Subscriptions** | The agent subscribes to an event source, ends its turn, and wakes when a matching event arrives as a follow-up in the same conversation: PR comments, reviews, and CI results (GitHub), thread replies and channel messages (Slack), issue changes (Linear), one-off or cron timers. Describe the wait in the prompt or use the built-in `/subscribe` skill. Bursts coalesce; a subscription lasts at most 180 days |
-| **Automatic CI fixes** | Cloud Agents try to fix failing GitHub Actions on PRs they created (Teams). They stop after a human commit, a follow-up message, a check already failing on the base, or 10 follow-ups. Toggle with `@cursor autofix off` / `on` on the PR |
-| **Hooks** | Command-based hooks from `.cursor/hooks.json` run in the cloud; see [Hooks in the cloud](#hooks-in-the-cloud) |
-| **Subagents** | Built-in and custom [subagents](./subagents.md) work in Cloud Agents; MCP servers for cloud subagents come from the team configuration |
-| **Agent metadata and OIDC** | A local socket serves the agent ID, owner, current turn, and workspace as plain text, and mints OIDC tokens |
+| Capability                  | What it does                                                                                                                                                                                                                                                                                                                                                                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Computer use**            | Each VM has a full desktop; the agent drives mouse and keyboard to start dev servers, open the browser, click through flows, and verify changes. Supported for Dockerfile repos on Debian/Ubuntu bases                                                                                                                                                                                                              |
+| **Artifacts**               | Screenshots, videos, and log references attached to the PR. Opt in to embedding them in GitHub PR descriptions (**Allow posting artifacts to GitHub**); embedded artifacts use long unguessable public URLs because of GitHub's image proxy                                                                                                                                                                         |
+| **Remote desktop control**  | Take over the agent's desktop to test the software yourself, then hand control back                                                                                                                                                                                                                                                                                                                                 |
+| **MCP tools**               | Team and personal MCP servers over HTTP (recommended; credentials never enter the VM, calls are proxied) or stdio (runs inside the VM). SSE and `mcp-remote` are not supported. OAuth is per user                                                                                                                                                                                                                   |
+| **Cursor Cloud MCP**        | Built-in diagnostics server: `run-info`, `environment-info`, `get-events`, `list-cloud-agents`, `batch-fetch-details`, Build tools, and environment setup actions. Non-admins only see their own runs                                                                                                                                                                                                               |
+| **Subscriptions**           | The agent subscribes to an event source, ends its turn, and wakes when a matching event arrives as a follow-up in the same conversation: PR comments, reviews, and CI results (GitHub), thread replies and channel messages (Slack), issue changes (Linear), one-off or cron timers. Describe the wait in the prompt or use the built-in `/subscribe` skill. Bursts coalesce; a subscription lasts at most 180 days |
+| **Automatic CI fixes**      | Cloud Agents try to fix failing GitHub Actions on PRs they created (Teams). They stop after a human commit, a follow-up message, a check already failing on the base, or 10 follow-ups. Toggle with `@cursor autofix off` / `on` on the PR                                                                                                                                                                          |
+| **Hooks**                   | Command-based hooks from `.cursor/hooks.json` run in the cloud; see [Hooks in the cloud](#hooks-in-the-cloud)                                                                                                                                                                                                                                                                                                       |
+| **Subagents**               | Built-in and custom [subagents](./subagents.md) work in Cloud Agents; MCP servers for cloud subagents come from the team configuration                                                                                                                                                                                                                                                                              |
+| **Agent metadata and OIDC** | A local socket serves the agent ID, owner, current turn, and workspace as plain text, and mints OIDC tokens                                                                                                                                                                                                                                                                                                         |
 
 Cloud Agents use a curated selection of models; you can pick the context window size for supported models. A larger window increases token usage.
 
@@ -164,8 +174,8 @@ Cloud Agents use a curated selection of models; you can pick the context window 
 
 Cloud Agents run **command-based** hooks from `.cursor/hooks.json` in the repository; on Enterprise plans they also run team hooks and enterprise-managed hooks from the dashboard. Prompt-based hooks and user-level hooks (`~/.cursor/hooks.json`) are not available, because the VM has no access to your home directory and no auth wiring for prompt hooks.
 
-| Runs in Cloud Agents | Does not run |
-|---|---|
+| Runs in Cloud Agents                                                                                                                                                                                                                                        | Does not run                                                                                        |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `beforeShellExecution`, `afterShellExecution`, `beforeReadFile`, `afterFileEdit`, `preToolUse`, `postToolUse`, `postToolUseFailure`, `subagentStart`, `subagentStop`, `beforeSubmitPrompt`, `preCompact`, `afterAgentResponse`, `afterAgentThought`, `stop` | `sessionStart`, `sessionEnd`, `beforeMCPExecution`, `afterMCPExecution`, Tab hooks, `workspaceOpen` |
 
 Hooks do not fire during early exploratory turns in a read-only environment; they start once the agent has a writable environment. Self-hosted workers run the same project hooks, and there `sessionStart` and `sessionEnd` fire when a session claims and releases the worker. See [Hooks](./hooks.md) for the configuration format.
@@ -188,15 +198,15 @@ From Cursor's own guidance:
 
 The controls that matter when an agent runs unattended:
 
-| Area | What Cursor documents |
-|---|---|
-| **Access** | Agents reach code through the Cursor GitHub or GitLab App; access is inherited from the triggering user and never widened. Admins can lock Git organizations with Protected Git Scopes and exclude repos with a blocklist |
-| **Isolation** | Per-agent Firecracker-based microVMs in a separate AWS account from the rest of Cursor's production. Cursor employees do not have access to code in agent VMs |
-| **Encryption** | TLS 1.2+ in transit; AES-256 at rest with per-agent keys; Enterprise customer-managed keys (CMEK/BYOK) |
-| **Retention** | Runtime workspace recycled after idle; VM snapshots deleted after 90 days of inactivity; conversation state kept until deleted (Delete Agent API, Enterprise retention policies) |
-| **Privacy** | Runs use Privacy Mode; no training on code, prompts, or responses. Legacy Privacy Mode is not supported |
+| Area                 | What Cursor documents                                                                                                                                                                                                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Access**           | Agents reach code through the Cursor GitHub or GitLab App; access is inherited from the triggering user and never widened. Admins can lock Git organizations with Protected Git Scopes and exclude repos with a blocklist                                                          |
+| **Isolation**        | Per-agent Firecracker-based microVMs in a separate AWS account from the rest of Cursor's production. Cursor employees do not have access to code in agent VMs                                                                                                                      |
+| **Encryption**       | TLS 1.2+ in transit; AES-256 at rest with per-agent keys; Enterprise customer-managed keys (CMEK/BYOK)                                                                                                                                                                             |
+| **Retention**        | Runtime workspace recycled after idle; VM snapshots deleted after 90 days of inactivity; conversation state kept until deleted (Delete Agent API, Enterprise retention policies)                                                                                                   |
+| **Privacy**          | Runs use Privacy Mode; no training on code, prompts, or responses. Legacy Privacy Mode is not supported                                                                                                                                                                            |
 | **Prompt injection** | Cloud Agents auto-run terminal commands, so contain the blast radius: network egress allowlists (lockable org-wide), Runtime Secrets redaction, `.cursorignore` for sensitive paths, draft PRs as the human-in-the-loop gate, and HSM-signed Ed25519 commits with a Verified badge |
-| **Auditability** | Session logs in the dashboard, attributed commits and PRs, Enterprise audit logs streamable to SIEM, webhook, or S3, and the Cursor Cloud MCP for run diagnostics |
+| **Auditability**     | Session logs in the dashboard, attributed commits and PRs, Enterprise audit logs streamable to SIEM, webhook, or S3, and the Cursor Cloud MCP for run diagnostics                                                                                                                  |
 
 Cursor's own framing: unattended agents in an isolated sandbox with egress restrictions can be tighter than a developer laptop with full internet and elevated privileges. Pair the controls with [hooks](./hooks.md) for policy enforcement and with [Bugbot & Agent Review](./review.md) to review agent output before it ships. See [Security & Run Modes](./permissions.md) for the local-side model.
 
@@ -214,13 +224,13 @@ Cursor for iOS runs on the same backend as cursor.com/agents and the desktop Age
 @Cursor pool=gpu retrain the embeddings model on the new dataset
 ```
 
-| Option | Purpose |
-|---|---|
-| `repo`, `env` | Target repository or named multi-repo environment (`env` wins over `repo`) |
-| `branch`, `model` | Base branch and model |
-| `autopr` | Enable or disable automatic PR creation |
-| `worker`, `pool`, `self_hosted` | Route to a My Machine, a Team Pool, or any of your pools |
-| `channel` | Post agent updates in another channel |
+| Option                          | Purpose                                                                    |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| `repo`, `env`                   | Target repository or named multi-repo environment (`env` wins over `repo`) |
+| `branch`, `model`               | Base branch and model                                                      |
+| `autopr`                        | Enable or disable automatic PR creation                                    |
+| `worker`, `pool`, `self_hosted` | Route to a My Machine, a Team Pool, or any of your pools                   |
+| `channel`                       | Post agent updates in another channel                                      |
 
 In a thread with an existing agent, `@Cursor [prompt]` adds a follow-up; `@Cursor agent [prompt]` forces a new agent. Agents read the whole thread for context, post status updates, and link the PR when done. `@Cursor settings` sets channel defaults; routing rules in the dashboard map keywords to repositories or environments. Only public channels are visible to Slack triggers for Automations.
 
@@ -244,32 +254,32 @@ The Automations page also hosts three Cursor-managed agents: Bugbot (PR review),
 
 ### Triggers
 
-| Source | Triggers |
-|---|---|
-| **Schedule** | Presets or a cron expression. May run with a delay but never early |
-| **GitHub** | Core PR and push events (draft opened, PR opened, PR pushed, PR merged, push to branch, comment added) plus label changes, CI completed, issue comment, PR review comment, PR review submitted, review thread updated, workflow run completed |
-| **GitLab** | Core events plus label changed and MR approved |
-| **Bitbucket Cloud** | Core events plus PR approved (no label or inline-comment triggers; Server and Data Center not supported) |
-| **Slack** | New message in a public channel (top-level only unless you add a keyword or regex filter), emoji reaction, channel created |
-| **Linear** | Issue created, status changed, end of cycle |
-| **Sentry** | Issue created, issue updated, any issue event |
-| **PagerDuty** | Incident triggered, acknowledged, resolved, any incident event |
-| **Webhook** | A private HTTP endpoint; POST to start a run. Save the automation first to get the URL and API key |
+| Source              | Triggers                                                                                                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Schedule**        | Presets or a cron expression. May run with a delay but never early                                                                                                                                                                            |
+| **GitHub**          | Core PR and push events (draft opened, PR opened, PR pushed, PR merged, push to branch, comment added) plus label changes, CI completed, issue comment, PR review comment, PR review submitted, review thread updated, workflow run completed |
+| **GitLab**          | Core events plus label changed and MR approved                                                                                                                                                                                                |
+| **Bitbucket Cloud** | Core events plus PR approved (no label or inline-comment triggers; Server and Data Center not supported)                                                                                                                                      |
+| **Slack**           | New message in a public channel (top-level only unless you add a keyword or regex filter), emoji reaction, channel created                                                                                                                    |
+| **Linear**          | Issue created, status changed, end of cycle                                                                                                                                                                                                   |
+| **Sentry**          | Issue created, issue updated, any issue event                                                                                                                                                                                                 |
+| **PagerDuty**       | Incident triggered, acknowledged, resolved, any incident event                                                                                                                                                                                |
+| **Webhook**         | A private HTTP endpoint; POST to start a run. Save the automation first to get the URL and API key                                                                                                                                            |
 
 PR triggers do not run on PRs from forks (the branch only exists on the fork, and running external code with the repo's permissions is unsafe); **PR merged** still runs from the merge commit. For Slack and cron triggers, Cursor defaults to no repository; source control triggers require one.
 
 ### Tools
 
-| Tool | What it enables |
-|---|---|
-| **Pull request creation** | On by default for repo-backed automations; opens PRs against the trigger's or environment's repos |
-| **Comment on pull request** | Top-level and inline comments; with approvals enabled, can approve, request changes, and dismiss reviews |
-| **Request reviewers** | Picks reviewers, using `git`, memory, and other tools to find domain experts |
-| **Send to Slack** | Post to a fixed channel or let the agent choose any public channel (grants read access to discover channels) |
-| **Read Slack channels** | Read-only access to public channels for extra context |
-| **MCP server** | Every tool the server exposes; only connect servers you trust with the automation's permissions |
-| **Memories** | Persistent notes across runs of the same automation (`MEMORIES.md` by default), on by default, viewable and editable in the UI. Treat with caution when the automation handles untrusted input; a poisoned memory affects future runs |
-| **Computer use** | Included by default; ask for a screen recording after user-facing changes |
+| Tool                        | What it enables                                                                                                                                                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pull request creation**   | On by default for repo-backed automations; opens PRs against the trigger's or environment's repos                                                                                                                                     |
+| **Comment on pull request** | Top-level and inline comments; with approvals enabled, can approve, request changes, and dismiss reviews                                                                                                                              |
+| **Request reviewers**       | Picks reviewers, using `git`, memory, and other tools to find domain experts                                                                                                                                                          |
+| **Send to Slack**           | Post to a fixed channel or let the agent choose any public channel (grants read access to discover channels)                                                                                                                          |
+| **Read Slack channels**     | Read-only access to public channels for extra context                                                                                                                                                                                 |
+| **MCP server**              | Every tool the server exposes; only connect servers you trust with the automation's permissions                                                                                                                                       |
+| **Memories**                | Persistent notes across runs of the same automation (`MEMORIES.md` by default), on by default, viewable and editable in the UI. Treat with caution when the automation handles untrusted input; a poisoned memory affects future runs |
+| **Computer use**            | Included by default; ask for a screen recording after user-facing changes                                                                                                                                                             |
 
 ### Settings, permissions, and identity
 
@@ -328,16 +338,16 @@ Useful create-time fields: `mode` (`agent` or `plan`), `workOnCurrentBranch`, `a
 
 Core endpoints:
 
-| Endpoint | Purpose |
-|---|---|
-| `POST /v1/agents` | Create an agent and enqueue its first run |
-| `POST /v1/agents/{id}/runs` | Follow-up prompt on an existing agent; one active run per agent (`409 agent_busy` otherwise); can override `mode` and `mcpServers` |
-| `GET /v1/agents/{id}/runs/{runId}/stream` | Server-Sent Events: `status`, `assistant`, `thinking`, `tool_call`, `interaction_update`, `heartbeat`, `result`, `error`, `done` |
-| `POST /v1/agents/{id}/runs/{runId}/cancel`, `GET /v1/agents/{id}/usage` | Cancel a run; read token usage and cost |
-| `GET /v1/agents/{id}/artifacts` and download | List and fetch screenshots, videos, and logs |
-| Archive, unarchive, delete permanently | Lifecycle; delete removes transcript and artifacts |
-| Workers and pools | Register pools, list workers, watch and claim pending requests (self-hosted) |
-| `GET /v1/models`, API key info, list repositories | Discovery |
+| Endpoint                                                                | Purpose                                                                                                                            |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /v1/agents`                                                       | Create an agent and enqueue its first run                                                                                          |
+| `POST /v1/agents/{id}/runs`                                             | Follow-up prompt on an existing agent; one active run per agent (`409 agent_busy` otherwise); can override `mode` and `mcpServers` |
+| `GET /v1/agents/{id}/runs/{runId}/stream`                               | Server-Sent Events: `status`, `assistant`, `thinking`, `tool_call`, `interaction_update`, `heartbeat`, `result`, `error`, `done`   |
+| `POST /v1/agents/{id}/runs/{runId}/cancel`, `GET /v1/agents/{id}/usage` | Cancel a run; read token usage and cost                                                                                            |
+| `GET /v1/agents/{id}/artifacts` and download                            | List and fetch screenshots, videos, and logs                                                                                       |
+| Archive, unarchive, delete permanently                                  | Lifecycle; delete removes transcript and artifacts                                                                                 |
+| Workers and pools                                                       | Register pools, list workers, watch and claim pending requests (self-hosted)                                                       |
+| `GET /v1/models`, API key info, list repositories                       | Discovery                                                                                                                          |
 
 **Webhooks.** The v1 API lists webhooks as coming soon; the legacy v0 API supports them. A webhook URL on agent creation receives HTTP POSTs for `statusChange` events when the agent reaches `ERROR` or `FINISHED`, with `X-Webhook-Signature` (`sha256=<hex>` HMAC-SHA256 over the raw body), `X-Webhook-ID`, `X-Webhook-Event`, and `User-Agent: Cursor-Agent-Webhook/1.0`. Verify the signature against the raw body, return 2xx quickly, expect retries on error responses, use HTTPS, and store raw payloads.
 
@@ -347,7 +357,7 @@ Core endpoints:
   "timestamp": "2024-01-15T10:30:00Z",
   "id": "bc_abc123",
   "status": "FINISHED",
-  "source": { "repository": "https://github.com/your-org/your-repo", "ref": "main" },
+  "source": {"repository": "https://github.com/your-org/your-repo", "ref": "main"},
   "target": {
     "url": "https://cursor.com/agents?id=bc_abc123",
     "branchName": "cursor/add-readme-1234",
@@ -366,18 +376,18 @@ The Cursor SDK exposes the same agent that runs in the IDE, CLI, and web from yo
 TypeScript (`@cursor/sdk`, Node.js 22.13+):
 
 ```typescript
-import { Agent } from "@cursor/sdk";
+import {Agent} from '@cursor/sdk';
 
 const agent = await Agent.create({
   apiKey: process.env.CURSOR_API_KEY!,
-  model: { id: "composer-2.5" },
+  model: {id: 'composer-2.5'},
   cloud: {
-    repos: [{ url: "https://github.com/your-org/your-repo", startingRef: "main" }],
+    repos: [{url: 'https://github.com/your-org/your-repo', startingRef: 'main'}],
     autoCreatePR: true,
   },
 });
 
-const run = await agent.send("Add structured logging to the auth middleware");
+const run = await agent.send('Add structured logging to the auth middleware');
 for await (const event of run.stream()) {
   console.log(event);
 }
@@ -411,12 +421,12 @@ Points that matter for automation:
 
 Self-Hosted Machines move tool execution (file edits, terminal commands, computer use, local MCP servers) to a machine you manage while Cursor still runs the agent loop, inference, and planning. Your team keeps using the same desktop, web, and mobile surfaces.
 
-| | My Machines | Team Pools |
-|---|---|---|
-| **For** | Personal workflows: a devbox, spare VM, or a machine with state you do not want to recreate | Shared capacity with service account auth and centrally managed images |
-| **Plan** | Personal credential (`agent login` or user API key) | Cursor Enterprise, service account API key |
-| **Routing** | Pick the machine per run; several agents can share it | Register machines under a pool name; Cursor routes one agent per machine; a controller scales the pool |
-| **Start** | `agent worker start` after installing the CLI | Same CLI, plus a worker controller or the Kubernetes template ([anysphere/k8s-workers](https://github.com/anysphere/k8s-workers)) |
+|             | My Machines                                                                                 | Team Pools                                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **For**     | Personal workflows: a devbox, spare VM, or a machine with state you do not want to recreate | Shared capacity with service account auth and centrally managed images                                                            |
+| **Plan**    | Personal credential (`agent login` or user API key)                                         | Cursor Enterprise, service account API key                                                                                        |
+| **Routing** | Pick the machine per run; several agents can share it                                       | Register machines under a pool name; Cursor routes one agent per machine; a controller scales the pool                            |
+| **Start**   | `agent worker start` after installing the CLI                                               | Same CLI, plus a worker controller or the Kubernetes template ([anysphere/k8s-workers](https://github.com/anysphere/k8s-workers)) |
 
 Workers open a long-lived outbound HTTPS connection to `api2.cursor.sh` and `api2direct.cursor.sh` (and upload artifacts to an S3 bucket you can block); no inbound ports, public IPs, or VPN tunnels are needed. The full checkout and local credentials stay on your machine; file contents, terminal output, diffs, screenshots, and MCP results the agent needs are sent to Cursor. Use self-hosting when code or services are unreachable from outside your network, when you need special hardware (GPUs, Macs for iOS), or when your images do not fit a Cloud Agent Build. Otherwise Cursor recommends managed Cloud Agents with network allowlists and private connectivity (AWS PrivateLink, Cloudflare Tunnel, Tailscale in userspace mode). Personal skills are not copied to workers; keep skills in the repo or the worker image.
 
@@ -424,18 +434,18 @@ Workers open a long-lived outbound HTTPS connection to `api2.cursor.sh` and `api
 
 Cursor gives you six primitives that all travel with the repository, which means the same workflow runs identically on your laptop, in a Cloud Agent, in an Automation, and from the SDK:
 
-| Primitive | Location | Role in a workflow |
-|---|---|---|
-| **Rules and `AGENTS.md`** | `.cursor/rules/*.mdc`, `AGENTS.md` | Always-on conventions, build and test commands, cloud-specific setup notes |
-| **Skills** | `.cursor/skills/<name>/SKILL.md` | Named phases you can start with `/name`; each phase is a procedure with a defined output |
-| **Subagents** | `.cursor/agents/*.md` | Isolated workers for research, implementation, and verification; `readonly` where appropriate |
-| **Hooks** | `.cursor/hooks.json` | Deterministic guardrails and formatting that do not depend on the model remembering |
-| **Environment** | `.cursor/environment.json` | The machine the workflow runs on in the cloud |
-| **Automations** | Dashboard or `/automate` | The trigger that starts the workflow without a person |
+| Primitive                 | Location                           | Role in a workflow                                                                            |
+| ------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Rules and `AGENTS.md`** | `.cursor/rules/*.mdc`, `AGENTS.md` | Always-on conventions, build and test commands, cloud-specific setup notes                    |
+| **Skills**                | `.cursor/skills/<name>/SKILL.md`   | Named phases you can start with `/name`; each phase is a procedure with a defined output      |
+| **Subagents**             | `.cursor/agents/*.md`              | Isolated workers for research, implementation, and verification; `readonly` where appropriate |
+| **Hooks**                 | `.cursor/hooks.json`               | Deterministic guardrails and formatting that do not depend on the model remembering           |
+| **Environment**           | `.cursor/environment.json`         | The machine the workflow runs on in the cloud                                                 |
+| **Automations**           | Dashboard or `/automate`           | The trigger that starts the workflow without a person                                         |
 
 ### A Research-Plan-Implement workflow in Cursor primitives
 
-The pattern separates *understanding* from *deciding* from *doing*, with artifacts and a human checkpoint between phases. Here it is with Cursor's building blocks.
+The pattern separates _understanding_ from _deciding_ from _doing_, with artifacts and a human checkpoint between phases. Here it is with Cursor's building blocks.
 
 **Phase 1: Research** (isolated, read-only). A skill that delegates to a read-only subagent so the exploration noise never reaches the main context:
 
@@ -501,12 +511,15 @@ If the step cannot be completed, explain why in PLAN.md under the step and stop.
 {
   "version": 1,
   "hooks": {
-    "afterFileEdit": [{ "command": ".cursor/hooks/format.sh" }],
+    "afterFileEdit": [{"command": ".cursor/hooks/format.sh"}],
     "beforeShellExecution": [
-      { "command": ".cursor/hooks/block-destructive.sh", "matcher": "rm -rf|git push --force|drop table" }
+      {
+        "command": ".cursor/hooks/block-destructive.sh",
+        "matcher": "rm -rf|git push --force|drop table"
+      }
     ],
-    "subagentStop": [{ "command": ".cursor/hooks/save-subagent-report.sh" }],
-    "stop": [{ "command": ".cursor/hooks/run-tests.sh", "loop_limit": 3 }]
+    "subagentStop": [{"command": ".cursor/hooks/save-subagent-report.sh"}],
+    "stop": [{"command": ".cursor/hooks/run-tests.sh", "loop_limit": 3}]
   }
 }
 ```
@@ -522,12 +535,12 @@ If the step cannot be completed, explain why in PLAN.md under the step and stop.
 
 ### Other compositions
 
-| Goal | Composition |
-|---|---|
-| Nightly codebase digest | Scheduled automation, no repository or one repository, Read Slack channels off, Send to Slack on, prompt asks for a short summary of merged PRs and open risks |
-| Auto-triage failed CI | GitHub **Workflow run completed** trigger, prompt investigates logs and either opens a fix PR or comments a diagnosis; a `verifier` subagent confirms the fix passes locally before the PR |
-| Incident first response | PagerDuty **Incident triggered**, Sentry MCP connected, no repository, prompt gathers evidence and posts a structured summary to the incident channel; a human decides on changes |
-| Convention drift check | Weekly schedule on one repository, a `readonly` reviewer subagent with the team's `.mdc` rules in context, PR comment tool only, quality bar "open a PR only for mechanical fixes" |
+| Goal                    | Composition                                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Nightly codebase digest | Scheduled automation, no repository or one repository, Read Slack channels off, Send to Slack on, prompt asks for a short summary of merged PRs and open risks                             |
+| Auto-triage failed CI   | GitHub **Workflow run completed** trigger, prompt investigates logs and either opens a fix PR or comments a diagnosis; a `verifier` subagent confirms the fix passes locally before the PR |
+| Incident first response | PagerDuty **Incident triggered**, Sentry MCP connected, no repository, prompt gathers evidence and posts a structured summary to the incident channel; a human decides on changes          |
+| Convention drift check  | Weekly schedule on one repository, a `readonly` reviewer subagent with the team's `.mdc` rules in context, PR comment tool only, quality bar "open a PR only for mechanical fixes"         |
 
 ## Safety in unattended runs
 
@@ -545,14 +558,14 @@ Unattended means nobody is there to say no to a bad command. Design for that:
 
 ## Compared with Claude Code
 
-| Topic | Cursor | Claude Code |
-|---|---|---|
-| Unattended runtime | Cloud Agents in Cursor-managed microVMs, or self-hosted workers; started from web, desktop, mobile, Slack, GitHub, Linear, API, SDK | Headless `claude -p` runs in your own CI or infrastructure, plus remote sessions |
-| Event triggers | Automations: cron, GitHub, GitLab, Bitbucket, Slack, Linear, Sentry, PagerDuty, webhooks | Your CI system or scripts invoke Claude Code; hooks react to lifecycle events inside a session |
-| Environment definition | `.cursor/environment.json` with Builds, snapshots, Dockerfiles, `install` / `start` / `terminals` | Whatever the host CI or machine provides |
-| Skills in workflows | Plain `SKILL.md` procedures that delegate to subagents; no `context: fork`, arguments, or preloaded skills | Skills with `context: fork`, `$ARGUMENTS`, `allowed-tools`, and `skills:` preloaded into subagents |
-| Deterministic guardrails | `.cursor/hooks.json` command hooks run locally and in the cloud | Hooks in `.claude/settings.json` with command, HTTP, MCP tool, prompt, and agent types |
-| Programmatic control | Cloud Agents API v1 (agents and runs, SSE streaming), TypeScript and Python SDKs with local and cloud runtimes | Agent SDK and CLI flags |
-| Waiting for external events | Subscriptions (PR activity, CI, Slack, Linear, timers) wake the same conversation | Not a built-in concept; orchestrate from outside |
+| Topic                       | Cursor                                                                                                                              | Claude Code                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Unattended runtime          | Cloud Agents in Cursor-managed microVMs, or self-hosted workers; started from web, desktop, mobile, Slack, GitHub, Linear, API, SDK | Headless `claude -p` runs in your own CI or infrastructure, plus remote sessions                   |
+| Event triggers              | Automations: cron, GitHub, GitLab, Bitbucket, Slack, Linear, Sentry, PagerDuty, webhooks                                            | Your CI system or scripts invoke Claude Code; hooks react to lifecycle events inside a session     |
+| Environment definition      | `.cursor/environment.json` with Builds, snapshots, Dockerfiles, `install` / `start` / `terminals`                                   | Whatever the host CI or machine provides                                                           |
+| Skills in workflows         | Plain `SKILL.md` procedures that delegate to subagents; no `context: fork`, arguments, or preloaded skills                          | Skills with `context: fork`, `$ARGUMENTS`, `allowed-tools`, and `skills:` preloaded into subagents |
+| Deterministic guardrails    | `.cursor/hooks.json` command hooks run locally and in the cloud                                                                     | Hooks in `.claude/settings.json` with command, HTTP, MCP tool, prompt, and agent types             |
+| Programmatic control        | Cloud Agents API v1 (agents and runs, SSE streaming), TypeScript and Python SDKs with local and cloud runtimes                      | Agent SDK and CLI flags                                                                            |
+| Waiting for external events | Subscriptions (PR activity, CI, Slack, Linear, timers) wake the same conversation                                                   | Not a built-in concept; orchestrate from outside                                                   |
 
 For the Claude Code side of composing skills, subagents, and hooks, see [Claude Code Workflows & Orchestration](../claude-code/workflows.md). For running several Cursor agents side by side locally, see [Parallel Agents & Worktrees](./parallel-agents.md), and for the general overview, [Cursor](../tools/cursor.md).

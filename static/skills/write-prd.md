@@ -17,12 +17,12 @@ If they've already described it in the conversation, use that and confirm rather
 
 Based on their description, classify the feature and tell them which documents they need:
 
-| Size | Signals | Documents to create |
-|------|---------|---------------------|
-| **Small** | Bug fix, minor UI tweak, copy change | No PRD needed — suggest skipping |
-| **Medium** | New CRUD feature, form, simple API | INDEX + OVERVIEW + DATABASE-SCHEMA + IMPLEMENTATION-STEPS |
-| **Large** | New module, significant user-facing workflow | All 7 documents |
-| **Complex** | Multi-app, financial calculations, integrations, complex domain logic | All 7 + additional domain-specific docs |
+| Size        | Signals                                                               | Documents to create                                       |
+| ----------- | --------------------------------------------------------------------- | --------------------------------------------------------- |
+| **Small**   | Bug fix, minor UI tweak, copy change                                  | No PRD needed — suggest skipping                          |
+| **Medium**  | New CRUD feature, form, simple API                                    | INDEX + OVERVIEW + DATABASE-SCHEMA + IMPLEMENTATION-STEPS |
+| **Large**   | New module, significant user-facing workflow                          | All 7 documents                                           |
+| **Complex** | Multi-app, financial calculations, integrations, complex domain logic | All 7 + additional domain-specific docs                   |
 
 Show your reasoning and ask them to confirm the size before proceeding. If they want more or fewer documents, follow their lead.
 
@@ -69,20 +69,20 @@ The navigation hub. Every other document links from here.
 
 <!-- Record significant architectural or product decisions here as they are made. -->
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| [Decision] | [Choice] | [Why] |
+| Decision   | Choice   | Rationale |
+| ---------- | -------- | --------- |
+| [Decision] | [Choice] | [Why]     |
 
 ## Documents
 
-| Document | Purpose | Status |
-|----------|---------|--------|
-| [PRD-01-OVERVIEW.md](PRD-01-OVERVIEW.md) | Vision, scope, wireframes | Draft |
-| [PRD-02-BUSINESS-LOGIC.md](PRD-02-BUSINESS-LOGIC.md) | User stories, rules, test cases | Draft |
-| [PRD-03-DATABASE-SCHEMA.md](PRD-03-DATABASE-SCHEMA.md) | Tables, indexes, TypeScript types | Draft |
-| [PRD-04-API-ENDPOINTS.md](PRD-04-API-ENDPOINTS.md) | REST API specification | Draft |
-| [PRD-05-IMPLEMENTATION.md](PRD-05-IMPLEMENTATION.md) | Architecture, directory structure | Draft |
-| [PRD-06-IMPLEMENTATION-STEPS.md](PRD-06-IMPLEMENTATION-STEPS.md) | Phased implementation plan | Draft |
+| Document                                                         | Purpose                           | Status |
+| ---------------------------------------------------------------- | --------------------------------- | ------ |
+| [PRD-01-OVERVIEW.md](PRD-01-OVERVIEW.md)                         | Vision, scope, wireframes         | Draft  |
+| [PRD-02-BUSINESS-LOGIC.md](PRD-02-BUSINESS-LOGIC.md)             | User stories, rules, test cases   | Draft  |
+| [PRD-03-DATABASE-SCHEMA.md](PRD-03-DATABASE-SCHEMA.md)           | Tables, indexes, TypeScript types | Draft  |
+| [PRD-04-API-ENDPOINTS.md](PRD-04-API-ENDPOINTS.md)               | REST API specification            | Draft  |
+| [PRD-05-IMPLEMENTATION.md](PRD-05-IMPLEMENTATION.md)             | Architecture, directory structure | Draft  |
+| [PRD-06-IMPLEMENTATION-STEPS.md](PRD-06-IMPLEMENTATION-STEPS.md) | Phased implementation plan        | Draft  |
 ```
 
 ---
@@ -105,9 +105,11 @@ Vision and scope. Written for both product owners and developers.
 ## Scope
 
 ### In scope
+
 - [What this feature includes]
 
 ### Out of scope
+
 - [What this feature explicitly does not include — be specific]
 
 ## Success criteria
@@ -119,16 +121,17 @@ Vision and scope. Written for both product owners and developers.
 
 ## User roles
 
-| Role | Description | Permissions |
-|------|-------------|-------------|
+| Role   | Description    | Permissions        |
+| ------ | -------------- | ------------------ |
 | [Role] | [Who they are] | [What they can do] |
 
 ## Wireframes / UI flow
 
 <!-- ASCII wireframes are preferred — they give AI assistants a visual spec to implement against. -->
-
 ```
+
 [ASCII wireframe here]
+
 ```
 
 ## Technical notes
@@ -151,8 +154,8 @@ The "what" in detail. Product owners and developers both read this.
 
 <!-- Define terms specific to this feature's domain. AI assistants will use these definitions. -->
 
-| Term | Definition |
-|------|------------|
+| Term   | Definition   |
+| ------ | ------------ |
 | [Term] | [Definition] |
 
 ## User stories
@@ -164,6 +167,7 @@ The "what" in detail. Product owners and developers both read this.
 **US-01:** As a [role], I want to [action] so that [benefit].
 
 **Acceptance criteria:**
+
 - [Criterion 1]
 - [Criterion 2]
 
@@ -182,9 +186,9 @@ The "what" in detail. Product owners and developers both read this.
 
 <!-- These map directly to automated tests. Be specific about inputs and expected outputs. -->
 
-| ID | Scenario | Input | Expected result |
-|----|----------|-------|----------------|
-| TC-01 | [Scenario] | [Input] | [Expected] |
+| ID    | Scenario   | Input   | Expected result |
+| ----- | ---------- | ------- | --------------- |
+| TC-01 | [Scenario] | [Input] | [Expected]      |
 ```
 
 ---
@@ -193,7 +197,7 @@ The "what" in detail. Product owners and developers both read this.
 
 SQL definitions and TypeScript interfaces. Written for developers.
 
-```markdown
+````markdown
 # [Feature Name] — Database Schema
 
 ## Tables
@@ -208,6 +212,7 @@ CREATE TABLE [table_name] (
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 ```
+````
 
 ## Indexes
 
@@ -232,7 +237,8 @@ interface [EntityName] {
 <!-- Describe foreign keys and cardinality. -->
 
 - `[table_a].id` → `[table_b].[table_a_id]` (one-to-many)
-```
+
+````
 
 ---
 
@@ -270,11 +276,12 @@ REST API specification. Written for developers.
 {
   "[field]": "[value]"
 }
-```
+````
 
 **Response 404:**
+
 ```json
-{ "error": "Not found" }
+{"error": "Not found"}
 ```
 
 ---
@@ -284,6 +291,7 @@ REST API specification. Written for developers.
 **Description:** [What this creates]
 
 **Request body:**
+
 ```json
 {
   "[field]": "[value]"
@@ -291,12 +299,14 @@ REST API specification. Written for developers.
 ```
 
 **Response 201:**
+
 ```json
 {
   "id": "[uuid]"
 }
 ```
-```
+
+````
 
 ---
 
@@ -309,15 +319,17 @@ Code architecture and integration points. Written for developers.
 
 ## Directory structure
 
-```
+````
+
 src/
-  [feature]/
-    [feature].controller.ts   # Route handlers
-    [feature].service.ts      # Business logic
-    [feature].schema.ts       # Zod validation schemas
-    [feature].types.ts        # TypeScript interfaces
-    __tests__/
-      [feature].service.test.ts
+[feature]/
+[feature].controller.ts # Route handlers
+[feature].service.ts # Business logic
+[feature].schema.ts # Zod validation schemas
+[feature].types.ts # TypeScript interfaces
+**tests**/
+[feature].service.test.ts
+
 ```
 
 ## Architecture decisions

@@ -2,7 +2,18 @@
 sidebar_position: 8
 sidebar_label: Skills
 description: Codex skills are SKILL.md folders that package reusable workflows, scripts, and references Codex loads on demand via $skill mentions or implicit matching.
-keywords: [Codex skills, SKILL.md, agent skills standard, .agents/skills, skill-creator, progressive disclosure, Record and Replay, custom prompts deprecated, Codex CLI]
+keywords:
+  [
+    Codex skills,
+    SKILL.md,
+    agent skills standard,
+    .agents/skills,
+    skill-creator,
+    progressive disclosure,
+    Record and Replay,
+    custom prompts deprecated,
+    Codex CLI,
+  ]
 ---
 
 # Skills
@@ -55,13 +66,13 @@ The catalog has a budget: at most 2% of the model's context window, or 8,000 cha
 
 ### Explicit vs implicit invocation
 
-| Method | How | When to use |
-|---|---|---|
+| Method               | How                                                                                        | When to use                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | Explicit `$` mention | Type `$` in the CLI or IDE composer and pick a skill, or write `$skill-name` in the prompt | You know which workflow you want; side-effecting workflows (deploy, publish) |
-| `/skills` command | Run `/skills` in the CLI to list and select skills | Browsing what is installed |
-| Plugin skill | `$plugin-name:skill-name` (for example `$codex-security:fix-finding`) | Skill shipped inside an installed plugin |
-| Implicit | Codex picks a skill because your request matches its `description` | Everyday use; requires a well-written description |
-| In ChatGPT | `@skill-name` | Same skills surfaced through the ChatGPT desktop app |
+| `/skills` command    | Run `/skills` in the CLI to list and select skills                                         | Browsing what is installed                                                   |
+| Plugin skill         | `$plugin-name:skill-name` (for example `$codex-security:fix-finding`)                      | Skill shipped inside an installed plugin                                     |
+| Implicit             | Codex picks a skill because your request matches its `description`                         | Everyday use; requires a well-written description                            |
+| In ChatGPT           | `@skill-name`                                                                              | Same skills surfaced through the ChatGPT desktop app                         |
 
 Implicit matching depends entirely on the `description`. Front-load the key use case and trigger words so the skill still matches when Codex shortens descriptions to fit the catalog budget.
 
@@ -73,15 +84,15 @@ Codex detects skill changes automatically. If an edit or a newly installed skill
 
 Codex reads skills from repository, user, admin, and system locations. For repositories it scans `.agents/skills` in **every directory from the current working directory up to the repository root**, so a monorepo can keep service-specific skills next to the service and shared skills at the root.
 
-| Scope | Location | Suggested use |
-|---|---|---|
-| `REPO` | `$CWD/.agents/skills` | Skills relevant to the folder where you launched Codex (a microservice, a module) |
-| `REPO` | `$CWD/../.agents/skills` (any parent folder) | Skills for a shared area of a nested repository |
-| `REPO` | `$REPO_ROOT/.agents/skills` | Root skills available to everyone working in the repository |
-| `USER` | `$HOME/.agents/skills` | Your personal skills, available in every repository |
-| `ADMIN` | `/etc/codex/skills` | Machine or container-wide defaults: SDK scripts, automation, admin-curated skills |
-| `SYSTEM` | Bundled with Codex | Built-ins such as `$skill-creator`, `$skill-installer`, `$plugin-creator`, and the plan skill |
-| Plugin | Installed plugin bundle | Skills shipped with a plugin, invoked as `$plugin:skill` |
+| Scope    | Location                                     | Suggested use                                                                                 |
+| -------- | -------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `REPO`   | `$CWD/.agents/skills`                        | Skills relevant to the folder where you launched Codex (a microservice, a module)             |
+| `REPO`   | `$CWD/../.agents/skills` (any parent folder) | Skills for a shared area of a nested repository                                               |
+| `REPO`   | `$REPO_ROOT/.agents/skills`                  | Root skills available to everyone working in the repository                                   |
+| `USER`   | `$HOME/.agents/skills`                       | Your personal skills, available in every repository                                           |
+| `ADMIN`  | `/etc/codex/skills`                          | Machine or container-wide defaults: SDK scripts, automation, admin-curated skills             |
+| `SYSTEM` | Bundled with Codex                           | Built-ins such as `$skill-creator`, `$skill-installer`, `$plugin-creator`, and the plan skill |
+| Plugin   | Installed plugin bundle                      | Skills shipped with a plugin, invoked as `$plugin:skill`                                      |
 
 Notes:
 
@@ -109,10 +120,10 @@ Restart Codex after editing `config.toml`. The same key can be set inside a [cus
 
 The Agent Skills standard keeps frontmatter small. Codex requires two fields:
 
-| Field | Required | Purpose |
-|---|---|---|
-| `name` | Yes | Identifier used for `$name` invocation. Keep it lowercase, kebab-case, and unique across your scopes |
-| `description` | Yes | Tells Codex exactly when the skill should and should not trigger. This is the primary tuning knob for implicit invocation |
+| Field         | Required | Purpose                                                                                                                   |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | Yes      | Identifier used for `$name` invocation. Keep it lowercase, kebab-case, and unique across your scopes                      |
+| `description` | Yes      | Tells Codex exactly when the skill should and should not trigger. This is the primary tuning knob for implicit invocation |
 
 Everything else (display name, icon, invocation policy, dependencies) lives in `agents/openai.yaml`, not in `SKILL.md`. Codex does not document Claude-style frontmatter keys such as `allowed-tools`, `context: fork`, `argument-hint`, or `$ARGUMENTS` substitution for skills; if you port a Claude Code skill, move tool restrictions to a [custom agent](./subagents.md) and pass arguments as plain text after the `$skill` mention.
 
@@ -132,23 +143,23 @@ description: Prepare a release from the current branch. Use when the user asks t
 
 ```yaml
 interface:
-  display_name: "Release Prep"
-  short_description: "Version bump, changelog, and tag"
-  icon_small: "./assets/small-logo.svg"
-  icon_large: "./assets/large-logo.png"
-  brand_color: "#3B82F6"
-  default_prompt: "Prepare a release for the current branch"
+  display_name: 'Release Prep'
+  short_description: 'Version bump, changelog, and tag'
+  icon_small: './assets/small-logo.svg'
+  icon_large: './assets/large-logo.png'
+  brand_color: '#3B82F6'
+  default_prompt: 'Prepare a release for the current branch'
 
 policy:
   allow_implicit_invocation: false
 
 dependencies:
   tools:
-    - type: "mcp"
-      value: "openaiDeveloperDocs"
-      description: "OpenAI Docs MCP server"
-      transport: "streamable_http"
-      url: "https://developers.openai.com/mcp"
+    - type: 'mcp'
+      value: 'openaiDeveloperDocs'
+      description: 'OpenAI Docs MCP server'
+      transport: 'streamable_http'
+      url: 'https://developers.openai.com/mcp'
 ```
 
 - `interface` controls how the skill appears in the ChatGPT desktop app skills picker.
@@ -210,15 +221,15 @@ You can also ask the installer to fetch skills from another GitHub repository. T
 
 Before skills, Codex had **custom prompts**: Markdown files in `~/.codex/prompts/` invoked as `/prompts:name` with `$1`..`$9`, `$ARGUMENTS`, and `$NAME=value` placeholders. They still load, but they are deprecated. Skills are the replacement because they can be shared through the repository, invoked implicitly, and carry scripts and references.
 
-| Custom prompt (deprecated) | Skill (current) |
-|---|---|
-| `~/.codex/prompts/draftpr.md` | `.agents/skills/draftpr/SKILL.md` (repo) or `~/.agents/skills/draftpr/SKILL.md` (user) |
-| Invoked as `/prompts:draftpr` | Invoked as `$draftpr` or picked implicitly |
-| Frontmatter `description`, `argument-hint` | Frontmatter `name`, `description` |
+| Custom prompt (deprecated)                    | Skill (current)                                                                                          |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `~/.codex/prompts/draftpr.md`                 | `.agents/skills/draftpr/SKILL.md` (repo) or `~/.agents/skills/draftpr/SKILL.md` (user)                   |
+| Invoked as `/prompts:draftpr`                 | Invoked as `$draftpr` or picked implicitly                                                               |
+| Frontmatter `description`, `argument-hint`    | Frontmatter `name`, `description`                                                                        |
 | `$1`, `$ARGUMENTS`, `$FILES=...` substitution | No documented substitution; write the instructions to read the user's request and ask for missing inputs |
-| Explicit invocation only | Explicit or implicit |
-| Local to your machine | Committed with the repo, or packaged in a plugin |
-| Restart required after edits | Changes detected automatically |
+| Explicit invocation only                      | Explicit or implicit                                                                                     |
+| Local to your machine                         | Committed with the repo, or packaged in a plugin                                                         |
+| Restart required after edits                  | Changes detected automatically                                                                           |
 
 **Before** (`~/.codex/prompts/draftpr.md`):
 
@@ -253,13 +264,13 @@ description: Create a dev/ branch, commit the requested files, and open a draft 
 
 Codex has several complementary ways to shape behavior. Putting content in the wrong layer either wastes context or makes the guidance unreachable.
 
-| | `AGENTS.md` | Skills | Custom agents | Hooks | MCP |
-|---|---|---|---|---|---|
-| Loaded | Every turn, up front | Catalog up front; body on demand | When spawned | On lifecycle events | Tool list up front; calls on demand |
-| Driven by | Always on | Request matches description, or `$skill` | Delegation request | Deterministic event | Model tool call |
-| Best for | Repo rules, build and test commands, routing guidance | Repeatable procedures, domain playbooks, helper scripts | Isolated work with its own model, sandbox, tools | Guardrails, logging, policy checks | External systems (issue trackers, docs, browsers) |
-| Shared via | Repo | Repo (`.agents/skills`) or plugin | Repo (`.codex/agents`) | Repo (`.codex/hooks.json`) or plugin | `config.toml`, plugin |
-| Page | [AGENTS.md & Memories](./agents-md.md) | This page | [Subagents](./subagents.md) | [Hooks](./hooks.md) | [MCP](./mcp.md) |
+|            | `AGENTS.md`                                           | Skills                                                  | Custom agents                                    | Hooks                                | MCP                                               |
+| ---------- | ----------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------ | ------------------------------------ | ------------------------------------------------- |
+| Loaded     | Every turn, up front                                  | Catalog up front; body on demand                        | When spawned                                     | On lifecycle events                  | Tool list up front; calls on demand               |
+| Driven by  | Always on                                             | Request matches description, or `$skill`                | Delegation request                               | Deterministic event                  | Model tool call                                   |
+| Best for   | Repo rules, build and test commands, routing guidance | Repeatable procedures, domain playbooks, helper scripts | Isolated work with its own model, sandbox, tools | Guardrails, logging, policy checks   | External systems (issue trackers, docs, browsers) |
+| Shared via | Repo                                                  | Repo (`.agents/skills`) or plugin                       | Repo (`.codex/agents`)                           | Repo (`.codex/hooks.json`) or plugin | `config.toml`, plugin                             |
+| Page       | [AGENTS.md & Memories](./agents-md.md)                | This page                                               | [Subagents](./subagents.md)                      | [Hooks](./hooks.md)                  | [MCP](./mcp.md)                                   |
 
 Rules of thumb:
 
@@ -272,13 +283,13 @@ Skills can request delegation. Codex follows `AGENTS.md` or skill instructions t
 
 ## Distributing skills
 
-| Method | Reach | Notes |
-|---|---|---|
-| Commit `.agents/skills/` | Everyone who clones the repo | Simplest. Nested folders scope skills to parts of a monorepo |
-| `~/.agents/skills/` | Just you, all repos | Personal habits and preferences |
-| `/etc/codex/skills` | Every user on a machine or container image | Good for CI images and shared dev containers |
-| Plugin | Any project, any surface that supports plugins | Bundle several skills, MCP servers, and hooks; install from a marketplace. See [Plugins](./plugins.md) |
-| ChatGPT workspace skill | Workspace members | Managed through ChatGPT workspace permissions |
+| Method                   | Reach                                          | Notes                                                                                                  |
+| ------------------------ | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Commit `.agents/skills/` | Everyone who clones the repo                   | Simplest. Nested folders scope skills to parts of a monorepo                                           |
+| `~/.agents/skills/`      | Just you, all repos                            | Personal habits and preferences                                                                        |
+| `/etc/codex/skills`      | Every user on a machine or container image     | Good for CI images and shared dev containers                                                           |
+| Plugin                   | Any project, any surface that supports plugins | Bundle several skills, MCP servers, and hooks; install from a marketplace. See [Plugins](./plugins.md) |
+| ChatGPT workspace skill  | Workspace members                              | Managed through ChatGPT workspace permissions                                                          |
 
 ### Enterprise skill controls (summary)
 
@@ -397,31 +408,31 @@ policy:
 
 ## Troubleshooting
 
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| Skill never triggers implicitly | Description too vague or missing trigger words | Rewrite the description; test with realistic prompts |
-| Skill not listed in `/skills` | Wrong folder (for example `.codex/skills`), file not named `SKILL.md`, or missing `name`/`description` | Move to `.agents/skills/<name>/SKILL.md`; fix frontmatter; restart Codex |
-| Description appears truncated | Catalog budget reached | Shorten low-value descriptions, raise `skills.max_context_tokens` (max 10,000), or disable unused skills with `[[skills.config]]` |
-| Two entries with the same name | Same `name` in different scopes | Rename one; Codex does not merge or prioritize |
-| Plugin skill missing | Session started before install | Start a new session; check the plugin is enabled in `/plugins` |
-| Script fails | Not executable or dependency missing | `chmod +x`, document requirements in `SKILL.md` |
-| Record & Replay not visible | Not on macOS, Computer Use disabled, or `computer_use = false` in `requirements.toml` | Check the desktop app settings or ask your admin |
+| Symptom                         | Likely cause                                                                                           | Fix                                                                                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Skill never triggers implicitly | Description too vague or missing trigger words                                                         | Rewrite the description; test with realistic prompts                                                                              |
+| Skill not listed in `/skills`   | Wrong folder (for example `.codex/skills`), file not named `SKILL.md`, or missing `name`/`description` | Move to `.agents/skills/<name>/SKILL.md`; fix frontmatter; restart Codex                                                          |
+| Description appears truncated   | Catalog budget reached                                                                                 | Shorten low-value descriptions, raise `skills.max_context_tokens` (max 10,000), or disable unused skills with `[[skills.config]]` |
+| Two entries with the same name  | Same `name` in different scopes                                                                        | Rename one; Codex does not merge or prioritize                                                                                    |
+| Plugin skill missing            | Session started before install                                                                         | Start a new session; check the plugin is enabled in `/plugins`                                                                    |
+| Script fails                    | Not executable or dependency missing                                                                   | `chmod +x`, document requirements in `SKILL.md`                                                                                   |
+| Record & Replay not visible     | Not on macOS, Computer Use disabled, or `computer_use = false` in `requirements.toml`                  | Check the desktop app settings or ask your admin                                                                                  |
 
 ## Compared with Claude Code
 
 Both tools implement the Agent Skills standard, so a `SKILL.md` folder is largely portable. The differences are in locations, frontmatter, and invocation.
 
-| | Codex | Claude Code |
-|---|---|---|
-| Repo location | `.agents/skills/<name>/SKILL.md`, scanned from CWD up to repo root | `.claude/skills/<name>/SKILL.md` |
-| User location | `~/.agents/skills` | `~/.claude/skills` |
-| Explicit invocation | `$skill-name`, `/skills` | `/skill-name` |
-| Frontmatter | `name`, `description`; extras in `agents/openai.yaml` | Many keys: `allowed-tools`, `context: fork`, `model`, `arguments`, `disable-model-invocation`, and more |
-| Disable implicit use | `policy.allow_implicit_invocation: false` in `openai.yaml` | `disable-model-invocation: true` in frontmatter |
-| Argument substitution | Not documented for skills | `$ARGUMENTS`, `$0`, named `arguments` |
-| Same-name conflicts | Both shown, no precedence | Enterprise > personal > project > plugin |
-| Catalog budget | 2% of context (or 8,000 chars), cap 10,000 tokens via `skills.max_context_tokens` | 1% of context by default via `skillListingBudgetFraction` |
-| Skill creation helpers | `$skill-creator`, `$skill-installer`, Record & Replay | `skill-creator` plugin, `claude plugin validate` |
-| Preload into subagents | Set `skills.config` in the agent's TOML to enable or disable skills for that agent | `skills:` list in agent frontmatter injects full bodies |
+|                        | Codex                                                                              | Claude Code                                                                                             |
+| ---------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Repo location          | `.agents/skills/<name>/SKILL.md`, scanned from CWD up to repo root                 | `.claude/skills/<name>/SKILL.md`                                                                        |
+| User location          | `~/.agents/skills`                                                                 | `~/.claude/skills`                                                                                      |
+| Explicit invocation    | `$skill-name`, `/skills`                                                           | `/skill-name`                                                                                           |
+| Frontmatter            | `name`, `description`; extras in `agents/openai.yaml`                              | Many keys: `allowed-tools`, `context: fork`, `model`, `arguments`, `disable-model-invocation`, and more |
+| Disable implicit use   | `policy.allow_implicit_invocation: false` in `openai.yaml`                         | `disable-model-invocation: true` in frontmatter                                                         |
+| Argument substitution  | Not documented for skills                                                          | `$ARGUMENTS`, `$0`, named `arguments`                                                                   |
+| Same-name conflicts    | Both shown, no precedence                                                          | Enterprise > personal > project > plugin                                                                |
+| Catalog budget         | 2% of context (or 8,000 chars), cap 10,000 tokens via `skills.max_context_tokens`  | 1% of context by default via `skillListingBudgetFraction`                                               |
+| Skill creation helpers | `$skill-creator`, `$skill-installer`, Record & Replay                              | `skill-creator` plugin, `claude plugin validate`                                                        |
+| Preload into subagents | Set `skills.config` in the agent's TOML to enable or disable skills for that agent | `skills:` list in agent frontmatter injects full bodies                                                 |
 
 See [Claude Code Skills](../claude-code/skills.md) for the Claude Code side, and the [Codex overview](../tools/codex.md) for installation and basics.
