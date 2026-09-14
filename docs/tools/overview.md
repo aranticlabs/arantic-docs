@@ -35,7 +35,7 @@ These run in your terminal alongside your code and can read files, run commands,
 | Tool | Start command | Description |
 |------|---------------|-------------|
 | **[Claude Code](/guides/starter/setup)** | `claude` | Anthropic's CLI, full codebase access, agentic task execution |
-| **[Codex CLI](/tools/codex)** | `codex` | OpenAI's terminal agent, defaults to gpt-5.3-codex |
+| **[Codex CLI](/tools/codex)** | `codex` | OpenAI's terminal agent (GPT-5.6 models), with IDE extension and cloud surfaces |
 | **[Gemini CLI](/tools/gemini-cli)** | `gemini` | Google's open-source CLI, 1M token context window, generous free tier |
 | **[Aider](/tools/aider)** | `aider` | Open-source, model-agnostic pair programming with git-native workflow |
 | **[Mistral Vibe](/tools/mistral)** | `vibe` | Mistral's CLI agent with subagent support and self-hosted options |

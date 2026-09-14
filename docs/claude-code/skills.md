@@ -761,20 +761,20 @@ A few things to keep in mind when using community skills:
 
 ## Using skills with other tools
 
-The concept of a persistent, invocable prompt template does not map identically to every tool. Claude Code has native support; other tools require workarounds. See each tool's page for detailed setup instructions:
+Skills follow the same `SKILL.md` folder convention across Claude Code, Codex, and Cursor, so a skill written for one tool usually needs only a change of directory to work in another. See each tool's page for detailed setup instructions:
 
-- [OpenAI Codex CLI: Skills and reusable prompts](../tools/codex#skills-and-reusable-prompts)
-- [Cursor: Skills and reusable prompts](../tools/cursor#skills-and-reusable-prompts)
+- [Codex: Skills](../codex/skills.md)
+- [Cursor: Skills](../cursor/skills.md)
 - [Gemini CLI: Skills and reusable prompts](../tools/gemini-cli#skills-and-reusable-prompts)
 
 ### Summary: skills support across tools
 
-| Tool | Built-in skills / slash commands | Project-level sharing | Closest alternative |
+| Tool | Native skills | Project location | User location |
 |---|---|---|---|
-| Claude Code | Yes (`.claude/skills/<name>/SKILL.md`) | Yes (committed to git) | Native feature |
-| Codex CLI | No | No | Shell wrappers + shared prompts dir |
-| Cursor | No (built-ins only) | No | Notepads, `.cursorrules` |
+| Claude Code | Yes | `.claude/skills/<name>/SKILL.md` | `~/.claude/skills/` |
+| Codex | Yes | `.agents/skills/<name>/SKILL.md` (scanned from the working directory up to the repo root) | `~/.agents/skills/` |
+| Cursor | Yes | `.cursor/skills/<name>/SKILL.md` | `~/.cursor/skills/` |
 | Gemini CLI | No | Via `GEMINI.md` (context only) | Shell wrappers + prompts dir |
 | Grok CLI | No | No | Shell wrappers + prompts dir |
 
-If your team relies heavily on shared, reusable prompts, Claude Code's native skills system is the most ergonomic option. For other tools, the pattern of storing prompts as files in your repository and loading them via shell scripts achieves a similar result with more manual setup.
+If your team uses more than one of these tools, keep one canonical skills directory in the repository and symlink it into the other tools' locations so the instructions do not drift.

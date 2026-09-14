@@ -21,6 +21,8 @@ Practical, no-fluff guides on using AI tools in your daily programming workflow.
 | **[Guides](/guides)** | Step-by-step tutorials on prompting, code generation, debugging, testing, and workflows |
 | **[Tools](/tools)** | Overview and comparison of AI development tools (Claude Code, Copilot, Cursor, Codex, Gemini CLI, Aider, Mistral) |
 | **[Claude Code](/claude-code)** | Deep-dive into commands, memory, skills, hooks, plugins, MCP servers, subagents, and agent teams |
+| **[Codex](/codex)** | Deep-dive into AGENTS.md, slash commands, sandbox and approvals, skills, subagents, hooks, MCP, plugins, `codex exec`, and Codex cloud |
+| **[Cursor](/cursor)** | Deep-dive into rules, agent modes, the Cursor CLI, skills, subagents, hooks, MCP, plugins, cloud agents, parallel agents, and Bugbot |
 | **[Resources](/resources)** | Curated GitHub repos, prompt templates, and useful references |
 
 ## Who this is for
@@ -32,6 +34,7 @@ These guides are written for developers who already know how to code and want to
 - **New to AI coding?** Start with [Prompting Basics](/prompting/basics), then try the [Quickstart](/quickstart)
 - **Already using Copilot or Cursor?** Check the [Tools Comparison](/tools/overview) and see what Claude Code adds
 - **Want to go deep on Claude Code?** Start with the [Starter Setup](/guides/starter/setup), then explore [Skills](/claude-code/skills), [Hooks](/claude-code/hooks), and [Subagents](/claude-code/subagents)
+- **Using Codex or Cursor instead?** The same topics are covered for [Codex](/codex) (AGENTS.md, sandbox, skills, `codex exec`) and [Cursor](/cursor) (rules, agent modes, CLI, cloud agents)
 - **Looking for copy-paste prompts?** Browse the [Prompt Templates](/resources/prompt-templates)
 
 ## A note on AI limitations

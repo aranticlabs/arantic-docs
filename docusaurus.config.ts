@@ -144,6 +144,18 @@ const config: Config = {
           activeBasePath: '/claude-code',
         },
         {
+          to: '/codex',
+          label: 'Codex',
+          position: 'left',
+          activeBasePath: '/codex',
+        },
+        {
+          to: '/cursor',
+          label: 'Cursor',
+          position: 'left',
+          activeBasePath: '/cursor',
+        },
+        {
           to: '/tools',
           label: 'Tools',
           position: 'left',
@@ -190,6 +202,14 @@ const config: Config = {
             {
               label: 'Claude Code',
               to: '/claude-code',
+            },
+            {
+              label: 'Codex',
+              to: '/codex',
+            },
+            {
+              label: 'Cursor',
+              to: '/cursor',
             },
             {
               label: 'GitHub Repos',

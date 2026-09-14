@@ -382,7 +382,8 @@ Read and follow the conventions in CONVENTIONS.md at the repository root.
 | Tool | Project memory | User memory |
 |------|---------------|-------------|
 | Claude Code | `CLAUDE.md` | `~/.claude/CLAUDE.md` |
-| Cursor | `.cursorrules` | User settings |
+| Codex | `AGENTS.md` (see [AGENTS.md & Memories](../codex/agents-md.md)) | `~/.codex/AGENTS.md` |
+| Cursor | `AGENTS.md`, `.cursor/rules/*.mdc` (see [Rules & AGENTS.md](../cursor/rules.md)) | User Rules in settings |
 | GitHub Copilot | `.github/copilot-instructions.md` | User settings |
 | Windsurf | `.windsurfrules` | User settings |
 
