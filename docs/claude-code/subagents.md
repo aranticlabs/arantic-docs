@@ -805,6 +805,30 @@ Press **Ctrl+B** to background a running task. A background subagent's result re
 
 When a background subagent needs a permission decision, the prompt surfaces in your main session instead of being auto-denied. The dialog shows which agent is asking, and pressing **Esc** denies only that one tool call.
 
+### Fork mode
+
+A **fork** is a special kind of subagent that inherits the entire conversation so far instead of starting from a clean slate. It sees the same system prompt, tools, model, and message history as your main session, so you can hand it a side task without re-explaining the context. Because it keeps reading the prompt cache the main session already warmed, a fork is cheaper to start than a fully isolated subagent. As with any subagent, the fork's own tool calls stay out of your main conversation and only its final summary returns, so your main context window stays clean.
+
+Fork mode is **on by default** in interactive sessions. While it is on, Claude Code runs the subagents it spawns in the background (forks and non-fork subagents alike) and cannot pause to ask for a foreground run.
+
+Start a fork yourself with `/subtask` followed by a task, whether or not fork mode is on (requires v2.1.212 or later; the command was `/fork` on v2.1.161 through v2.1.211):
+
+```text
+/subtask draft unit tests for the parser changes so far
+```
+
+To turn fork mode off, set `CLAUDE_CODE_FORK_SUBAGENT=0` as an environment variable or in your `settings.json`:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  }
+}
+```
+
+With fork mode off, subagents still run in the background by default (as of v2.1.198), but Claude can request a foreground subagent when it needs the result before it can continue.
+
 ### Nested subagents
 
 Since v2.1.172, a subagent can spawn its own subagents. This helps when a delegated task itself splits into parallel subtasks, such as a reviewer subagent that dispatches a verifier per finding: the intermediate output never reaches your main conversation, and only the top-level subagent's summary returns to you. The subagent panel below the prompt shows the full tree, with a descendant count and a path back to `main` on each row.
