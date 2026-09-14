@@ -10,11 +10,11 @@ Include translations if the domain uses non-English terminology.
 This helps AI assistants and new developers understand the business context.
 -->
 
-| Term | Translation (if applicable) | Description |
-| --- | --- | --- |
-| [Term 1] | [Translation] | [Definition] |
-| [Term 2] | [Translation] | [Definition] |
-| [Term 3] | [Translation] | [Definition] |
+| Term     | Translation (if applicable) | Description  |
+| -------- | --------------------------- | ------------ |
+| [Term 1] | [Translation]               | [Definition] |
+| [Term 2] | [Translation]               | [Definition] |
+| [Term 3] | [Translation]               | [Definition] |
 
 ---
 
@@ -34,9 +34,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1 - specific, testable]
--[Criterion 2 - specific, testable]
--[Criterion 3 - specific, testable]
+-[Criterion 1 - specific, testable] -[Criterion 2 - specific, testable] -[Criterion 3 - specific, testable]
 
 **US-02: [View/List Resources]**
 
@@ -44,8 +42,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1]
--[Criterion 2]
+-[Criterion 1] -[Criterion 2]
 
 **US-03: [Update Resource]**
 
@@ -53,8 +50,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1]
--[Criterion 2]
+-[Criterion 1] -[Criterion 2]
 
 **US-04: [Delete Resource]**
 
@@ -62,8 +58,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1]
--[Criterion 2]
+-[Criterion 1] -[Criterion 2]
 
 ### 2.2.2 [Story Group 2: e.g., Search & Filter]
 
@@ -73,8 +68,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1]
--[Criterion 2]
+-[Criterion 1] -[Criterion 2]
 
 ### 2.2.3 [Story Group 3: e.g., Settings & Configuration]
 
@@ -84,8 +78,7 @@ Group related stories together.
 
 **Acceptance Criteria:**
 
--[Criterion 1]
--[Criterion 2]
+-[Criterion 1] -[Criterion 2]
 
 ---
 
@@ -98,11 +91,11 @@ Include a state diagram (ASCII art) showing valid transitions.
 
 ### 2.3.1 Status States
 
-| Status | Description | Editable | Transitions To |
-| --- | --- | --- | --- |
-| `draft` | [Description] | Yes | `active`, `deleted` |
-| `active` | [Description] | Limited | `archived`, `deleted` |
-| `archived` | [Description] | No | `active` |
+| Status     | Description   | Editable | Transitions To        |
+| ---------- | ------------- | -------- | --------------------- |
+| `draft`    | [Description] | Yes      | `active`, `deleted`   |
+| `active`   | [Description] | Limited  | `archived`, `deleted` |
+| `archived` | [Description] | No       | `active`              |
 
 ### 2.3.2 State Diagram
 
@@ -125,9 +118,9 @@ Include a state diagram (ASCII art) showing valid transitions.
 
 ### 2.3.3 Transition Rules
 
-| Transition | Trigger | Conditions | Side Effects |
-| --- | --- | --- | --- |
-| draft -> active | User action | [Required conditions] | [What happens] |
+| Transition         | Trigger     | Conditions            | Side Effects   |
+| ------------------ | ----------- | --------------------- | -------------- |
+| draft -> active    | User action | [Required conditions] | [What happens] |
 | active -> archived | User action | [Required conditions] | [What happens] |
 
 ---
@@ -153,11 +146,11 @@ result = input_a * factor_b + overhead_c
 
 **Example:**
 
-| Input | Value | Result |
-| --- | --- | --- |
-| [Input A] | 100 | |
-| [Factor B] | 1.5 | |
-| **Result** | | **150** |
+| Input      | Value | Result  |
+| ---------- | ----- | ------- |
+| [Input A]  | 100   |         |
+| [Factor B] | 1.5   |         |
+| **Result** |       | **150** |
 
 ### 2.4.2 [Rule Category 2]
 
@@ -175,13 +168,13 @@ result = input_a * factor_b + overhead_c
 Define who can do what. Use roles from your auth system.
 -->
 
-| Action | Viewer | Editor | Admin | Super Admin |
-| --- | --- | --- | --- | --- |
-| View [resource] | yes | yes | yes | yes |
-| Create [resource] | no | yes | yes | yes |
-| Edit [resource] | no | yes | yes | yes |
-| Delete [resource] | no | no | yes | yes |
-| Manage settings | no | no | yes | yes |
+| Action            | Viewer | Editor | Admin | Super Admin |
+| ----------------- | ------ | ------ | ----- | ----------- |
+| View [resource]   | yes    | yes    | yes   | yes         |
+| Create [resource] | no     | yes    | yes   | yes         |
+| Edit [resource]   | no     | yes    | yes   | yes         |
+| Delete [resource] | no     | no     | yes   | yes         |
+| Manage settings   | no     | no     | yes   | yes         |
 
 ---
 
@@ -194,18 +187,18 @@ Every configurable value should be a setting, not hardcoded.
 
 ### 2.5.1 [Settings Group 1]
 
-| Setting | Type | Default | Description |
-| --- | --- | --- | --- |
-| [setting_1] | number | 10 | [What it controls] |
-| [setting_2] | string | "default" | [What it controls] |
-| [setting_3] | boolean | true | [What it controls] |
+| Setting     | Type    | Default   | Description        |
+| ----------- | ------- | --------- | ------------------ |
+| [setting_1] | number  | 10        | [What it controls] |
+| [setting_2] | string  | "default" | [What it controls] |
+| [setting_3] | boolean | true      | [What it controls] |
 
 ### 2.5.2 [Settings Group 2]
 
-| Setting | Type | Default | Description |
-| --- | --- | --- | --- |
-| [setting_4] | number | 30 | [What it controls] |
-| [setting_5] | enum | "option_a" | [What it controls] |
+| Setting     | Type   | Default    | Description        |
+| ----------- | ------ | ---------- | ------------------ |
+| [setting_4] | number | 30         | [What it controls] |
+| [setting_5] | enum   | "option_a" | [What it controls] |
 
 ---
 
@@ -226,17 +219,17 @@ AI coding assistants can use these to write automated tests.
 
 **Input:**
 
-| Field | Value |
-| --- | --- |
+| Field     | Value   |
+| --------- | ------- |
 | [field_1] | [value] |
 | [field_2] | [value] |
 
 **Expected Output:**
 
-| Field | Expected Value |
-| --- | --- |
-| [output_1] | [value] |
-| [output_2] | [value] |
+| Field      | Expected Value |
+| ---------- | -------------- |
+| [output_1] | [value]        |
+| [output_2] | [value]        |
 
 ### Test Case 2: [Scenario Name]
 
@@ -246,17 +239,17 @@ AI coding assistants can use these to write automated tests.
 
 **Input:**
 
-| Field | Value |
-| --- | --- |
+| Field     | Value   |
+| --------- | ------- |
 | [field_1] | [value] |
 | [field_2] | [value] |
 
 **Expected Output:**
 
-| Field | Expected Value |
-| --- | --- |
-| [output_1] | [value] |
-| [output_2] | [value] |
+| Field      | Expected Value |
+| ---------- | -------------- |
+| [output_1] | [value]        |
+| [output_2] | [value]        |
 
 ### Test Case 3: [Edge Case / Error Scenario]
 
@@ -266,8 +259,8 @@ AI coding assistants can use these to write automated tests.
 
 **Input:**
 
-| Field | Value |
-| --- | --- |
+| Field     | Value                    |
+| --------- | ------------------------ |
 | [field_1] | [boundary/invalid value] |
 
 **Expected Behavior:**

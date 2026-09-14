@@ -2,7 +2,17 @@
 sidebar_position: 2
 sidebar_label: Memory
 description: Learn how Claude Code's memory files provide persistent context across sessions, eliminating the need to repeat project conventions every time.
-keywords: [Claude Code memory, CLAUDE.md, persistent context, memory files, AI context, project conventions, session memory, agentic coding]
+keywords:
+  [
+    Claude Code memory,
+    CLAUDE.md,
+    persistent context,
+    memory files,
+    AI context,
+    project conventions,
+    session memory,
+    agentic coding,
+  ]
 ---
 
 # Memory
@@ -19,17 +29,17 @@ Think of it as onboarding documentation, but written for your AI assistant inste
 
 Claude Code uses several memory files at different scopes. Here is the complete picture:
 
-| File | Location | Scope | Committed to git? | Written by |
-|------|----------|-------|-------------------|------------|
-| **Managed policy** | `/etc/claude-code/CLAUDE.md` (Linux) | Organization-wide | N/A (deployed by IT) | Admins |
-| **User CLAUDE.md** | `~/.claude/CLAUDE.md` | You, across all projects | N/A | You |
-| **User rules** | `~/.claude/rules/*.md` | You, across all projects | N/A | You |
-| **Project CLAUDE.md** | `./CLAUDE.md` or `./.claude/CLAUDE.md` | Team (everyone on the project) | Yes | You |
-| **Project rules** | `./.claude/rules/*.md` | Team (everyone on the project) | Yes | You |
-| **Local CLAUDE.md** | `./CLAUDE.local.md` | You, this project only | No (auto-gitignored) | You |
-| **Auto memory** | `~/.claude/projects/<project>/memory/MEMORY.md` | You, this project (machine-local) | No | Claude |
-| **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md` | You, this project (machine-local) | No | Claude |
-| **Subagent memory** | Separate per-subagent directory (enabled with the subagent `memory` field) | Per subagent | No | Claude |
+| File                   | Location                                                                   | Scope                             | Committed to git?    | Written by |
+| ---------------------- | -------------------------------------------------------------------------- | --------------------------------- | -------------------- | ---------- |
+| **Managed policy**     | `/etc/claude-code/CLAUDE.md` (Linux)                                       | Organization-wide                 | N/A (deployed by IT) | Admins     |
+| **User CLAUDE.md**     | `~/.claude/CLAUDE.md`                                                      | You, across all projects          | N/A                  | You        |
+| **User rules**         | `~/.claude/rules/*.md`                                                     | You, across all projects          | N/A                  | You        |
+| **Project CLAUDE.md**  | `./CLAUDE.md` or `./.claude/CLAUDE.md`                                     | Team (everyone on the project)    | Yes                  | You        |
+| **Project rules**      | `./.claude/rules/*.md`                                                     | Team (everyone on the project)    | Yes                  | You        |
+| **Local CLAUDE.md**    | `./CLAUDE.local.md`                                                        | You, this project only            | No (auto-gitignored) | You        |
+| **Auto memory**        | `~/.claude/projects/<project>/memory/MEMORY.md`                            | You, this project (machine-local) | No                   | Claude     |
+| **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md`                                 | You, this project (machine-local) | No                   | Claude     |
+| **Subagent memory**    | Separate per-subagent directory (enabled with the subagent `memory` field) | Per subagent                      | No                   | Claude     |
 
 ### Project CLAUDE.md
 
@@ -42,6 +52,7 @@ Block-level HTML comments (`<!-- like this -->`) in CLAUDE.md files are stripped
 :::
 
 Focus on what matters most:
+
 - Build and test commands
 - Non-obvious coding conventions
 - Files and directories that should not be modified
@@ -53,11 +64,13 @@ Leave out anything Claude can figure out by reading the code itself (language, f
 # CLAUDE.md
 
 ## Commands
+
 - Tests: npm test
 - Lint: npm run lint
 - Type check: npm run typecheck
 
 ## Conventions
+
 - Use TypeScript strict mode, never use `any`
 - All API endpoints must validate input with Zod
 - Database migrations are in src/db/migrations/, never modify existing ones
@@ -78,6 +91,7 @@ repo/
 ```
 
 Claude Code loads these hierarchically:
+
 - **Ancestor loading**: walks upward from the working directory at startup, always loading parent CLAUDE.md files
 - **Descendant loading**: lazy-loads subdirectory CLAUDE.md files when files in those directories are accessed
 
@@ -106,6 +120,7 @@ Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses 
 @AGENTS.md
 
 ## Claude Code
+
 Use plan mode for changes under `src/billing/`.
 ```
 
@@ -139,9 +154,11 @@ CLAUDE.md files can import additional files using `@path/to/file` syntax anywher
 
 ```markdown
 # CLAUDE.md
+
 See @README for project overview and @package.json for available npm commands.
 
 # Additional Instructions
+
 - git workflow @docs/git-instructions.md
 ```
 
@@ -166,13 +183,18 @@ Rules can optionally be scoped to specific file paths using frontmatter:
 
 ```markdown
 # .claude/rules/api-design.md
+
 ---
+
 paths:
-  - "src/api/**/*.ts"
-  - "api/**/*.{ts,tsx}"
+
+- "src/api/\*_/_.ts"
+- "api/\*_/_.{ts,tsx}"
+
 ---
 
 # API rules
+
 - All endpoints must include input validation
 - Use standard error response format
 - Return 201 for creation, 204 for deletion
@@ -189,6 +211,7 @@ Claude Code can automatically save notes between sessions. This is stored locall
 ```
 
 **How it works:**
+
 - Enabled by default (toggle with `/memory` or set `"autoMemoryEnabled": false` in settings). Disable via environment variable: `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`
 - As it works, Claude saves four kinds of notes and records the kind in a `type` frontmatter field:
   - `user`: your role, expertise, and working preferences
@@ -222,11 +245,11 @@ The auto memory directory contains a `MEMORY.md` index and one topic file per me
 
 For enterprise deployments, admins can place a `CLAUDE.md` at an OS-specific path:
 
-| OS | Path |
-|----|------|
-| Linux / WSL | `/etc/claude-code/CLAUDE.md` |
-| macOS | `/Library/Application Support/ClaudeCode/CLAUDE.md` |
-| Windows | `C:\Program Files\ClaudeCode\CLAUDE.md` |
+| OS          | Path                                                |
+| ----------- | --------------------------------------------------- |
+| Linux / WSL | `/etc/claude-code/CLAUDE.md`                        |
+| macOS       | `/Library/Application Support/ClaudeCode/CLAUDE.md` |
+| Windows     | `C:\Program Files\ClaudeCode\CLAUDE.md`             |
 
 This file cannot be excluded by users. It always loads first and is intended for organization-wide standards and security policies.
 
@@ -296,13 +319,13 @@ With several memory files available, it helps to know which one fits your situat
 
 These files contain instructions and constraints you define. Claude reads them but never modifies them.
 
-| What you want | Use this file |
-|---------------|---------------|
-| Team coding standards, build commands, architecture rules | **Project CLAUDE.md** (`./CLAUDE.md`) |
-| Rules that only apply to specific file paths | **Project rules** (`.claude/rules/*.md` with `paths:` frontmatter) |
-| Your personal style preferences across all projects | **User CLAUDE.md** (`~/.claude/CLAUDE.md`) |
-| Your personal rules scoped to specific file types | **User rules** (`~/.claude/rules/*.md`) |
-| Your local environment details for one project (URLs, credentials, local paths) | **CLAUDE.local.md** (`./CLAUDE.local.md`) |
+| What you want                                                                   | Use this file                                                      |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Team coding standards, build commands, architecture rules                       | **Project CLAUDE.md** (`./CLAUDE.md`)                              |
+| Rules that only apply to specific file paths                                    | **Project rules** (`.claude/rules/*.md` with `paths:` frontmatter) |
+| Your personal style preferences across all projects                             | **User CLAUDE.md** (`~/.claude/CLAUDE.md`)                         |
+| Your personal rules scoped to specific file types                               | **User rules** (`~/.claude/rules/*.md`)                            |
+| Your local environment details for one project (URLs, credentials, local paths) | **CLAUDE.local.md** (`./CLAUDE.local.md`)                          |
 
 ### Claude writes it: auto memory
 
@@ -330,17 +353,20 @@ A good memory file is concise, specific, and actionable. Focus on information th
 
 ```markdown
 # Conventions
+
 - Use TypeScript strict mode, never use `any`
 - All API endpoints must validate input with Zod schemas
 - Database migrations are in src/db/migrations/, never modify existing ones
 - Run `npm test` before committing, all tests must pass
 
 # Architecture
+
 - Backend follows hexagonal architecture (ports and adapters)
 - Business logic lives in src/domain/, never import from src/infrastructure/ there
 - Use Result<T, E> pattern for error handling, do not throw exceptions
 
 # Commands
+
 - Tests: npm test
 - Lint: npm run lint
 - Type check: npm run typecheck
@@ -358,11 +384,13 @@ A good memory file is concise, specific, and actionable. Focus on information th
 Write instructions the AI can follow mechanically:
 
 **Weak:**
+
 ```text
 Write high-quality, maintainable code.
 ```
 
 **Strong:**
+
 ```text
 Keep functions under 30 lines. Extract helper functions for repeated logic.
 Never use string concatenation for SQL queries.
@@ -374,17 +402,19 @@ If your team uses multiple AI coding tools, keep the core conventions in one can
 
 ```markdown
 # CLAUDE.md
+
 Read and follow the conventions in CONVENTIONS.md at the repository root.
 ```
 
 **Memory file equivalents across tools:**
 
-| Tool | Project memory | User memory |
-|------|---------------|-------------|
-| Claude Code | `CLAUDE.md` | `~/.claude/CLAUDE.md` |
-| Cursor | `.cursorrules` | User settings |
-| GitHub Copilot | `.github/copilot-instructions.md` | User settings |
-| Windsurf | `.windsurfrules` | User settings |
+| Tool           | Project memory                                                                   | User memory            |
+| -------------- | -------------------------------------------------------------------------------- | ---------------------- |
+| Claude Code    | `CLAUDE.md`                                                                      | `~/.claude/CLAUDE.md`  |
+| Codex          | `AGENTS.md` (see [AGENTS.md & Memories](../codex/agents-md.md))                  | `~/.codex/AGENTS.md`   |
+| Cursor         | `AGENTS.md`, `.cursor/rules/*.mdc` (see [Rules & AGENTS.md](../cursor/rules.md)) | User Rules in settings |
+| GitHub Copilot | `.github/copilot-instructions.md`                                                | User settings          |
+| Windsurf       | `.windsurfrules`                                                                 | User settings          |
 
 ## Excluding memory files
 
@@ -392,10 +422,7 @@ In large monorepos, you may want to exclude CLAUDE.md files from other teams. Us
 
 ```json
 {
-  "claudeMdExcludes": [
-    "**/other-team/CLAUDE.md",
-    "/home/user/monorepo/legacy/.claude/rules/**"
-  ]
+  "claudeMdExcludes": ["**/other-team/CLAUDE.md", "/home/user/monorepo/legacy/.claude/rules/**"]
 }
 ```
 

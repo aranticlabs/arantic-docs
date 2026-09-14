@@ -2,7 +2,19 @@
 sidebar_position: 5
 sidebar_label: Firmware Developer Setup
 description: Set up AI-assisted development for bare-metal C/C++, RTOS-based firmware, and microcontroller projects including STM32, Nordic, ESP32, and RP2040.
-keywords: [firmware development, embedded AI, microcontroller, STM32, ESP32, FreeRTOS, Zephyr, bare-metal C, RTOS, AI coding embedded]
+keywords:
+  [
+    firmware development,
+    embedded AI,
+    microcontroller,
+    STM32,
+    ESP32,
+    FreeRTOS,
+    Zephyr,
+    bare-metal C,
+    RTOS,
+    AI coding embedded,
+  ]
 ---
 
 # Firmware Developer Setup
@@ -20,10 +32,12 @@ Covers bare-metal C/C++, RTOS-based firmware (FreeRTOS, Zephyr, ThreadX), and mi
 VS Code with the right extensions is the most common setup for cross-platform embedded development.
 
 **Required extensions:**
+
 - [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack): IntelliSense, debugging, CMake integration
 - [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot): inline completions and chat
 
 **Useful optional extensions:**
+
 - [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug): GDB/OpenOCD integration for ARM Cortex-M
 - [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools): CMake configure/build from the status bar
 
@@ -70,29 +84,34 @@ This is critical for embedded work. Without it, Claude will make assumptions abo
 # Project context
 
 ## Hardware
+
 - MCU: STM32H743ZI (Cortex-M7, 480 MHz, 1 MB RAM, 2 MB Flash)
 - Board: custom; schematic in /docs/hardware/
 - External: QSPI Flash (128 MB), Ethernet PHY (LAN8742A), CAN transceivers (x2)
 
 ## Software stack
+
 - STM32CubeHAL (HAL drivers, not LL)
 - FreeRTOS 10.4.3 (CMSIS-OS2 API)
 - lwIP 2.1.3 for Ethernet
 - Compiler: arm-none-eabi-gcc 12.3, C11, C++17
 
 ## Conventions
+
 - ISR names follow STM32 HAL convention: HAL_UART_RxCpltCallback, etc.
 - All shared variables accessed from both ISR and task context must be declared volatile and protected with taskENTER_CRITICAL() / taskEXIT_CRITICAL()
 - No dynamic memory allocation after init (no malloc/free in normal operation)
 - Stack sizes defined in FreeRTOSConfig.h - never hardcode them inline
 
 ## Commands
+
 - `make` - build (Makefile at root)
 - `make flash` - flash via ST-Link using OpenOCD
 - `make clean` - clean build artifacts
 - `openocd -f interface/stlink.cfg -f target/stm32h7x.cfg` - start debug server
 
 ## Do not modify
+
 - Core/Src/stm32h7xx_it.c - ISR table managed by CubeMX
 - Core/Inc/FreeRTOSConfig.h - RTOS config, change only after review
 - Drivers/ - STM32 HAL driver files, never edit vendor code
@@ -102,17 +121,20 @@ This is critical for embedded work. Without it, Claude will make assumptions abo
 
 ```markdown
 ## Software stack
+
 - Zephyr 3.6, devicetree-based configuration
 - nRF52840 (Nordic SDK not used - pure Zephyr)
 - BLE via Zephyr BT stack, USB via Zephyr USB subsystem
 
 ## Conventions
+
 - All peripherals configured via devicetree overlays in boards/
 - Use Zephyr logging (LOG_INF, LOG_ERR) - never printf
 - Work queues for deferred processing from ISR context
 - K_FOREVER timeouts only in tests - use bounded timeouts in application code
 
 ## Commands
+
 - `west build -b nrf52840dk/nrf52840` - build
 - `west flash` - flash
 - `west build -t menuconfig` - Kconfig menu
@@ -124,12 +146,12 @@ This is critical for embedded work. Without it, Claude will make assumptions abo
 
 These subagents from the [firmware & embedded catalog](../claude-code/subagents#firmware--embedded) are the highest-value additions for any firmware project. Drop them in `.claude/agents/`:
 
-| Subagent | What it does |
-|----------|-------------|
-| [memory-usage-auditor](../claude-code/subagents#memory-usage-auditor) | Audits for stack overflows, heap fragmentation, buffer overflows, and linker map issues |
+| Subagent                                                                          | What it does                                                                            |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [memory-usage-auditor](../claude-code/subagents#memory-usage-auditor)             | Audits for stack overflows, heap fragmentation, buffer overflows, and linker map issues |
 | [peripheral-config-reviewer](../claude-code/subagents#peripheral-config-reviewer) | Reviews GPIO, UART, SPI, I2C, timers, ADC, and DMA initialization for misconfigurations |
-| [interrupt-safety-checker](../claude-code/subagents#interrupt-safety-checker) | Finds race conditions, missing critical sections, and unsafe ISR patterns |
-| [misra-c-checker](../claude-code/subagents#misra-c-checker) | Flags MISRA-C:2012 violations; useful for safety-critical and automotive projects |
+| [interrupt-safety-checker](../claude-code/subagents#interrupt-safety-checker)     | Finds race conditions, missing critical sections, and unsafe ISR patterns               |
+| [misra-c-checker](../claude-code/subagents#misra-c-checker)                       | Flags MISRA-C:2012 violations; useful for safety-critical and automotive projects       |
 
 ```bash
 mkdir -p .claude/agents
@@ -150,6 +172,7 @@ Run the memory-usage-auditor on the entire Core/Src/ directory.
 ### Inline completions in VS Code / CLion
 
 Copilot is most useful for:
+
 - Completing register bit-field definitions you've started typing
 - Filling in repetitive HAL init code once you've written the first peripheral
 - Suggesting FreeRTOS task boilerplate (task function, stack declaration, `xTaskCreate` call)
@@ -159,6 +182,7 @@ Always verify suggestions against your MCU's reference manual for register names
 ### Claude Code for larger tasks
 
 **Generating boilerplate:**
+
 ```
 Generate a FreeRTOS task for reading ADC data every 10 ms and pushing samples
 into a queue named adcQueue. Use the HAL_ADC_PollForConversion pattern.
@@ -166,6 +190,7 @@ Follow the task structure in Core/Src/led_task.c.
 ```
 
 **Porting code between MCU families:**
+
 ```
 Port this STM32F4 SPI init code to STM32H7 using HAL. The peripheral registers
 moved - update the handle and any HAL version differences. Flag anything
@@ -173,6 +198,7 @@ that needs hardware verification.
 ```
 
 **Writing tests for pure logic:**
+
 ```
 Write Ceedling/Unity unit tests for the ring buffer implementation in
 Core/Src/ring_buffer.c. Test: init, single write/read, overflow behavior,
@@ -180,12 +206,14 @@ and wrap-around. No hardware dependencies - the ring buffer is pure C.
 ```
 
 **Pre-release audit:**
+
 ```
 Run the memory-usage-auditor, interrupt-safety-checker, and misra-c-checker
 on all files in Core/Src/. Generate a combined report.
 ```
 
 **Debugging ISR issues:**
+
 ```
 I'm seeing a HardFault when the DMA transfer complete callback fires while
 a FreeRTOS task is in the middle of memcpy on the same buffer.

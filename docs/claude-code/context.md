@@ -2,7 +2,20 @@
 sidebar_position: 4
 sidebar_label: Managing Context
 description: Learn how to manage Claude Code's context window effectively by using /compact proactively and structuring sessions to maintain output quality.
-keywords: [Claude Code context, context window, /compact, context management, token usage, session management, context limit, compaction, extended thinking, effort level, adaptive reasoning]
+keywords:
+  [
+    Claude Code context,
+    context window,
+    /compact,
+    context management,
+    token usage,
+    session management,
+    context limit,
+    compaction,
+    extended thinking,
+    effort level,
+    adaptive reasoning,
+  ]
 ---
 
 # Managing Context
@@ -37,14 +50,14 @@ Claude Code enables extended thinking by default, giving Claude space to reason 
 
 On supported models (Sonnet 4.6, Sonnet 5, Opus 4.6, Opus 4.7, Opus 4.8, Opus 5, and Fable 5), thinking uses **adaptive reasoning**: the model dynamically allocates thinking tokens based on your effort level and the task at hand. This means Claude responds faster to routine prompts and reserves deeper thinking for steps that benefit from it.
 
-| Way to adjust | How |
-|---------------|-----|
-| `/effort [level]` | Set session effort: `low`, `medium`, `high`, `xhigh`, or `max` (available levels depend on the model) |
-| `--effort <level>` | Set effort at startup via CLI flag |
-| `CLAUDE_CODE_EFFORT_LEVEL` | Set effort via environment variable |
-| `Option+T` (macOS) / `Alt+T` | Toggle thinking on or off for the current session |
-| `/config` | Set a global default across all projects |
-| `ultrathink` in prompt | Adds an in-context instruction for deeper reasoning on that turn (does not change your effort level setting) |
+| Way to adjust                | How                                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `/effort [level]`            | Set session effort: `low`, `medium`, `high`, `xhigh`, or `max` (available levels depend on the model)        |
+| `--effort <level>`           | Set effort at startup via CLI flag                                                                           |
+| `CLAUDE_CODE_EFFORT_LEVEL`   | Set effort via environment variable                                                                          |
+| `Option+T` (macOS) / `Alt+T` | Toggle thinking on or off for the current session                                                            |
+| `/config`                    | Set a global default across all projects                                                                     |
+| `ultrathink` in prompt       | Adds an in-context instruction for deeper reasoning on that turn (does not change your effort level setting) |
 
 ### Viewing thinking
 

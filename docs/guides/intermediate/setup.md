@@ -2,7 +2,18 @@
 sidebar_position: 1
 sidebar_label: Setup
 description: Configure Claude Code's full memory system, permissions, custom skills, subagents, MCP servers, and CLI flags for a customized intermediate workflow.
-keywords: [Claude Code intermediate, memory system, permissions, skills, subagents, MCP servers, CLI flags, CLAUDE.md, configuration]
+keywords:
+  [
+    Claude Code intermediate,
+    memory system,
+    permissions,
+    skills,
+    subagents,
+    MCP servers,
+    CLI flags,
+    CLAUDE.md,
+    configuration,
+  ]
 ---
 
 # Intermediate Setup
@@ -30,6 +41,7 @@ Claude Code reads memory files at multiple levels. Set them up to give Claude Co
 
 ```markdown
 <!-- .claude/rules/api-conventions.md -->
+
 - All API endpoints return { data, error } shape
 - Use zod for request validation
 - Authentication middleware is in src/middleware/auth.ts
@@ -55,10 +67,7 @@ Control what Claude Code can do without asking by editing `.claude/settings.json
       "Bash(npm run lint*)",
       "Bash(npx prettier*)"
     ],
-    "deny": [
-      "Bash(rm -rf*)",
-      "Bash(git push*)"
-    ]
+    "deny": ["Bash(rm -rf*)", "Bash(git push*)"]
   }
 }
 ```
@@ -73,7 +82,9 @@ Skills are reusable prompt templates stored as `SKILL.md` files under `.claude/s
 
 ```markdown
 # .claude/skills/review/SKILL.md
+
 Review the current git diff for:
+
 1. Logic errors or bugs
 2. Missing error handling
 3. Security concerns (injection, auth bypass)
@@ -98,6 +109,7 @@ You can reference subagents in your skills:
 
 ```markdown
 # .claude/skills/investigate/SKILL.md
+
 Use a subagent to explore the codebase and find all usages of $ARGUMENTS.
 Then summarize the patterns you find and suggest whether this API surface
 can be simplified.
@@ -109,14 +121,14 @@ For details on how subagents work and how to use them effectively, see [Subagent
 
 These flags are useful when integrating Claude Code into scripts or custom workflows:
 
-| Flag | Purpose | Example |
-|------|---------|---------|
-| `--print` / `-p` | Single response, no interactive session | `claude -p "Explain this error"` |
-| `--continue` / `-c` | Resume the most recent session | `claude -c` |
-| `--model` | Choose a specific model | `claude --model opus` |
-| `--output-format` | Machine-readable output | `claude -p "List files" --output-format json` |
-| `--allowedTools` | Restrict available tools | `claude -p "Read src/" --allowedTools Read,Glob` |
-| `--max-turns` | Limit agentic rounds | `claude -p "Fix tests" --max-turns 10` |
+| Flag                | Purpose                                 | Example                                          |
+| ------------------- | --------------------------------------- | ------------------------------------------------ |
+| `--print` / `-p`    | Single response, no interactive session | `claude -p "Explain this error"`                 |
+| `--continue` / `-c` | Resume the most recent session          | `claude -c`                                      |
+| `--model`           | Choose a specific model                 | `claude --model opus`                            |
+| `--output-format`   | Machine-readable output                 | `claude -p "List files" --output-format json`    |
+| `--allowedTools`    | Restrict available tools                | `claude -p "Read src/" --allowedTools Read,Glob` |
+| `--max-turns`       | Limit agentic rounds                    | `claude -p "Fix tests" --max-turns 10`           |
 
 For the complete flag reference, see [Flags](/claude-code/flags).
 

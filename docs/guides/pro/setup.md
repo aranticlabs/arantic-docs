@@ -2,7 +2,18 @@
 sidebar_position: 1
 sidebar_label: Setup
 description: Set up Claude Code hooks, agent teams, CI/headless integration, and advanced workflow patterns for professional-grade automated development.
-keywords: [Claude Code pro, hooks, agent teams, CI integration, headless mode, advanced setup, automation, parallel agents, professional workflow]
+keywords:
+  [
+    Claude Code pro,
+    hooks,
+    agent teams,
+    CI integration,
+    headless mode,
+    advanced setup,
+    automation,
+    parallel agents,
+    professional workflow,
+  ]
 ---
 
 # Pro Setup
@@ -54,6 +65,7 @@ The Skill-Agent pattern combines custom skills with subagents for complex multi-
 
 ```markdown
 # .claude/skills/feature/SKILL.md
+
 Implement the feature described below. Follow these steps:
 
 1. Use a Plan subagent to design the approach
@@ -213,10 +225,7 @@ Here's a full `.claude/settings.json` combining permissions, hooks, and MCP serv
       "Bash(npm run lint*)",
       "Bash(npx prettier*)"
     ],
-    "deny": [
-      "Bash(rm -rf*)",
-      "Bash(git push --force*)"
-    ]
+    "deny": ["Bash(rm -rf*)", "Bash(git push --force*)"]
   },
   "hooks": {
     "PostToolUse": [

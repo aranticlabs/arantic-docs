@@ -2,7 +2,16 @@
 sidebar_position: 3
 sidebar_label: GitHub Copilot
 description: GitHub Copilot provides inline code completions and a chat panel directly in your editor, supporting VS Code, JetBrains IDEs, Neovim, and GitHub.com.
-keywords: [GitHub Copilot, AI code completion, VS Code AI, JetBrains AI, inline completions, Copilot Chat, AI editor integration]
+keywords:
+  [
+    GitHub Copilot,
+    AI code completion,
+    VS Code AI,
+    JetBrains AI,
+    inline completions,
+    Copilot Chat,
+    AI editor integration,
+  ]
 ---
 
 # GitHub Copilot
@@ -24,6 +33,7 @@ GitHub Copilot is an AI coding assistant integrated directly into your editor. I
 As you type, Copilot suggests completions ranging from a single token to an entire function. Accept with `Tab`, cycle alternatives with `Alt+]`.
 
 Works best when:
+
 - You have good type annotations and function signatures
 - The file has existing examples of the pattern you're following
 - Your function name and parameter names are descriptive
@@ -34,12 +44,12 @@ A chat panel inside VS Code where you can ask questions with direct access to yo
 
 Useful slash commands in Copilot Chat:
 
-| Command | What it does |
-|---|---|
-| `/explain` | Explains selected code in plain English |
-| `/fix` | Suggests a fix for selected code or an error |
-| `/tests` | Generates unit tests for selected code |
-| `/doc` | Generates documentation comments |
+| Command    | What it does                                 |
+| ---------- | -------------------------------------------- |
+| `/explain` | Explains selected code in plain English      |
+| `/fix`     | Suggests a fix for selected code or an error |
+| `/tests`   | Generates unit tests for selected code       |
+| `/doc`     | Generates documentation comments             |
 
 ### Copilot CLI
 

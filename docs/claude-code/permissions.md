@@ -2,7 +2,20 @@
 sidebar_position: 5
 sidebar_label: Permissions
 description: Configure Claude Code's layered permission system to control which tools can run and which files can be accessed at project and user levels.
-keywords: [Claude Code permissions, settings.json, allow list, deny list, tool permissions, file access control, security, permission levels, permission modes, bypassPermissions, acceptEdits]
+keywords:
+  [
+    Claude Code permissions,
+    settings.json,
+    allow list,
+    deny list,
+    tool permissions,
+    file access control,
+    security,
+    permission levels,
+    permission modes,
+    bypassPermissions,
+    acceptEdits,
+  ]
 ---
 
 # Permissions
@@ -13,14 +26,14 @@ Claude Code uses a layered permission system to control which tools can run and 
 
 Claude Code supports several permission modes that change how much Claude prompts for approval. Switch modes mid-session with **Shift+Tab** (CLI) or the mode selector (VS Code, Desktop, Web), or set a persistent default in your settings.
 
-| Mode | What runs without asking | Best for |
-|------|-------------------------|----------|
-| `default` (now called **Manual**) | Read-only operations | Getting started, sensitive work |
-| `acceptEdits` | Reads, file edits, and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.) | Iterating on code you're reviewing |
-| `plan` | Read-only (Claude analyzes but cannot modify files) | Exploring a codebase before changing it |
-| `auto` | Everything, with background safety checks | Long tasks, reducing prompt fatigue |
-| `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
-| `bypassPermissions` | Everything, including protected paths | Isolated containers and VMs only |
+| Mode                              | What runs without asking                                                               | Best for                                |
+| --------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------- |
+| `default` (now called **Manual**) | Read-only operations                                                                   | Getting started, sensitive work         |
+| `acceptEdits`                     | Reads, file edits, and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.) | Iterating on code you're reviewing      |
+| `plan`                            | Read-only (Claude analyzes but cannot modify files)                                    | Exploring a codebase before changing it |
+| `auto`                            | Everything, with background safety checks                                              | Long tasks, reducing prompt fatigue     |
+| `dontAsk`                         | Only pre-approved tools                                                                | Locked-down CI and scripts              |
+| `bypassPermissions`               | Everything, including protected paths                                                  | Isolated containers and VMs only        |
 
 The `default` mode is now labelled **Manual** across the CLI, `--help`, VS Code, and JetBrains, and `--permission-mode manual` is accepted as an alias for `default`. From v2.1.203, the status bar shows a gray `⏸ manual mode on` badge while it is active. The stored setting value remains `default`.
 
@@ -77,21 +90,9 @@ Permissions are configured in `.claude/settings.json` (project) or `~/.claude/se
 ```json
 {
   "permissions": {
-    "allow": [
-      "Read",
-      "Glob",
-      "Grep",
-      "Bash(npm run *)",
-      "Bash(npx prettier *)",
-      "Edit(src/**)"
-    ],
-    "ask": [
-      "Bash(git push *)"
-    ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "Edit(.env*)"
-    ]
+    "allow": ["Read", "Glob", "Grep", "Bash(npm run *)", "Bash(npx prettier *)", "Edit(src/**)"],
+    "ask": ["Bash(git push *)"],
+    "deny": ["Bash(rm -rf *)", "Edit(.env*)"]
   }
 }
 ```
@@ -108,23 +109,23 @@ Rules follow the format `Tool` or `Tool(specifier)`.
 
 Use just the tool name without parentheses to match every use:
 
-| Rule | Effect |
-|------|--------|
-| `Bash` | All Bash commands |
-| `Read` | All file reads |
-| `Edit` | All file edits |
+| Rule       | Effect                 |
+| ---------- | ---------------------- |
+| `Bash`     | All Bash commands      |
+| `Read`     | All file reads         |
+| `Edit`     | All file edits         |
 | `WebFetch` | All web fetch requests |
 
 ### Wildcard patterns
 
 Bash rules support glob patterns with `*`, which can appear anywhere in the command:
 
-| Pattern | What it allows |
-|---------|----------------|
-| `Bash(npm run *)` | Any npm script |
+| Pattern                | What it allows           |
+| ---------------------- | ------------------------ |
+| `Bash(npm run *)`      | Any npm script           |
 | `Bash(npx prettier *)` | Prettier formatting only |
-| `Bash(git commit *)` | Any git commit command |
-| `Bash(* --version)` | Any version check |
+| `Bash(git commit *)`   | Any git commit command   |
+| `Bash(* --version)`    | Any version check        |
 
 A space before `*` enforces a word boundary: `Bash(ls *)` matches `ls -la` but not `lsof`. The `:*` suffix is an equivalent way to write a trailing wildcard, so `Bash(ls:*)` matches the same commands as `Bash(ls *)`. The colon form is only recognized at the end of a pattern; elsewhere the colon is literal.
 
@@ -132,11 +133,11 @@ A space before `*` enforces a word boundary: `Bash(ls *)` matches `ls -la` but n
 
 `WebFetch` rules can be scoped to a domain with the `domain:` specifier (wildcards require v2.1.172 or later):
 
-| Rule | Matches |
-|------|---------|
-| `WebFetch(domain:example.com)` | Fetches to that exact host |
-| `WebFetch(domain:*.example.com)` | Any subdomain (not the apex domain) |
-| `WebFetch(domain:*)` | Every domain, and also adds the domain to the sandbox allow/deny list |
+| Rule                             | Matches                                                               |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `WebFetch(domain:example.com)`   | Fetches to that exact host                                            |
+| `WebFetch(domain:*.example.com)` | Any subdomain (not the apex domain)                                   |
+| `WebFetch(domain:*)`             | Every domain, and also adds the domain to the sandbox allow/deny list |
 
 Domain matching is case-insensitive. A bare `WebFetch` rule matches all fetches but, unlike `WebFetch(domain:*)`, does not affect the sandbox list.
 
@@ -144,11 +145,11 @@ Domain matching is case-insensitive. A bare `WebFetch` rule matches all fetches 
 
 Deny and ask rules can match a tool's top-level input parameter with the `Tool(param:value)` syntax (requires Claude Code v2.1.178 or later). The rule matches when Claude calls the tool with that parameter set to that exact value:
 
-| Rule | Matches |
-|------|---------|
-| `Agent(model:opus)` | Subagent spawns that request the Opus model tier |
-| `Agent(isolation:worktree)` | Subagent spawns that request a git worktree |
-| `Bash(run_in_background:true)` | Bash calls that run in the background |
+| Rule                           | Matches                                          |
+| ------------------------------ | ------------------------------------------------ |
+| `Agent(model:opus)`            | Subagent spawns that request the Opus model tier |
+| `Agent(isolation:worktree)`    | Subagent spawns that request a git worktree      |
+| `Bash(run_in_background:true)` | Bash calls that run in the background            |
 
 The value accepts `*` as a wildcard, so `Agent(isolation:*)` matches any explicit isolation value. Each rule names one parameter; to gate on two parameters, write two separate rules. Parameter matching only applies to `deny` and `ask` rules; allow rules continue to use each tool's own specifier syntax.
 
@@ -170,12 +171,12 @@ Allow rules accept a tool-name glob only after a literal `mcp__<server>__` prefi
 
 Path rules for `Read` and `Edit` follow gitignore pattern types:
 
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `//path` | Absolute path from filesystem root | `Read(//etc/hosts)` |
-| `~/path` | Path from home directory | `Read(~/.zshrc)` |
-| `/path` | Path relative to the settings source (project root for project/local settings; `~/.claude` for user settings). A single leading slash is not an absolute filesystem path | `Edit(/src/**/*.ts)` |
-| `path` or `./path` | Path relative to current directory | `Edit(src/**)` |
+| Pattern            | Meaning                                                                                                                                                                  | Example              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| `//path`           | Absolute path from filesystem root                                                                                                                                       | `Read(//etc/hosts)`  |
+| `~/path`           | Path from home directory                                                                                                                                                 | `Read(~/.zshrc)`     |
+| `/path`            | Path relative to the settings source (project root for project/local settings; `~/.claude` for user settings). A single leading slash is not an absolute filesystem path | `Edit(/src/**/*.ts)` |
+| `path` or `./path` | Path relative to current directory                                                                                                                                       | `Edit(src/**)`       |
 
 ### PowerShell rules
 
@@ -184,13 +185,8 @@ On Windows, Claude Code uses PowerShell alongside Bash. PowerShell rules follow 
 ```json
 {
   "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(git commit *)"
-    ],
-    "deny": [
-      "PowerShell(Remove-Item *)"
-    ]
+    "allow": ["PowerShell(Get-ChildItem *)", "PowerShell(git commit *)"],
+    "deny": ["PowerShell(Remove-Item *)"]
   }
 }
 ```
@@ -261,11 +257,11 @@ For organizations, administrators can deploy managed settings that cannot be ove
 
 Key organization-policy settings:
 
-| Setting | Effect |
-|---------|--------|
-| `permissions.disableBypassPermissionsMode: "disable"` | Prevents users from using bypassPermissions mode |
-| `permissions.disableAutoMode: "disable"` | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
-| `allowManagedPermissionRulesOnly: true` | Only managed allow/ask/deny rules apply; user/project rules are ignored |
+| Setting                                               | Effect                                                                             |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `permissions.disableBypassPermissionsMode: "disable"` | Prevents users from using bypassPermissions mode                                   |
+| `permissions.disableAutoMode: "disable"`              | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
+| `allowManagedPermissionRulesOnly: true`               | Only managed allow/ask/deny rules apply; user/project rules are ignored            |
 
 `disableBypassPermissionsMode` and `disableAutoMode` are most useful in managed settings but work from any scope, so a user can set either in their own settings to lock themselves out. Only `allowManagedPermissionRulesOnly` is genuinely managed-only.
 

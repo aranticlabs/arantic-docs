@@ -2,7 +2,15 @@
 sidebar_position: 2
 sidebar_label: Workflow
 description: Build larger multi-file features with Claude Code by breaking work into steps, managing context windows, and recovering from mistakes effectively.
-keywords: [Claude Code intermediate workflow, multi-step features, context management, multi-file development, Claude Code recovery, AI development]
+keywords:
+  [
+    Claude Code intermediate workflow,
+    multi-step features,
+    context management,
+    multi-file development,
+    Claude Code recovery,
+    AI development,
+  ]
 ---
 
 # Multi-Step Feature Development
@@ -136,6 +144,7 @@ claude -c
 This continues your most recent conversation. Claude Code picks up where you left off, with the full conversation history intact.
 
 **When to start a new session vs. resume:**
+
 - **Resume** when you're continuing the same feature and need the previous context
 - **New session** when you're starting a different task, or when the previous session's context is mostly irrelevant
 

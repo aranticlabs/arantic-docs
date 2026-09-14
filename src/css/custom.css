@@ -50,7 +50,7 @@
 }
 
 .footer--dark .footer__copyright a {
-  color: var( --arantic-color-plum);
+  color: var(--arantic-color-plum);
 }
 
 .footer--dark .footer__copyright a:hover {

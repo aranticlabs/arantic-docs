@@ -6,6 +6,7 @@ description: Audit environment variables for missing .env.example entries, commi
 Audit the project's environment variable and configuration setup.
 
 Check:
+
 - `.env`, `.env.example`, `.env.local`, and any other environment files present
 - All places in code where `process.env`, `os.environ`, `getenv`, or equivalent is accessed
 - Configuration files, deployment scripts, and Docker/CI files

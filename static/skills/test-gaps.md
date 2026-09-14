@@ -8,6 +8,7 @@ Analyze the test coverage and quality for $ARGUMENTS.
 If no path is given, analyze the whole project.
 
 Steps:
+
 1. Find all source files and their corresponding test files.
 2. For each source file, identify functions, methods, and branches that have no corresponding test.
 3. Look at existing tests and assess their quality.

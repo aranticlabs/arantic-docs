@@ -1,92 +1,121 @@
 ---
 sidebar_position: 4
 sidebar_label: Cursor
-description: Cursor is a VS Code fork with deep AI integration that can reference your entire codebase and reason across multiple files for complex edits.
-keywords: [Cursor, AI code editor, VS Code fork, codebase AI, multi-file editing, Cursor AI, code completion, AI pair programming]
+description: Cursor is an AI coding agent and editor (VS Code fork) with Agent, Plan, Ask, and Debug modes, a terminal CLI, cloud agents, and Bugbot PR review.
+keywords:
+  [
+    Cursor,
+    AI code editor,
+    VS Code fork,
+    Cursor Agent,
+    Cursor CLI,
+    multi-file editing,
+    Plan Mode,
+    cloud agents,
+    Bugbot,
+    AI pair programming,
+  ]
 ---
 
 # Cursor
 
-Cursor is a code editor built around AI. It's a fork of VS Code, so it supports all VS Code extensions, but with deeper AI integration than Copilot: it can reference your entire codebase and reason across multiple files.
+Cursor is a coding agent wrapped in an editor. The editor is a fork of VS Code, so your extensions, keybindings, and settings carry over, but the core of the product is Agent: it searches your repository, plans and edits across files, runs commands, drives a browser, and reviews its own changes. The same agent is available as a terminal CLI (`agent`), as Cloud Agents that run in isolated environments, and as Bugbot for pull request review.
+
+This page covers installation and the basics. For the full deep-dive (rules, agent modes, CLI, skills, subagents, hooks, MCP, plugins, cloud agents, parallel agents, Bugbot), see the [Cursor section](/cursor).
 
 ## Installation
 
-Download from [cursor.com](https://www.cursor.com). Import your VS Code settings and extensions on first launch.
+Download the desktop app from [cursor.com/downloads](https://cursor.com/downloads) (macOS 12+, Windows 10+, Linux via apt, yum, or AppImage). Import your VS Code settings and extensions on first launch.
 
-## Key features
+Install the CLI separately:
 
-### Codebase-aware chat
-
-Cursor indexes your entire repository. You can ask questions about code you haven't opened:
-
-```text
-Where is the database connection initialised?
-Why does the OrderService depend on UserService?
-Find all places where we call the payments API.
+```bash
+curl https://cursor.com/install -fsS | bash
 ```
 
-Reference specific files with `@filename` in the chat.
+Windows (PowerShell):
 
-### Inline editing (Cmd+K)
-
-Select code and press `Cmd+K` to edit it in place with an instruction:
-
-```text
-Add input validation using Zod
-Rewrite this using async/await instead of callbacks
-Extract this into a separate function
+```powershell
+irm 'https://cursor.com/install?win32=true' | iex
 ```
 
-### Composer (multi-file editing)
+See [Cursor CLI](../cursor/cli.md) for authentication, flags, headless mode, and CI usage.
 
-Cursor's Composer lets you instruct AI to make changes across multiple files at once. It's useful for larger tasks like adding a new feature end-to-end.
+## First steps
 
-### Project rules (AGENTS.md and .cursor/rules)
+1. Open a project folder and press `Cmd+I` to open Agent
+2. Ask it to explain the codebase: "Explain this codebase. Point me to the main entry points and anything I should read before making changes."
+3. Ask for one small, safe change, review the diff, and run your project's checks
+4. Press `Shift+Tab` to switch to **Plan Mode** for anything that spans multiple files
 
-Cursor uses **AGENTS.md** at the project root as the main place for persistent, project-wide instructions (similar to `CLAUDE.md` for Claude Code). Use it for conventions that apply everywhere:
+## Agent modes
 
-```markdown
-- TypeScript only, strict mode
-- Use Drizzle ORM for all database queries
-- All API handlers must validate input with Zod
-- Prefer named exports over default exports
-```
+| Mode       | Edits files?                      | Use it for                                                          |
+| ---------- | --------------------------------- | ------------------------------------------------------------------- |
+| **Agent**  | Yes                               | Default: end-to-end tasks with search, edits, terminal, and browser |
+| **Plan**   | Not until you approve             | Research, clarifying questions, and an editable plan before code    |
+| **Ask**    | No                                | Read-only exploration and explanation                               |
+| **Debug**  | Instrumentation first, then a fix | Root-causing bugs with hypotheses and runtime evidence              |
+| **Design** | Yes                               | Directing the agent visually from the built-in browser              |
 
-For rules that apply only to certain files, use **`.cursor/rules/`**: add `.mdc` files with YAML frontmatter and glob patterns (e.g. `globs: src/components/**/*.tsx`). Create them via the Command Palette (**New Cursor Rule**) or manually.
+Details: [Agent Modes](../cursor/modes.md).
 
-An older option is a **`.cursorrules`** file at the project root; Cursor still reads it, but AGENTS.md is the cross-tool standard and is preferred.
+## Persistent instructions
+
+Cursor reads several kinds of project instructions:
+
+- **`AGENTS.md`** at the repo root (and nested in subdirectories): plain Markdown, the cross-tool standard, the simplest choice
+- **`.cursor/rules/*.mdc`**: rules with YAML frontmatter (`description`, `globs`, `alwaysApply`) so they can attach automatically to matching files or be requested by the agent
+- **User Rules** in settings for personal preferences across all projects
+- **Team Rules** managed from the dashboard on Teams and Enterprise plans
+
+The older `.cursorrules` file still works but is deprecated. Details: [Rules & AGENTS.md](../cursor/rules.md).
+
+## Skills, subagents, hooks, plugins, MCP
+
+Cursor has native support for:
+
+- [Skills](../cursor/skills.md): `SKILL.md` folders in `.cursor/skills/` or `~/.cursor/skills/`, invoked with `/skill-name` or picked up automatically
+- [Subagents](../cursor/subagents.md): built-in (Explore, Bash, Browser) and custom agents in `.cursor/agents/*.md`
+- [Hooks](../cursor/hooks.md): `hooks.json` scripts that run at lifecycle events (before shell execution, after file edit, on stop, and more)
+- [Plugins](../cursor/plugins.md): marketplace bundles of rules, skills, MCP servers, subagents, and hooks
+- [MCP](../cursor/mcp.md): external tools via `.cursor/mcp.json` or `~/.cursor/mcp.json`
+
+## Editing shortcuts
+
+| Shortcut                 | What it does                                                      |
+| ------------------------ | ----------------------------------------------------------------- |
+| `Cmd+I`                  | Open or toggle the Agent panel                                    |
+| `Cmd+K`                  | Inline Edit on the current selection (or the terminal prompt bar) |
+| `Cmd+L` with a selection | Add the selection to a new chat                                   |
+| `Tab`                    | Accept a Tab completion                                           |
+| `Shift+Tab`              | Rotate Agent modes                                                |
+| `Cmd+E`                  | Toggle the Agent layout                                           |
+
+Full reference: [Commands & Shortcuts](../cursor/commands.md).
 
 ## Cursor vs. Copilot
 
-| | Cursor | Copilot |
-|---|---|---|
-| Codebase indexing | Full repository | Open files only |
-| Editor | Standalone (VS Code fork) | Plugin for existing editors |
-| Multi-file edits | Yes (Composer) | Limited |
-| Rules file | `AGENTS.md`, `.cursor/rules/*.mdc` | No direct equivalent |
-| Inline edit shortcut | `Cmd+K` | `Ctrl+I` |
-
-## Skills and reusable prompts
-
-Cursor does not support custom `/` slash commands defined by you. Its slash commands (like `/edit` and `/explain`) are built-in and not extensible in the same way.
-
-The closest alternatives in Cursor are:
-
-**Notepads.** Notepads are persistent context blocks you can `@mention` in any Cursor chat. Store your reusable prompts there:
-
-1. Open the Notepads panel
-2. Create a notepad named "review-checklist" with your standard review prompt
-3. In chat: `@review-checklist please review the selected code`
-
-**`.cursorrules`.** For project-wide instructions that apply to every prompt automatically (without needing to invoke anything), add them to `.cursorrules` at the project root. This is less flexible than skills because it always applies, rather than being invoked on demand.
-
-**Saved prompts in chat.** You can copy-paste from a shared `prompts/` directory in your repository. Less ergonomic, but functional for teams without extra tooling.
-
-For background on skills as a concept and how Claude Code handles them natively, see [Skills](../claude-code/skills).
+|                        | Cursor                                           | Copilot                             |
+| ---------------------- | ------------------------------------------------ | ----------------------------------- |
+| Codebase search        | Repository-wide (Instant Grep, Explore subagent) | Open files plus workspace search    |
+| Editor                 | Standalone (VS Code fork)                        | Plugin for existing editors         |
+| Multi-file agent edits | Yes (Agent, Plan Mode)                           | Yes (agent mode), less configurable |
+| Instructions files     | `AGENTS.md`, `.cursor/rules/*.mdc`               | `.github/copilot-instructions.md`   |
+| Inline edit shortcut   | `Cmd+K`                                          | `Ctrl+I`                            |
+| Terminal CLI           | Yes (`agent`)                                    | Yes (Copilot CLI)                   |
 
 ## Tips
 
-- Use `@codebase` in chat to explicitly search across all files
-- Reference specific files and functions with `@filename` and `@function`
-- Use Composer for new features; use inline edit (`Cmd+K`) for targeted changes
-- Keep **AGENTS.md** (and `.cursor/rules` if you use them) updated as your project conventions evolve
+- Use Plan Mode for anything that touches more than a couple of files; approve the plan before code is written
+- Keep `AGENTS.md` short and concrete; move file-specific guidance into `.cursor/rules/*.mdc` with `globs`
+- Use `@` to attach files, folders, terminals, past chats, and diffs rather than pasting code
+- Run several agents in parallel from the Agents Window with worktrees when tasks are independent
+
+More: [Tips](../cursor/tips.md).
+
+## Further reading
+
+- [Cursor deep-dive](/cursor): all 16 pages
+- [Claude Code](/claude-code) and [Codex](/codex) deep-dives for comparison
+- [Official Cursor documentation](https://cursor.com/docs)

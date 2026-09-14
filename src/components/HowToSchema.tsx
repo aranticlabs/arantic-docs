@@ -30,37 +30,35 @@ export default function HowToSchema({
   steps,
 }: HowToSchemaProps) {
   const howToData: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": name,
-    "description": description,
-    ...(totalTime && { "totalTime": totalTime }),
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: name,
+    description: description,
+    ...(totalTime && {totalTime: totalTime}),
     ...(supply && {
-      "supply": supply.map(s => ({
-        "@type": "HowToSupply",
-        "name": s
-      }))
+      supply: supply.map((s) => ({
+        '@type': 'HowToSupply',
+        name: s,
+      })),
     }),
     ...(tool && {
-      "tool": tool.map(t => ({
-        "@type": "HowToTool",
-        "name": t
-      }))
+      tool: tool.map((t) => ({
+        '@type': 'HowToTool',
+        name: t,
+      })),
     }),
-    "step": steps.map((step, index) => ({
-      "@type": "HowToStep",
-      "position": index + 1,
-      "name": step.name,
-      "text": step.text,
-      ...(step.url && { "url": step.url })
-    }))
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.url && {url: step.url}),
+    })),
   };
 
   return (
     <Head>
-      <script type="application/ld+json">
-        {JSON.stringify(howToData)}
-      </script>
+      <script type="application/ld+json">{JSON.stringify(howToData)}</script>
     </Head>
   );
 }

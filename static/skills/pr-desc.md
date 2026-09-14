@@ -13,6 +13,7 @@ Read the most relevant changed files if needed to understand intent.
 Write a pull request description formatted as Markdown, ready to paste into GitHub or GitLab:
 
 ---
+
 **Title:** (one line, under 72 characters, imperative mood — e.g. "Add dark mode toggle to user settings")
 
 **Summary**

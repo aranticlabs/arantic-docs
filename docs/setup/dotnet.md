@@ -2,7 +2,18 @@
 sidebar_position: 4
 sidebar_label: .NET Developer Setup
 description: Set up AI-assisted coding for C#, ASP.NET Core, WinForms, WPF, and MAUI development in Visual Studio and VS Code with Claude Code and GitHub Copilot.
-keywords: [.NET setup, C# AI coding, ASP.NET Core, Visual Studio AI, WinForms, WPF, MAUI, Claude Code .NET, GitHub Copilot]
+keywords:
+  [
+    .NET setup,
+    C# AI coding,
+    ASP.NET Core,
+    Visual Studio AI,
+    WinForms,
+    WPF,
+    MAUI,
+    Claude Code .NET,
+    GitHub Copilot,
+  ]
 ---
 
 # .NET Developer Setup
@@ -22,6 +33,7 @@ GitHub Copilot is built into Visual Studio 2022 version 17.10 and later. If you'
 Sign in with your GitHub account in the Copilot panel. You need a **GitHub Copilot subscription** (Individual, Business, or Enterprise), separate from your Anthropic/Claude subscription.
 
 What you get inside Visual Studio:
+
 - **Inline completions**: suggestions appear as you type, accept with `Tab`
 - **Copilot Chat panel**: open with `View → GitHub Copilot Chat` or `Ctrl+\, Ctrl+C`
 - **Smart actions**: right-click any selection for "Explain", "Fix", "Generate tests", "Generate docs"
@@ -95,12 +107,14 @@ Create a `CLAUDE.md` file at the solution root. Claude Code reads it on every se
 # Project context
 
 ## Stack
+
 - .NET 9, C# 13, ASP.NET Core (minimal API style)
 - Entity Framework Core 9 with SQL Server
 - MediatR for CQRS, FluentValidation for input validation
 - xUnit + Moq for testing
 
 ## Conventions
+
 - Follow MediatR request/handler pattern for all business logic
 - Never put business logic in controllers - controllers only dispatch commands/queries
 - Use record types for DTOs and command/query objects
@@ -108,12 +122,14 @@ Create a `CLAUDE.md` file at the solution root. Claude Code reads it on every se
 - Async all the way down - no .Result or .Wait()
 
 ## Commands
+
 - `dotnet build` - build solution
 - `dotnet test` - run all tests
 - `dotnet run --project src/Api` - start API
 - `dotnet ef migrations add MigrationName` - add EF migration
 
 ## Do not modify
+
 - `src/Infrastructure/Migrations/` - managed by EF Core tooling
 ```
 

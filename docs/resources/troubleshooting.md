@@ -2,7 +2,17 @@
 sidebar_position: 3
 sidebar_label: Troubleshooting & Limitations
 description: Common problems with AI coding tools, including hallucinated APIs, outdated knowledge, and context loss, along with practical fixes for each issue.
-keywords: [AI troubleshooting, AI limitations, hallucinations, outdated knowledge, context window, AI errors, debugging AI, common problems]
+keywords:
+  [
+    AI troubleshooting,
+    AI limitations,
+    hallucinations,
+    outdated knowledge,
+    context window,
+    AI errors,
+    debugging AI,
+    common problems,
+  ]
 ---
 
 # Troubleshooting & Limitations
@@ -18,6 +28,7 @@ Common problems when working with AI coding tools, why they happen, and how to h
 **Why it happens**: Language models generate plausible-looking code based on patterns. If an API "should" have a method called `.fetchAll()`, the model might generate it even if the actual method is `.getAll()` or doesn't exist.
 
 **How to handle it**:
+
 - Always check generated API calls against the official documentation
 - For critical code, ask the AI: "Verify that these method names and signatures are correct for [library] version [X]"
 - Pin your library versions in prompts: "Use axios 1.6, not fetch"
@@ -28,12 +39,14 @@ Common problems when working with AI coding tools, why they happen, and how to h
 **Problem**: AI suggests patterns that were best practice two years ago but are now deprecated or replaced.
 
 **Examples**:
+
 - React class components instead of hooks
 - `componentWillMount` instead of `useEffect`
 - Old `request` library instead of `fetch` or `axios`
 - Deprecated Node.js APIs (`url.parse` instead of `new URL()`)
 
 **How to handle it**:
+
 - Specify the version in your prompt: "Use React 19 with hooks" or "Use Next.js 15 App Router, not Pages Router"
 - Include a `.cursorrules`, `CLAUDE.md`, or similar context file that states your stack versions
 - If the AI generates old patterns, point it out: "This uses the old API. Rewrite using [current approach]"
@@ -43,6 +56,7 @@ Common problems when working with AI coding tools, why they happen, and how to h
 **Problem**: AI explains code or concepts with complete confidence but the explanation is incorrect. This is harder to catch than wrong code because it sounds authoritative.
 
 **How to handle it**:
+
 - Be skeptical of explanations for edge cases, performance characteristics, and security claims
 - Cross-reference with official documentation for anything critical
 - Ask the AI to show its reasoning: "Walk through this step by step" often exposes flawed logic
@@ -53,6 +67,7 @@ Common problems when working with AI coding tools, why they happen, and how to h
 **Problem**: AI makes changes that are locally correct but break something elsewhere in the codebase. For example, renaming a function in one file without updating all call sites.
 
 **How to handle it**:
+
 - Use agentic tools (Claude Code, Codex) for multi-file changes, as they can search the full codebase
 - For IDE tools (Copilot, Cursor), explicitly mention related files: "This function is also called in `router.ts` and `tests/auth.test.ts`"
 - Always run your test suite after AI-generated changes
@@ -62,30 +77,30 @@ Common problems when working with AI coding tools, why they happen, and how to h
 
 ### Code generation issues
 
-| Problem | Cause | Fix |
-|---------|-------|-----|
-| Generated code doesn't match project style | AI doesn't know your conventions | Add style guide to CLAUDE.md or project rules file |
-| AI adds unnecessary dependencies | Trying to be helpful | Explicitly state "Do not add new dependencies" |
-| Generated code is over-engineered | AI defaults to "enterprise" patterns | Ask for "the simplest implementation that works" |
-| AI ignores your framework's conventions | Insufficient context | Reference a specific file: "Follow the pattern in `src/services/auth.ts`" |
-| Code works but is inefficient | AI optimizes for readability by default | Specify performance requirements: "This runs in a hot loop, optimize for speed" |
+| Problem                                    | Cause                                   | Fix                                                                             |
+| ------------------------------------------ | --------------------------------------- | ------------------------------------------------------------------------------- |
+| Generated code doesn't match project style | AI doesn't know your conventions        | Add style guide to CLAUDE.md or project rules file                              |
+| AI adds unnecessary dependencies           | Trying to be helpful                    | Explicitly state "Do not add new dependencies"                                  |
+| Generated code is over-engineered          | AI defaults to "enterprise" patterns    | Ask for "the simplest implementation that works"                                |
+| AI ignores your framework's conventions    | Insufficient context                    | Reference a specific file: "Follow the pattern in `src/services/auth.ts`"       |
+| Code works but is inefficient              | AI optimizes for readability by default | Specify performance requirements: "This runs in a hot loop, optimize for speed" |
 
 ### Testing issues
 
-| Problem | Cause | Fix |
-|---------|-------|-----|
-| Tests pass but don't test anything meaningful | AI writes tests that mirror implementation | Ask for "behavior-based tests that verify outcomes, not implementation details" |
-| AI mocks everything | Default to isolation | Specify what should be real: "Use a real database connection, only mock the email service" |
-| Generated tests are brittle | Testing implementation details | Ask for tests that "survive a refactoring of the internals" |
-| Missing edge case coverage | AI follows the happy path | Explicitly list edge cases or ask: "What edge cases am I missing?" |
+| Problem                                       | Cause                                      | Fix                                                                                        |
+| --------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Tests pass but don't test anything meaningful | AI writes tests that mirror implementation | Ask for "behavior-based tests that verify outcomes, not implementation details"            |
+| AI mocks everything                           | Default to isolation                       | Specify what should be real: "Use a real database connection, only mock the email service" |
+| Generated tests are brittle                   | Testing implementation details             | Ask for tests that "survive a refactoring of the internals"                                |
+| Missing edge case coverage                    | AI follows the happy path                  | Explicitly list edge cases or ask: "What edge cases am I missing?"                         |
 
 ### Refactoring issues
 
-| Problem | Cause | Fix |
-|---------|-------|-----|
-| Refactoring changes behavior | AI doesn't fully understand side effects | Ask for "behavior-preserving refactoring" and run tests before and after |
-| AI refactors too aggressively | Trying to be thorough | Scope it: "Only extract the validation logic, don't touch anything else" |
-| Incomplete rename across codebase | Limited context window | Use Claude Code or an IDE's native rename feature for cross-file renames |
+| Problem                           | Cause                                    | Fix                                                                      |
+| --------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
+| Refactoring changes behavior      | AI doesn't fully understand side effects | Ask for "behavior-preserving refactoring" and run tests before and after |
+| AI refactors too aggressively     | Trying to be thorough                    | Scope it: "Only extract the validation logic, don't touch anything else" |
+| Incomplete rename across codebase | Limited context window                   | Use Claude Code or an IDE's native rename feature for cross-file renames |
 
 ## Tool-specific troubleshooting
 
@@ -95,30 +110,30 @@ See the dedicated [Claude Code Debugging](/claude-code/debugging) page for tool-
 
 Common Claude Code issues:
 
-| Problem | Fix |
-|---------|-----|
-| Claude doesn't know about your project | Create a `CLAUDE.md` with build commands, tech stack, and conventions |
-| Context window fills up quickly | Use `/compact` to summarize conversation, or start fresh with `/clear` |
-| Claude makes changes to wrong files | Be specific about file paths, or use `/add-dir` to narrow scope |
-| Slow responses | Try `/fast` mode or reduce context with `/compact` |
-| Permission denied errors | Check `/permissions` and adjust allowed tools |
+| Problem                                | Fix                                                                    |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| Claude doesn't know about your project | Create a `CLAUDE.md` with build commands, tech stack, and conventions  |
+| Context window fills up quickly        | Use `/compact` to summarize conversation, or start fresh with `/clear` |
+| Claude makes changes to wrong files    | Be specific about file paths, or use `/add-dir` to narrow scope        |
+| Slow responses                         | Try `/fast` mode or reduce context with `/compact`                     |
+| Permission denied errors               | Check `/permissions` and adjust allowed tools                          |
 
 ### GitHub Copilot
 
-| Problem | Fix |
-|---------|-----|
-| Completions are irrelevant | Open related files in tabs so Copilot has more context |
-| Copilot suggests insecure code | Review all suggestions; enable Copilot's security filter in settings |
-| Completions stop appearing | Check your subscription status and network connection |
-| Copilot Chat gives generic answers | Include specific file references and code snippets in your question |
+| Problem                            | Fix                                                                  |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| Completions are irrelevant         | Open related files in tabs so Copilot has more context               |
+| Copilot suggests insecure code     | Review all suggestions; enable Copilot's security filter in settings |
+| Completions stop appearing         | Check your subscription status and network connection                |
+| Copilot Chat gives generic answers | Include specific file references and code snippets in your question  |
 
 ### Cursor
 
-| Problem | Fix |
-|---------|-----|
-| Codebase indexing is slow | Wait for initial index to complete; check status in the bottom bar |
-| Composer changes are wrong | Use `@file` references to point Cursor at the right files |
-| Rules not being applied | Verify `.cursorrules` file is in the project root and properly formatted |
+| Problem                    | Fix                                                                      |
+| -------------------------- | ------------------------------------------------------------------------ |
+| Codebase indexing is slow  | Wait for initial index to complete; check status in the bottom bar       |
+| Composer changes are wrong | Use `@file` references to point Cursor at the right files                |
+| Rules not being applied    | Verify `.cursorrules` file is in the project root and properly formatted |
 
 ## General best practices for avoiding issues
 

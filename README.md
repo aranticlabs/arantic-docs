@@ -27,18 +27,18 @@ Honest, side-by-side comparisons of Claude Code, GitHub Copilot, Cursor, Codex C
 
 The most detailed section. Covers every layer of Claude Code:
 
-| Topic | What you'll find |
-|-------|-----------------|
-| **Memory** | CLAUDE.md, user/project/local scopes, auto memory, subagent memory |
-| **Skills** | Custom slash commands, ready-to-use templates, team skill libraries |
-| **Subagents** | Built-in agents, custom agent files, parallel and background execution |
-| **Agent Teams** | Peer-to-peer multi-agent collaboration, when to use it vs. subagents |
-| **Hooks** | Pre/post tool hooks, automated quality gates, safety guardrails |
-| **MCP Servers** | Model Context Protocol setup, available servers, practical use cases |
-| **Workflows** | Orchestration patterns, commands, composing agents + skills |
-| **Plugins** | Plugin marketplace, installing and managing extensions |
-| **Context & Flags** | Context window management, CLI flags, permission modes |
-| **Debugging** | Diagnosing common failures, session inspection, troubleshooting |
+| Topic               | What you'll find                                                       |
+| ------------------- | ---------------------------------------------------------------------- |
+| **Memory**          | CLAUDE.md, user/project/local scopes, auto memory, subagent memory     |
+| **Skills**          | Custom slash commands, ready-to-use templates, team skill libraries    |
+| **Subagents**       | Built-in agents, custom agent files, parallel and background execution |
+| **Agent Teams**     | Peer-to-peer multi-agent collaboration, when to use it vs. subagents   |
+| **Hooks**           | Pre/post tool hooks, automated quality gates, safety guardrails        |
+| **MCP Servers**     | Model Context Protocol setup, available servers, practical use cases   |
+| **Workflows**       | Orchestration patterns, commands, composing agents + skills            |
+| **Plugins**         | Plugin marketplace, installing and managing extensions                 |
+| **Context & Flags** | Context window management, CLI flags, permission modes                 |
+| **Debugging**       | Diagnosing common failures, session inspection, troubleshooting        |
 
 ### Resources
 

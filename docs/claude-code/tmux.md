@@ -2,7 +2,17 @@
 sidebar_position: 14
 sidebar_label: tmux
 description: tmux key bindings, session management, and pane navigation for Claude Code Agent Teams and terminal multiplexing.
-keywords: [tmux, terminal multiplexer, key bindings, pane navigation, session management, split panes, Claude Code, Agent Teams]
+keywords:
+  [
+    tmux,
+    terminal multiplexer,
+    key bindings,
+    pane navigation,
+    session management,
+    split panes,
+    Claude Code,
+    Agent Teams,
+  ]
 ---
 
 # tmux
@@ -14,11 +24,13 @@ This page covers installation, session management, key bindings, and common Clau
 ## Installation
 
 **macOS:**
+
 ```bash
 brew install tmux
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt update && sudo apt install tmux
 ```
@@ -27,11 +39,11 @@ sudo apt update && sudo apt install tmux
 
 ## Core concepts
 
-| Concept | What it is |
-|---------|------------|
+| Concept     | What it is                                                                     |
+| ----------- | ------------------------------------------------------------------------------ |
 | **Session** | A top-level workspace. Survives terminal closes; you can detach and re-attach. |
-| **Window** | A full-screen tab inside a session. A session can have many windows. |
-| **Pane** | A split region inside a window. Each pane runs its own shell. |
+| **Window**  | A full-screen tab inside a session. A session can have many windows.           |
+| **Pane**    | A split region inside a window. Each pane runs its own shell.                  |
 
 ## Key bindings
 
@@ -39,54 +51,54 @@ All tmux shortcuts start with the **prefix key**: `Ctrl+b` by default. Press the
 
 ### Sessions
 
-| Action | Key |
-|--------|-----|
+| Action                              | Key        |
+| ----------------------------------- | ---------- |
 | Detach from session (keeps running) | `Ctrl+b d` |
-| List and switch sessions | `Ctrl+b s` |
-| Rename current session | `Ctrl+b $` |
+| List and switch sessions            | `Ctrl+b s` |
+| Rename current session              | `Ctrl+b $` |
 
 ### Windows
 
-| Action | Key |
-|--------|-----|
-| Create new window | `Ctrl+b c` |
-| Next window | `Ctrl+b n` |
-| Previous window | `Ctrl+b p` |
+| Action                 | Key            |
+| ---------------------- | -------------- |
+| Create new window      | `Ctrl+b c`     |
+| Next window            | `Ctrl+b n`     |
+| Previous window        | `Ctrl+b p`     |
 | Go to window by number | `Ctrl+b 0`–`9` |
-| Rename current window | `Ctrl+b ,` |
-| Close current window | `Ctrl+b &` |
+| Rename current window  | `Ctrl+b ,`     |
+| Close current window   | `Ctrl+b &`     |
 
 ### Panes
 
-| Action | Key |
-|--------|-----|
-| Split vertically (side by side) | `Ctrl+b %` |
-| Split horizontally (top / bottom) | `Ctrl+b "` |
-| Navigate to pane | `Ctrl+b ←` `↑` `→` `↓` |
-| Zoom pane (toggle fullscreen) | `Ctrl+b z` |
-| Show pane numbers | `Ctrl+b q` |
-| Swap pane with next | `Ctrl+b {` or `Ctrl+b }` |
-| Close current pane | `Ctrl+b x` |
+| Action                            | Key                      |
+| --------------------------------- | ------------------------ |
+| Split vertically (side by side)   | `Ctrl+b %`               |
+| Split horizontally (top / bottom) | `Ctrl+b "`               |
+| Navigate to pane                  | `Ctrl+b ←` `↑` `→` `↓`   |
+| Zoom pane (toggle fullscreen)     | `Ctrl+b z`               |
+| Show pane numbers                 | `Ctrl+b q`               |
+| Swap pane with next               | `Ctrl+b {` or `Ctrl+b }` |
+| Close current pane                | `Ctrl+b x`               |
 
 ### Scrolling and copy mode
 
 By default the terminal output is not scrollable. Enter copy mode to scroll back through history.
 
-| Action | Key |
-|--------|-----|
-| Enter scroll / copy mode | `Ctrl+b [` |
-| Scroll up / down | Arrow keys or `Page Up` / `Page Down` |
-| Search forward | `/` then type query |
-| Search backward | `?` then type query |
-| Exit scroll mode | `q` or `Esc` |
+| Action                   | Key                                   |
+| ------------------------ | ------------------------------------- |
+| Enter scroll / copy mode | `Ctrl+b [`                            |
+| Scroll up / down         | Arrow keys or `Page Up` / `Page Down` |
+| Search forward           | `/` then type query                   |
+| Search backward          | `?` then type query                   |
+| Exit scroll mode         | `q` or `Esc`                          |
 
 ### Utilities
 
-| Action | Key |
-|--------|-----|
+| Action                | Key        |
+| --------------------- | ---------- |
 | List all key bindings | `Ctrl+b ?` |
-| Enter command mode | `Ctrl+b :` |
-| Clock | `Ctrl+b t` |
+| Enter command mode    | `Ctrl+b :` |
+| Clock                 | `Ctrl+b t` |
 
 ## Session management (CLI)
 

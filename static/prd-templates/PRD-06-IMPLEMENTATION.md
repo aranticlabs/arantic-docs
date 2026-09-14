@@ -29,12 +29,12 @@ This prevents unnecessary duplication and keeps developers aware of what already
 Replace the examples below with your project's actual shared components.
 -->
 
-| Component | Existing File | Usage |
-| --- | --- | --- |
-| [Base class/interface] | `[path/to/file]` | [How new code extends/uses it] |
-| [Error handling] | `[path/to/file]` | [e.g., Result pattern, exceptions] |
-| [Auth middleware] | `[path/to/file]` | [e.g., Role-based access control] |
-| [Shared utilities] | `[path/to/file]` | [e.g., Validation, formatting] |
+| Component              | Existing File    | Usage                              |
+| ---------------------- | ---------------- | ---------------------------------- |
+| [Base class/interface] | `[path/to/file]` | [How new code extends/uses it]     |
+| [Error handling]       | `[path/to/file]` | [e.g., Result pattern, exceptions] |
+| [Auth middleware]      | `[path/to/file]` | [e.g., Role-based access control]  |
+| [Shared utilities]     | `[path/to/file]` | [e.g., Validation, formatting]     |
 
 ### 6.1.2 New Files to Create
 
@@ -99,6 +99,7 @@ Register query handlers:
   Get[Entity]Handler
   List[Entities]Handler
 ```
+
 ```
 
 ---
@@ -111,35 +112,37 @@ Adapt the structure to match your project's conventions.
 -->
 
 ```
+
 frontend/src/[module-or-app]/
-|-- index.[ext]                                 # Entry point with routes
-|-- navigation.[ext]                            # Navigation / sidebar items
+|-- index.[ext] # Entry point with routes
+|-- navigation.[ext] # Navigation / sidebar items
 |
 |-- pages/
-|   |-- [Feature]ListPage.[ext]                 # List page with table
-|   |-- [Feature]DetailPage.[ext]               # Detail/edit page
-|   |-- [Feature]CreatePage.[ext]               # Create form (or modal)
-|   +-- [Feature]SettingsPage.[ext]             # Settings page (Admin)
+| |-- [Feature]ListPage.[ext] # List page with table
+| |-- [Feature]DetailPage.[ext] # Detail/edit page
+| |-- [Feature]CreatePage.[ext] # Create form (or modal)
+| +-- [Feature]SettingsPage.[ext] # Settings page (Admin)
 |
 |-- components/
-|   |-- [Feature]Table.[ext]                    # Data table component
-|   |-- [Feature]Form.[ext]                     # Create/edit form
-|   |-- [Feature]Card.[ext]                     # Summary card component
-|   |-- [Feature]StatusBadge.[ext]              # Status indicator
-|   +-- [Feature]Filters.[ext]                  # Search and filter bar
+| |-- [Feature]Table.[ext] # Data table component
+| |-- [Feature]Form.[ext] # Create/edit form
+| |-- [Feature]Card.[ext] # Summary card component
+| |-- [Feature]StatusBadge.[ext] # Status indicator
+| +-- [Feature]Filters.[ext] # Search and filter bar
 |
-|-- hooks/                                      # Data fetching / state hooks
-|   |-- use[Feature]List.[ext]                  # List/search data
-|   |-- use[Feature].[ext]                      # Single item data
-|   |-- useCreate[Feature].[ext]                # Create mutation
-|   |-- useUpdate[Feature].[ext]                # Update mutation
-|   +-- useDelete[Feature].[ext]                # Delete mutation
+|-- hooks/ # Data fetching / state hooks
+| |-- use[Feature]List.[ext] # List/search data
+| |-- use[Feature].[ext] # Single item data
+| |-- useCreate[Feature].[ext] # Create mutation
+| |-- useUpdate[Feature].[ext] # Update mutation
+| +-- useDelete[Feature].[ext] # Delete mutation
 |
 |-- api/
-|   +-- [feature]Api.[ext]                      # API client functions
+| +-- [feature]Api.[ext] # API client functions
 |
 +-- types/
-    +-- [feature].types.[ext]                   # Frontend-specific types
++-- [feature].types.[ext] # Frontend-specific types
+
 ```
 
 ### 6.2.1 Data Fetching Pattern
@@ -151,14 +154,16 @@ Adapt to your framework's data fetching mechanism.
 -->
 
 ```
+
 // Pseudocode - adapt to your data fetching library
 
 function use[Feature]List(params) {
-  // 1. Check authentication state
-  // 2. Build cache key from params
-  // 3. Call API client
-  // 4. Return { data, loading, error }
+// 1. Check authentication state
+// 2. Build cache key from params
+// 3. Call API client
+// 4. Return { data, loading, error }
 }
+
 ```
 
 ### 6.2.2 Cache Key Strategy
@@ -169,10 +174,12 @@ This ensures consistent cache invalidation across create/update/delete operation
 -->
 
 ```
-[feature]                          # Root key for all feature data
-[feature] / list / {params}        # List queries (invalidated on create/delete)
-[feature] / detail / {id}          # Single item (invalidated on update/delete)
-[feature] / settings               # Settings data
+
+[feature] # Root key for all feature data
+[feature] / list / {params} # List queries (invalidated on create/delete)
+[feature] / detail / {id} # Single item (invalidated on update/delete)
+[feature] / settings # Settings data
+
 ```
 
 ---
@@ -213,10 +220,12 @@ Include cross-app data flows, shared components, external services.
 ### 6.4.1 Cross-App Data Flow
 
 ```
-[App A]                    [This Feature]                    [App B]
-+-----------+              +----------------+                +-----------+
-| [Table X] |<--- reads ---| [Main Table]   |--- events --->| [Audit]    |
-+-----------+              +----------------+                +-----------+
+
+[App A] [This Feature] [App B]
++-----------+ +----------------+ +-----------+
+| [Table X] |<--- reads ---| [Main Table] |--- events --->| [Audit] |
++-----------+ +----------------+ +-----------+
+
 ```
 
 ### 6.4.2 Shared Components Used
@@ -238,3 +247,4 @@ Include cross-app data flows, shared components, external services.
 ## Next Document
 
 Continue to [PRD-07-IMPLEMENTATION-STEPS.md](./PRD-07-IMPLEMENTATION-STEPS.md) for the phased implementation plan with task checklists.
+```

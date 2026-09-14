@@ -2,7 +2,16 @@
 sidebar_position: 11
 sidebar_label: Plugins
 description: Plugins are installable packages that bundle multiple skills, agents, hooks, and tool integrations into versioned shareable units for Claude Code.
-keywords: [Claude Code plugins, plugin marketplace, installable extensions, skills bundle, agent integrations, versioned packages, community plugins]
+keywords:
+  [
+    Claude Code plugins,
+    plugin marketplace,
+    installable extensions,
+    skills bundle,
+    agent integrations,
+    versioned packages,
+    community plugins,
+  ]
 ---
 
 # Plugins
@@ -13,13 +22,13 @@ Plugins are installable packages that extend Claude Code with additional skills,
 
 All three mechanisms add capabilities to Claude Code, but they serve different scopes:
 
-| | Standalone (`.claude/`) | Skills | Plugins |
-|---|---|---|---|
-| Skill command names | `/skill-name` | `/skill-name` | `/plugin-name:skill-name` |
-| Scope | One project | One project | Any project |
-| Distribution | Manual copy | Manual copy | Marketplace install |
-| Versioning | Not tracked | Not tracked | Semantic versioning |
-| Best for | Personal experiments, project conventions | Reusable prompt templates | Shared team tooling, community distribution |
+|                     | Standalone (`.claude/`)                   | Skills                    | Plugins                                     |
+| ------------------- | ----------------------------------------- | ------------------------- | ------------------------------------------- |
+| Skill command names | `/skill-name`                             | `/skill-name`             | `/plugin-name:skill-name`                   |
+| Scope               | One project                               | One project               | Any project                                 |
+| Distribution        | Manual copy                               | Manual copy               | Marketplace install                         |
+| Versioning          | Not tracked                               | Not tracked               | Semantic versioning                         |
+| Best for            | Personal experiments, project conventions | Reusable prompt templates | Shared team tooling, community distribution |
 
 Use standalone config and skills for things that are specific to a project or your own workflow. Use plugins when you want to share capabilities across projects, distribute to your team, or publish to the community.
 
@@ -125,10 +134,8 @@ To distribute plugins, a marketplace repository needs a `.claude-plugin/marketpl
 ```json
 {
   "name": "your-marketplace-name",
-  "owner": { "name": "Your Name" },
-  "plugins": [
-    { "name": "plugin-name", "source": "./plugins/plugin-name" }
-  ]
+  "owner": {"name": "Your Name"},
+  "plugins": [{"name": "plugin-name", "source": "./plugins/plugin-name"}]
 }
 ```
 
@@ -194,13 +201,13 @@ Connects Claude Code to Git hooks so you can trigger skills or agents automatica
 
 Install the LSP plugin for your primary language. Each one connects Claude Code to the language's official language server, giving it access to real-time diagnostics, type information, and cross-file references.
 
-| Language | Plugin | Language server |
-|---|---|---|
-| TypeScript / JavaScript | [`typescript-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/typescript-lsp) | [typescript-language-server](https://github.com/typescript-language-server/typescript-language-server) |
-| Python | [`pyright-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp) | [Pyright](https://github.com/microsoft/pyright) |
-| Go | [`gopls-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/gopls-lsp) | [gopls](https://pkg.go.dev/golang.org/x/tools/gopls) |
-| Rust | [`rust-analyzer-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/rust-analyzer-lsp) | [rust-analyzer](https://rust-analyzer.github.io/) |
-| C# | [`csharp-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/csharp-lsp) | [csharp-language-server](https://github.com/razzmatazz/csharp-language-server) |
+| Language                | Plugin                                                                                                           | Language server                                                                                        |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| TypeScript / JavaScript | [`typescript-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/typescript-lsp)       | [typescript-language-server](https://github.com/typescript-language-server/typescript-language-server) |
+| Python                  | [`pyright-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp)             | [Pyright](https://github.com/microsoft/pyright)                                                        |
+| Go                      | [`gopls-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/gopls-lsp)                 | [gopls](https://pkg.go.dev/golang.org/x/tools/gopls)                                                   |
+| Rust                    | [`rust-analyzer-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/rust-analyzer-lsp) | [rust-analyzer](https://rust-analyzer.github.io/)                                                      |
+| C#                      | [`csharp-lsp`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/csharp-lsp)               | [csharp-language-server](https://github.com/razzmatazz/csharp-language-server)                         |
 
 ```bash
 /plugin install typescript-lsp@claude-plugins-official
