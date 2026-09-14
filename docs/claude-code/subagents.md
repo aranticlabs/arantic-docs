@@ -2,7 +2,7 @@
 sidebar_position: 8
 sidebar_label: Subagents
 description: Subagents let Claude Code delegate focused tasks to child instances with isolated context windows, keeping your main session tidy and token-efficient.
-keywords: [Claude Code subagents, child agents, context window, delegation, AI orchestration, task delegation, token efficiency, parallel tasks]
+keywords: [Claude Code subagents, child agents, context window, delegation, AI orchestration, fork mode, background subagents, token efficiency, parallel tasks]
 ---
 
 # Subagents
@@ -738,6 +738,30 @@ Run the test suite in the background while I keep working.
 Press **Ctrl+B** to background a running task. A background subagent's result reaches the main agent as a completion notification in a later turn (v2.1.211+); if you ask about progress before it finishes, the main agent reports that the subagent is still running rather than guessing at results.
 
 When a background subagent needs a permission decision, the prompt surfaces in your main session instead of being auto-denied. The dialog shows which agent is asking, and pressing **Esc** denies only that one tool call.
+
+### Fork mode
+
+A **fork** is a special kind of subagent that inherits the entire conversation so far instead of starting from a clean slate. It sees the same system prompt, tools, model, and message history as your main session, so you can hand it a side task without re-explaining the context. Because it keeps reading the prompt cache the main session already warmed, a fork is cheaper to start than a fully isolated subagent. As with any subagent, the fork's own tool calls stay out of your main conversation and only its final summary returns, so your main context window stays clean.
+
+Fork mode is **on by default** in interactive sessions. While it is on, Claude Code runs the subagents it spawns in the background (forks and non-fork subagents alike) and cannot pause to ask for a foreground run.
+
+Start a fork yourself with `/subtask` followed by a task, whether or not fork mode is on (requires v2.1.212 or later; the command was `/fork` on v2.1.161 through v2.1.211):
+
+```text
+/subtask draft unit tests for the parser changes so far
+```
+
+To turn fork mode off, set `CLAUDE_CODE_FORK_SUBAGENT=0` as an environment variable or in your `settings.json`:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  }
+}
+```
+
+With fork mode off, subagents still run in the background by default (as of v2.1.198), but Claude can request a foreground subagent when it needs the result before it can continue.
 
 ### Nested subagents
 
