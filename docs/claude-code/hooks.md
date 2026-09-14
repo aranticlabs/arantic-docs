@@ -2,7 +2,17 @@
 sidebar_position: 9
 sidebar_label: Hooks
 description: Hooks are shell commands and HTTP requests that run deterministically at specific Claude Code lifecycle events, providing reliable automation independent of AI judgment.
-keywords: [Claude Code hooks, lifecycle hooks, shell commands, deterministic automation, formatting, file protection, pre-tool hooks, post-tool hooks]
+keywords:
+  [
+    Claude Code hooks,
+    lifecycle hooks,
+    shell commands,
+    deterministic automation,
+    formatting,
+    file protection,
+    pre-tool hooks,
+    post-tool hooks,
+  ]
 ---
 
 # Hooks
@@ -25,53 +35,53 @@ Hooks solve this by letting you define rules that execute automatically at the r
 
 Claude Code supports five types of hooks:
 
-| Type | What it does | Best for |
-|------|-------------|----------|
-| **command** | Runs a shell command | File operations, linting, formatting, scripts |
-| **http** | Sends a POST request to a URL | External integrations, logging services, webhooks |
+| Type         | What it does                           | Best for                                               |
+| ------------ | -------------------------------------- | ------------------------------------------------------ |
+| **command**  | Runs a shell command                   | File operations, linting, formatting, scripts          |
+| **http**     | Sends a POST request to a URL          | External integrations, logging services, webhooks      |
 | **mcp_tool** | Calls a tool on a connected MCP server | Delegating to external tools already configured in MCP |
-| **prompt** | Evaluates a single LLM prompt | Judgment-based checks (is this code safe?) |
-| **agent** | Spawns a subagent with tool access | Complex verification (run tests, check coverage) |
+| **prompt**   | Evaluates a single LLM prompt          | Judgment-based checks (is this code safe?)             |
+| **agent**    | Spawns a subagent with tool access     | Complex verification (run tests, check coverage)       |
 
 ## Lifecycle events
 
 Hooks attach to lifecycle events. Each event fires at a specific moment during a Claude Code session:
 
-| Event | When it fires | Supports all types? |
-|-------|---------------|---------------------|
-| **SessionStart** | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact`, `fork` | Command only |
-| **Setup** | Runs when Claude Code is started with `--init-only`, or with `--init` or `--maintenance` in `-p` mode. Use for one-time preparation in CI or scripts. Matcher values: `init`, `maintenance` | Command only |
-| **UserPromptSubmit** | User submits a prompt, before Claude processes it | All |
-| **UserPromptExpansion** | A slash command is expanded before Claude sees the prompt. Matcher: command name | All |
-| **PreToolUse** | Before a tool call executes (can block it) | All |
-| **PermissionRequest** | When a permission dialog appears | All |
-| **PermissionDenied** | When auto mode classifier denies a tool call. Return `retry: true` to allow retry | All |
-| **PostToolUse** | After a tool call succeeds | All |
-| **PostToolUseFailure** | After a tool call fails | All |
-| **PostToolBatch** | After a batch of parallel tool calls completes | All |
-| **Notification** | When Claude Code sends a notification. Matcher values: `permission_prompt`, `idle_prompt`, `auth_success`, `elicitation_dialog` | Command only |
-| **SubagentStart** | A subagent spawns. Matcher values: agent type names (e.g. `Explore`, `Plan`) | All |
-| **SubagentStop** | A subagent finishes | All |
-| **Stop** | Claude finishes responding (not on user interrupt) | All |
-| **StopFailure** | A turn ends due to an API error. Matcher values: `rate_limit`, `authentication_failed` | All |
-| **TaskCreated** | A task is created | All |
-| **TaskCompleted** | A task is marked as completed | All |
-| **InstructionsLoaded** | A CLAUDE.md or `.claude/rules/` file is loaded. Matcher values: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact` | All |
-| **FileChanged** | A watched file changes on disk. Matcher: literal filename or glob pattern | Command only |
-| **CwdChanged** | Working directory changes | Command only |
-| **DirectoryAdded** | A working directory is added mid-session (via `/add-dir` or the SDK `register_repo_root` request). Matcher values: `slash_command`, `register_repo_root` | Command only |
-| **PreModelSwitch** | Before Claude Code applies a requested model switch (can block it). Matcher: the canonical model name | All |
-| **PostModelSwitch** | After the session's model changes, including changes Claude Code makes on its own | All |
-| **PreCompact** | Before context compaction. Matcher values: `manual`, `auto` | Command only |
-| **PostCompact** | After context compaction | Command only |
-| **Elicitation** | An MCP server requests user input | All |
-| **ElicitationResult** | Result of an MCP elicitation | All |
-| **ConfigChange** | A config file changes during the session. Matcher values: `user_settings`, `project_settings`, `local_settings`, `policy_settings`, `skills` | Command only |
-| **MessageDisplay** | When assistant message text displays. Use to replace displayed text or route messages to external systems | All |
-| **WorktreeCreate** | A git worktree is created | Command only |
-| **WorktreeRemove** | A git worktree is removed | Command only |
-| **TeammateIdle** | An agent team teammate is about to go idle | Command only |
-| **SessionEnd** | Session terminates. Matcher values: `clear`, `resume`, `logout`, `prompt_input_exit`, `other` | Command only |
+| Event                   | When it fires                                                                                                                                                                               | Supports all types? |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| **SessionStart**        | Session begins or resumes. Matcher values: `startup`, `resume`, `clear`, `compact`, `fork`                                                                                                  | Command only        |
+| **Setup**               | Runs when Claude Code is started with `--init-only`, or with `--init` or `--maintenance` in `-p` mode. Use for one-time preparation in CI or scripts. Matcher values: `init`, `maintenance` | Command only        |
+| **UserPromptSubmit**    | User submits a prompt, before Claude processes it                                                                                                                                           | All                 |
+| **UserPromptExpansion** | A slash command is expanded before Claude sees the prompt. Matcher: command name                                                                                                            | All                 |
+| **PreToolUse**          | Before a tool call executes (can block it)                                                                                                                                                  | All                 |
+| **PermissionRequest**   | When a permission dialog appears                                                                                                                                                            | All                 |
+| **PermissionDenied**    | When auto mode classifier denies a tool call. Return `retry: true` to allow retry                                                                                                           | All                 |
+| **PostToolUse**         | After a tool call succeeds                                                                                                                                                                  | All                 |
+| **PostToolUseFailure**  | After a tool call fails                                                                                                                                                                     | All                 |
+| **PostToolBatch**       | After a batch of parallel tool calls completes                                                                                                                                              | All                 |
+| **Notification**        | When Claude Code sends a notification. Matcher values: `permission_prompt`, `idle_prompt`, `auth_success`, `elicitation_dialog`                                                             | Command only        |
+| **SubagentStart**       | A subagent spawns. Matcher values: agent type names (e.g. `Explore`, `Plan`)                                                                                                                | All                 |
+| **SubagentStop**        | A subagent finishes                                                                                                                                                                         | All                 |
+| **Stop**                | Claude finishes responding (not on user interrupt)                                                                                                                                          | All                 |
+| **StopFailure**         | A turn ends due to an API error. Matcher values: `rate_limit`, `authentication_failed`                                                                                                      | All                 |
+| **TaskCreated**         | A task is created                                                                                                                                                                           | All                 |
+| **TaskCompleted**       | A task is marked as completed                                                                                                                                                               | All                 |
+| **InstructionsLoaded**  | A CLAUDE.md or `.claude/rules/` file is loaded. Matcher values: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact`                                                | All                 |
+| **FileChanged**         | A watched file changes on disk. Matcher: literal filename or glob pattern                                                                                                                   | Command only        |
+| **CwdChanged**          | Working directory changes                                                                                                                                                                   | Command only        |
+| **DirectoryAdded**      | A working directory is added mid-session (via `/add-dir` or the SDK `register_repo_root` request). Matcher values: `slash_command`, `register_repo_root`                                    | Command only        |
+| **PreModelSwitch**      | Before Claude Code applies a requested model switch (can block it). Matcher: the canonical model name                                                                                       | All                 |
+| **PostModelSwitch**     | After the session's model changes, including changes Claude Code makes on its own                                                                                                           | All                 |
+| **PreCompact**          | Before context compaction. Matcher values: `manual`, `auto`                                                                                                                                 | Command only        |
+| **PostCompact**         | After context compaction                                                                                                                                                                    | Command only        |
+| **Elicitation**         | An MCP server requests user input                                                                                                                                                           | All                 |
+| **ElicitationResult**   | Result of an MCP elicitation                                                                                                                                                                | All                 |
+| **ConfigChange**        | A config file changes during the session. Matcher values: `user_settings`, `project_settings`, `local_settings`, `policy_settings`, `skills`                                                | Command only        |
+| **MessageDisplay**      | When assistant message text displays. Use to replace displayed text or route messages to external systems                                                                                   | All                 |
+| **WorktreeCreate**      | A git worktree is created                                                                                                                                                                   | Command only        |
+| **WorktreeRemove**      | A git worktree is removed                                                                                                                                                                   | Command only        |
+| **TeammateIdle**        | An agent team teammate is about to go idle                                                                                                                                                  | Command only        |
+| **SessionEnd**          | Session terminates. Matcher values: `clear`, `resume`, `logout`, `prompt_input_exit`, `other`                                                                                               | Command only        |
 
 ## Configuration
 
@@ -79,12 +89,12 @@ Hooks attach to lifecycle events. Each event fires at a specific moment during a
 
 Hooks can be defined at different scopes:
 
-| Location | Scope | Shareable with team? |
-|----------|-------|----------------------|
-| `~/.claude/settings.json` | All your projects (user-level) | No |
-| `.claude/settings.json` | Current project | Yes (commit it) |
-| `.claude/settings.local.json` | Current project, local only | No (gitignored) |
-| Skill or agent frontmatter | Active while that component runs | Yes |
+| Location                      | Scope                            | Shareable with team? |
+| ----------------------------- | -------------------------------- | -------------------- |
+| `~/.claude/settings.json`     | All your projects (user-level)   | No                   |
+| `.claude/settings.json`       | Current project                  | Yes (commit it)      |
+| `.claude/settings.local.json` | Current project, local only      | No (gitignored)      |
+| Skill or agent frontmatter    | Active while that component runs | Yes                  |
 
 ### Basic structure
 
@@ -422,10 +432,10 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
 ### Exit codes
 
-| Exit code | Effect |
-|-----------|--------|
-| **0** | Action proceeds. Stdout is added to Claude's context. |
-| **2** | Action blocked. Stderr is sent to Claude as feedback. |
+| Exit code | Effect                                                     |
+| --------- | ---------------------------------------------------------- |
+| **0**     | Action proceeds. Stdout is added to Claude's context.      |
+| **2**     | Action blocked. Stderr is sent to Claude as feedback.      |
 | **Other** | Action proceeds. Output is logged but not shown to Claude. |
 
 ### Structured JSON output
@@ -443,6 +453,7 @@ For finer control, return JSON on stdout (with exit 0):
 ```
 
 Valid `permissionDecision` values for `PreToolUse`:
+
 - `"allow"`: bypass the permission prompt and let the tool run
 - `"deny"`: block the tool call and send the reason to Claude
 - `"ask"`: show the normal permission prompt to the user
@@ -459,12 +470,11 @@ name: deploy
 description: Deploy the application
 hooks:
   PreToolUse:
-    - matcher: "Bash"
+    - matcher: 'Bash'
       hooks:
-        - type: "command"
+        - type: 'command'
           command: "echo 'Deploy hook: validating command' >&2"
 ---
-
 Deploy instructions here...
 ```
 
@@ -472,13 +482,13 @@ These hooks only run while that skill or agent is active.
 
 ## Hooks vs. skills
 
-| | Hooks | Skills |
-|-|-------|--------|
-| **Execution** | Automatic on lifecycle events | Claude decides when to use (or user invokes with `/`) |
-| **Determinism** | Always runs the same way | AI-driven, flexible |
-| **Can block actions** | Yes (exit code 2 or `permissionDecision: deny`) | No |
-| **Tool access** | Limited to stdin/stdout | Full tool access |
-| **Best for** | Formatting, linting, protection, notifications, auditing | Instructions, conventions, reusable tasks |
+|                       | Hooks                                                    | Skills                                                |
+| --------------------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| **Execution**         | Automatic on lifecycle events                            | Claude decides when to use (or user invokes with `/`) |
+| **Determinism**       | Always runs the same way                                 | AI-driven, flexible                                   |
+| **Can block actions** | Yes (exit code 2 or `permissionDecision: deny`)          | No                                                    |
+| **Tool access**       | Limited to stdin/stdout                                  | Full tool access                                      |
+| **Best for**          | Formatting, linting, protection, notifications, auditing | Instructions, conventions, reusable tasks             |
 
 **Rule of thumb:** if it should happen every time without exception, use a hook. If it requires judgment or flexibility, use a skill.
 

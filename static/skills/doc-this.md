@@ -6,6 +6,7 @@ description: Generate missing inline documentation (JSDoc, docstrings, doc comme
 Write inline documentation for $ARGUMENTS.
 
 Steps:
+
 1. Read the file.
 2. Identify the documentation style already in use (JSDoc, Python docstrings, Go doc comments, Rust doc comments, etc.) and match it exactly.
 3. For each exported or public function, method, class, and type that lacks documentation, write:
@@ -16,6 +17,7 @@ Steps:
    - A short usage example if the function is non-trivial
 
 Rules:
+
 - Do not document trivial getters, setters, or constructors that are self-explanatory from their names
 - Do not restate the function signature; describe behavior and intent
 - For complex functions, explain why (the design decision), not just what

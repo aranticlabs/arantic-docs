@@ -2,7 +2,17 @@
 sidebar_position: 12
 sidebar_label: Workflows & Orchestration
 description: Compose Claude Code skills, subagents, and hooks into structured orchestration patterns for complex, multi-step automated development tasks.
-keywords: [Claude Code workflows, orchestration, automation patterns, skills, subagents, hooks, multi-step tasks, workflow composition]
+keywords:
+  [
+    Claude Code workflows,
+    orchestration,
+    automation patterns,
+    skills,
+    subagents,
+    hooks,
+    multi-step tasks,
+    workflow composition,
+  ]
 ---
 
 # Workflows & Orchestration
@@ -13,11 +23,11 @@ Claude Code's skills, subagents, and hooks can be composed into structured workf
 
 Before diving into patterns, it helps to understand the three building blocks Claude Code provides for automation:
 
-| Building block | Purpose | Location |
-|----------------|---------|----------|
-| **Skill** | Reusable instructions, knowledge, or task definitions invoked via `/skill-name` or automatically by Claude | `.claude/skills/<name>/SKILL.md` |
-| **Subagent** | Focused agent with its own context, tools, and optional preloaded skills | `.claude/agents/<name>.md` |
-| **Hook** | Deterministic shell command that runs in response to lifecycle events (not AI-driven) | `.claude/settings.json` |
+| Building block | Purpose                                                                                                    | Location                         |
+| -------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| **Skill**      | Reusable instructions, knowledge, or task definitions invoked via `/skill-name` or automatically by Claude | `.claude/skills/<name>/SKILL.md` |
+| **Subagent**   | Focused agent with its own context, tools, and optional preloaded skills                                   | `.claude/agents/<name>.md`       |
+| **Hook**       | Deterministic shell command that runs in response to lifecycle events (not AI-driven)                      | `.claude/settings.json`          |
 
 ### Skills
 
@@ -25,10 +35,13 @@ Skills are the primary extension mechanism in Claude Code. Each skill is a direc
 
 ```markdown
 # .claude/skills/rest-conventions/SKILL.md
+
 ---
+
 name: rest-conventions
 description: REST API conventions for this project
 user-invocable: false
+
 ---
 
 - Routes go in src/routes/
@@ -41,26 +54,29 @@ user-invocable: false
 
 Key frontmatter fields for skills:
 
-| Field | Type | Purpose |
-|-------|------|---------|
-| `name` | string | Identifier (lowercase, hyphens, max 64 chars) |
-| `description` | string | Tells Claude when to use this skill |
-| `user-invocable` | boolean | Whether it shows in the `/` menu |
-| `disable-model-invocation` | boolean | Prevent Claude from invoking automatically |
-| `allowed-tools` | string | Comma-separated tool names Claude can use |
-| `model` | string | `sonnet`, `opus`, `haiku`, or `inherit` |
-| `context` | string | Set to `fork` to run in an isolated subagent |
-| `agent` | string | Agent type when using `context: fork` (`Explore`, `Plan`, `general-purpose`) |
+| Field                      | Type    | Purpose                                                                      |
+| -------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `name`                     | string  | Identifier (lowercase, hyphens, max 64 chars)                                |
+| `description`              | string  | Tells Claude when to use this skill                                          |
+| `user-invocable`           | boolean | Whether it shows in the `/` menu                                             |
+| `disable-model-invocation` | boolean | Prevent Claude from invoking automatically                                   |
+| `allowed-tools`            | string  | Comma-separated tool names Claude can use                                    |
+| `model`                    | string  | `sonnet`, `opus`, `haiku`, or `inherit`                                      |
+| `context`                  | string  | Set to `fork` to run in an isolated subagent                                 |
+| `agent`                    | string  | Agent type when using `context: fork` (`Explore`, `Plan`, `general-purpose`) |
 
 Skills support `$ARGUMENTS` for user input:
 
 ```markdown
 # .claude/skills/fix-issue/SKILL.md
+
 ---
+
 name: fix-issue
 description: Fix a GitHub issue by number
 user-invocable: true
 allowed-tools: Read, Edit, Grep, Glob, Bash
+
 ---
 
 Fix GitHub issue $ARGUMENTS following our coding standards.
@@ -74,17 +90,22 @@ Subagents are specialized agents with their own isolated context window, system 
 
 ```markdown
 # .claude/agents/code-reviewer.md
+
 ---
+
 name: code-reviewer
 description: Reviews code changes for quality, security, and conventions
 tools: Read, Grep, Glob
 model: sonnet
 skills:
-  - rest-conventions
-  - error-handling-patterns
+
+- rest-conventions
+- error-handling-patterns
+
 ---
 
 You are a senior code reviewer. Analyze the provided code changes and report:
+
 1. Bugs or logic errors
 2. Security concerns
 3. Convention violations
@@ -93,18 +114,19 @@ You are a senior code reviewer. Analyze the provided code changes and report:
 
 Key frontmatter fields for subagents:
 
-| Field | Type | Purpose |
-|-------|------|---------|
-| `name` | string | Unique identifier |
-| `description` | string | When Claude should delegate to this agent (required) |
-| `tools` | string | Comma-separated allowed tools |
-| `model` | string | `sonnet`, `opus`, `haiku`, or `inherit` |
-| `skills` | array | Skills to preload into context: `["skill-1", "skill-2"]` |
-| `maxTurns` | number | Max agentic turns before stopping |
-| `isolation` | string | Set to `worktree` for git worktree isolation |
-| `background` | boolean | Always run as a background task |
+| Field         | Type    | Purpose                                                  |
+| ------------- | ------- | -------------------------------------------------------- |
+| `name`        | string  | Unique identifier                                        |
+| `description` | string  | When Claude should delegate to this agent (required)     |
+| `tools`       | string  | Comma-separated allowed tools                            |
+| `model`       | string  | `sonnet`, `opus`, `haiku`, or `inherit`                  |
+| `skills`      | array   | Skills to preload into context: `["skill-1", "skill-2"]` |
+| `maxTurns`    | number  | Max agentic turns before stopping                        |
+| `isolation`   | string  | Set to `worktree` for git worktree isolation             |
+| `background`  | boolean | Always run as a background task                          |
 
 **Important limitations:**
+
 - Subagents cannot spawn other subagents (no nesting)
 - Maximum 10 concurrent subagents
 - Use the main conversation to chain subagents sequentially
@@ -156,6 +178,7 @@ Build API endpoints following our conventions.
 
 ```markdown
 # In any prompt:
+
 Use the Skill tool to invoke "generate-tests" for each new endpoint.
 ```
 
@@ -163,21 +186,26 @@ Use the Skill tool to invoke "generate-tests" for each new endpoint.
 
 ```markdown
 # .claude/skills/deep-research/SKILL.md
+
 ---
+
 name: deep-research
 description: Thorough codebase research with isolated context
 context: fork
 agent: Explore
 model: sonnet
+
 ---
 
 Research $ARGUMENTS thoroughly:
+
 1. Find all relevant files and patterns
 2. Analyze dependencies and integration points
 3. Produce a summary of findings
 ```
 
 **When to use which:**
+
 - **Preload** domain knowledge, coding conventions, and reference material the agent needs throughout its work
 - **Directly invoke** skills that produce independent artifacts (test files, documentation, reports)
 - **Use `context: fork`** for tasks that need deep, isolated exploration without polluting the main context
@@ -262,13 +290,16 @@ Before committing to implementation, investigate feasibility. Create a skill for
 
 ```markdown
 # .claude/skills/rpi-research/SKILL.md
+
 ---
+
 name: rpi-research
 description: Research feasibility for a planned feature
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, WebSearch, WebFetch
 context: fork
 agent: Explore
+
 ---
 
 Research the feasibility of implementing the following feature:
@@ -276,6 +307,7 @@ Research the feasibility of implementing the following feature:
 $ARGUMENTS
 
 Produce a RESEARCH.md file containing:
+
 1. **Existing code analysis**: relevant files, patterns, and integration points
 2. **Dependencies**: libraries needed, compatibility with current stack
 3. **Technical risks**: complexity, performance concerns, security implications
@@ -297,16 +329,20 @@ If the research phase returns GO, generate detailed implementation artifacts:
 
 ```markdown
 # .claude/skills/rpi-plan/SKILL.md
+
 ---
+
 name: rpi-plan
 description: Create an implementation plan from research findings
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
+
 ---
 
 Read RESEARCH.md and create an implementation plan.
 
 Produce these documents:
+
 1. **PLAN.md**: step-by-step implementation roadmap with file-level detail
 2. **REQUIREMENTS.md**: acceptance criteria for each piece of functionality
 3. **ARCHITECTURE.md**: technical design decisions, data flow, component diagram (as text)
@@ -320,16 +356,20 @@ Work through the plan step by step, committing after each completed step:
 
 ```markdown
 # .claude/skills/rpi-implement/SKILL.md
+
 ---
+
 name: rpi-implement
 description: Implement the next step from the plan
 user-invocable: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+
 ---
 
 Read PLAN.md. Find the first incomplete step (not marked with [x]).
 
 Implement that step:
+
 1. Write the code changes
 2. Run relevant tests
 3. Mark the step as complete in PLAN.md: change `[ ]` to `[x]`
@@ -353,12 +393,14 @@ Do not skip ahead to other steps.
 A skill that tries to do everything will hit context limits and produce worse results than one that delegates to focused subagents.
 
 **Too broad:**
+
 ```markdown
 Read the codebase, design the API, write the code, write tests, write docs,
 and deploy to staging.
 ```
 
 **Better:**
+
 ```markdown
 1. Use the "architect" agent to design the API
 2. Use the "implementer" agent to build it
@@ -387,11 +429,11 @@ Each phase or significant step should end with a git commit. This creates natura
 
 Not every step needs the most capable (and expensive) model:
 
-| Task type | Recommended model |
-|-----------|-------------------|
-| Architecture decisions, complex reasoning | Opus |
-| Code generation, standard implementation | Sonnet |
-| Mechanical tasks (formatting, search, simple edits) | Haiku |
+| Task type                                           | Recommended model |
+| --------------------------------------------------- | ----------------- |
+| Architecture decisions, complex reasoning           | Opus              |
+| Code generation, standard implementation            | Sonnet            |
+| Mechanical tasks (formatting, search, simple edits) | Haiku             |
 
 Set the model in frontmatter:
 

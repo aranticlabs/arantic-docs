@@ -11,11 +11,11 @@ In a multi-app system, clarify schema ownership.
 
 This module is part of the **[Platform Name]** platform. Each app owns its own database schema:
 
-| App | Schema | Example Tables |
-| --- | --- | --- |
-| [App 1] | `[schema_1]` | `[schema_1].[table_a]`, `[schema_1].[table_b]` |
-| [App 2] | `[schema_2]` | `[schema_2].[table_c]` |
-| **[This App]** | **`[this_schema]`** | **`[this_schema].[main_table]`** |
+| App            | Schema              | Example Tables                                 |
+| -------------- | ------------------- | ---------------------------------------------- |
+| [App 1]        | `[schema_1]`        | `[schema_1].[table_a]`, `[schema_1].[table_b]` |
+| [App 2]        | `[schema_2]`        | `[schema_2].[table_c]`                         |
+| **[This App]** | **`[this_schema]`** | **`[this_schema].[main_table]`**               |
 
 ### Schema Ownership
 

@@ -10,8 +10,19 @@ const config: Config = {
   favicon: 'img/brand/favicon.ico',
 
   headTags: [
-    { tagName: 'link', attributes: { rel: 'icon', type: 'image/svg+xml', href: '/img/brand/favicon.svg' } },
-    { tagName: 'link', attributes: { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/img/brand/favicon-96x96.png' } },
+    {
+      tagName: 'link',
+      attributes: {rel: 'icon', type: 'image/svg+xml', href: '/img/brand/favicon.svg'},
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '96x96',
+        href: '/img/brand/favicon-96x96.png',
+      },
+    },
     {
       tagName: 'script',
       attributes: {},
@@ -53,8 +64,8 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
     localeConfigs: {
-      en: { label: 'English' },
-      de: { label: 'Deutsch' },
+      en: {label: 'English'},
+      de: {label: 'Deutsch'},
     },
   },
 
@@ -115,8 +126,16 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     metadata: [
-      {name: 'keywords', content: 'ai programming, claude code, github copilot, cursor, prompting, code generation, ai debugging, ai testing'},
-      {name: 'description', content: 'Practical guides on using AI tools for programming — prompting, code generation, debugging, testing, and tool integrations.'},
+      {
+        name: 'keywords',
+        content:
+          'ai programming, claude code, github copilot, cursor, prompting, code generation, ai debugging, ai testing',
+      },
+      {
+        name: 'description',
+        content:
+          'Practical guides on using AI tools for programming — prompting, code generation, debugging, testing, and tool integrations.',
+      },
       {name: 'author', content: 'Arantic Digital'},
       {property: 'og:type', content: 'website'},
       {property: 'og:site_name', content: 'Arantic Documentation'},
@@ -142,6 +161,18 @@ const config: Config = {
           label: 'Claude Code',
           position: 'left',
           activeBasePath: '/claude-code',
+        },
+        {
+          to: '/codex',
+          label: 'Codex',
+          position: 'left',
+          activeBasePath: '/codex',
+        },
+        {
+          to: '/cursor',
+          label: 'Cursor',
+          position: 'left',
+          activeBasePath: '/cursor',
         },
         {
           to: '/tools',
@@ -190,6 +221,14 @@ const config: Config = {
             {
               label: 'Claude Code',
               to: '/claude-code',
+            },
+            {
+              label: 'Codex',
+              to: '/codex',
+            },
+            {
+              label: 'Cursor',
+              to: '/cursor',
             },
             {
               label: 'GitHub Repos',

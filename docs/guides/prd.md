@@ -2,7 +2,17 @@
 sidebar_position: 4
 sidebar_label: PRD
 description: Learn how to write Product Requirements Documents that give AI coding assistants complete context upfront, dramatically improving output quality.
-keywords: [PRD, product requirements document, AI-assisted development, specification, Claude Code, software planning, AI context, requirements template]
+keywords:
+  [
+    PRD,
+    product requirements document,
+    AI-assisted development,
+    specification,
+    Claude Code,
+    software planning,
+    AI context,
+    requirements template,
+  ]
 ---
 
 # Product Requirements Document (PRD)
@@ -44,16 +54,16 @@ The AI reads your requirements, studies the codebase, and proposes an implementa
 
 The template system splits a feature specification into an index file plus 7 focused documents. Each has a clear purpose and audience.
 
-| Document | Purpose | Primary audience |
-|----------|---------|-----------------|
-| **00-INDEX** | Navigation hub, feature summary, key decisions | Everyone |
-| **01-OVERVIEW** | Vision, scope, success criteria, high-level wireframes, technical notes | Product owners, developers |
-| **02-BUSINESS-LOGIC** | Domain terms, user stories, acceptance criteria, rules, test cases | Product owners, developers |
-| **03-DATABASE-SCHEMA** | SQL definitions, indexes, TypeScript interfaces | Developers |
-| **04-API-ENDPOINTS** | REST API specification with request/response types | Developers |
-| **05-FRONTEND-UI** | Detailed wireframes, component specs, interaction patterns, responsive behavior | Developers, designers |
-| **06-IMPLEMENTATION** | Code architecture, directory structure, integration points | Developers |
-| **07-IMPLEMENTATION-STEPS** | Phased task list with dependencies | Developers, AI assistants |
+| Document                    | Purpose                                                                         | Primary audience           |
+| --------------------------- | ------------------------------------------------------------------------------- | -------------------------- |
+| **00-INDEX**                | Navigation hub, feature summary, key decisions                                  | Everyone                   |
+| **01-OVERVIEW**             | Vision, scope, success criteria, high-level wireframes, technical notes         | Product owners, developers |
+| **02-BUSINESS-LOGIC**       | Domain terms, user stories, acceptance criteria, rules, test cases              | Product owners, developers |
+| **03-DATABASE-SCHEMA**      | SQL definitions, indexes, TypeScript interfaces                                 | Developers                 |
+| **04-API-ENDPOINTS**        | REST API specification with request/response types                              | Developers                 |
+| **05-FRONTEND-UI**          | Detailed wireframes, component specs, interaction patterns, responsive behavior | Developers, designers      |
+| **06-IMPLEMENTATION**       | Code architecture, directory structure, integration points                      | Developers                 |
+| **07-IMPLEMENTATION-STEPS** | Phased task list with dependencies                                              | Developers, AI assistants  |
 
 **Why separate documents?** Splitting the PRD into focused files keeps each document manageable and lets you feed specific sections to an AI assistant without overloading its context window. When Claude Code needs to implement API endpoints, you point it at the API document. When it needs database schema, you point it at the schema document.
 
@@ -100,7 +110,6 @@ Then update every cross-document link inside those files so they reference the n
 ```
 
 Replace `<FEAT>` with your own abbreviation and `docs/prd/` with your actual folder path.
-
 
 ### Step 3: Start with the idea
 
@@ -180,13 +189,13 @@ Each template is a Markdown file with section headings, placeholder text, and HT
 
 <a href="/prd-templates/prd-templates.zip" download="prd-templates.zip"><strong>Download all templates (ZIP)</strong></a>
 
-| Template | Description | Download |
-|----------|-------------|----------|
-| PRD-00-INDEX | Master index and navigation | <a href="/prd-templates/PRD-00-INDEX.md" download="PRD-00-INDEX.md">PRD-00-INDEX.md</a> |
-| PRD-01-OVERVIEW | Vision, scope, high-level wireframes | <a href="/prd-templates/PRD-01-OVERVIEW.md" download="PRD-01-OVERVIEW.md">PRD-01-OVERVIEW.md</a> |
-| PRD-02-BUSINESS-LOGIC | User stories, domain rules, test cases | <a href="/prd-templates/PRD-02-BUSINESS-LOGIC.md" download="PRD-02-BUSINESS-LOGIC.md">PRD-02-BUSINESS-LOGIC.md</a> |
-| PRD-03-DATABASE-SCHEMA | Table definitions, indexes, TypeScript types | <a href="/prd-templates/PRD-03-DATABASE-SCHEMA.md" download="PRD-03-DATABASE-SCHEMA.md">PRD-03-DATABASE-SCHEMA.md</a> |
-| PRD-04-API-ENDPOINTS | REST API specifications | <a href="/prd-templates/PRD-04-API-ENDPOINTS.md" download="PRD-04-API-ENDPOINTS.md">PRD-04-API-ENDPOINTS.md</a> |
-| PRD-05-FRONTEND-UI | Detailed wireframes, component specs, interactions | <a href="/prd-templates/PRD-05-FRONTEND-UI.md" download="PRD-05-FRONTEND-UI.md">PRD-05-FRONTEND-UI.md</a> |
-| PRD-06-IMPLEMENTATION | Architecture, directory structure | <a href="/prd-templates/PRD-06-IMPLEMENTATION.md" download="PRD-06-IMPLEMENTATION.md">PRD-06-IMPLEMENTATION.md</a> |
-| PRD-07-IMPLEMENTATION-STEPS | Phased implementation plan | <a href="/prd-templates/PRD-07-IMPLEMENTATION-STEPS.md" download="PRD-07-IMPLEMENTATION-STEPS.md">PRD-07-IMPLEMENTATION-STEPS.md</a> |
+| Template                    | Description                                        | Download                                                                                                                             |
+| --------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| PRD-00-INDEX                | Master index and navigation                        | <a href="/prd-templates/PRD-00-INDEX.md" download="PRD-00-INDEX.md">PRD-00-INDEX.md</a>                                              |
+| PRD-01-OVERVIEW             | Vision, scope, high-level wireframes               | <a href="/prd-templates/PRD-01-OVERVIEW.md" download="PRD-01-OVERVIEW.md">PRD-01-OVERVIEW.md</a>                                     |
+| PRD-02-BUSINESS-LOGIC       | User stories, domain rules, test cases             | <a href="/prd-templates/PRD-02-BUSINESS-LOGIC.md" download="PRD-02-BUSINESS-LOGIC.md">PRD-02-BUSINESS-LOGIC.md</a>                   |
+| PRD-03-DATABASE-SCHEMA      | Table definitions, indexes, TypeScript types       | <a href="/prd-templates/PRD-03-DATABASE-SCHEMA.md" download="PRD-03-DATABASE-SCHEMA.md">PRD-03-DATABASE-SCHEMA.md</a>                |
+| PRD-04-API-ENDPOINTS        | REST API specifications                            | <a href="/prd-templates/PRD-04-API-ENDPOINTS.md" download="PRD-04-API-ENDPOINTS.md">PRD-04-API-ENDPOINTS.md</a>                      |
+| PRD-05-FRONTEND-UI          | Detailed wireframes, component specs, interactions | <a href="/prd-templates/PRD-05-FRONTEND-UI.md" download="PRD-05-FRONTEND-UI.md">PRD-05-FRONTEND-UI.md</a>                            |
+| PRD-06-IMPLEMENTATION       | Architecture, directory structure                  | <a href="/prd-templates/PRD-06-IMPLEMENTATION.md" download="PRD-06-IMPLEMENTATION.md">PRD-06-IMPLEMENTATION.md</a>                   |
+| PRD-07-IMPLEMENTATION-STEPS | Phased implementation plan                         | <a href="/prd-templates/PRD-07-IMPLEMENTATION-STEPS.md" download="PRD-07-IMPLEMENTATION-STEPS.md">PRD-07-IMPLEMENTATION-STEPS.md</a> |

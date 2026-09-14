@@ -2,7 +2,18 @@
 sidebar_position: 1
 sidebar_label: Tools Overview
 description: A comparison of AI tools for programming, covering chat-based tools, IDE integrations, and terminal agents with their key differences and use cases.
-keywords: [AI tools overview, Claude Code, GitHub Copilot, Cursor, Aider, Gemini CLI, Codex CLI, AI coding tools, IDE integration]
+keywords:
+  [
+    AI tools overview,
+    Claude Code,
+    GitHub Copilot,
+    Cursor,
+    Aider,
+    Gemini CLI,
+    Codex CLI,
+    AI coding tools,
+    IDE integration,
+  ]
 ---
 
 # Tools Overview
@@ -32,14 +43,14 @@ These work directly inside your editor and see your open files and cursor positi
 
 These run in your terminal alongside your code and can read files, run commands, and interact with your codebase.
 
-| Tool | Start command | Description |
-|------|---------------|-------------|
-| **[Claude Code](/guides/starter/setup)** | `claude` | Anthropic's CLI, full codebase access, agentic task execution |
-| **[Codex CLI](/tools/codex)** | `codex` | OpenAI's terminal agent, defaults to gpt-5.3-codex |
-| **[Gemini CLI](/tools/gemini-cli)** | `gemini` | Google's open-source CLI, 1M token context window, generous free tier |
-| **[Aider](/tools/aider)** | `aider` | Open-source, model-agnostic pair programming with git-native workflow |
-| **[Mistral Vibe](/tools/mistral)** | `vibe` | Mistral's CLI agent with subagent support and self-hosted options |
-| **GitHub Copilot CLI** | `copilot` | GitHub's agentic terminal assistant with multi-model support |
+| Tool                                     | Start command | Description                                                                     |
+| ---------------------------------------- | ------------- | ------------------------------------------------------------------------------- |
+| **[Claude Code](/guides/starter/setup)** | `claude`      | Anthropic's CLI, full codebase access, agentic task execution                   |
+| **[Codex CLI](/tools/codex)**            | `codex`       | OpenAI's terminal agent (GPT-5.6 models), with IDE extension and cloud surfaces |
+| **[Gemini CLI](/tools/gemini-cli)**      | `gemini`      | Google's open-source CLI, 1M token context window, generous free tier           |
+| **[Aider](/tools/aider)**                | `aider`       | Open-source, model-agnostic pair programming with git-native workflow           |
+| **[Mistral Vibe](/tools/mistral)**       | `vibe`        | Mistral's CLI agent with subagent support and self-hosted options               |
+| **GitHub Copilot CLI**                   | `copilot`     | GitHub's agentic terminal assistant with multi-model support                    |
 
 ### API-based
 
@@ -50,16 +61,16 @@ For building your own integrations or automating tasks in CI.
 
 ## Choosing a tool
 
-| Need | Recommended |
-|---|---|
-| Quick question or code snippet | Claude / ChatGPT |
-| Inline autocomplete while coding | [Copilot](/tools/github-copilot), [Cursor](/tools/cursor), or Codestral |
+| Need                                             | Recommended                                                                                         |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Quick question or code snippet                   | Claude / ChatGPT                                                                                    |
+| Inline autocomplete while coding                 | [Copilot](/tools/github-copilot), [Cursor](/tools/cursor), or Codestral                             |
 | Multi-file tasks, refactoring, agentic workflows | [Claude Code](/guides/starter/setup), [Codex CLI](/tools/codex), or [Gemini CLI](/tools/gemini-cli) |
-| Model-agnostic CLI with git integration | [Aider](/tools/aider) |
-| Automating code review in CI | Anthropic API / OpenAI API |
-| Working entirely inside VS Code | [Copilot](/tools/github-copilot) or [Cursor](/tools/cursor) |
-| Data privacy and self-hosted deployment | [Mistral](/tools/mistral) |
-| Free CLI tool with large context window | [Gemini CLI](/tools/gemini-cli) |
+| Model-agnostic CLI with git integration          | [Aider](/tools/aider)                                                                               |
+| Automating code review in CI                     | Anthropic API / OpenAI API                                                                          |
+| Working entirely inside VS Code                  | [Copilot](/tools/github-copilot) or [Cursor](/tools/cursor)                                         |
+| Data privacy and self-hosted deployment          | [Mistral](/tools/mistral)                                                                           |
+| Free CLI tool with large context window          | [Gemini CLI](/tools/gemini-cli)                                                                     |
 
 ## Using multiple tools
 

@@ -6,6 +6,7 @@ description: Creates structured product vision documents that feed into the writ
 # Product Vision
 
 You are helping the user transform a product idea into structured vision documents. These documents serve two purposes:
+
 1. **Feed into write-prd** — each capability becomes a separate PRD via the write-prd skill
 2. **Jira epics** — a second file reformats capabilities into copy-paste-ready epic descriptions
 
@@ -32,7 +33,7 @@ Ask these — skip any the user already answered:
 2. **Target users:** "Who specifically will use this? Be as concrete as you can — job titles, team sizes, industries."
 3. **Core problem:** "What's painful or broken for them today?"
 
-After they answer, summarize back: *"So the idea is: [summary]. The main users are [users], and the pain is [pain]. Correct?"*
+After they answer, summarize back: _"So the idea is: [summary]. The main users are [users], and the pain is [pain]. Correct?"_
 
 Wait for confirmation before continuing.
 
@@ -52,7 +53,7 @@ This is the most important round — capabilities become epics and PRDs.
 2. For each capability they mention, ask: "What would a user be able to do with [capability]? Give me 2-3 key features."
 3. **Phasing:** "Which of these are must-haves for launch, and which can come later?"
 
-Present the capabilities back as a numbered list with phase assignments. Ask: *"Does this capture the right capabilities? Anything to add, remove, or re-prioritize?"*
+Present the capabilities back as a numbered list with phase assignments. Ask: _"Does this capture the right capabilities? Anything to add, remove, or re-prioritize?"_
 
 Wait for confirmation.
 
@@ -147,8 +148,8 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 
 ### Existing solutions
 
-| Solution | Strengths | Gaps |
-|----------|-----------|------|
+| Solution                | Strengths           | Gaps                   |
+| ----------------------- | ------------------- | ---------------------- |
 | [Competitor/workaround] | [What it does well] | [Where it falls short] |
 
 ### Why now?
@@ -175,9 +176,9 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 
 ### Assumptions and risks
 
-| Assumption | How to validate | Risk if wrong |
-|------------|-----------------|---------------|
-| [Key assumption] | [Experiment or metric] | [Impact] |
+| Assumption       | How to validate        | Risk if wrong |
+| ---------------- | ---------------------- | ------------- |
+| [Key assumption] | [Experiment or metric] | [Impact]      |
 
 ---
 
@@ -220,8 +221,8 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 
 ### Key results
 
-| Timeframe | Metric | Target | How to measure |
-|-----------|--------|--------|----------------|
+| Timeframe | Metric   | Target         | How to measure       |
+| --------- | -------- | -------------- | -------------------- |
 | 3 months  | [Metric] | [Target value] | [Data source / tool] |
 | 12 months | [Metric] | [Target value] | [Data source / tool] |
 
@@ -240,12 +241,13 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 **Goal:** [What must be true for launch]
 **Timeframe:** [Target]
 
-| Capability | Scope for this phase |
-|------------|---------------------|
+| Capability     | Scope for this phase                         |
+| -------------- | -------------------------------------------- |
 | CAP-01: [Name] | [What's included in MVP vs. full capability] |
-| CAP-02: [Name] | [MVP scope] |
+| CAP-02: [Name] | [MVP scope]                                  |
 
 **Launch criteria:**
+
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 
@@ -254,23 +256,23 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 **Goal:** [What this phase achieves]
 **Timeframe:** [Target]
 
-| Capability | Scope for this phase |
-|------------|---------------------|
-| CAP-03: [Name] | [Scope] |
+| Capability     | Scope for this phase |
+| -------------- | -------------------- |
+| CAP-03: [Name] | [Scope]              |
 
 ### Phase 3: [Phase name]
 
 **Goal:** [What this phase achieves]
 **Timeframe:** [Target]
 
-| Capability | Scope |
-|------------|-------|
+| Capability     | Scope   |
+| -------------- | ------- |
 | [Capabilities] | [Scope] |
 
 ### Risks to roadmap
 
-| Risk | Mitigation | Impact on roadmap |
-|------|------------|-------------------|
+| Risk   | Mitigation        | Impact on roadmap                 |
+| ------ | ----------------- | --------------------------------- |
 | [Risk] | [How to mitigate] | [Which phase/capability affected] |
 
 ---
@@ -279,8 +281,8 @@ We help **[target user]** do **[core action]** by **[key differentiator]**, so t
 
 <!-- As PRDs are created from capabilities, link them here. -->
 
-| Capability | PRD | Status |
-|------------|-----|--------|
+| Capability     | PRD               | Status  |
+| -------------- | ----------------- | ------- |
 | [Capability 1] | [Not yet created] | Pending |
 ```
 
@@ -306,14 +308,17 @@ A flat, copy-paste-friendly file — one block per epic for Jira.
 [Epic summary from capabilities section]
 
 ### User Value
+
 [User value]
 
 ### Key Features
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
 
 ### Context
+
 - **Product:** [Product name]
 - **Phase:** [Launch / Post-launch / Future]
 - **Estimated size:** [S / M / L / XL]

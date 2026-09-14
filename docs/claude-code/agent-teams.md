@@ -2,7 +2,17 @@
 sidebar_position: 13
 sidebar_label: Agent Teams
 description: Agent Teams is a Claude Code feature that lets a lead agent spawn and coordinate multiple specialized agents working in parallel via a shared task list.
-keywords: [Claude Code agent teams, parallel agents, multi-agent, tmux, agent coordination, task list, experimental feature, split pane]
+keywords:
+  [
+    Claude Code agent teams,
+    parallel agents,
+    multi-agent,
+    tmux,
+    agent coordination,
+    task list,
+    experimental feature,
+    split pane,
+  ]
 ---
 
 # Agent Teams
@@ -17,12 +27,12 @@ Not sure whether you need Agent Teams or just subagents? See [Agents vs. subagen
 
 ### The two modes compared
 
-| Mode | How teammates appear | See all agents at once? | Best for |
-|------|----------------------|------------------------|----------|
-| **In-process** (default, no extra tools required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No | Quick experiments, small teams (2–3 agents) |
-| **Split-pane** (tmux or iTerm2) | Each teammate gets its own live visible pane | Yes; full command-center view | Regular use, 3+ teammates |
+| Mode                                              | How teammates appear                                                     | See all agents at once?       | Best for                                    |
+| ------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------- |
+| **In-process** (default, no extra tools required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No                            | Quick experiments, small teams (2–3 agents) |
+| **Split-pane** (tmux or iTerm2)                   | Each teammate gets its own live visible pane                             | Yes; full command-center view | Regular use, 3+ teammates                   |
 
-The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."*
+The official Claude Code docs state: _"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."_
 
 ### Recommendation
 
@@ -33,12 +43,12 @@ The official Claude Code docs state: *"Split-pane mode requires tmux or iTerm2�
 
 macOS and Linux are the primary supported platforms. Split-pane mode works best there and is where most Agent Teams users run it.
 
-| Platform | Split-pane option | Notes |
-|----------|-------------------|-------|
-| macOS | tmux **or** iTerm2 | Recommended: two solid options, pick whichever you already use |
-| Linux | tmux | Recommended: install via your package manager |
-| Windows (WSL) | tmux inside WSL | Works, but requires WSL |
-| Windows (native) | Not yet supported | Use in-process mode; [Windows Terminal split-pane support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
+| Platform         | Split-pane option  | Notes                                                                                                                                     |
+| ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| macOS            | tmux **or** iTerm2 | Recommended: two solid options, pick whichever you already use                                                                            |
+| Linux            | tmux               | Recommended: install via your package manager                                                                                             |
+| Windows (WSL)    | tmux inside WSL    | Works, but requires WSL                                                                                                                   |
+| Windows (native) | Not yet supported  | Use in-process mode; [Windows Terminal split-pane support is a requested feature](https://github.com/anthropics/claude-code/issues/24384) |
 
 ## What is tmux?
 
@@ -47,7 +57,6 @@ tmux is a free, open-source terminal multiplexer. It turns one terminal window i
 See the [tmux Reference](./tmux) page for key bindings, session management commands, and pane navigation shortcuts.
 
 <img src="/img/docs/tmux-multi-agents.png" alt="Agent Teams tmux" />
-
 
 ## One-time setup (split-pane mode)
 
@@ -58,11 +67,13 @@ The steps below apply to **macOS and Linux** (the recommended platforms). Window
 #### Option 1: tmux (macOS, Linux, Windows via WSL) (recommended)
 
 **macOS:**
+
 ```bash
 brew install tmux
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt update && sudo apt install tmux
 ```
@@ -95,11 +106,13 @@ Create or edit `~/.claude/settings.json`:
 ```
 
 `teammateMode` options:
+
 - `"auto"`: recommended; uses split panes if already inside tmux, otherwise falls back to in-process
 - `"tmux"`: always use split-pane mode (auto-detects tmux or iTerm2)
 - `"in-process"`: always use in-process mode (no extra tools needed)
 
 To force a mode for a single session without editing `settings.json`:
+
 ```bash
 claude --teammate-mode in-process
 ```
@@ -119,7 +132,6 @@ claude
 ```
 
 Your main session becomes the lead agent. Teammates automatically appear in split panes. With `"auto"` mode, Claude detects that it's running inside tmux and switches to split-pane mode automatically.
-
 
 :::note Pro tip
 
@@ -213,7 +225,6 @@ We need to decide how to implement [feature]. Create a research team with:
 Let them discuss and reach consensus on the best approach. Output a final decision document with pros/cons and recommended stack.
 ```
 
-
 ### PRD implementation: New project (7–8 agents)
 
 > Use when starting from an empty (or near-empty) directory. No existing codebase, no CLAUDE.md. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
@@ -277,6 +288,7 @@ Final verification:
 ```
 
 > **How the pipeline flows:** Init + Database Agent runs first and generates CLAUDE.md. Domain, API, and Frontend agents chain in sequence. After each phase, three reviews run in order — Implementation Auditor (was every planned item built?), Code Quality (does it meet the principles?), Test Engineer (do tests pass?). The lead gates each transition only when all three sign off and typecheck + tests pass. For complex UI, add the optional UI Agent running in parallel with backend agents.
+
 ### PRD implementation: Existing app (7–8 agents)
 
 > Use when adding a feature to an app that already exists — CLAUDE.md, directory structure, and patterns are established. Pairs with the [PRD-Driven Development](../guides/prd.md) workflow.
@@ -344,15 +356,16 @@ After all done: verify all acceptance criteria and the end-to-end verification c
 ```
 
 > **How the pipeline flows:** Database Agent runs first with additive-only schema changes. Domain, API, and Frontend agents chain in sequence. After each phase, three reviews run in order — Implementation Auditor (was every planned item built?), Code Quality (does it meet the principles?), Test Engineer (do new and existing tests pass, no regressions?). The lead gates each transition only when all three sign off and typecheck + the full test suite pass. Agents use subagents and tools for codebase exploration rather than reading files sequentially. For complex UI, add the optional UI Agent running in parallel with backend agents.
+
 ## Useful commands while the team is running
 
-| Action | How |
-|--------|-----|
-| Talk to a specific teammate (tmux) | Click that pane |
-| Talk to a specific teammate (in-process) | Cycle with `Shift+↑` / `Shift+↓` |
-| Toggle the shared task list | `Ctrl+T` |
-| Pause before proceeding | Tell the lead: "Wait for your teammates to complete their tasks before proceeding" |
-| Shut everything down | Tell the lead: "Clean up the team" |
+| Action                                   | How                                                                                |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| Talk to a specific teammate (tmux)       | Click that pane                                                                    |
+| Talk to a specific teammate (in-process) | Cycle with `Shift+↑` / `Shift+↓`                                                   |
+| Toggle the shared task list              | `Ctrl+T`                                                                           |
+| Pause before proceeding                  | Tell the lead: "Wait for your teammates to complete their tasks before proceeding" |
+| Shut everything down                     | Tell the lead: "Clean up the team"                                                 |
 
 ## Git worktrees for parallel agents
 
@@ -424,14 +437,15 @@ Running a team is more expensive than a single agent. Each teammate is an indepe
 
 The trade-off is real: **more agents = more tokens, but safer context per agent.**
 
-| Factor | Single agent | 5-agent team |
-|--------|-------------|--------------|
-| Token usage | Lower | ~5× higher |
-| Context per agent | Grows large over time | Stays small and focused |
-| Risk of context overload | Higher on long tasks | Lower (each agent sees only its slice) |
-| Parallel throughput | Sequential | Parallel |
+| Factor                   | Single agent          | 5-agent team                           |
+| ------------------------ | --------------------- | -------------------------------------- |
+| Token usage              | Lower                 | ~5× higher                             |
+| Context per agent        | Grows large over time | Stays small and focused                |
+| Risk of context overload | Higher on long tasks  | Lower (each agent sees only its slice) |
+| Parallel throughput      | Sequential            | Parallel                               |
 
 **Practical guidance:**
+
 - Use Haiku for teammates doing mechanical work (searching, linting, testing). Reserve Sonnet/Opus for the agents that need to reason deeply.
 - Avoid spawning agents just to parallelize; only split work that is genuinely independent.
 - For a quick task that one agent can finish in a few turns, skip Agent Teams entirely. [Parallel subagents](./subagents#parallel-subagents) are the lighter option if you still need some concurrency.

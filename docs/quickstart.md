@@ -2,7 +2,17 @@
 sidebar_position: 2
 sidebar_label: Quickstart
 description: Get AI-assisted coding working in your environment in under 30 minutes by picking the setup guide that matches your tech stack.
-keywords: [quickstart, AI coding setup, Claude Code, web developer, .NET developer, firmware developer, IDE setup, getting started]
+keywords:
+  [
+    quickstart,
+    AI coding setup,
+    Claude Code,
+    web developer,
+    .NET developer,
+    firmware developer,
+    IDE setup,
+    getting started,
+  ]
 ---
 
 # Quickstart
@@ -11,11 +21,11 @@ Get AI-assisted coding working in your environment. Pick the guide that matches 
 
 ## Pick your persona
 
-| Persona | Stack | Setup guide |
-|---------|-------|-------------|
-| Web & backend developer | React, TypeScript, JavaScript, Angular, Go | [Web & backend setup](./setup/web-and-backend) |
-| .NET developer | C#, ASP.NET, WinForms, WPF, MAUI (Visual Studio) | [.NET developer setup](./setup/dotnet) |
-| Firmware / embedded developer | C, C++, RTOS, microcontrollers | [Firmware developer setup](./setup/firmware) |
+| Persona                       | Stack                                            | Setup guide                                    |
+| ----------------------------- | ------------------------------------------------ | ---------------------------------------------- |
+| Web & backend developer       | React, TypeScript, JavaScript, Angular, Go       | [Web & backend setup](./setup/web-and-backend) |
+| .NET developer                | C#, ASP.NET, WinForms, WPF, MAUI (Visual Studio) | [.NET developer setup](./setup/dotnet)         |
+| Firmware / embedded developer | C, C++, RTOS, microcontrollers                   | [Firmware developer setup](./setup/firmware)   |
 
 ---
 
@@ -38,10 +48,12 @@ Add that line to your `~/.zshrc` or `~/.bashrc` to persist it across sessions.
 ## The two types of AI tools
 
 **In-editor**: completions and chat inside your IDE, no terminal required
+
 - [GitHub Copilot](./tools/github-copilot): VS Code, Visual Studio, JetBrains, Neovim
 - [Cursor](./tools/cursor): a full IDE built around AI; deeper codebase context
 
 **Agentic**: multi-file tasks, full codebase access, autonomous execution
+
 - [Claude Code](./guides/starter/setup): reads files, runs commands, iterates until a task is done
 
 Most developers use both: an in-editor tool for moment-to-moment completions, and Claude Code for larger tasks like refactoring, writing a feature end-to-end, or running a review pass. See the [full tools overview](./tools/overview) for a side-by-side comparison.

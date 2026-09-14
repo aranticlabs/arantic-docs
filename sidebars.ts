@@ -17,62 +17,38 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Getting Started',
-          items: [
-            'quickstart',
-            'setup/web-and-backend',
-            'setup/dotnet',
-            'setup/firmware',
-          ],
+          items: ['quickstart', 'setup/web-and-backend', 'setup/dotnet', 'setup/firmware'],
         },
         {
           type: 'category',
           label: 'Starter',
-          items: [
-            'guides/starter/setup',
-            'guides/starter/workflow',
-          ],
+          items: ['guides/starter/setup', 'guides/starter/workflow'],
         },
         {
           type: 'category',
           label: 'Intermediate',
-          items: [
-            'guides/intermediate/setup',
-            'guides/intermediate/workflow',
-          ],
+          items: ['guides/intermediate/setup', 'guides/intermediate/workflow'],
         },
         {
           type: 'category',
           label: 'Pro',
-          items: [
-            'guides/pro/setup',
-            'guides/pro/workflow',
-          ],
+          items: ['guides/pro/setup', 'guides/pro/workflow'],
         },
         'guides/prd',
         {
           type: 'category',
           label: 'Prompting',
-          items: [
-            'prompting/basics',
-            'prompting/advanced',
-          ],
+          items: ['prompting/basics', 'prompting/advanced'],
         },
         {
           type: 'category',
           label: 'Code Generation & Debugging',
-          items: [
-            'code/generation',
-            'code/debugging',
-            'code/refactoring',
-          ],
+          items: ['code/generation', 'code/debugging', 'code/refactoring'],
         },
         {
           type: 'category',
           label: 'Testing with AI',
-          items: [
-            'testing/unit-tests',
-            'testing/coverage',
-          ],
+          items: ['testing/unit-tests', 'testing/coverage'],
         },
       ],
     },
@@ -106,6 +82,64 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Codex',
+      link: {
+        type: 'generated-index',
+        title: 'Codex',
+        description:
+          'Deep-dive into OpenAI Codex capabilities and features. Start with the Codex overview under More Tools for installation and authentication.',
+        slug: '/codex',
+      },
+      items: [
+        'codex/agents-md',
+        'codex/commands',
+        'codex/context',
+        'codex/permissions',
+        'codex/auto-review',
+        'codex/flags',
+        'codex/skills',
+        'codex/subagents',
+        'codex/hooks',
+        'codex/mcp',
+        'codex/plugins',
+        'codex/automation',
+        'codex/cloud',
+        'codex/worktrees',
+        'codex/debugging',
+        'codex/tips',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Cursor',
+      link: {
+        type: 'generated-index',
+        title: 'Cursor',
+        description:
+          'Deep-dive into Cursor capabilities and features. Start with the Cursor overview under More Tools for installation and the editor basics.',
+        slug: '/cursor',
+      },
+      items: [
+        'cursor/rules',
+        'cursor/commands',
+        'cursor/context',
+        'cursor/permissions',
+        'cursor/modes',
+        'cursor/cli',
+        'cursor/skills',
+        'cursor/subagents',
+        'cursor/hooks',
+        'cursor/mcp',
+        'cursor/plugins',
+        'cursor/cloud-agents',
+        'cursor/parallel-agents',
+        'cursor/review',
+        'cursor/debugging',
+        'cursor/tips',
+      ],
+    },
+    {
+      type: 'category',
       label: 'More Tools',
       link: {
         type: 'generated-index',
@@ -132,11 +166,7 @@ const sidebars: SidebarsConfig = {
         description: 'Additional resources and references.',
         slug: '/resources',
       },
-      items: [
-        'resources/github-repos',
-        'resources/prompt-templates',
-        'resources/troubleshooting',
-      ],
+      items: ['resources/github-repos', 'resources/prompt-templates', 'resources/troubleshooting'],
     },
   ],
 };

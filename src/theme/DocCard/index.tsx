@@ -1,20 +1,14 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import {
-  useDocById,
-  findFirstSidebarItemLink,
-} from '@docusaurus/plugin-content-docs/client';
+import {useDocById, findFirstSidebarItemLink} from '@docusaurus/plugin-content-docs/client';
 import {usePluralForm} from '@docusaurus/theme-common';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import {translate} from '@docusaurus/Translate';
 
 import type {Props} from '@theme/DocCard';
 import Heading from '@theme/Heading';
-import type {
-  PropSidebarItemCategory,
-  PropSidebarItemLink,
-} from '@docusaurus/plugin-content-docs';
+import type {PropSidebarItemCategory, PropSidebarItemLink} from '@docusaurus/plugin-content-docs';
 
 import styles from './styles.module.css';
 
@@ -45,7 +39,8 @@ function FolderIcon(): ReactNode {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
     </svg>
   );
@@ -61,7 +56,8 @@ function DocumentIcon(): ReactNode {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <polyline points="14 2 14 8 20 8" />
       <line x1="16" y1="13" x2="8" y2="13" />
@@ -81,7 +77,8 @@ function ExternalLinkIcon(): ReactNode {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
       <polyline points="15 3 21 3 21 9" />
       <line x1="10" y1="14" x2="21" y2="3" />
@@ -99,9 +96,7 @@ function CardContainer({
   children: ReactNode;
 }): ReactNode {
   return (
-    <Link
-      href={href}
-      className={clsx('card padding--lg', styles.cardContainer, className)}>
+    <Link href={href} className={clsx('card padding--lg', styles.cardContainer, className)}>
       {children}
     </Link>
   );
@@ -122,16 +117,11 @@ function CardLayout({
 }): ReactNode {
   return (
     <CardContainer href={href} className={className}>
-      <Heading
-        as="h2"
-        className={clsx('text--truncate', styles.cardTitle)}
-        title={title}>
+      <Heading as="h2" className={clsx('text--truncate', styles.cardTitle)} title={title}>
         {icon} {title}
       </Heading>
       {description && (
-        <p
-          className={clsx('text--truncate', styles.cardDescription)}
-          title={description}>
+        <p className={clsx('text--truncate', styles.cardDescription)} title={description}>
           {description}
         </p>
       )}

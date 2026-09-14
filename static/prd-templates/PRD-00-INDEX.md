@@ -13,15 +13,15 @@ The [Feature Name] provides [brief 1-2 sentence description of the feature], ena
 
 ## Document Overview
 
-| Document | Description |
-| --- | --- |
-| [PRD-01-OVERVIEW.md](./PRD-01-OVERVIEW.md) | Vision, scope, success criteria, permissions, and UI/UX design |
-| [PRD-02-BUSINESS-LOGIC.md](./PRD-02-BUSINESS-LOGIC.md) | User stories, acceptance criteria, domain rules, lifecycle, and test cases |
-| [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md) | Table definitions, indexes, seed data, and data model interfaces |
-| [PRD-04-API-ENDPOINTS.md](./PRD-04-API-ENDPOINTS.md) | REST API endpoints with request/response specifications |
-| [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md) | Detailed wireframes, component specs, interaction patterns, responsive behavior |
-| [PRD-06-IMPLEMENTATION.md](./PRD-06-IMPLEMENTATION.md) | Backend/frontend directory structure, architecture decisions, integration points |
-| [PRD-07-IMPLEMENTATION-STEPS.md](./PRD-07-IMPLEMENTATION-STEPS.md) | Phased implementation plan with task checklists and dependencies |
+| Document                                                           | Description                                                                      |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| [PRD-01-OVERVIEW.md](./PRD-01-OVERVIEW.md)                         | Vision, scope, success criteria, permissions, and UI/UX design                   |
+| [PRD-02-BUSINESS-LOGIC.md](./PRD-02-BUSINESS-LOGIC.md)             | User stories, acceptance criteria, domain rules, lifecycle, and test cases       |
+| [PRD-03-DATABASE-SCHEMA.md](./PRD-03-DATABASE-SCHEMA.md)           | Table definitions, indexes, seed data, and data model interfaces                 |
+| [PRD-04-API-ENDPOINTS.md](./PRD-04-API-ENDPOINTS.md)               | REST API endpoints with request/response specifications                          |
+| [PRD-05-FRONTEND-UI.md](./PRD-05-FRONTEND-UI.md)                   | Detailed wireframes, component specs, interaction patterns, responsive behavior  |
+| [PRD-06-IMPLEMENTATION.md](./PRD-06-IMPLEMENTATION.md)             | Backend/frontend directory structure, architecture decisions, integration points |
+| [PRD-07-IMPLEMENTATION-STEPS.md](./PRD-07-IMPLEMENTATION-STEPS.md) | Phased implementation plan with task checklists and dependencies                 |
 
 > **Note:** Not every feature needs all documents. Small features may combine Overview + Business Logic into one file, or skip Permissions. Adapt the structure to fit the feature's complexity.
 

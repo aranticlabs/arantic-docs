@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+.docusaurus/
+.cache-loader/
+
+# Generated and local files
+coverage/
+.nyc_output/
+.wrangler/
+*.tsbuildinfo
+package-lock.json

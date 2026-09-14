@@ -2,7 +2,17 @@
 sidebar_position: 8
 sidebar_label: Subagents
 description: Subagents let Claude Code delegate focused tasks to child instances with isolated context windows, keeping your main session tidy and token-efficient.
-keywords: [Claude Code subagents, child agents, context window, delegation, AI orchestration, fork mode, background subagents, token efficiency, parallel tasks]
+keywords:
+  [
+    Claude Code subagents,
+    child agents,
+    context window,
+    delegation,
+    AI orchestration,
+    task delegation,
+    token efficiency,
+    parallel tasks,
+  ]
 ---
 
 # Subagents
@@ -24,12 +34,12 @@ When the subagent finishes, it reports a summary back to the main agent. It neve
 
 Claude Code ships with several built-in subagents the main agent can invoke automatically:
 
-| Subagent | Purpose | Default model |
-|----------|---------|---------------|
-| **Explore** | Fast read-only codebase search: finds files, symbols, patterns | Inherits session model (capped at Opus) |
-| **Plan** | Architecture and design research, implementation planning | Inherits session model |
-| **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist | `CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise session model |
-| **claude** | Catch-all with every subagent tool available; the default agent for dispatched background sessions | Follows the model resolution order |
+| Subagent            | Purpose                                                                                            | Default model                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **Explore**         | Fast read-only codebase search: finds files, symbols, patterns                                     | Inherits session model (capped at Opus)                      |
+| **Plan**            | Architecture and design research, implementation planning                                          | Inherits session model                                       |
+| **General-purpose** | Broad-purpose delegation for tasks that don't fit a specialist                                     | `CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise session model |
+| **claude**          | Catch-all with every subagent tool available; the default agent for dispatched background sessions | Follows the model resolution order                           |
 
 The main agent selects these automatically based on the task, or you can nudge it ("use the Explore agent to find all usages of `getUser`").
 
@@ -64,25 +74,25 @@ Output a structured report with severity ratings (critical / high / medium / low
 
 ### Frontmatter fields
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | Yes | Unique identifier using lowercase letters and hyphens |
-| `description` | Yes | Tells the main agent when to invoke this subagent; write it as a usage hint |
-| `model` | No | Model to use: `sonnet`, `opus`, `haiku`, `fable`, a full model ID (e.g. `claude-opus-5`), or `inherit`. Omit to use the resolution order (`CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise the session's model); `inherit` forces the parent session's model |
-| `tools` | No | Comma-separated list of allowed tools; omit to inherit all tools from the parent session |
-| `disallowedTools` | No | Tools to deny, removed from the inherited or specified list |
-| `permissionMode` | No | Permission mode for this subagent: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions` |
-| `maxTurns` | No | Maximum number of agentic turns before the subagent stops |
-| `skills` | No | Skills to load into the subagent's context at startup. Full skill content is injected; subagents do not inherit skills from the parent session |
-| `mcpServers` | No | MCP servers available to this subagent. Each entry is a server name referencing an already-configured server or an inline server definition |
-| `hooks` | No | Lifecycle hooks scoped to this subagent |
-| `memory` | No | Persistent memory scope: `user`, `project`, or `local`. Enables cross-session learning for this subagent |
-| `background` | No | Set to `true` to always run this subagent as a background task, even when the main agent needs its result right away. When unset, Claude chooses, and as of v2.1.198 it runs subagents in the background by default |
-| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent |
-| `isolation` | No | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository |
-| `color` | No | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan` |
-| `initialPrompt` | No | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag). Commands and skills are processed |
-| `experimental` | No | Set its `cacheTtl` key to `5m` or `1h` to choose the prompt cache lifetime for this subagent's requests (v2.1.248+) |
+| Field             | Required | Description                                                                                                                                                                                                                                                |
+| ----------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`            | Yes      | Unique identifier using lowercase letters and hyphens                                                                                                                                                                                                      |
+| `description`     | Yes      | Tells the main agent when to invoke this subagent; write it as a usage hint                                                                                                                                                                                |
+| `model`           | No       | Model to use: `sonnet`, `opus`, `haiku`, `fable`, a full model ID (e.g. `claude-opus-5`), or `inherit`. Omit to use the resolution order (`CLAUDE_CODE_SUBAGENT_MODEL` if set, otherwise the session's model); `inherit` forces the parent session's model |
+| `tools`           | No       | Comma-separated list of allowed tools; omit to inherit all tools from the parent session                                                                                                                                                                   |
+| `disallowedTools` | No       | Tools to deny, removed from the inherited or specified list                                                                                                                                                                                                |
+| `permissionMode`  | No       | Permission mode for this subagent: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, or `bypassPermissions`                                                                                                                 |
+| `maxTurns`        | No       | Maximum number of agentic turns before the subagent stops                                                                                                                                                                                                  |
+| `skills`          | No       | Skills to load into the subagent's context at startup. Full skill content is injected; subagents do not inherit skills from the parent session                                                                                                             |
+| `mcpServers`      | No       | MCP servers available to this subagent. Each entry is a server name referencing an already-configured server or an inline server definition                                                                                                                |
+| `hooks`           | No       | Lifecycle hooks scoped to this subagent                                                                                                                                                                                                                    |
+| `memory`          | No       | Persistent memory scope: `user`, `project`, or `local`. Enables cross-session learning for this subagent                                                                                                                                                   |
+| `background`      | No       | Set to `true` to always run this subagent as a background task, even when the main agent needs its result right away. When unset, Claude chooses, and as of v2.1.198 it runs subagents in the background by default                                        |
+| `effort`          | No       | Effort level: `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session effort level for this subagent                                                                                                                                             |
+| `isolation`       | No       | Set to `worktree` to run the subagent in a temporary git worktree, giving it an isolated copy of the repository                                                                                                                                            |
+| `color`           | No       | Display color in the task list: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan`                                                                                                                                                    |
+| `initialPrompt`   | No       | Auto-submitted as the first user turn when this agent runs as the main session agent (via `--agent` CLI flag). Commands and skills are processed                                                                                                           |
+| `experimental`    | No       | Set its `cacheTtl` key to `5m` or `1h` to choose the prompt cache lifetime for this subagent's requests (v2.1.248+)                                                                                                                                        |
 
 ### Project-level example
 
@@ -129,6 +139,7 @@ tools: Read, Glob, Grep
 You are a careful, security-focused code reviewer. You only read files - never edit them.
 
 When reviewing, check for:
+
 - Logic bugs and off-by-one errors
 - Security vulnerabilities (OWASP top 10: injection, broken auth, XSS, etc.)
 - Missing or incorrect error handling
@@ -136,6 +147,7 @@ When reviewing, check for:
 - Style inconsistencies with the surrounding code
 
 Output a structured report grouped by severity:
+
 - **Critical** - exploitable security issue or data-loss bug; must fix before merging
 - **High** - likely bug or serious issue; strongly recommended to fix
 - **Medium** - code smell, poor error handling, or maintainability concern
@@ -160,11 +172,13 @@ tools: Bash, Read, Glob
 You are a test runner. Your only job is to execute tests and clearly report the results.
 
 Steps:
+
 1. Detect the test framework (check package.json, Makefile, pytest.ini, go.mod, etc.).
 2. Run the appropriate test command (e.g. `npm test`, `pytest`, `go test ./...`, `cargo test`).
 3. Capture and parse the output.
 
 Report format:
+
 - **Status:** PASSED / FAILED / ERROR
 - **Summary:** X passed, Y failed, Z skipped (include total runtime if available)
 - **Failures:** For each failing test, include the test name, file/line, and the exact failure message or stack trace excerpt
@@ -188,6 +202,7 @@ tools: Bash, Read
 You are a pull request description writer. Analyze the git diff and commit history to produce a clear, useful PR description.
 
 Steps:
+
 1. Run `git log main..HEAD --oneline` (or `git log origin/main..HEAD --oneline` if that fails) to see the commits.
 2. Run `git diff main..HEAD --stat` to get a file-level summary of changes.
 3. Read the most relevant changed files if needed to understand intent.
@@ -195,6 +210,7 @@ Steps:
 Output the following, formatted as Markdown that can be pasted directly into a GitHub/GitLab PR:
 
 ---
+
 **Title:** (one line, under 72 characters, imperative mood - e.g. "Add dark mode toggle to user settings")
 
 **Summary**
@@ -229,12 +245,14 @@ tools: Bash, Read
 You are a changelog writer. Your job is to produce a clean, user-facing CHANGELOG entry from git history.
 
 Steps:
+
 1. Find the latest tag: `git describe --tags --abbrev=0`
 2. List commits since that tag: `git log <tag>..HEAD --oneline --no-merges`
 3. If there are no tags, use the last 20 commits: `git log -20 --oneline --no-merges`
 4. Read any existing CHANGELOG.md to match the established format and style.
 
 Categorize commits under these standard headings (omit any section with no entries):
+
 - **Added** - new features
 - **Changed** - changes to existing functionality
 - **Deprecated** - features that will be removed in a future release
@@ -243,6 +261,7 @@ Categorize commits under these standard headings (omit any section with no entri
 - **Security** - security fixes
 
 Rules:
+
 - Write in plain English, not git commit syntax. "Fix crash when user list is empty" not "fix(users): null pointer on empty list".
 - Each entry should be a single line starting with a capital letter, no period at the end.
 - Do not include merge commits, version bump commits, or CI/tooling-only commits.
@@ -274,30 +293,36 @@ You are an expert application security auditor. You only read files - never modi
 Audit scope - check for all of the following that are relevant to the codebase:
 
 **Injection**
+
 - SQL injection (raw queries, string concatenation into queries)
 - Command injection (unsanitized input passed to shell commands)
 - Template injection, LDAP injection, XPath injection
 
 **Authentication & authorization**
+
 - Hard-coded credentials or secrets in source code or config files
 - Weak or missing authentication checks
 - Missing authorization on sensitive routes or functions
 - Insecure session handling or token storage
 
 **Data exposure**
+
 - Sensitive data logged (passwords, tokens, PII)
 - Unencrypted storage of sensitive values
 - Overly verbose error messages that leak internals
 
 **Cryptography**
+
 - Use of weak or deprecated algorithms (MD5, SHA1, DES, RC4)
 - Hardcoded keys or IVs
 - Incorrect use of randomness (Math.random() for security purposes, etc.)
 
 **Dependencies**
+
 - Note any obviously outdated or known-vulnerable package versions (check import statements and lock files)
 
 **Other**
+
 - Insecure direct object references
 - Open redirects
 - Path traversal vulnerabilities
@@ -321,6 +346,7 @@ tools: Bash, Read, Glob
 You are a dependency auditor. You only read and run audit commands - never modify package files.
 
 Steps:
+
 1. Detect the package manager(s) in use (check for package.json, requirements.txt, Pipfile, go.mod, Cargo.toml, Gemfile, pom.xml, etc.).
 2. For each detected ecosystem, run the appropriate audit command:
    - **npm/yarn/pnpm:** `npm audit --json` or `yarn audit --json`
@@ -364,6 +390,7 @@ You are a WCAG 2.1 accessibility auditor. You only read files - never modify the
 Scan all HTML, JSX, and TSX files in scope. Check for:
 
 **Perceivable**
+
 - Images missing `alt` text (or with meaningless alt like "image" / filename)
 - Non-text content with no text alternative
 - Videos or audio with no captions or transcript
@@ -371,6 +398,7 @@ Scan all HTML, JSX, and TSX files in scope. Check for:
 - Insufficient color contrast (aim for 4.5:1 for normal text, 3:1 for large text)
 
 **Operable**
+
 - Interactive elements not reachable by keyboard (missing tabIndex, or focus trapped)
 - No visible focus indicator on interactive elements
 - Links or buttons with non-descriptive text ("click here", "read more")
@@ -378,12 +406,14 @@ Scan all HTML, JSX, and TSX files in scope. Check for:
 - Animations or auto-playing content with no way to pause/stop
 
 **Understandable**
+
 - Forms missing associated `<label>` elements (or aria-label / aria-labelledby)
 - Required form fields not marked as required
 - Error messages not associated with the field that caused them
 - Missing `lang` attribute on `<html>`
 
 **Robust**
+
 - ARIA roles or attributes used incorrectly (e.g. role="button" on non-interactive elements)
 - Interactive components missing keyboard event handlers alongside mouse handlers
 - Dynamic content updates not announced via aria-live regions
@@ -408,28 +438,33 @@ You are a REST/GraphQL API design reviewer. You only read files - never modify t
 Scan all route handlers, controllers, and schema definitions. Check for:
 
 **Input validation**
+
 - Missing validation on all user-supplied inputs (body, query params, path params, headers)
 - No sanitization before passing values to databases, shell commands, or templates
 - Missing content-type checks on request bodies
 - No maximum size limits on uploaded files or request bodies
 
 **HTTP semantics**
+
 - Wrong HTTP method for the operation (e.g. GET mutating state, DELETE with a body)
 - Incorrect or inconsistent status codes (e.g. 200 for a creation, 500 for a client error)
 - Missing or inconsistent use of Location header after 201 Created
 - Endpoints that return 200 with `{ success: false }` instead of 4xx/5xx
 
 **Error handling**
+
 - Unhandled promise rejections or uncaught exceptions that could crash the server
 - Error responses leaking stack traces, SQL errors, or internal paths to clients
 - No consistent error response shape across endpoints
 
 **Auth & authorization**
+
 - Endpoints missing authentication middleware
 - Missing authorization checks (authenticating the user but not verifying they own the resource)
 - Sensitive operations (delete, update, admin actions) lacking privilege checks
 
 **Consistency & design**
+
 - Inconsistent naming conventions (camelCase vs snake_case in the same API)
 - Plural vs singular resource names used inconsistently
 - Pagination missing on endpoints that could return large collections
@@ -455,41 +490,48 @@ You are a senior UX designer and front-end design reviewer. You only read files 
 Scan all JSX, TSX, HTML, and CSS/SCSS/Tailwind files in scope. Evaluate them as a user-facing product, not just as code.
 
 **Visual hierarchy**
+
 - Is it immediately clear what the most important element on the screen is?
 - Are headings, body text, labels, and captions visually distinct from each other?
 - Does the layout guide the eye in a natural reading order (top-left to bottom-right for LTR)?
 - Are there competing focal points that create confusion?
 
 **Typography**
+
 - Is the type scale consistent (flag ad-hoc font sizes not on the defined scale)?
 - Are line lengths comfortable for reading (generally 50–75 characters per line for body text)?
 - Is line-height adequate (flag values below 1.4 for body text)?
 - Is font weight used purposefully, not decoratively?
 
 **Spacing & layout**
+
 - Is spacing consistent and drawn from a defined scale (e.g. multiples of 4 or 8px)?
 - Are there areas of unintended crowding (insufficient padding/margin) or excessive whitespace?
 - Does the layout work at common breakpoints (mobile, tablet, desktop)?
 - Are interactive targets large enough (minimum 44×44px touch targets on mobile)?
 
 **Component consistency**
+
 - Are the same UI patterns expressed differently in different parts of the UI (e.g. two different button styles for the same action type)?
 - Are icons used consistently (same size, same visual weight, same style)?
 - Are form elements (inputs, selects, checkboxes) styled consistently throughout?
 
 **User flows & interaction**
+
 - Are primary actions clearly distinguished from secondary and destructive actions?
 - Is the next step always obvious - does the user know what to do after completing an action?
 - Are destructive actions (delete, remove, reset) guarded by confirmation or easy to undo?
 - Are multi-step flows broken into logical steps with clear progress indication?
 
 **Feedback & states**
+
 - Do all interactive elements have hover, focus, active, and disabled states?
 - Are loading states handled (skeleton screens, spinners, or disabled buttons during async operations)?
 - Are empty states designed (no data, no results, first-time use) rather than showing nothing?
 - Are error states clear, specific, and actionable - not just "Something went wrong"?
 
 **Copy & content**
+
 - Is the language clear and direct - no jargon, no filler words?
 - Are button labels verbs that describe the action ("Save changes", not "OK")?
 - Are error messages written in plain language and do they tell the user what to do next?
@@ -521,28 +563,33 @@ You are an embedded systems memory safety auditor. You only read files - never m
 Scan all C and C++ source files, header files, and any linker scripts or map files present.
 
 **Stack issues**
+
 - Large local arrays or structs on the stack (flag anything over 256 bytes in a single frame)
 - Recursive functions (dangerous on microcontrollers with no MMU)
 - Functions with deeply nested call chains - estimate worst-case stack depth if possible
 - ISR stack usage: interrupts share the main stack on many MCUs; flag large locals in ISRs
 
 **Heap issues**
+
 - Use of malloc / free / new / delete in interrupt handlers (not safe on most RTOSes)
 - Unbounded or repeated heap allocations that could cause fragmentation
 - Missing NULL checks after malloc
 - Memory leaks: allocated pointers that are never freed on error paths
 
 **Buffer safety**
+
 - Fixed-size buffers filled from external sources (UART, SPI, I2C, USB) without bounds checking
 - Use of strcpy, sprintf, gets - flag all occurrences, suggest sized alternatives
 - Off-by-one indexing on arrays
 
 **Linker / map file** (if present)
+
 - Sections (.bss, .data, .stack, .heap) that are approaching or exceed their allocated regions
 - Overlapping sections
 - Unexpectedly large symbols (variables or functions that dominate a section)
 
 **DMA and peripheral buffers**
+
 - DMA buffers not declared with proper alignment or placed in the correct memory region
 - Buffers shared between DMA and CPU without cache invalidation/clean calls (relevant on Cortex-M7 and similar)
 
@@ -566,11 +613,13 @@ You are an embedded peripheral configuration reviewer. You only read files - nev
 Scan all initialization files, HAL configuration, and peripheral driver code.
 
 **Clocks**
+
 - Peripherals enabled before their bus clock is enabled (RCC/CMU/SYSCON enable order)
 - Baud rate or sample rate calculations that assume a hard-coded system clock without reading the actual configured clock
 - Missing clock source selection before PLL configuration
 
 **GPIO**
+
 - Pins configured with the wrong mode (input vs output vs alternate function vs analog)
 - Pull-up/pull-down configuration inconsistent with the external circuit (e.g. internal pull-up on a line with external pull-down)
 - Output drive strength not set for high-speed signals
@@ -578,31 +627,37 @@ Scan all initialization files, HAL configuration, and peripheral driver code.
 - Floating inputs on lines that could be floating at startup (flag as potential noise issue)
 
 **UART / USART**
+
 - Baud rate, word length, stop bits, and parity not matching the protocol spec in comments/docs
 - RX buffer not sized to accommodate the longest expected frame plus framing bytes
 - No timeout or idle-line detection configured on receive
 
 **SPI**
+
 - CPOL/CPHA mode not matching the connected device's datasheet
 - Clock frequency exceeding the connected device's rated maximum
 - NSS (chip select) managed by software but GPIO toggling not wrapping the full transaction
 
 **I2C**
+
 - Clock speed set to Fast (400 kHz) or Fast-Plus (1 MHz) without checking all connected devices support it
 - Missing ACK failure handling in bit-bang or low-level drivers
 - Address shifted incorrectly (7-bit address used as 8-bit or vice versa)
 
 **Timers**
+
 - Prescaler and period values that don't match the intended frequency (show the calculation)
 - Timer overflow not handled (counter wraps silently)
 - PWM duty cycle written to the wrong register (CCR vs ARR)
 
 **ADC**
+
 - Sample time too short for the source impedance (flag if sample time < recommended for impedance > 10kΩ)
 - Reference voltage assumed to be VDD without explicit configuration
 - DMA mode enabled but DMA not initialized or linked
 
 **DMA**
+
 - Source/destination address not aligned to the transfer width
 - Circular mode used without double-buffering, risking data overwrite
 - Transfer-complete interrupt not enabled when the CPU needs to process the result
@@ -624,30 +679,35 @@ tools: Read, Glob, Grep
 
 You are an embedded interrupt safety auditor. You only read files - never modify them.
 
-Scan all C and C++ source files. Identify all interrupt service routines (functions named ISR, prefixed with IRQ, registered via NVIC or equivalent, or decorated with __interrupt / __irq / IRAM_ATTR / similar compiler attributes).
+Scan all C and C++ source files. Identify all interrupt service routines (functions named ISR, prefixed with IRQ, registered via NVIC or equivalent, or decorated with **interrupt / **irq / IRAM_ATTR / similar compiler attributes).
 
 **ISR length and complexity**
+
 - ISRs that perform complex computation, string operations, or blocking calls
 - ISRs calling functions that are not known to be interrupt-safe
 - ISRs that call malloc / free / new / delete (almost never safe)
 - ISRs with loops that could run for an unbounded number of iterations
 
 **Shared variable safety**
+
 - Variables accessed in both ISR and non-ISR context that are not declared `volatile`
 - Multi-byte or multi-word variables (structs, 64-bit integers on 32-bit MCUs) accessed in both contexts without disabling interrupts or using atomic operations - a partial read/write is possible
 - Flags set in an ISR and polled in main loop without a memory barrier
 
 **Critical section discipline**
+
 - Sections that disable interrupts for too long (flag any critical section longer than ~50 instructions or any blocking call inside one)
 - Asymmetric enable/disable (interrupts disabled in one code path but not re-enabled on all exit paths)
 - Nested interrupt disable/enable using a simple flag rather than a save/restore pattern (can re-enable interrupts prematurely if nested)
 
 **Priority and preemption (RTOS or nested interrupts)**
+
 - Higher-priority ISR accessing the same shared resource as a lower-priority ISR without a mutex or critical section
 - RTOS API calls from ISRs that are not interrupt-safe variants (e.g. calling xQueueSend instead of xQueueSendFromISR in FreeRTOS)
 - Priority inversion risk: low-priority task holds resource needed by high-priority ISR
 
 **Re-entrancy**
+
 - ISRs that could fire again before the previous invocation completes (re-entrant ISR without guard)
 - Static local variables inside ISRs (shared across all invocations)
 
@@ -671,6 +731,7 @@ You are a MISRA-C:2012 compliance reviewer. You only read files - never modify t
 Scan all C source and header files. Focus on the mandatory and most commonly violated required rules. You are not a formal static analysis tool - flag probable violations and patterns that merit formal tool review.
 
 **Mandatory rules (any violation is a blocker)**
+
 - Rule 1.3 - No undefined or critical unspecified behavior (flag obvious cases: signed overflow, null pointer deref, array out of bounds)
 - Rule 2.1 - No unreachable code
 - Rule 14.3 - Controlling expressions shall not be invariant (dead if/while conditions)
@@ -678,26 +739,31 @@ Scan all C source and header files. Focus on the mandatory and most commonly vio
 - Rule 21.13 - No use of functions from <ctype.h> with values outside unsigned char range or EOF
 
 **Type safety (Required)**
+
 - Rule 10.1 - Operands of an arithmetic operator shall have appropriate essential type
 - Rule 10.3 - The value of an expression shall not be assigned to an object of a narrower essential type
 - Rule 10.4 - Both operands of a binary operator shall have the same essential type category
 - Rule 10.8 - Do not cast composite expressions to a wider essential type
 
 **Control flow (Required)**
+
 - Rule 15.5 - A function shall have a single point of exit at the end (multiple returns)
 - Rule 16.4 - Every switch statement shall have a default clause
 - Rule 16.5 - Default clause shall be either first or last
 
 **Pointers (Required)**
+
 - Rule 11.3 - No casting between pointer to object and pointer to different object type
 - Rule 11.5 - No conversion from pointer to void to pointer to object
 - Rule 18.1 - Pointer arithmetic shall only be applied to a pointer pointing to an array
 
 **Preprocessor (Required)**
+
 - Rule 20.4 - Do not redefine keywords or standard library macros
 - Rule 20.9 - Identifiers used in #if shall be previously #defined
 
 **Other commonly violated advisory rules to flag**
+
 - Rule 8.7 - Functions / objects not needed in multiple translation units should be static
 - Rule 12.1 - Precedence of operators should be made explicit with parentheses
 - Rule 15.1 - No use of goto
@@ -807,6 +873,7 @@ The main agent is the primary Claude Code session you are talking to. It receive
 Subagents are the most common form of delegation: specialized child assistants spawned by the main agent inside the same session.
 
 Each subagent gets:
+
 - Its own **isolated context window** (clean slate, no bloat in your main chat)
 - A **custom system prompt** (e.g. "You are a read-only code reviewer")
 - **Restricted or specific tools** and a model of its own choosing (often Haiku for cost)
@@ -821,16 +888,16 @@ Built-in subagents include **Explore** (fast read-only search), **Plan** (archit
 
 Agent Teams is the newer, heavier-weight collaboration mode. Each teammate is a **fully independent Claude Code session**, not a child of the main agent, but a peer.
 
-| | Subagents | [Agent Teams](./agent-teams) |
-|---|---|---|
-| **Architecture** | Single session, hierarchical | Multiple independent sessions |
-| **Communication** | Report results back to main agent only | Direct peer-to-peer messaging + shared task list |
-| **Parallelism** | Yes | Full parallel + self-coordination |
-| **Context** | Isolated per subagent | Fully independent per teammate |
-| **You can talk to them directly** | No (through main agent only) | Yes; click any pane or cycle with `Shift+↓` |
-| **Token cost** | Moderate (summaries only) | High (~one full session per teammate) |
-| **Best for** | Focused tasks, context saving, specialization | Complex collaboration, competing hypotheses, cross-layer work |
-| **Setup** | Built-in or simple custom files | Experimental flag + tmux/iTerm2 recommended |
+|                                   | Subagents                                     | [Agent Teams](./agent-teams)                                  |
+| --------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+| **Architecture**                  | Single session, hierarchical                  | Multiple independent sessions                                 |
+| **Communication**                 | Report results back to main agent only        | Direct peer-to-peer messaging + shared task list              |
+| **Parallelism**                   | Yes                                           | Full parallel + self-coordination                             |
+| **Context**                       | Isolated per subagent                         | Fully independent per teammate                                |
+| **You can talk to them directly** | No (through main agent only)                  | Yes; click any pane or cycle with `Shift+↓`                   |
+| **Token cost**                    | Moderate (summaries only)                     | High (~one full session per teammate)                         |
+| **Best for**                      | Focused tasks, context saving, specialization | Complex collaboration, competing hypotheses, cross-layer work |
+| **Setup**                         | Built-in or simple custom files               | Experimental flag + tmux/iTerm2 recommended                   |
 
 ### Simple mental model
 
@@ -850,14 +917,14 @@ Most people start with subagents and only escalate to [Agent Teams](./agent-team
 
 Isolated child agents with their own context windows are no longer exclusive to Claude Code. As of early 2026, most major AI coding CLIs have added native or experimental subagent support. Claude Code still has the most complete and polished implementation, but the gap is narrowing.
 
-| Tool | Native subagents? | Peer agents / parallel teams? | Notes |
-|------|-------------------|-------------------------------|-------|
-| **Claude Code** | Yes | Yes (Agent Teams) | Gold standard. Isolated 200k-token contexts, custom `.md` agents, background and parallel execution, built-in Explore / Plan / General-purpose agents. |
-| **Gemini CLI** | Yes (experimental flag) | Partial (remote subagents via A2A protocol + community orchestrators) | Very close to Claude Code. Each subagent gets its own context window and custom persona. Remote delegation supported. Enable in `settings.json`. |
-| **Codex CLI** | Yes (experimental) | Yes (parallel spawning + agent threads) | Launched with multi-agent support in late 2025. Can spawn specialised subagents in parallel and collect results. Enable with `[features] multi_agent = true`. Lightweight but capable. |
-| **Cursor Agent CLI** | Yes | Yes (parallel subagents, auto-judges best result) | Works in both terminal and IDE. Good choice if Cursor is already your primary editor. |
-| **Grok CLI** | No | Limited (tmux-based multi-session or prompt workarounds) | No built-in isolated subagents. Parallel work requires multiple terminal sessions or MCP extensions. Grok models support multi-agent collaboration in chat but not yet in the CLI. |
-| **Aider** | No | No | Single-agent only. Git-native and strong for focused edits, but has no subagent primitives. Parallel work requires manual session management. |
+| Tool                 | Native subagents?       | Peer agents / parallel teams?                                         | Notes                                                                                                                                                                                  |
+| -------------------- | ----------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**      | Yes                     | Yes (Agent Teams)                                                     | Gold standard. Isolated 200k-token contexts, custom `.md` agents, background and parallel execution, built-in Explore / Plan / General-purpose agents.                                 |
+| **Gemini CLI**       | Yes (experimental flag) | Partial (remote subagents via A2A protocol + community orchestrators) | Very close to Claude Code. Each subagent gets its own context window and custom persona. Remote delegation supported. Enable in `settings.json`.                                       |
+| **Codex CLI**        | Yes (experimental)      | Yes (parallel spawning + agent threads)                               | Launched with multi-agent support in late 2025. Can spawn specialised subagents in parallel and collect results. Enable with `[features] multi_agent = true`. Lightweight but capable. |
+| **Cursor Agent CLI** | Yes                     | Yes (parallel subagents, auto-judges best result)                     | Works in both terminal and IDE. Good choice if Cursor is already your primary editor.                                                                                                  |
+| **Grok CLI**         | No                      | Limited (tmux-based multi-session or prompt workarounds)              | No built-in isolated subagents. Parallel work requires multiple terminal sessions or MCP extensions. Grok models support multi-agent collaboration in chat but not yet in the CLI.     |
+| **Aider**            | No                      | No                                                                    | Single-agent only. Git-native and strong for focused edits, but has no subagent primitives. Parallel work requires manual session management.                                          |
 
 ### Notes per tool
 

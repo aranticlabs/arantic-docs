@@ -14,8 +14,8 @@ This document outlines the phased implementation plan for [Feature Name]. Steps 
 
 ### Resolved Decisions
 
-| Decision | Choice |
-| --- | --- |
+| Decision          | Choice             |
+| ----------------- | ------------------ |
 | [Decision area 1] | [What was decided] |
 | [Decision area 2] | [What was decided] |
 | [Decision area 3] | [What was decided] |
