@@ -36,7 +36,7 @@ Claude Code uses several memory files at different scopes. Here is the complete 
 | **User rules**         | `~/.claude/rules/*.md`                                                     | You, across all projects          | N/A                  | You        |
 | **Project CLAUDE.md**  | `./CLAUDE.md` or `./.claude/CLAUDE.md`                                     | Team (everyone on the project)    | Yes                  | You        |
 | **Project rules**      | `./.claude/rules/*.md`                                                     | Team (everyone on the project)    | Yes                  | You        |
-| **Local CLAUDE.md**    | `./CLAUDE.local.md`                                                        | You, this project only            | No (auto-gitignored) | You        |
+| **Local CLAUDE.md**    | `./CLAUDE.local.md`                                                        | You, this project only            | No (add to .gitignore) | You        |
 | **Auto memory**        | `~/.claude/projects/<project>/memory/MEMORY.md`                            | You, this project (machine-local) | No                   | Claude     |
 | **Auto memory topics** | `~/.claude/projects/<project>/memory/*.md`                                 | You, this project (machine-local) | No                   | Claude     |
 | **Subagent memory**    | Separate per-subagent directory (enabled with the subagent `memory` field) | Per subagent                      | No                   | Claude     |
@@ -114,7 +114,11 @@ Use this for things like:
 
 ### AGENTS.md
 
-Claude Code reads `CLAUDE.md`, not `AGENTS.md`. If your repository already uses `AGENTS.md` for other coding agents, create a `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them:
+Claude Code can read `AGENTS.md` directly as your project instructions (requires v2.1.277 or later), so a repository already set up for other coding agents works without adding a `CLAUDE.md`. By default, Claude reads `AGENTS.md` only when there is no `CLAUDE.md` or `CLAUDE.local.md` in your working directory or above it. If a `CLAUDE.md` also exists on that path, your `CLAUDE.md` files take precedence and the `AGENTS.md` is skipped.
+
+To load both together, set the **Project instructions** option in `/config` to `claude-md-and-agents-md`. The default value, `claude-md-or-agents-md`, reads one or the other as described above.
+
+In sessions where direct `AGENTS.md` support is unavailable (older versions, some third-party providers, or telemetry disabled), import it from a `CLAUDE.md` instead so both tools read the same instructions:
 
 ```markdown
 @AGENTS.md
@@ -136,7 +140,7 @@ You can also run `/import` (requires v2.1.213 or later) to bring another coding 
 
 ### CLAUDE.local.md
 
-Personal, project-specific memory that is NOT committed to git. Lives at `./CLAUDE.local.md` in the project root. Claude Code auto-adds it to `.gitignore`.
+Personal, project-specific memory that is NOT committed to git. Lives at `./CLAUDE.local.md` in the project root. Add it to your `.gitignore` so it isn't committed. With `CLAUDE_CODE_NEW_INIT=1` set, running `/init` and choosing the personal option does this for you.
 
 This is for things that are specific to your local setup:
 

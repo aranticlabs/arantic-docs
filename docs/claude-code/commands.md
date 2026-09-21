@@ -167,7 +167,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `Ctrl+R`               | Reverse search through command history                               |
 | `Ctrl+G`               | Open current prompt in your default text editor                      |
 | `Ctrl+B`               | Background running tasks (press twice in tmux)                       |
-| `Ctrl+F`               | Kill all background agents (press twice within 3 seconds to confirm) |
+| `Ctrl+X` `Ctrl+K`      | Stop all background agents and turn off artifact auto-replies (press twice within 3 seconds to confirm) |
 | `Ctrl+T`               | Toggle task list visibility                                          |
 | `Esc` + `Esc`          | Rewind or summarize (same as `/rewind`)                              |
 | `Shift+Tab` or `Alt+M` | Toggle permission modes (Auto-Accept, Plan, Normal)                  |
