@@ -49,9 +49,14 @@ keywords:
 | `--tools <tools>`                                  | Restrict the available tool set entirely (`""` to disable all, `"default"` for all)                                   |
 | `--dangerously-skip-permissions`                   | Bypass all permission checks (sandboxed environments only). Equivalent to `--permission-mode bypassPermissions`       |
 | `--allow-dangerously-skip-permissions`             | Add `bypassPermissions` to the Shift+Tab mode cycle without starting in it                                            |
+| `--restricted`                                     | Start in restricted mode (v2.1.248+): drop the built-in tools that run commands or code, remove `WebFetch`, confine the file tools to the working directories, load only managed settings and `--settings`, and refuse the `bypassPermissions` mode. Also settable via `CLAUDE_CODE_RESTRICTED=1` |
 
 :::warning
 **`--dangerously-skip-permissions` disables all safety prompts.** Claude Code will read, write, and execute anything without asking. Only use this inside a fully sandboxed environment with no internet access and no access to sensitive data (e.g. a disposable Docker container or CI job). Never use it on your main development machine. Prefer scoped `--allowedTools` rules to grant exactly the access you need instead.
+:::
+
+:::note
+`--restricted` is the opposite trade-off from `--dangerously-skip-permissions`: it tightens the tool surface for evaluation harnesses that drive `claude` on a shared machine. To hand back one of the removed tools, list it explicitly with `--tools` alongside the other built-in tools you need (for example `--tools "Bash,Read,Edit"`); the `default` preset does not restore them.
 :::
 
 ## Headless and scripting
@@ -134,6 +139,7 @@ keywords:
 | Variable                                   | Purpose                                                                                                                                                        |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CLAUDE_CODE_EFFORT_LEVEL`                 | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max`                                                                                                   |
+| `CLAUDE_CODE_RESTRICTED`                   | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)          |
 | `MAX_THINKING_TOKENS`                      | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                          |
 | `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`    | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only)                                  |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY`          | Set to `1` to disable auto memory globally                                                                                                                     |
