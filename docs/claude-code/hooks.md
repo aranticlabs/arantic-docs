@@ -457,7 +457,6 @@ Valid `permissionDecision` values for `PreToolUse`:
 - `"allow"`: bypass the permission prompt and let the tool run
 - `"deny"`: block the tool call and send the reason to Claude
 - `"ask"`: show the normal permission prompt to the user
-- `"defer"`: pause execution for external processing (non-interactive mode only); resume with `claude -p --resume <session-id>`
 
 ## Hooks in skills and agents
 

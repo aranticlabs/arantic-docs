@@ -1,7 +1,7 @@
 ---
 sidebar_position: 15
 sidebar_label: Bugbot & Agent Review
-description: Use Agent Review for in-editor review of local changes and Bugbot for automated PR review, with BUGBOT.md rules, effort levels, Autofix, and Security Agents.
+description: Use Agent Review for local changes and Bugbot for PR review, with BUGBOT.md rules, effort levels, Autofix, Security Agents, and Rollouts.
 keywords:
   [
     Cursor Bugbot,
@@ -12,6 +12,7 @@ keywords:
     review rules,
     Bugbot Autofix,
     Security Agents,
+    Cursor Rollouts,
     PR routing,
     /review-bugbot,
   ]
@@ -261,6 +262,14 @@ Security Agents are Cursor-managed agents that scan for security bugs and vulner
 | **Vulnerability Scanner** | Cron schedule                         | Scan the codebase at rest for pre-existing issues and things PR review missed |
 
 Each agent has built-in security checks you can toggle, custom instructions for project-specific expectations, and tools or MCPs (at least one is required) for routing findings to Slack, an issue tracker, or another system. Usage is charged to the team pool under a shared service account, so it does not affect any individual's usage. Analytics track vulnerabilities found, issues fixed, and resolution rate. Configure them in [Automations](https://cursor.com/automations/from-cursor/security), or run one locally with `/review-security`.
+
+## Rollouts (brief)
+
+Rollouts monitors each pull request from review to production. It writes a rollout plan when the pull request opens (risks, expected effects, signals to monitor, and instrumentation gaps) and posts it as a comment on GitHub, GitLab, or Bitbucket.
+
+- **Setup**: select the repositories to monitor, send deployment events with an API key, connect an observability tool such as Datadog (at least one is required), and configure notifications for PR authors.
+- **After deploy**: Rollouts tracks deployments per environment and checks impact at 20 minutes, 1 hour, 1 day, and 3 days. On a regression it names the change it suspects, opens an issue, and notifies the author.
+- **Availability**: Teams and Enterprise plans only.
 
 ## PR Routing & Approval (brief)
 

@@ -186,7 +186,7 @@ This pattern keeps each phase focused and avoids overwhelming Claude with too ma
 
 ## All available MCP servers
 
-Copy any configuration block below into your `settings.json` under the `mcpServers` key. Each entry is also available as a downloadable JSON file.
+Copy any configuration block below into your `.mcp.json` file (in the project root) under the `mcpServers` key. Each entry is also available as a downloadable JSON file.
 
 ---
 
@@ -548,7 +548,7 @@ Not all MCP tools map cleanly to Cursor's agent model. Servers that expose many 
 ## Tips
 
 - **Scope filesystem access carefully.** Only pass the directories the server actually needs. Giving access to `/` is a security risk if a prompt injection attack ever reaches Claude.
-- **Use project-level config for team servers.** Commit `.claude/settings.json` with servers that every team member should have (GitHub, Linear, your database). Leave personal credentials out: use environment variables or `.env` files that are gitignored.
+- **Use project-level config for team servers.** Commit `.mcp.json` with servers that every team member should have (GitHub, Linear, your database). Leave personal credentials out: use environment variables or `.env` files that are gitignored.
 - **Check `/mcp` after adding a server.** It confirms the server started and shows which tools are available. If a server fails to start, Claude Code shows the error there.
 - **Prefer read-only credentials for database servers.** Create a dedicated read-only database user for MCP access, especially for staging or production replicas.
 - **Start with one or two servers.** Each server adds to Claude's context about available tools. Adding a dozen servers at once can make it harder for Claude to pick the right tool. Add servers as you need them.

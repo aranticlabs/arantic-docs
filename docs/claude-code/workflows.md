@@ -125,11 +125,11 @@ Key frontmatter fields for subagents:
 | `isolation`   | string  | Set to `worktree` for git worktree isolation             |
 | `background`  | boolean | Always run as a background task                          |
 
-**Important limitations:**
+**Important limits and defaults:**
 
-- Subagents cannot spawn other subagents (no nesting)
-- Maximum 10 concurrent subagents
-- Use the main conversation to chain subagents sequentially
+- A subagent can spawn its own subagents, up to three layers below the main conversation by default (set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to change the depth)
+- Up to 20 subagents run concurrently by default (set `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` to change the limit)
+- Use the main conversation to chain subagents sequentially when a later step depends on an earlier one
 
 ### Hooks
 
@@ -142,13 +142,17 @@ Hooks are deterministic shell commands triggered by lifecycle events. Unlike ski
     "PreToolUse": [
       {
         "matcher": "Write",
-        "command": "echo 'File about to be written'"
+        "hooks": [
+          { "type": "command", "command": "echo 'File about to be written'" }
+        ]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Bash",
-        "command": "./scripts/check-lint.sh"
+        "hooks": [
+          { "type": "command", "command": "./scripts/check-lint.sh" }
+        ]
       }
     ]
   }
