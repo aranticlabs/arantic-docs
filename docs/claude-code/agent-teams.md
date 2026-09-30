@@ -32,7 +32,7 @@ Not sure whether you need Agent Teams or just subagents? See [Agents vs. subagen
 | **In-process** (default, no extra tools required) | All output in one terminal window; cycle between agents with `Shift+↑/↓` | No                            | Quick experiments, small teams (2–3 agents) |
 | **Split-pane** (tmux or iTerm2)                   | Each teammate gets its own live visible pane                             | Yes; full command-center view | Regular use, 3+ teammates                   |
 
-The official Claude Code docs state: _"Split-pane mode requires tmux or iTerm2… The default is `auto` which uses split panes if you're already running inside a tmux session, and in-process otherwise."_
+The default `teammateMode` is `in-process`. Set it to `auto` to use split panes when you are already inside a tmux session (or in iTerm2 with the `it2` CLI), falling back to in-process otherwise; set `tmux` to force split-pane mode, or `iterm2` (v2.1.186 or later) to use iTerm2 native panes explicitly. Split-pane mode requires tmux or iTerm2.
 
 ### Recommendation
 
