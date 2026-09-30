@@ -41,14 +41,14 @@ keywords:
 
 ## Permissions and tool control
 
-| Flag                                               | Purpose                                                                                                               |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `--permission-mode <mode>`                         | Permission mode: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions` |
-| `--allowedTools <tools>` / `--allowed-tools`       | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`)                                                                 |
-| `--disallowedTools <tools>` / `--disallowed-tools` | Deny specific tools (e.g. `"Bash(rm:*)"`)                                                                             |
-| `--tools <tools>`                                  | Restrict the available tool set entirely (`""` to disable all, `"default"` for all)                                   |
-| `--dangerously-skip-permissions`                   | Bypass all permission checks (sandboxed environments only). Equivalent to `--permission-mode bypassPermissions`       |
-| `--allow-dangerously-skip-permissions`             | Add `bypassPermissions` to the Shift+Tab mode cycle without starting in it                                            |
+| Flag                                               | Purpose                                                                                                                                                                                                                                                                                           |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--permission-mode <mode>`                         | Permission mode: `default` (also accepted as `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions`                                                                                                                                                                             |
+| `--allowedTools <tools>` / `--allowed-tools`       | Allow specific tools (e.g. `"Bash(git:*) Edit Read"`)                                                                                                                                                                                                                                             |
+| `--disallowedTools <tools>` / `--disallowed-tools` | Deny specific tools (e.g. `"Bash(rm:*)"`)                                                                                                                                                                                                                                                         |
+| `--tools <tools>`                                  | Restrict the available tool set entirely (`""` to disable all, `"default"` for all)                                                                                                                                                                                                               |
+| `--dangerously-skip-permissions`                   | Bypass all permission checks (sandboxed environments only). Equivalent to `--permission-mode bypassPermissions`                                                                                                                                                                                   |
+| `--allow-dangerously-skip-permissions`             | Add `bypassPermissions` to the Shift+Tab mode cycle without starting in it                                                                                                                                                                                                                        |
 | `--restricted`                                     | Start in restricted mode (v2.1.248+): drop the built-in tools that run commands or code, remove `WebFetch`, confine the file tools to the working directories, load only managed settings and `--settings`, and refuse the `bypassPermissions` mode. Also settable via `CLAUDE_CODE_RESTRICTED=1` |
 
 :::warning
@@ -136,19 +136,19 @@ keywords:
 
 ## Environment variables
 
-| Variable                                   | Purpose                                                                                                                                                        |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CLAUDE_CODE_EFFORT_LEVEL`                 | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max`                                                                                                   |
-| `CLAUDE_CODE_RESTRICTED`                   | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)          |
-| `MAX_THINKING_TOKENS`                      | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                          |
-| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`    | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only)                                  |
-| `CLAUDE_CODE_DISABLE_AUTO_MEMORY`          | Set to `1` to disable auto memory globally                                                                                                                     |
-| `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops                                                                           |
-| `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                           |
-| `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`     | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                     |
-| `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`       | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable |
-| `CLAUDE_CODE_AUTO_MODE_SERVER`             | Set to `0` to make auto mode use Claude Code's own classifier requests instead of asking the server to review actions (server-side review is the default on a direct Anthropic API connection since v2.1.281) |
-| `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT` | Set to `1` to turn off the time limit on critical-path removal prompts (v2.1.281+). Set it in the environment that launches Claude Code, not in a settings `env` block |
-| `CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH`   | Change the 2,048-character cap on each MCP tool description and server instructions sent to the model (v2.1.280+) |
+| Variable                                   | Purpose                                                                                                                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `CLAUDE_CODE_EFFORT_LEVEL`                 | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max`                                                                                                                         |
+| `CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH`   | Cap the length in characters of each MCP tool description and server instructions sent to the model (default `2048`; requires v2.1.280 or later)                                     |
+| `CLAUDE_CODE_AUTO_MODE_SERVER`             | Set to `0` to make auto mode use Claude Code's own classifier requests instead of asking the server to review actions (direct API connections need v2.1.281+)                        |
+| `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT` | Set to `1` to turn off the time limit on critical-path removal prompts (requires v2.1.281 or later)                                                                                  |
+| `CLAUDE_CODE_RESTRICTED`                   | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)                               |
+| `MAX_THINKING_TOKENS`                      | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                                                |
+| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`    | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only; Opus 5.5 and Sonnet 5.5 always use adaptive reasoning) |
+| `CLAUDE_CODE_DISABLE_AUTO_MEMORY`          | Set to `1` to disable auto memory globally                                                                                                                                           |
+| `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops                                                                                                 |
+| `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                                                 |
+| `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`     | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                                           |
+| `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`       | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable                       |
 | `MCP_DISCOVERY_CACHE`                      | Set to `1` to turn on the MCP discovery cache, or `0` to keep it off even when a rollout has enabled it |
-| `ANTHROPIC_MODEL`                          | Override the default model for all sessions                                                                                                                    |
+| `ANTHROPIC_MODEL`                          | Override the default model for all sessions                                                                                                                                          |
