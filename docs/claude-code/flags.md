@@ -35,7 +35,7 @@ keywords:
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--model sonnet`           | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs)                                                                                                                                     |
 | `--fallback-model <model>` | Automatic fallback when the primary model is overloaded or unavailable. Applies to both interactive and headless sessions. Configure up to three fallbacks tried in order with the `fallbackModel` setting. |
-| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` starts the session at `xhigh` effort with ultracode turned on.              |
+| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` requests `xhigh` effort with ultracode turned on.              |
 | `--max-budget-usd 5`       | Set a spending cap for the session (headless mode only)                                                                                                                                                     |
 | `--max-turns 20`           | Limit the number of agentic turns                                                                                                                                                                           |
 
@@ -94,7 +94,7 @@ keywords:
 | Flag                     | Purpose                                                           |
 | ------------------------ | ----------------------------------------------------------------- |
 | `--agent <agent>`        | Use a named agent for the session                                 |
-| `--agents <json>`        | Define custom agents inline as JSON                               |
+| `--agents <json>`        | Define custom agents inline as JSON. With `--print`, the value can be the path to a JSON file (v2.1.281+) |
 | `--plugin-dir <paths>`   | Load plugins from directories or `.zip` archives for this session |
 | `--plugin-url <urls>`    | Load a plugin from a hosted `.zip` URL for this session           |
 | `--teammate-mode <mode>` | Set Agent Teams display mode: `auto`, `tmux`, or `in-process`     |
@@ -147,4 +147,8 @@ keywords:
 | `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                           |
 | `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`     | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                     |
 | `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`       | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable |
+| `CLAUDE_CODE_AUTO_MODE_SERVER`             | Set to `0` to make auto mode use Claude Code's own classifier requests instead of asking the server to review actions (server-side review is the default on a direct Anthropic API connection since v2.1.281) |
+| `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT` | Set to `1` to turn off the time limit on critical-path removal prompts (v2.1.281+). Set it in the environment that launches Claude Code, not in a settings `env` block |
+| `CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH`   | Change the 2,048-character cap on each MCP tool description and server instructions sent to the model (v2.1.280+) |
+| `MCP_DISCOVERY_CACHE`                      | Set to `1` to turn on the MCP discovery cache, or `0` to keep it off even when a rollout has enabled it |
 | `ANTHROPIC_MODEL`                          | Override the default model for all sessions                                                                                                                    |
