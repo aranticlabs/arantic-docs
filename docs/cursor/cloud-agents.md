@@ -236,6 +236,15 @@ In a thread with an existing agent, `@Cursor [prompt]` adds a follow-up; `@Curso
 
 **Linear.** Connect Linear from the dashboard (admin required). Assign an issue to **Cursor** or mention `@Cursor` in a comment; Cursor filters out non-development work automatically, shows live status in the issue, and opens a PR when done. Configure with `[repo=owner/repo] [branch=...] [model=...]` in the issue text, or with a `repo` label group whose child labels are `owner/repo`, applied to issues or projects. Linear triage rules can auto-delegate issues to Cursor (Linear currently requires a human assignee for rules to fire).
 
+## Projects (beta)
+
+A Project takes on a larger body of work, such as a feature, a migration, or a full app. A coordinator agent plans the work without writing code itself, delegates it to agents that write the code, and brings the finished work back for you to check. It can run multiple agents in parallel and stays responsive to your direction.
+
+- **Start one**: in the Agents Window sidebar, choose **New Project**, name it, pick a workspace or repository and a model, then describe the work to the coordinator.
+- **Shared context**: agents add research, artifacts, and what they learn about the codebase and your preferences, so later agents start with that knowledge.
+- **Subscriptions**: the coordinator can monitor Slack channels or pull requests, or run on a schedule, and respond to what it detects.
+- **Availability**: Projects run on cloud infrastructure, so they are not available on Enterprise plans and do not work with Privacy Mode (Legacy).
+
 ## Automations
 
 Automations run Cloud Agents in the background on a schedule or in response to events. Think of them as the cron jobs and webhooks of your agent setup: no one types a prompt; the trigger does.
