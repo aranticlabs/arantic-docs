@@ -28,6 +28,7 @@ keywords:
 | `--from-pr [number]`          | Start a session from a GitHub pull request                                                             |
 | `--teleport`                  | Pull a session started on the web or iOS app into the local terminal                                   |
 | `--session-id <uuid>`         | Use a specific session ID (must be a valid UUID)                                                       |
+| `--desktop`                   | Open the Claude Desktop app on the current directory and exit (macOS and x64 Windows, requires a Claude subscription and v2.1.285 or later) |
 
 ## Model and effort
 
@@ -145,6 +146,9 @@ keywords:
 | `CLAUDE_CODE_RESTRICTED`                   | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)                               |
 | `MAX_THINKING_TOKENS`                      | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                                                |
 | `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`    | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only; Opus 5.5 and Sonnet 5.5 always use adaptive reasoning) |
+| `CLAUDE_CODE_DISABLE_WEB_FETCH`            | Set to `1` to turn off the WebFetch tool; WebSearch stays available (requires v2.1.285 or later) |
+| `CLAUDE_CODE_DISABLE_STRUCTURED_OUTPUTS`   | Set to `1` to stop sending the structured-output `output_config.format` field, for an LLM gateway whose upstream rejects it (requires v2.1.288 or later) |
+| `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES` | Limit how many times a timed-out non-streaming request is re-sent; `0` fails on the first timeout (requires v2.1.285 or later) |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY`          | Set to `1` to disable auto memory globally                                                                                                                                           |
 | `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops                                                                                                 |
 | `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                                                 |

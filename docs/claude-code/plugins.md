@@ -59,6 +59,8 @@ By default plugins install at user scope (available in all your projects). You c
 /plugin update plugin-name@marketplace
 ```
 
+To show an installed plugin's `userConfig` options and which are set, or to save values piped in on stdin, run `claude plugin configure plugin-name@marketplace` from your shell (requires v2.1.285 or later; it takes only the qualified `name@marketplace` form).
+
 ### Adding more marketplaces
 
 The official Anthropic marketplace comes pre-configured. You can add others, including private or self-hosted ones:
