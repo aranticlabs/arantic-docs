@@ -19,6 +19,8 @@ keywords:
 
 ## Session management
 
+To delete all local state for a project (transcripts, task lists, debug logs, file-edit history, and prompt history), run `claude purge [path]`. Use `--dry-run` to preview. It was renamed from `claude project purge` in v2.1.288.
+
 | Flag                          | Purpose                                                                                                |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `--continue` / `-c`           | Resume the most recent session                                                                         |
@@ -136,18 +138,20 @@ keywords:
 
 ## Environment variables
 
-| Variable                                   | Purpose                                                                                                                                                                              |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `CLAUDE_CODE_EFFORT_LEVEL`                 | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max`                                                                                                                         |
-| `CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH`   | Cap the length in characters of each MCP tool description and server instructions sent to the model (default `2048`; requires v2.1.280 or later)                                     |
-| `CLAUDE_CODE_AUTO_MODE_SERVER`             | Set to `0` to make auto mode use Claude Code's own classifier requests instead of asking the server to review actions (direct API connections need v2.1.281+)                        |
-| `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT` | Set to `1` to turn off the time limit on critical-path removal prompts (requires v2.1.281 or later)                                                                                  |
-| `CLAUDE_CODE_RESTRICTED`                   | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)                               |
-| `MAX_THINKING_TOKENS`                      | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                                                |
-| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`    | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only; Opus 5.5 and Sonnet 5.5 always use adaptive reasoning) |
-| `CLAUDE_CODE_DISABLE_AUTO_MEMORY`          | Set to `1` to disable auto memory globally                                                                                                                                           |
-| `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops                                                                                                 |
-| `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                                                 |
-| `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`     | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                                           |
-| `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`       | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable                       |
-| `ANTHROPIC_MODEL`                          | Override the default model for all sessions                                                                                                                                          |
+| Variable                                     | Purpose                                                                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `CLAUDE_CODE_EFFORT_LEVEL`                   | Set effort level: `low`, `medium`, `high`, `xhigh`, or `max`                                                                                                                         |
+| `CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH`     | Cap the length in characters of each MCP tool description and server instructions sent to the model (default `4096` since v2.1.296, previously `2048`; requires v2.1.280 or later)   |
+| `CLAUDE_CODE_AUTO_MODE_SERVER`               | Set to `0` to make auto mode use Claude Code's own classifier requests instead of asking the server to review actions (direct API connections need v2.1.281+)                        |
+| `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT`   | Set to `1` to turn off the time limit on critical-path removal prompts (requires v2.1.281 or later)                                                                                  |
+| `CLAUDE_CODE_RESTRICTED`                     | Set to `1` to start in restricted mode without the command- and code-running tools (equivalent to the `--restricted` flag; requires v2.1.248 or later)                               |
+| `MAX_THINKING_TOKENS`                        | Control how many tokens the model uses for reasoning (set to `0` to disable thinking)                                                                                                |
+| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING`      | Set to `1` to revert to a fixed thinking token budget instead of adaptive reasoning (applies to Sonnet 4.6 and Opus 4.6 only; Opus 5.5 and Sonnet 5.5 always use adaptive reasoning) |
+| `CLAUDE_CODE_DISABLE_AUTO_MEMORY`            | Set to `1` to disable auto memory globally                                                                                                                                           |
+| `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION`   | Tune the per-session cap on WebSearch calls (default `200`) that stops runaway loops                                                                                                 |
+| `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`      | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                                                 |
+| `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`       | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                                           |
+| `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`         | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable                       |
+| `CLAUDE_CODE_OVERLOADED_RETRY_BASE_DELAY_MS` | Set the starting backoff delay (500 to 32000 ms, default 500) between automatic retries after a `529` overloaded error (requires v2.1.292 or later)                                  |
+| `CLAUDE_CODE_DISABLE_STRUCTURED_OUTPUTS`     | Set to `1` to stop sending the structured-output `output_config.format` field, for LLM gateways whose upstream rejects it (requires v2.1.288 or later)                               |
+| `ANTHROPIC_MODEL`                            | Override the default model for all sessions                                                                                                                                          |
