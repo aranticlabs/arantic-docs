@@ -262,6 +262,8 @@ Key organization-policy settings:
 | `permissions.disableBypassPermissionsMode: "disable"` | Prevents users from using bypassPermissions mode                                   |
 | `permissions.disableAutoMode: "disable"`              | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
 | `allowManagedPermissionRulesOnly: true`               | Only managed allow/ask/deny rules apply; user/project rules are ignored            |
+| `permissions.denyInsteadOfPrompting`                  | Denies a call that would otherwise wait on a permission prompt, so the turn continues (v2.1.319+) |
+| `permissions.blockWritesOutsideWorkingDirectories`    | Write, Edit, and NotebookEdit refuse paths outside the working directories in every permission mode (v2.1.314+) |
 
 `disableBypassPermissionsMode` and `disableAutoMode` are most useful in managed settings but work from any scope, so a user can set either in their own settings to lock themselves out. Only `allowManagedPermissionRulesOnly` is genuinely managed-only.
 

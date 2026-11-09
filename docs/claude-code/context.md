@@ -57,7 +57,7 @@ On supported models (Sonnet 4.6, Sonnet 5, Sonnet 5.5, Opus 4.6, Opus 4.7, Opus 
 | `CLAUDE_CODE_EFFORT_LEVEL`   | Set effort via environment variable                                                                          |
 | `Option+T` (macOS) / `Alt+T` | Toggle thinking on or off for the current session                                                            |
 | `/config`                    | Set a global default across all projects                                                                     |
-| `ultrathink` in prompt       | Adds an in-context instruction for deeper reasoning on that turn (does not change your effort level setting) |
+| `ultrathink` in prompt       | Adds an in-context instruction for deeper reasoning on that turn (does not change your effort level setting; runs at xhigh effort on Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1) |
 
 ### Viewing thinking
 
