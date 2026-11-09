@@ -139,7 +139,7 @@ Cursor keeps VS Code's defaults and adds shortcuts for AI features. Mac keys are
 | `Cmd+Shift+J`      | Cursor settings                                      |
 | `Cmd+,`            | General settings                                     |
 | `Cmd+Shift+P`      | Command palette                                      |
-| `Cmd+Shift+Space`  | Toggle Voice Mode                                    |
+| `Cmd+Shift+Space`  | Toggle Dictation (formerly Voice Mode)               |
 
 ### Agent chat input
 
