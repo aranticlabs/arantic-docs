@@ -209,6 +209,8 @@ mcp__puppeteer__*       # Same using wildcard syntax
 mcp__puppeteer__navigate # One specific tool
 ```
 
+Since v2.1.299, an MCP allow rule matches only the server it names: `mcp__a` no longer matches a server named `a__b`. To cover every tool of a server, use `mcp__<server>__*` with the server's full normalized name.
+
 ### Agent (subagent) rules
 
 Use `Agent(AgentName)` rules to control which subagents Claude can use:
