@@ -28,4 +28,4 @@ When things are not working as expected:
 
 - **Use a standalone terminal** (iTerm2, Alacritty, Windows Terminal) rather than your IDE's built-in terminal. IDE terminals can cause stability issues with long-running sessions.
 - **Enable the status line** to monitor context usage, active model, and session cost at a glance.
-- **Use `/fast` mode** for quick, straightforward tasks. It uses the same model but with faster output. Note that fast mode is billed to extra usage from the first token.
+- **Use `/fast` mode** for quick, straightforward tasks. It uses the same model but with faster output. Note that fast mode is billed to extra usage from the first token. Fast mode for Opus 4.8 is deprecated and is removed on November 30, 2026; switch to Opus 5.5 with `/model` to keep it.

@@ -204,7 +204,7 @@ Design Mode lets you direct the agent with visual prompts from the browser insid
 - **Select an element.** Click anything in the running app. The agent receives the element and its code, so you can prompt against exactly what you see.
 - **Select multiple elements.** Reference two components and ask the agent to make one match the other, remove duplicated content, or adjust a group together.
 - **Draw on the page.** Circle or box a region. The annotation sits over a frozen frame of the viewport, so the agent sees the exact page state you reacted to.
-- **Narrate by voice.** The mic stays available while agents run, so you can queue the next change without waiting.
+- **Narrate by dictation.** The mic stays available while agents run, so you can queue the next change without waiting. Voice chat (the waveform button next to Send) is a separate realtime call with the agent.
 
 | Action               | Shortcut     |
 | -------------------- | ------------ |
