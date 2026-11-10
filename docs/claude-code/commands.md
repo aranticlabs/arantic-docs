@@ -47,6 +47,7 @@ Some commands are **bundled skills** rather than hard-coded CLI behavior. They u
 | `/fast [on\|off]`                                    | Toggle fast mode (same model, faster output)                                                                                                                                                                                               |
 | `/advisor [model\|off]`                              | Enable or disable the advisor tool, which consults a second model for guidance at key moments during a task. Accepts `fable`, `opus`, `sonnet`, or a full model ID (`fable` requires Fable 5 access). Without an argument, opens a picker. |
 | `/effort [level\|auto\|status\|ultracode [on\|off]]` | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, or `max`. Available levels depend on the model. `auto` resets to the model default; `ultracode [on\|off]` toggles ultracode separately from the level (v2.1.284+).                  |
+| `/auto-mode-setup`                                   | Guided setup that reads your project and recent sessions to teach auto mode about your environment and drafts `autoMode.environment` entries                                                                                               |
 | `/plan`                                              | Enter plan mode (Claude analyzes and plans before writing code)                                                                                                                                                                            |
 
 ## Context & Cost
