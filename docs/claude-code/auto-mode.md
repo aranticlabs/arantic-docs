@@ -105,6 +105,12 @@ Auto mode behavior is customizable via four sections in your settings:
 
 Use `claude auto-mode defaults` to print the built-in rules, and `claude auto-mode config` to see the effective configuration with your settings applied.
 
+### Generate entries with `/auto-mode-setup`
+
+Run `/auto-mode-setup` to have Claude Code draft `autoMode.environment` entries (and sometimes rule entries) from your project and your recent sessions in it. It reads the project's `CLAUDE.md`, `README.md`, config files, and git remotes, plus the hosts, buckets, and command names from commands Claude ran in recent sessions. You accept or discard the draft as a whole, and an accepted draft is written to `~/.claude/settings.json`. Since v2.1.304 the command also works on Bedrock, Vertex, Foundry, Claude apps gateway, and telemetry-disabled sessions. To hide both the command and the "Teach auto mode about your environment?" offer, set `"skillOverrides": { "auto-mode-setup": "off" }` in `~/.claude/settings.json`.
+
+To choose the model for the classifier requests Claude Code sends itself, set `CLAUDE_CODE_AUTO_MODE_MODEL` to a full model ID (requires v2.1.302 or later). It does not change the model used by server-side auto mode.
+
 Set `autoMode.classifyAllShell` to `true` to send every Bash and PowerShell command through the classifier, rather than only the shell and network operations that are not already recognized as safe. When the classifier blocks an action, the denial reason is shown in the transcript, the denial toast, and `/permissions`.
 
 ### Example configuration
@@ -154,6 +160,20 @@ claude auto-mode critique
 # Restore the default auto-mode configuration (add --yes to skip the prompt)
 claude auto-mode reset
 ```
+
+## Choose the classifier model
+
+Set `CLAUDE_CODE_AUTO_MODE_MODEL` (v2.1.302 or later) to a full model ID to pick the model that runs the client-side auto mode classifier. Without it, classifier requests go to Claude Sonnet 5, or to a model chosen from your session's model and `ANTHROPIC_DEFAULT_SONNET_MODEL`.
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_AUTO_MODE_MODEL": "claude-sonnet-4-6"
+  }
+}
+```
+
+The variable is ignored in some cases: if you set Claude Opus 5, Sonnet 5.5, or Opus 5.5, or your organization's model policy excludes the model, the default classifier model reviews instead. If your provider cannot serve the model, classifier checks fail and Claude Code denies each action it checks. To verify which model ran, start a session with `claude --permission-mode auto --debug-file classifier-debug.log` and search the log for `classifier_request_started`.
 
 ## Availability
 

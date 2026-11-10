@@ -19,6 +19,8 @@ keywords:
 
 ## Session management
 
+To delete all local state for a project (transcripts, task lists, debug logs, file-edit history, and prompt history), run `claude purge [path]`. Use `--dry-run` to preview. It was renamed from `claude project purge` in v2.1.288.
+
 | Flag                          | Purpose                                                                                                |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `--continue` / `-c`           | Resume the most recent session                                                                         |
@@ -28,6 +30,7 @@ keywords:
 | `--from-pr [number]`          | Start a session from a GitHub pull request                                                             |
 | `--teleport`                  | Pull a session started on the web or iOS app into the local terminal                                   |
 | `--session-id <uuid>`         | Use a specific session ID (must be a valid UUID)                                                       |
+| `--desktop`                   | Open the Claude Desktop app on the current directory and exit (macOS and x64 Windows, requires a Claude subscription and v2.1.285 or later) |
 
 ## Model and effort
 
@@ -35,7 +38,7 @@ keywords:
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--model sonnet`           | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs)                                                                                                                                     |
 | `--fallback-model <model>` | Automatic fallback when the primary model is overloaded or unavailable. Applies to both interactive and headless sessions. Configure up to three fallbacks tried in order with the `fallbackModel` setting. |
-| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` starts the session at `xhigh` effort with ultracode turned on.              |
+| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` requests `xhigh` effort with ultracode turned on.              |
 | `--max-budget-usd 5`       | Set a spending cap for the session (headless mode only)                                                                                                                                                     |
 | `--max-turns 20`           | Limit the number of agentic turns                                                                                                                                                                           |
 
@@ -94,7 +97,7 @@ keywords:
 | Flag                     | Purpose                                                           |
 | ------------------------ | ----------------------------------------------------------------- |
 | `--agent <agent>`        | Use a named agent for the session                                 |
-| `--agents <json>`        | Define custom agents inline as JSON                               |
+| `--agents <json>`        | Define custom agents inline as JSON. With `--print`, the value can be the path to a JSON file (v2.1.281+) |
 | `--plugin-dir <paths>`   | Load plugins from directories or `.zip` archives for this session |
 | `--plugin-url <urls>`    | Load a plugin from a hosted `.zip` URL for this session           |
 | `--teammate-mode <mode>` | Set Agent Teams display mode: `auto`, `tmux`, or `in-process`     |
@@ -150,4 +153,19 @@ keywords:
 | `CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`    | Tune the per-session cap on subagent spawns (default `200`) that stops runaway loops                                                                                                 |
 | `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`     | Set how many layers of nested subagents can spawn below the main conversation (default `3` since v2.1.219)                                                                           |
 | `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`       | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable                       |
+| `CLAUDE_CODE_SUBAGENT_EFFORT`              | Set the effort level subagents run at when nothing else specifies one                                                                                                                |
+| `CLAUDE_CODE_DISABLE_ULTRATHINK`           | Set to `1` to turn off the `ultrathink` keyword                                                                                                                                      |
+| `CLAUDE_CODE_DISABLE_MCP_TASKS`            | Set to `1` to turn off MCP tasks (`CLAUDE_CODE_DISABLE_MCP_TASK_BACKGROUND` makes an MCP task wait inside its tool call instead of moving to the background)                          |
+| `CLAUDE_CODE_LOOP_KEEPALIVE`               | Set to `1` to keep the old self-paced `/loop` behavior (otherwise a self-paced loop ends when a turn finishes without rescheduling)                                                  |
+| `CLAUDE_CODE_AUTO_MODE_MODEL`                 | Set the model (full model ID) for the classifier requests Claude Code sends in auto mode; does not change server-side auto mode (requires v2.1.302 or later)                              |
+| `CLAUDE_CODE_DISABLE_FILE_MENTIONS`           | Set to `1` so `@` file mentions give Claude the paths to read instead of expanding file contents (ignored in project and local settings; requires v2.1.299 or later)                      |
+| `CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS`         | Change the context size at which idle compaction applies (default `200000`, minimum `100000`). Turn idle compaction off with `"idleCompaction": false` in `settings.json`                 |
+| `CLAUDE_CODE_AUTO_COMPACT_WINDOW`             | Set the auto-compact window from `100000` to `1000000` tokens; suffixes such as `200k` need v2.1.304 or later                                                                             |
+| `CLAUDE_CODE_DISABLE_ULTRAREVIEW_TRUST_CHECK` | Set to `1` so `claude ultrareview` does not exit with a workspace-not-trusted error where it cannot ask (such as CI); alternatively pass `--trust-workspace` (requires v2.1.309 or later) |
+| `CLAUDE_CODE_GZIP_REQUEST_BODIES`             | Set to `0` to turn off gzip compression of large requests to `api.anthropic.com`                                                                                                          |
+| `CLAUDE_CODE_FORK_SUBAGENT`                   | Set to `0` to turn off fork mode, which is also on by default in `claude -p`, the Agent SDK, the desktop app, and VS Code (v2.1.302+)                                                     |
+| `CLAUDE_CODE_OVERLOADED_RETRY_BASE_DELAY_MS` | Set the starting backoff delay (500 to 32000 ms, default 500) between automatic retries after a `529` overloaded error (requires v2.1.292 or later)                                  |
+| `CLAUDE_CODE_DISABLE_STRUCTURED_OUTPUTS`     | Set to `1` to stop sending the structured-output `output_config.format` field, for LLM gateways whose upstream rejects it (requires v2.1.288 or later)                               |
+| `CLAUDE_CODE_DISABLE_WEB_FETCH`            | Set to `1` to turn off the WebFetch tool; WebSearch stays available (requires v2.1.285 or later) |
+| `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES` | Limit how many times a timed-out non-streaming request is re-sent; `0` fails on the first timeout (requires v2.1.285 or later) |
 | `ANTHROPIC_MODEL`                          | Override the default model for all sessions                                                                                                                                          |

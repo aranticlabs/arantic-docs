@@ -30,7 +30,7 @@ Short, practical habits for getting good results from Cursor's agent. Each bulle
 - **Ground the prompt in real files and patterns.** Point at an existing component or endpoint to copy from; the output matches your codebase instead of a generic template.
 - **Steer instead of restarting.** While the agent works, type a follow-up and **Send now** (or `Cmd+Enter`). It is delivered at the next tool call without cutting off in-flight work. Press Enter alone to queue it for after the turn.
 - **Give long objectives a `/goal`.** `/goal fix all flaky tests and make CI green` keeps the agent working toward one outcome across many turns instead of treating each message as a fresh job.
-- **Try voice for long descriptions.** Click the microphone, speak the file and function names, and review the transcription before sending.
+- **Try dictation for long descriptions.** Click the microphone, speak the file and function names, and review the transcription before sending. To talk with an agent in real time, start a voice chat with the waveform button next to Send (available when the agent is idle and the input is empty).
 
 ## Context
 

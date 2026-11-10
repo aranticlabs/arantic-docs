@@ -313,6 +313,32 @@ Use an agent-based hook to verify tests pass before Claude considers its work do
 }
 ```
 
+### Block the action when a hook fails
+
+By default, a command or HTTP hook that fails to start, times out, exits with a code other than 0 or 2, or returns invalid output does not stop the action. Set `"onFailure": "block"` (v2.1.295 or later) to treat such a failure like exit code 2 instead. A failed `PreToolUse` hook blocks the tool call, a failed `UserPromptSubmit` hook blocks the prompt, and a failed `PermissionRequest` hook denies the request:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-command.js"],
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`onFailure` applies only to `command` and `http` hooks, and has no effect on `Stop`, `SubagentStop`, `TaskCompleted`, `TeammateIdle`, or background hooks that set `async` or `asyncRewake`.
+
 ### Delegate to an MCP tool
 
 Call a connected MCP server tool from a hook. Variable substitution with `${tool_input.field}` injects values from the hook's JSON input:

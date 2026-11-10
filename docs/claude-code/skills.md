@@ -772,6 +772,10 @@ A few things to keep in mind when using community skills:
 - **SkillsMP is not affiliated with Anthropic.** It is an independent community project.
 - **Quality varies.** SkillsMP filters out repositories with fewer than 2 stars, but that is a low bar. Check that a skill does what you expect before relying on it.
 
+### Community: Agent Skills Hub
+
+[Agent Skills Hub](https://agentskillshub.top/) is an open-source directory of 262,000+ agent skills, MCP servers and agent tools, refreshed from public GitHub repositories every 8 hours. Popular entries are security-graded against 42 published rules, which can help with the "review before installing" step above. Like SkillsMP, it is an independent community project and is not affiliated with Anthropic.
+
 ## Using skills with other tools
 
 Skills follow the same `SKILL.md` folder convention across Claude Code, Codex, and Cursor, so a skill written for one tool usually needs only a change of directory to work in another. See each tool's page for detailed setup instructions:
