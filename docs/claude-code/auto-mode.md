@@ -19,7 +19,7 @@ keywords:
 
 Auto mode is a permission mode that uses a separate **classifier model** to evaluate each tool call before execution. Safe actions proceed automatically, risky ones get blocked. It sits between Manual mode (asks every time) and `--dangerously-skip-permissions` (no checks at all). Requires Claude Code v2.1.83 or later.
 
-On **Pro, Max, and Team plans**, auto mode is now the built-in **starting permission mode** for new terminal and VS Code sessions, once your account and model support it. This requires v2.1.228 or later on macOS, Linux, and WSL, and v2.1.233 or later on native Windows; on earlier versions, and on Enterprise plans, the Anthropic API, and cloud providers, new sessions still start in Manual mode.
+With Claude Code v2.1.283 or later, auto mode is the built-in **starting permission mode** for interactive terminal and VS Code sessions on every plan and provider, once your account and model support it. On earlier versions, it is the starting mode only on Pro, Max, and Team plans (v2.1.228 or later on macOS, Linux, and WSL, and v2.1.233 or later on native Windows); elsewhere those sessions start in Manual mode.
 
 :::warning
 Auto mode reduces permission prompts but does not guarantee safety. Use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations. Anthropic recommends running auto mode inside a [sandboxed environment](#caveats) for defense in depth.
@@ -27,9 +27,9 @@ Auto mode reduces permission prompts but does not guarantee safety. Use it for t
 
 ## How sessions start in auto mode
 
-On Pro, Max, and Team plans, new terminal and [VS Code](https://code.claude.com/docs/en/vs-code) sessions start in auto mode automatically once your account meets the [availability requirements](#availability). The first time this happens, Claude Code shows a one-time notice linking to the docs. You can switch to another mode at any time with **Shift+Tab**.
+With v2.1.283 or later, new interactive terminal and [VS Code](https://code.claude.com/docs/en/vs-code) sessions start in auto mode automatically once your account meets the [availability requirements](#availability), on every plan and provider. The first time this happens, Claude Code shows a one-time notice linking to the docs. You can switch to another mode at any time with **Shift+Tab**.
 
-On **Enterprise** plans, the **Anthropic API**, and cloud providers (Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry), sessions start in **Manual** mode by default. Auto mode still appears in the Shift+Tab cycle where the plan, provider, and model support it.
+Before v2.1.283, sessions on **Enterprise** plans, the **Anthropic API**, and cloud providers (Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry) started in **Manual** mode, with auto mode only in the Shift+Tab cycle. Set `permissions.defaultMode` to choose the starting mode yourself.
 
 **Shift+Tab cycle:** from auto, the first press switches to Manual (`default`); the cycle then runs `default → acceptEdits → plan` and back, with `auto` slotting in after `plan`.
 
@@ -49,7 +49,7 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 
 **Team/Enterprise:** auto mode is available by default. An admin can turn it off for the organization by setting `permissions.disableAutoMode` to `"disable"` in [managed settings](https://code.claude.com/docs/en/managed-settings).
 
-**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required, but it appears in the Shift+Tab cycle rather than becoming the starting mode. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
+**Bedrock / Google Cloud's Agent Platform / Foundry:** From v2.1.207, auto mode is available by default on these providers, with no opt-in required. From v2.1.283 it is also the starting mode; before that it appeared only in the Shift+Tab cycle. (In v2.1.158 through v2.1.206 it was off until you set `CLAUDE_CODE_ENABLE_AUTO_MODE=1`; that variable is still accepted for compatibility but has no effect from v2.1.207 onward.) See [Availability](#availability).
 
 ## How it works
 
@@ -57,6 +57,14 @@ As of v2.1.142, Claude Code ignores `defaultMode: "auto"` in project and local s
 2. **Safe actions** (file edits within the working directory, read-only operations) proceed automatically without prompting.
 3. **Risky actions** (mass file deletions, data exfiltration attempts, malicious code execution, prompt injection patterns) get **blocked**, and Claude tries a different approach. This also covers destructive git commands such as `git reset --hard`, `git clean -fd`, and `git stash drop` when you did not ask to discard local work, and `terraform destroy` unless you asked for that specific stack.
 4. Read-only actions and file edits in the working directory do **not** trigger a classifier call. Shell commands and network operations do. (Set `autoMode.classifyAllShell` to `true` to route every Bash and PowerShell command through the classifier instead.)
+
+### Server-side classifier review
+
+On a direct connection to the Anthropic API, cloud providers, and LLM gateways, Claude Code can ask the server to review auto mode actions as part of the session's model requests instead of sending its own classifier requests. Which sessions ask by default depends on the version and plan (see the [official permission modes page](https://code.claude.com/docs/en/permission-modes#server-side-classifier-review)). Set `CLAUDE_CODE_AUTO_MODE_SERVER=0` to always use Claude Code's own classifier requests. On a direct Anthropic API connection, this variable requires v2.1.281 or later.
+
+### Critical-path removal prompts
+
+In auto mode (and `bypassPermissions`), the terminal prompt for a removal of a critical path, such as a system directory, shows a two-minute countdown. If it runs out before you answer, Claude Code denies the command. Press any key to stop the countdown. After three unanswered prompts in a session, further critical-path removals are denied immediately. Requires v2.1.281 or later. Set `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT=1` in the environment that launches Claude Code to turn off the time limit; in auto mode those removals then go to the classifier.
 
 ### Circuit breaker
 
@@ -151,8 +159,8 @@ claude auto-mode reset
 
 | Requirement            | Detail                                                                                                                                                                                                                                                                                                                                                                             |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Plans**              | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, auto mode is available by default and an admin can turn it off. On **Pro, Max, and Team** it is the built-in starting permission mode; elsewhere sessions start in Manual.                                                                                                                  |
-| **Models**             | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry: only Claude Sonnet 5, Opus 4.7 or later, and Fable 5.                                                                                                                                         |
+| **Plans**              | All plans (Pro, Max, Team, Enterprise, and the Anthropic API). On Team and Enterprise, auto mode is available by default and an admin can turn it off. From v2.1.283 it is the built-in starting permission mode for interactive terminal and VS Code sessions on every plan; before that, only on Pro, Max, and Team.                                                             |
+| **Models**             | On the Anthropic API and Claude Platform on AWS: Claude Opus 4.6 or later, Sonnet 4.6 or later, or a Fable model. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, and signed-in Claude apps gateway sessions: only Claude Sonnet 5 or later, Opus 4.7 or later, and the Fable models.                                                                         |
 | **Providers**          | Available by default on the Anthropic API, Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry. From v2.1.207 no opt-in is required; in v2.1.158 through v2.1.206, Bedrock, Agent Platform, and Foundry needed `CLAUDE_CODE_ENABLE_AUTO_MODE=1`. The variable is still accepted for compatibility but has no effect from v2.1.207 onward. |
 | **Not available**      | Sonnet 4.5, Opus 4.5, Haiku, and Claude 3 models on any provider                                                                                                                                                                                                                                                                                                                   |
 | **Enterprise opt-out** | Admins can disable with `permissions.disableAutoMode` set to `"disable"` in managed settings                                                                                                                                                                                                                                                                                       |
