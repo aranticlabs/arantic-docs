@@ -30,6 +30,7 @@ To delete all local state for a project (transcripts, task lists, debug logs, fi
 | `--from-pr [number]`          | Start a session from a GitHub pull request                                                             |
 | `--teleport`                  | Pull a session started on the web or iOS app into the local terminal                                   |
 | `--session-id <uuid>`         | Use a specific session ID (must be a valid UUID)                                                       |
+| `--desktop`                   | Open the Claude Desktop app on the current directory and exit (macOS and x64 Windows, requires a Claude subscription and v2.1.285 or later) |
 
 ## Model and effort
 
@@ -37,7 +38,7 @@ To delete all local state for a project (transcripts, task lists, debug logs, fi
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--model sonnet`           | Use a specific model (aliases like `sonnet`, `opus`, or full model IDs)                                                                                                                                     |
 | `--fallback-model <model>` | Automatic fallback when the primary model is overloaded or unavailable. Applies to both interactive and headless sessions. Configure up to three fallbacks tried in order with the `fallbackModel` setting. |
-| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` starts the session at `xhigh` effort with ultracode turned on.              |
+| `--effort <level>`         | Set reasoning depth: `low`, `medium`, `high`, `xhigh`, `max`, or `ultracode`. Available levels depend on the model. `ultracode` requests `xhigh` effort with ultracode turned on.              |
 | `--max-budget-usd 5`       | Set a spending cap for the session (headless mode only)                                                                                                                                                     |
 | `--max-turns 20`           | Limit the number of agentic turns                                                                                                                                                                           |
 
@@ -96,7 +97,7 @@ To delete all local state for a project (transcripts, task lists, debug logs, fi
 | Flag                     | Purpose                                                           |
 | ------------------------ | ----------------------------------------------------------------- |
 | `--agent <agent>`        | Use a named agent for the session                                 |
-| `--agents <json>`        | Define custom agents inline as JSON                               |
+| `--agents <json>`        | Define custom agents inline as JSON. With `--print`, the value can be the path to a JSON file (v2.1.281+) |
 | `--plugin-dir <paths>`   | Load plugins from directories or `.zip` archives for this session |
 | `--plugin-url <urls>`    | Load a plugin from a hosted `.zip` URL for this session           |
 | `--teammate-mode <mode>` | Set Agent Teams display mode: `auto`, `tmux`, or `in-process`     |
