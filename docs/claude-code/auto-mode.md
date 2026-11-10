@@ -161,6 +161,20 @@ claude auto-mode critique
 claude auto-mode reset
 ```
 
+## Choose the classifier model
+
+Set `CLAUDE_CODE_AUTO_MODE_MODEL` (v2.1.302 or later) to a full model ID to pick the model that runs the client-side auto mode classifier. Without it, classifier requests go to Claude Sonnet 5, or to a model chosen from your session's model and `ANTHROPIC_DEFAULT_SONNET_MODEL`.
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_AUTO_MODE_MODEL": "claude-sonnet-4-6"
+  }
+}
+```
+
+The variable is ignored in some cases: if you set Claude Opus 5, Sonnet 5.5, or Opus 5.5, or your organization's model policy excludes the model, the default classifier model reviews instead. If your provider cannot serve the model, classifier checks fail and Claude Code denies each action it checks. To verify which model ran, start a session with `claude --permission-mode auto --debug-file classifier-debug.log` and search the log for `classifier_request_started`.
+
 ## Availability
 
 | Requirement            | Detail                                                                                                                                                                                                                                                                                                                                                                             |
