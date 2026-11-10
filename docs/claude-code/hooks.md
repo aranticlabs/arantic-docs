@@ -313,6 +313,32 @@ Use an agent-based hook to verify tests pass before Claude considers its work do
 }
 ```
 
+### Block the action when a hook fails
+
+By default, a command or HTTP hook that fails to start, times out, exits with a code other than 0 or 2, or returns invalid output does not stop the action. Set `"onFailure": "block"` (v2.1.295 or later) to treat such a failure like exit code 2 instead. A failed `PreToolUse` hook blocks the tool call, a failed `UserPromptSubmit` hook blocks the prompt, and a failed `PermissionRequest` hook denies the request:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-command.js"],
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`onFailure` applies only to `command` and `http` hooks, and has no effect on `Stop`, `SubagentStop`, `TaskCompleted`, `TeammateIdle`, or background hooks that set `async` or `asyncRewake`.
+
 ### Delegate to an MCP tool
 
 Call a connected MCP server tool from a hook. Variable substitution with `${tool_input.field}` injects values from the hook's JSON input:
@@ -437,21 +463,6 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 | **0**     | Action proceeds. Stdout is added to Claude's context.      |
 | **2**     | Action blocked. Stderr is sent to Claude as feedback.      |
 | **Other** | Action proceeds. Output is logged but not shown to Claude. |
-
-### Block the action when a hook fails
-
-By default, a hook that fails to start, times out, or exits with a code other than 0 or 2 is logged as a non-blocking error and the action proceeds. Set `"onFailure": "block"` on a `command` or `http` hook (v2.1.295 or later) to block the action instead. The effect matches exit code 2, except on `PermissionRequest`, where the request is denied.
-
-```json
-{
-  "type": "command",
-  "command": "node",
-  "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-command.js"],
-  "onFailure": "block"
-}
-```
-
-`onFailure` has no effect on `Stop`, `SubagentStop`, `TaskCompleted`, or `TeammateIdle` hooks, or on hooks that run in the background with `async` or `asyncRewake`.
 
 ### Structured JSON output
 

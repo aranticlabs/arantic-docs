@@ -809,7 +809,7 @@ When a background subagent needs a permission decision, the prompt surfaces in y
 
 A **fork** is a special kind of subagent that inherits the entire conversation so far instead of starting from a clean slate. It sees the same system prompt, tools, model, and message history as your main session, so you can hand it a side task without re-explaining the context. Because it keeps reading the prompt cache the main session already warmed, a fork is cheaper to start than a fully isolated subagent. As with any subagent, the fork's own tool calls stay out of your main conversation and only its final summary returns, so your main context window stays clean.
 
-Fork mode is **on by default** in interactive sessions. While it is on, Claude Code runs the subagents it spawns in the background (forks and non-fork subagents alike) and cannot pause to ask for a foreground run.
+Fork mode is **on by default** in interactive sessions, and as of v2.1.302 also in `claude -p`, the Agent SDK, the desktop app, and VS Code. While it is on, Claude Code runs the subagents it spawns in the background (forks and non-fork subagents alike) and cannot pause to ask for a foreground run.
 
 Start a fork yourself with `/subtask` followed by a task, whether or not fork mode is on (requires v2.1.212 or later; the command was `/fork` on v2.1.161 through v2.1.211):
 
