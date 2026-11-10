@@ -155,4 +155,6 @@ To delete all local state for a project (transcripts, task lists, debug logs, fi
 | `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS`         | Tune or disable the threshold after which a long-running MCP tool call moves to the background automatically (default two minutes) so the session stays usable                       |
 | `CLAUDE_CODE_OVERLOADED_RETRY_BASE_DELAY_MS` | Set the starting backoff delay (500 to 32000 ms, default 500) between automatic retries after a `529` overloaded error (requires v2.1.292 or later)                                  |
 | `CLAUDE_CODE_DISABLE_STRUCTURED_OUTPUTS`     | Set to `1` to stop sending the structured-output `output_config.format` field, for LLM gateways whose upstream rejects it (requires v2.1.288 or later)                               |
+| `CLAUDE_CODE_DISABLE_WEB_FETCH`            | Set to `1` to turn off the WebFetch tool; WebSearch stays available (requires v2.1.285 or later) |
+| `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES` | Limit how many times a timed-out non-streaming request is re-sent; `0` fails on the first timeout (requires v2.1.285 or later) |
 | `ANTHROPIC_MODEL`                            | Override the default model for all sessions                                                                                                                                          |
