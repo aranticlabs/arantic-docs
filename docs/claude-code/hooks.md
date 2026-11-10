@@ -438,6 +438,21 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 | **2**     | Action blocked. Stderr is sent to Claude as feedback.      |
 | **Other** | Action proceeds. Output is logged but not shown to Claude. |
 
+### Block the action when a hook fails
+
+By default, a hook that fails to start, times out, or exits with a code other than 0 or 2 is logged as a non-blocking error and the action proceeds. Set `"onFailure": "block"` on a `command` or `http` hook (v2.1.295 or later) to block the action instead. The effect matches exit code 2, except on `PermissionRequest`, where the request is denied.
+
+```json
+{
+  "type": "command",
+  "command": "node",
+  "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-command.js"],
+  "onFailure": "block"
+}
+```
+
+`onFailure` has no effect on `Stop`, `SubagentStop`, `TaskCompleted`, or `TeammateIdle` hooks, or on hooks that run in the background with `async` or `asyncRewake`.
+
 ### Structured JSON output
 
 For finer control, return JSON on stdout (with exit 0):
