@@ -265,6 +265,8 @@ Key organization-policy settings:
 | `permissions.disableAutoMode: "disable"`              | Removes auto mode entirely, including as the default starting mode on Pro/Max/Team |
 | `allowManagedPermissionRulesOnly: true`               | Only managed allow/ask/deny rules apply; user/project rules are ignored            |
 | `permissions.denyInsteadOfPrompting`                  | Denies a call that would otherwise wait on a permission prompt, so the turn continues (v2.1.319+) |
+| `sandbox.autoAllowBashIfSandboxed: true`              | Keeps sandboxed Bash commands running without prompts; by default they follow the normal permission flow (v2.1.325+) |
+| `prependPlugins` / `appendPlugins`                    | Count plugins from a remote marketplace as the organization's (v2.1.325+) |
 | `permissions.blockWritesOutsideWorkingDirectories`    | Write, Edit, and NotebookEdit refuse paths outside the working directories in every permission mode (v2.1.314+) |
 
 `disableBypassPermissionsMode` and `disableAutoMode` are most useful in managed settings but work from any scope, so a user can set either in their own settings to lock themselves out. Only `allowManagedPermissionRulesOnly` is genuinely managed-only.

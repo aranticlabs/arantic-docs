@@ -121,7 +121,7 @@ A plugin is a directory with a `plugin.json` manifest inside a `.claude-plugin/`
 - **LSP server config** (`.lsp.json`): Language server connections for code intelligence
 - **Background monitors** (`monitors/monitors.json`): Commands that run in the background and stream output to Claude as notifications
 - **Executables** (`bin/`): Binaries added to the Bash tool's `PATH` while the plugin is enabled
-- **Default settings** (`settings.json`): Configuration applied when the plugin is enabled (currently supports `agent` and `subagentStatusLine` keys)
+- **Default settings** (`settings.json`): Configuration applied when the plugin is enabled (currently supports the `agent` key, which is deprecated and warns at startup as of v2.1.323; the `subagentStatusLine` key was removed, though existing files still load)
 
 A minimal plugin needs only the manifest. You add components based on what the plugin should do.
 
