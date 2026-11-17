@@ -774,7 +774,7 @@ A few things to keep in mind when using community skills:
 
 ### Community: Agent Skills Hub
 
-[Agent Skills Hub](https://agentskillshub.top/) is an open-source directory of 262,000+ agent skills, MCP servers and agent tools, refreshed from public GitHub repositories every 8 hours. Popular entries are security-graded against 42 published rules, which can help with the "review before installing" step above. Like SkillsMP, it is an independent community project and is not affiliated with Anthropic.
+[Agent Skills Hub](https://agentskillshub.top/) ([zhuyansen/agent-skills-hub](https://github.com/zhuyansen/agent-skills-hub), MIT) is an open-source directory of 276,000+ agent skills, MCP servers and agent tools, refreshed from public GitHub repositories every 8 hours. Over 138,000 entries are security-graded against 43 published rules ([how-we-grade](https://agentskillshub.top/how-we-grade/)) alongside 358 live hands-on scenario tests, which can help with the "review before installing" step above. Like SkillsMP, it is an independent community project and is not affiliated with Anthropic.
 
 ## Using skills with other tools
 
