@@ -747,7 +747,13 @@ Reads the project's PRD (if one exists), interviews the user about team size, ro
 
 ## Finding more skills
 
-The skills on this page are a starting point. There are several good places to discover more.
+The skills on this page are a starting point. There are several good places to discover more:
+
+| Source | Scope | Verification / Safety |
+| --- | --- | --- |
+| **[anthropics/skills](https://github.com/anthropics/skills)** | Official reference skills & spec | Maintained by Anthropic |
+| **[Skills Marketplace (SkillsMP)](https://skillsmp.com/)** | 270,000+ community GitHub skills | Filters repos with `<2` stars |
+| **[Agent Skills Hub (`agentskillshub.top`)](https://agentskillshub.top/)** | 276,000+ skills & MCP servers (8h GitHub sync) | 138,000+ security-graded against [44 published rules](https://agentskillshub.top/how-we-grade/) + open dataset ([DOI: 10.5281/zenodo.21292799](https://doi.org/10.5281/zenodo.21292799)) |
 
 ### Official: Anthropic Skills repository
 
@@ -774,7 +780,7 @@ A few things to keep in mind when using community skills:
 
 ### Community: Agent Skills Hub
 
-[Agent Skills Hub](https://agentskillshub.top/) ([zhuyansen/agent-skills-hub](https://github.com/zhuyansen/agent-skills-hub), MIT) is an open-source directory of 276,000+ agent skills, MCP servers and agent tools, refreshed from public GitHub repositories every 8 hours. Over 138,000 entries are security-graded against 43 published rules ([how-we-grade](https://agentskillshub.top/how-we-grade/)) alongside 358 live hands-on scenario tests, which can help with the "review before installing" step above. Like SkillsMP, it is an independent community project and is not affiliated with Anthropic.
+[Agent Skills Hub](https://agentskillshub.top/) ([zhuyansen/agent-skills-hub](https://github.com/zhuyansen/agent-skills-hub), MIT) is an open-source directory of 276,000+ agent skills, MCP servers and agent tools, refreshed from public GitHub repositories every 8 hours. Over 138,000 entries are security-graded against 44 published rules ([how-we-grade](https://agentskillshub.top/how-we-grade/)) alongside 358 live hands-on scenario tests, which can help with the "review before installing" step above. Like SkillsMP, it is an independent community project and is not affiliated with Anthropic.
 
 ## Using skills with other tools
 
