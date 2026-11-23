@@ -68,6 +68,7 @@ claude mcp list             # List servers with health status
 claude mcp get <name>       # Show one server's configuration
 claude mcp remove <name>    # Remove a server (also clears its OAuth tokens)
 claude mcp add-json <name> '<json>'          # Add from a JSON snippet
+claude mcp add-json <name> -              # Read the JSON from stdin (keeps tokens off the command line)
 claude mcp add-from-claude-desktop           # Import servers from Claude Desktop (macOS/WSL)
 ```
 
